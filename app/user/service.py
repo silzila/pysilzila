@@ -16,7 +16,7 @@ async def get_user(db: Session, uid: str):
 async def get_user_by_email(db: Session, email: str):
     # return db.execute(select(model.User).filter(model.User.email == email))
     user = await db.execute(select(model.User).where(model.User.email == email))
-    return user.first()
+    return user.scalars().first()
 
 
 async def create_user(db: Session, user: schema.UserIn):
