@@ -5,6 +5,7 @@ from starlette.requests import Request
 
 from ..database.service import get_db
 from . import model, schema, service
+from . import engine
 from ..user.auth import JWTBearer
 
 
@@ -15,6 +16,12 @@ router = APIRouter(prefix="/dc", tags=["Data Connection"],
 @router.get("/")
 async def dc_home():
     return {"message": "You are in DC Home"}
+
+
+@router.post("/test-dc")
+async def test_dc(dc: schema.DataConnectionIn,
+                  db: Session = Depends(get_db)):
+    return await engine.test_connection(dc)
 
 
 @router.post("/create-dc")
