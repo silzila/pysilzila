@@ -10,7 +10,7 @@ class DataConnection(Base):
     __tablename__ = "data_connection"
 
     id = Column(Integer, primary_key=True)
-    dc_uid = Column(String, nullable=False, unique=True, index=True
+    dc_uid = Column(String, nullable=False, unique=True, index=True,
                     default=lambda: shortuuid.ShortUUID().random(length=4))
     friendly_name = Column(String, nullable=False, unique=True)
     vendor = Column(String, nullable=False)
@@ -18,5 +18,5 @@ class DataConnection(Base):
     port = Column(Integer, nullable=False)
     db_name = Column(String, nullable=False)
     username = Column(String, nullable=False)
-    password_hash = Column(String, nullable=False)
+    password = Column(String, nullable=False)
     user_id = Column(Integer, ForeignKey("user.id"), nullable=False)

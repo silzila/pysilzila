@@ -12,6 +12,7 @@ class DataConnectionIn(BaseModel):
 
 
 class DataConnectionOut(BaseModel):
+    dc_uid: str
     friendly_name: str
     vendor: str
     url: str
