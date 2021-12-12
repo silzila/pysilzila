@@ -35,7 +35,7 @@ async def create_user(user: schema.UserIn, db: Session = Depends(get_db)):
         return await service.create_user(db=db, user=user)
 
 
-@router.post("signin")
+@router.post("/signin")
 async def login_user(form_data: OAuth2PasswordRequestForm = Depends(),
                      db: Session = Depends(get_db)):
     db_user = await service.get_user_by_email(db, email=form_data.username)

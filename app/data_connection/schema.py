@@ -11,6 +11,11 @@ class DataConnectionIn(BaseModel):
     password: str
 
 
+class DataConnectionPool(DataConnectionIn):
+    dc_uid: str
+    decrypted_password: str
+
+
 class DataConnectionOut(BaseModel):
     dc_uid: str
     friendly_name: str

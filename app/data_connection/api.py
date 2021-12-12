@@ -4,7 +4,7 @@ from sqlalchemy.orm.session import Session
 from starlette.requests import Request
 
 from ..database.service import get_db
-from . import model, schema, service
+from . import model, schema, service, auth
 from . import engine
 from ..user.auth import JWTBearer
 
@@ -24,7 +24,7 @@ async def test_dc(dc: schema.DataConnectionIn,
     return await engine.test_connection(dc)
 
 
-@router.post("/create-dc")
+@router.post("/create-dc", response_model=schema.DataConnectionOut)
 async def create_dc(request: Request,
                     dc: schema.DataConnectionIn,
                     db: Session = Depends(get_db)):
@@ -38,6 +38,22 @@ async def create_dc(request: Request,
         raise HTTPException(
             status_code=500, detail="Something went wrong in server")
     return db_dc
+
+
+@router.get("/connect-dc/{dc_uid}")
+async def connect_dc(dc_uid: str, db: Session = Depends(get_db)):
+    db_dc = await service.get_dc_by_id(db, dc_uid)
+    if db_dc is None:
+        raise HTTPException(
+            status_code=404, detail="Data Connection not exists")
+    # db_dc.de = auth.decrypt_password(db_dc.password)
+    # return {"message": db_dc}
+    is_connected = await engine.create_connection(db_dc)
+    if is_connected:
+        return {"message": "success"}
+    else:
+        raise HTTPException(
+            status_code=500, detail="Could not make Data Connection")
 
 
 @router.get("/get-dc/{dc_uid}", response_model=schema.DataConnectionOut)
