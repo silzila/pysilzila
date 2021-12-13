@@ -24,6 +24,26 @@ async def test_dc(dc: schema.DataConnectionIn,
     return await engine.test_connection(dc)
 
 
+@router.post("/close-dc")
+async def close_dc(dc_uid: str):
+    closed = await engine.close_connection(dc_uid)
+    if closed is not True:
+        raise HTTPException(
+            status_code=500, detail="Connection could not be closed")
+    else:
+        return {"message": "Connection is closed"}
+
+
+@router.post("/close-all-dc")
+async def close_all_dc():
+    closed = await engine.close_all_connection()
+    if closed is not True:
+        raise HTTPException(
+            status_code=500, detail="Connections could not be closed")
+    else:
+        return {"message": "All Connections are closed"}
+
+
 @router.post("/create-dc", response_model=schema.DataConnectionOut)
 async def create_dc(request: Request,
                     dc: schema.DataConnectionIn,
@@ -87,7 +107,7 @@ async def read_sample_records(dc_uid: str, schema_name: str, table_name: str):
 
 @router.get("/get-all-dc", response_model=List[schema.DataConnectionOut])
 async def get_all_dc(request: Request, db: Session = Depends(get_db)):
-    db_dc = service.get_all_dc(db, request.state.uid)
+    db_dc = await service.get_all_dc(db, request.state.uid)
     if db_dc is None:
         raise HTTPException(
             status_code=404, detail="Data Connection not exists")

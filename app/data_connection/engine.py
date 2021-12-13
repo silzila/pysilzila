@@ -31,6 +31,31 @@ async def test_connection(dc: schema.DataConnectionIn) -> dict:
             status_code=403, detail="Database not yet supported")
 
 
+async def close_connection(dc_uid: str) -> bool:
+    global db_pool
+    if db_pool.get(dc_uid):
+        try:
+            db_pool[dc_uid]["engine"].dispose()
+            del db_pool[dc_uid]
+            return True
+        except Exception as err:
+            raise HTTPException(
+                status_code=500, detail=err)
+
+
+async def close_all_connection() -> bool:
+    global db_pool
+    try:
+        for dc in db_pool.values():
+            dc["engine"].dispose()
+        db_pool = {}
+
+        return True
+    except Exception as err:
+        raise HTTPException(
+            status_code=500, detail=err)
+
+
 async def create_connection(dc: schema.DataConnectionPool):
     global db_pool
     if db_pool.get(dc.dc_uid):
@@ -44,7 +69,7 @@ async def create_connection(dc: schema.DataConnectionPool):
         db_pool[dc.dc_uid]["engine"] = create_engine(conn_str, echo=False,
                                                      pool_size=2, max_overflow=5)
         try:
-            db_pool[dc.dc_uid]["conn"] = db_pool[dc.dc_uid]["engine"].connect()
+            db_pool[dc.dc_uid]["engine"].connect()
             db_pool[dc.dc_uid]["insp"] = inspect(db_pool[dc.dc_uid]["engine"])
             db_pool[dc.dc_uid]["meta"] = MetaData()
             # db_pool[dc.dc_uid]["engine"].dispose()
@@ -93,7 +118,7 @@ def get_sample_records(dc_uid: str, schema_name: str, table_name: str):
     else:
         try:
             qry = text(f"select * from {schema_name}.{table_name} limit 200;")
-            records = db_pool[dc_uid]["conn"].execute(qry)
+            records = db_pool[dc_uid]["engine"].execute(qry)
             result = [dict(row) for row in records]
             return result
         except Exception as err:
