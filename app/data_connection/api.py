@@ -65,9 +65,29 @@ async def read_dc(dc_uid: str, db: Session = Depends(get_db)):
     return db_dc
 
 
+@router.get("/schemas/{dc_uid}")
+async def read_schema_names(dc_uid: str):
+    return engine.get_schema_names(dc_uid)
+
+
+@router.get("/tables/{dc_uid}/{schema_name}")
+async def read_table_names(dc_uid: str, schema_name: str):
+    return engine.get_table_names(dc_uid, schema_name)
+
+
+@router.get("/columns/{dc_uid}/{schema_name}/{table_name}")
+async def read_column_names(dc_uid: str, schema_name: str, table_name: str):
+    return engine.get_columns(dc_uid, schema_name, table_name)
+
+
+@router.get("/sample-records/{dc_uid}/{schema_name}/{table_name}")
+async def read_sample_records(dc_uid: str, schema_name: str, table_name: str):
+    return engine.get_sample_records(dc_uid, schema_name, table_name)
+
+
 @router.get("/get-all-dc", response_model=List[schema.DataConnectionOut])
 async def get_all_dc(request: Request, db: Session = Depends(get_db)):
-    db_dc = await service.get_all_dc(db, request.state.uid)
+    db_dc = service.get_all_dc(db, request.state.uid)
     if db_dc is None:
         raise HTTPException(
             status_code=404, detail="Data Connection not exists")

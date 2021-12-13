@@ -4,7 +4,7 @@ python-decouple
 sqlalchemy
 shortuuid
 pydantic[email]
-
+cryptography
 aiosqlite
 bcrypt
 cffi
@@ -17,9 +17,11 @@ iso8601
 passlib
 pkg-resources
 priority
+psycopg-binary
 pycparser
 pydantic
 PyJWT
+PyMySQL
 PyPika
 python-multipart
 pytz
