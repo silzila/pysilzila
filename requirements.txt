@@ -28,6 +28,5 @@ pytz
 six
 starlette
 toml
-tortoise-orm
 typing-extensions
 wsproto

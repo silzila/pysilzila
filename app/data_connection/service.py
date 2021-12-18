@@ -2,7 +2,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.elements import and_
 
-from .import model, schema, auth
+from . import model, schema, auth
 
 
 async def create_data_connection(db: Session,
