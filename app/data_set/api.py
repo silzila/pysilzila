@@ -14,7 +14,7 @@ async def ds_home():
     return {"message": "You are in DS Home"}
 
 
-@router.post("/create-ds", response_model=schema.DataSetOut)
+@router.post("/create-ds")  # , response_model=schema.DataSetOut)
 async def create_ds(ds: schema.DataSetIn, db: Session = Depends(get_db)):
     # print("--------------------------------")
     # print(ds.dict())
