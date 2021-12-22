@@ -1,0 +1,99 @@
+{
+	"dc_uid": "rdpg",
+	"friendly_name": "my first data set",
+	"data_schema": {
+		"tables": [
+			{
+				"table_name": "pos",
+				"schema_name": "public"
+			},
+			{
+				"table_name": "product",
+				"schema_name": "public"
+			},
+			{
+				"table_name": "vendor",
+				"schema_name": "public"
+			},
+			{
+				"table_name": "sub_category",
+				"schema_name": "public"
+			},
+			{
+				"table_name": "category",
+				"schema_name": "public"
+			},
+			{
+				"table_name": "delivery_mode",
+				"schema_name": "public"
+			}
+		],
+		"relationships": [
+			{
+				"table1": {
+					"table_name": "product",
+					"schema_name": "public"
+				},
+				"table2": {
+					"table_name": "vendor",
+					"schema_name": "public"
+				},
+				"type": "many to one",
+				"table1_columns": ["vendor_id"],
+				"table2_columns": ["vendor_id"]
+			},
+			{
+				"table1": {
+					"table_name": "delivery_mode",
+					"schema_name": "public"
+				},
+				"table2": {
+					"table_name": "pos",
+					"schema_name": "public"
+				},
+				"type": "one to many",
+				"table1_columns": ["delivery_mode_id"],
+				"table2_columns": ["delivery_mode_id"]
+			},
+			{
+				"table1": {
+					"table_name": "category",
+					"schema_name": "public"
+				},
+				"table2": {
+					"table_name": "sub_category",
+					"schema_name": "public"
+				},
+				"type": "one to many",
+				"table1_columns": ["category_id"],
+				"table2_columns": ["category_id"]
+			},
+			{
+				"table1": {
+					"table_name": "pos",
+					"schema_name": "public"
+				},
+				"table2": {
+					"table_name": "product",
+					"schema_name": "public"
+				},
+				"type": "many to one",
+				"table1_columns": ["product_id"],
+				"table2_columns": ["product_id"]
+			},
+			{
+				"table1": {
+					"table_name": "product",
+					"schema_name": "public"
+				},
+				"table2": {
+					"table_name": "sub_category",
+					"schema_name": "public"
+				},
+				"type": "one to many",
+				"table1_columns": ["sub_category_id"],
+				"table2_columns": ["sub_category_id"]
+			}
+		]
+	}
+}

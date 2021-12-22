@@ -1,5 +1,6 @@
 from . import schema
 from . import auth
+from ..data_set.schema import DataSetOut
 from fastapi import HTTPException
 
 # to Test Connection
@@ -59,11 +60,11 @@ async def close_all_connection() -> bool:
 async def create_connection(dc: schema.DataConnectionPool):
     global db_pool
     if db_pool.get(dc.dc_uid):
-        print("create_connection fn calling...... engine already available")
+        # print("create_connection fn calling...... engine already available")
         return True
     else:
         decrypted_password = auth.decrypt_password(dc.password)
-        print("decrypted Password =============", decrypted_password)
+        # print("decrypted Password =============", decrypted_password)
         conn_str = f"{dc.vendor}+{DB_LIBRARIES[dc.vendor]}://{dc.username}:{decrypted_password}@{dc.url}:{dc.port}/{dc.db_name}"
         db_pool[dc.dc_uid] = {}
         db_pool[dc.dc_uid]["engine"] = create_engine(conn_str, echo=False,
@@ -73,18 +74,33 @@ async def create_connection(dc: schema.DataConnectionPool):
             db_pool[dc.dc_uid]["insp"] = inspect(db_pool[dc.dc_uid]["engine"])
             db_pool[dc.dc_uid]["meta"] = MetaData()
             # db_pool[dc.dc_uid]["engine"].dispose()
-            print("create_connection fn calling...... engine created now")
+            # print("create_connection fn calling...... engine created now")
             return True
         except SQLAlchemyError as err:
             raise HTTPException(
                 status_code=500, detail=err)
 
 
+async def activate_ds(ds: DataSetOut):
+    global db_pool
+    if not (db_pool and db_pool.get(ds.dc_uid)):
+        raise HTTPException(
+            status_code=500, detail="Connect to DC first")
+    if db_pool.get(ds.dc_uid).get('data_schema'):
+        db_pool[ds.dc_uid]['data_schema'][ds.ds_uid] = ds.data_schema
+    else:
+        db_pool[ds.dc_uid]['data_schema'] = {}
+        db_pool[ds.dc_uid]['data_schema'][ds.ds_uid] = ds.data_schema
+    print("data schema ========\n",
+          db_pool[ds.dc_uid]['data_schema'][ds.ds_uid])
+    return True
+
+
 def get_schema_names(dc_uid: str):
     global db_pool
     if not (db_pool and db_pool.get(dc_uid)):
         raise HTTPException(
-            status_code=500, detail="Connect to DS first")
+            status_code=500, detail="Connect to DC first")
     else:
         try:
             schemas = db_pool[dc_uid]["insp"].get_schema_names()
@@ -99,7 +115,7 @@ def get_table_names(dc_uid: str, schema_name: str):
     global db_pool
     if not (db_pool and db_pool.get(dc_uid)):
         raise HTTPException(
-            status_code=500, detail="Connect to DS first")
+            status_code=500, detail="Connect to DC first")
     else:
         try:
             tables = db_pool[dc_uid]["insp"].get_table_names(schema_name)
@@ -114,7 +130,7 @@ def get_sample_records(dc_uid: str, schema_name: str, table_name: str):
     global db_pool
     if not (db_pool and db_pool.get(dc_uid)):
         raise HTTPException(
-            status_code=500, detail="Connect to DS first")
+            status_code=500, detail="Connect to DC first")
     else:
         try:
             qry = text(f"select * from {schema_name}.{table_name} limit 200;")
@@ -130,7 +146,7 @@ def get_columns(dc_uid: str, schema_name: str, table_name: str):
     global db_pool
     if not (db_pool and db_pool.get(dc_uid)):
         raise HTTPException(
-            status_code=500, detail="Connect to DS first")
+            status_code=500, detail="Connect to DC first")
     else:
         try:
             columns = db_pool[dc_uid]["insp"].get_columns(

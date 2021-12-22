@@ -69,11 +69,10 @@ async def connect_dc(dc_uid: str, db: Session = Depends(get_db)):
     # db_dc.de = auth.decrypt_password(db_dc.password)
     # return {"message": db_dc}
     is_connected = await engine.create_connection(db_dc)
-    if is_connected:
-        return {"message": "success"}
-    else:
+    if not is_connected:
         raise HTTPException(
             status_code=500, detail="Could not make Data Connection")
+    return {"message": "success"}
 
 
 @router.get("/get-dc/{dc_uid}", response_model=schema.DataConnectionOut)
