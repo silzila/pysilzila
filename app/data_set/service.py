@@ -23,25 +23,31 @@ async def get_ds_by_friendly_name(db: Session, uid: str, friendly_name: str):
 async def create_ds(db: Session,
                     ds: schema.DataSetIn):
     data_schema = ds.dict()['data_schema']
-    data_schema["tables"] = [{**table, "id": table['table_name'][:]}
+    data_schema["tables"] = [{**table, "id2": table['table_name'][:]}
                              for table in data_schema["tables"]]
     _rel = {}
     for i, rel in enumerate(data_schema['relationships']):
         for tbl in data_schema['tables']:
-            if rel['table1']['table_name'] == tbl['table_name'] and rel['table1']['schema_name'] == tbl['schema_name']:
+            if rel['table1'] == tbl['id']:
                 if i in _rel:
-                    _rel[i]['table1'] = tbl['id']
+                    _rel[i]['table1'] = tbl['id2']
                 else:
-                    _rel[i] = {"table1": tbl['id']}
-            if rel['table2']['table_name'] == tbl['table_name'] and rel['table2']['schema_name'] == tbl['schema_name']:
+                    _rel[i] = {"table1": tbl['id2']}
+            if rel['table2'] == tbl['id']:
                 if i in _rel:
-                    _rel[i]['table2'] = tbl['id']
+                    _rel[i]['table2'] = tbl['id2']
                 else:
-                    _rel[i] = {"table2": tbl['id']}
+                    _rel[i] = {"table2": tbl['id2']}
 
     for idx, val in enumerate(_rel):
         data_schema['relationships'][idx]['table1'] = _rel[idx]['table1']
         data_schema['relationships'][idx]['table2'] = _rel[idx]['table2']
+
+    data_schema["tables"] = [{**table, "id": table['id2'][:]}
+                             for table in data_schema["tables"]]
+    data_schema["tables"] = [{k: v for k, v in table.items(
+    ) if k != 'id2'} for table in data_schema["tables"]]
+
     ds_item = model.DataSet(dc_uid=ds.dc_uid,
                             friendly_name=ds.friendly_name,
                             data_schema=data_schema)

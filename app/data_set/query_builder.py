@@ -60,7 +60,7 @@ async def compose_query(req: schema.Query, dc_uid: str, ds_uid: str):
     req = req.dict()
     print("------------Query -----------\n", req)
     data_schema = await engine.get_data_schema(dc_uid, ds_uid)
-    print("------------Schema -----------\n", data_schema)
+    # print("------------Schema -----------\n", data_schema)
 
     # unique_tables will hold all unique requested tables
     unique_tables = {

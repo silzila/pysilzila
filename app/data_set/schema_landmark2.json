@@ -1,6 +1,6 @@
 {
 	"dc_uid": "post",
-	"friendly_name": "landmark no emp",
+	"friendly_name": "landmark no emp tbl",
 	"data_schema": {
 		"tables": [
 			{
@@ -16,17 +16,17 @@
 			{
 				"table_name": "payment_method",
 				"schema_name": "public",
-				"id": "payment_method"
+				"id": "pppp"
 			},
 			{
 				"table_name": "customer_type",
 				"schema_name": "public",
-				"id": "customer_type"
+				"id": "cccc"
 			},
 			{
 				"table_name": "delivery_mode",
 				"schema_name": "public",
-				"id": "delivery_mode"
+				"id": "del"
 			},
 			{
 				"table_name": "vendor",
@@ -87,20 +87,20 @@
 			},
 			{
 				"table1": "pos_mini",
-				"table2": "payment_method",
+				"table2": "pppp",
 				"type": "many to one",
 				"table1_columns": ["payment_method_id"],
 				"table2_columns": ["payment_method_id"]
 			},
 			{
-				"table1": "customer_type",
+				"table1": "cccc",
 				"table2": "pos_mini",
 				"type": "one to many",
 				"table1_columns": ["customer_type_id"],
 				"table2_columns": ["customer_type_id"]
 			},
 			{
-				"table1": "delivery_mode",
+				"table1": "del",
 				"table2": "pos_mini",
 				"type": "one to many",
 				"table1_columns": ["delivery_mode_id"],

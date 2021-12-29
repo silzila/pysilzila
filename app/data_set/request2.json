@@ -30,3 +30,34 @@
 	"fields": [],
 	"filters": []
 }
+
+
+
+
+
+
+
+{
+	"dims": [
+		{
+			"table_id": "pos_mini",
+			"display_name": "order_date",
+			"field_name": "order_date",
+			"data_type": "date",
+			"aggr": "",
+			"expr": ""
+		}
+	],
+	"measures": [
+		{
+			"table_id": "pos_mini",
+			"display_name": "order_date",
+			"field_name": "order_date",
+			"data_type": "date",
+			"aggr": "",
+			"expr": ""
+		}
+	],
+	"fields": [],
+	"filters": []
+}

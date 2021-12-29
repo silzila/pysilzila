@@ -7,11 +7,12 @@ from typing import Optional, List
 class Table(BaseModel):
     table_name: str
     schema_name: str
+    id: str
 
 
 class Relationship(BaseModel):
-    table1: Table
-    table2: Table
+    table1: str
+    table2: str
     type: str
     table1_columns: List[str]
     table2_columns: List[str]
