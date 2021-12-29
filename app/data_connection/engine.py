@@ -91,9 +91,20 @@ async def activate_ds(ds: DataSetOut):
     else:
         db_pool[ds.dc_uid]['data_schema'] = {}
         db_pool[ds.dc_uid]['data_schema'][ds.ds_uid] = ds.data_schema
-    print("data schema ========\n",
+    print("data schema during activating ds ========\n",
           db_pool[ds.dc_uid]['data_schema'][ds.ds_uid])
     return True
+
+
+async def get_data_schema(dc_uid: str, ds_uid: str):
+    global db_pool
+    if not (db_pool and db_pool.get(dc_uid)):
+        raise HTTPException(
+            status_code=500, detail="Connect to DC first")
+    if not (db_pool.get(dc_uid).get('data_schema') and db_pool.get(dc_uid).get('data_schema').get(ds_uid)):
+        raise HTTPException(
+            status_code=500, detail="Connect to DS first")
+    return db_pool.get(dc_uid).get('data_schema').get(ds_uid)
 
 
 def get_schema_names(dc_uid: str):
@@ -131,15 +142,28 @@ def get_sample_records(dc_uid: str, schema_name: str, table_name: str):
     if not (db_pool and db_pool.get(dc_uid)):
         raise HTTPException(
             status_code=500, detail="Connect to DC first")
-    else:
-        try:
-            qry = text(f"select * from {schema_name}.{table_name} limit 200;")
-            records = db_pool[dc_uid]["engine"].execute(qry)
-            result = [dict(row) for row in records]
-            return result
-        except Exception as err:
-            raise HTTPException(
-                status_code=500, detail=err)
+    try:
+        qry = text(f"select * from {schema_name}.{table_name} limit 200;")
+        records = db_pool[dc_uid]['engine'].execute(qry)
+        result = [dict(row) for row in records]
+        return result
+    except Exception as err:
+        raise HTTPException(
+            status_code=500, detail=err)
+
+
+def run_query(dc_uid: str, query: str):
+    global db_pool
+    if not (db_pool and db_pool.get(dc_uid)):
+        raise HTTPException(
+            status_code=500, detail="Connect to DC first")
+    try:
+        records = db_pool[dc_uid]['engine'].execute(query)
+        result = [dict(row) for row in records]
+        return result
+    except Exception as err:
+        raise HTTPException(
+            status_code=500, detail=err)
 
 
 def get_columns(dc_uid: str, schema_name: str, table_name: str):

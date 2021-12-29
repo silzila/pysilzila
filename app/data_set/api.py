@@ -5,6 +5,7 @@ from starlette.requests import Request
 
 from ..database.service import get_db
 from . import model, schema, service
+from . import query_builder
 from ..user.auth import JWTBearer
 from ..data_connection import engine
 
@@ -63,6 +64,9 @@ async def connect_ds(ds_uid: str, db: Session = Depends(get_db)):
     return {"message": "Data Set is Activated"}
 
 
-@router.post("/query/{ds_uid}")
-async def query(query: schema.Query, ds_uid: str):
-    return query
+@router.post("/query/{dc_uid}/{ds_uid}")
+async def query(query: schema.Query, dc_uid: str, ds_uid: str):
+    qry_composed = await query_builder.compose_query(query, dc_uid, ds_uid)
+    print("^^^^^^^^^^^^^^^^ final Query ^^^^^^^^^^", qry_composed)
+    qry_result = engine.run_query(dc_uid, qry_composed)
+    return qry_result

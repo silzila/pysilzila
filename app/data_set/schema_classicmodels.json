@@ -1,0 +1,133 @@
+{
+    "dc_uid": "mysq",
+    "friendly_name": "classic models",
+    "data_schema": {
+        "tables": [
+            {
+                "table_name": "offices",
+                "schema_name": "classicmodels"
+            },
+            {
+                "table_name": "employees",
+                "schema_name": "classicmodels"
+            },
+            {
+                "table_name": "customers",
+                "schema_name": "classicmodels"
+            },
+            {
+                "table_name": "productlines",
+                "schema_name": "classicmodels"
+            },
+            {
+                "table_name": "products",
+                "schema_name": "classicmodels"
+            },
+            {
+                "table_name": "orders",
+                "schema_name": "classicmodels"
+            },
+            {
+                "table_name": "orderdetails",
+                "schema_name": "classicmodels"
+            },
+            {
+                "table_name": "payments",
+                "schema_name": "classicmodels"
+            }
+        ],
+        "relationships": [
+            {
+                "table1": {
+                    "table_name": "offices",
+                    "schema_name": "classicmodels"
+                },
+                "table2": {
+                    "table_name": "employees",
+                    "schema_name": "classicmodels"
+                },
+                "type": "one to many",
+                "table1_columns": ["officeCode"],
+                "table2_columns": ["officeCode"]
+            },
+            {
+                "table1": {
+                    "table_name": "employees",
+                    "schema_name": "classicmodels"
+                },
+                "table2": {
+                    "table_name": "customers",
+                    "schema_name": "classicmodels"
+                },
+                "type": "one to many",
+                "table1_columns": ["employeeNumber"],
+                "table2_columns": ["salesRepEmployeeNumber"]
+            },
+            {
+                "table1": {
+                    "table_name": "products",
+                    "schema_name": "classicmodels"
+                },
+                "table2": {
+                    "table_name": "productlines",
+                    "schema_name": "classicmodels"
+                },
+                "type": "many to one",
+                "table1_columns": ["productLine"],
+                "table2_columns": ["productLine"]
+            },
+            {
+                "table1": {
+                    "table_name": "products",
+                    "schema_name": "classicmodels"
+                },
+                "table2": {
+                    "table_name": "orderdetails",
+                    "schema_name": "classicmodels"
+                },
+                "type": "one to many",
+                "table1_columns": ["productCode"],
+                "table2_columns": ["productCode"]
+            },
+            {
+                "table1": {
+                    "table_name": "orders",
+                    "schema_name": "classicmodels"
+                },
+                "table2": {
+                    "table_name": "orderdetails",
+                    "schema_name": "classicmodels"
+                },
+                "type": "one to many",
+                "table1_columns": ["orderNumber"],
+                "table2_columns": ["orderNumber"]
+            },
+            {
+                "table1": {
+                    "table_name": "orders",
+                    "schema_name": "classicmodels"
+                },
+                "table2": {
+                    "table_name": "customers",
+                    "schema_name": "classicmodels"
+                },
+                "type": "many to one",
+                "table1_columns": ["customerNumber"],
+                "table2_columns": ["customerNumber"]
+            },
+            {
+                "table1": {
+                    "table_name": "payments",
+                    "schema_name": "classicmodels"
+                },
+                "table2": {
+                    "table_name": "customers",
+                    "schema_name": "classicmodels"
+                },
+                "type": "many to one",
+                "table1_columns": ["customerNumber"],
+                "table2_columns": ["customerNumber"]
+            }
+        ]
+    }
+}
