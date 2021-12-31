@@ -175,10 +175,26 @@ def get_columns(dc_uid: str, schema_name: str, table_name: str):
         try:
             columns = db_pool[dc_uid]["insp"].get_columns(
                 table_name, schema_name)
-            col = [{"column_name": col["name"], "data_type": str(
+            cols = [{"column_name": col["name"], "data_type": str(
                 col["type"])} for col in columns]
-            # print(col)
-            return col
+            # print(cols)
+            # convert vendor specific data types into agnostic data types
+            for col in cols:
+                if 'INT' in col['data_type']:
+                    col['data_type'] = 'integer'
+                elif 'BOOL' in col['data_type']:
+                    col['data_type'] = 'boolean'
+                elif 'DECIMAL' in col['data_type'] or 'NUMERIC' in col['data_type']:
+                    col['data_type'] = 'decimal'
+                elif 'DATE' in col['data_type']:
+                    col['data_type'] = 'date'
+                elif 'TIME' in col['data_type']:
+                    col['data_type'] = 'timestamp'
+                elif 'VARCHAR' in col['data_type'] or 'TEXT' in col['data_type']:
+                    col['data_type'] = 'text'
+                else:
+                    col['data_type'] = 'unsupported'
+            return cols
         except Exception as err:
             raise HTTPException(
                 status_code=500, detail=err)
