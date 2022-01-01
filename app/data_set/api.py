@@ -69,4 +69,5 @@ async def query(query: schema.Query, dc_uid: str, ds_uid: str):
     qry_composed = await query_builder.compose_query(query, dc_uid, ds_uid)
     print("^^^^^^^^^^^^^^^^ final Query ^^^^^^^^^^", qry_composed)
     qry_result = engine.run_query(dc_uid, qry_composed)
+    print("++++++++++++++++ qry result +++++++++++++++++", qry_result)
     return qry_result

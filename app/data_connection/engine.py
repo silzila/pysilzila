@@ -91,8 +91,8 @@ async def activate_ds(ds: DataSetOut):
     else:
         db_pool[ds.dc_uid]['data_schema'] = {}
         db_pool[ds.dc_uid]['data_schema'][ds.ds_uid] = ds.data_schema
-    print("data schema during activating ds ========\n",
-          db_pool[ds.dc_uid]['data_schema'][ds.ds_uid])
+    # print("data schema during activating ds ========\n",
+        #   db_pool[ds.dc_uid]['data_schema'][ds.ds_uid])
     return True
 
 
