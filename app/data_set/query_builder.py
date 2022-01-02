@@ -182,6 +182,19 @@ async def compose_query(req: schema.Query, dc_uid: str, ds_uid: str):
     '''
     RELATIONSHIP SECTION
     '''
+    joins = {
+        "inner": "INNER JOIN",
+        "left": "LEFT OUTER JOIN",
+        "right": "RIGHT OUTER JOIN",
+        "full": "FULL OUTER JOIN"
+    }
+    mirror_joins = {
+        "inner": "INNER JOIN",
+        "left": "RIGHT OUTER JOIN",
+        "right": "LEFT OUTER JOIN",
+        "full": "FULL OUTER JOIN"
+    }
+
     for i, val in enumerate(relationships2):
         _from = list(
             filter(lambda obj: obj["id"] == val["table1"], data_schema["tables"]))[0]
@@ -192,18 +205,35 @@ async def compose_query(req: schema.Query, dc_uid: str, ds_uid: str):
             joinn = f"{val['table1']}.{rel} = {val['table2']}.{val['table2_columns'][idx]}"
             _join.append(joinn)
         _join = " AND\n\t".join(_join)
+        # print("!!!!!!!!!\n _from: ", _from, "\n_to: ", _to, "\n_join", _join)
         if i == 0:
             FROM_TBL += f"\n\t{_from['schema_name']}.{_from['table_name']} AS {_from['id']} \
-                \n\tINNER JOIN {_to['schema_name']}.{_to['table_name']}  AS {_to['id']} ON \n\t\t {_join}"
+                \n\t{joins[val['ref_integrity']]} {_to['schema_name']}.{_to['table_name']}  AS {_to['id']} ON \n\t\t {_join}"
         if i > 0:
-            if val["table1"] == relationships2[i-1]["table1"]:
-                FROM_TBL += f"\n\tINNER JOIN {_to['schema_name']}.{_to['table_name']} AS {_to['id']} ON \n\t\t{_join}"
-            elif val["table1"] == relationships2[i-1]["table2"]:
-                FROM_TBL += f"\n\tINNER JOIN {_to['schema_name']}.{_to['table_name']} AS {_to['id']} ON \n\t\t {_join}"
+            if val["table1"] == relationships2[i-1]["table1"] or val["table1"] == relationships2[i-1]["table2"]:
+                FROM_TBL += f"\n\t{joins[val['ref_integrity']]} {_to['schema_name']}.{_to['table_name']} AS {_to['id']} ON \n\t\t{_join}"
 
-            elif val["table2"] == relationships2[i-1]["table2"]:
-                FROM_TBL += f"\n\tINNER JOIN {_from['schema_name']}.{_from['table_name']} AS {_from['id']} ON \n\t\t{_join}"
-
+            elif val["table2"] == relationships2[i-1]["table1"] or val["table2"] == relationships2[i-1]["table2"]:
+                print("&&&&&&&&&&&&&&& Mirror join 1 &&&&&&&&&&&&&&&&&")
+                FROM_TBL += f"\n\t{mirror_joins[val['ref_integrity']]} {_from['schema_name']}.{_from['table_name']} AS {_from['id']} ON \n\t\t{_join}"
+            # when not matching with one level above - need to check the whole list
+            else:
+                existing_tables = [r['table1']
+                                   for r in relationships2[:i]]
+                existing_tables_t2 = [r['table2']
+                                      for r in relationships2[:i]]
+                existing_tables.extend(existing_tables_t2)
+                # print("** existing_tables_t1 = ", existing_tables_t1)
+                # print("** existing_tables_t2 = ", existing_tables_t2)
+                if val['table1'] in existing_tables:
+                    _to = list(filter(lambda obj: obj["id"] ==
+                                      val["table2"], data_schema["tables"]))[0]
+                    FROM_TBL += f"\n\t{joins[val['ref_integrity']]} {_to['schema_name']}.{_to['table_name']} AS {_to['id']} ON \n\t\t{_join}"
+                elif val['table2'] in existing_tables:
+                    _from = list(
+                        filter(lambda obj: obj["id"] == val["table1"], data_schema["tables"]))[0]
+                    print("&&&&&&&&&&&&&&& Mirror join 2 &&&&&&&&&&&&&&&&&")
+                    FROM_TBL += f"\n\t{mirror_joins[val['ref_integrity']]} {_from['schema_name']}.{_from['table_name']} AS {_from['id']} ON \n\t\t{_join}"
     # print(FROM_TBL)
 
     print("===============SELECT=================")

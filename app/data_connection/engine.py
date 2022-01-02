@@ -159,8 +159,9 @@ def run_query(dc_uid: str, query: str):
             status_code=500, detail="Connect to DC first")
     try:
         records = db_pool[dc_uid]['engine'].execute(query)
-        result = [dict(row) for row in records]
-        return result
+        if records:
+            result = [dict(row) for row in records]
+            return result
     except Exception as err:
         raise HTTPException(
             status_code=500, detail=err)

@@ -13,7 +13,8 @@ class Table(BaseModel):
 class Relationship(BaseModel):
     table1: str
     table2: str
-    type: str
+    cardinality: str
+    ref_integrity: str
     table1_columns: List[str]
     table2_columns: List[str]
 
@@ -21,7 +22,8 @@ class Relationship(BaseModel):
 class RelationshipOut(BaseModel):
     table1: str
     table2: str
-    type: str
+    cardinality: str
+    ref_integrity: str
     table1_columns: List[str]
     table2_columns: List[str]
 

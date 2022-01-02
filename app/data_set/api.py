@@ -67,7 +67,11 @@ async def connect_ds(ds_uid: str, db: Session = Depends(get_db)):
 @router.post("/query/{dc_uid}/{ds_uid}")
 async def query(query: schema.Query, dc_uid: str, ds_uid: str):
     qry_composed = await query_builder.compose_query(query, dc_uid, ds_uid)
-    print("^^^^^^^^^^^^^^^^ final Query ^^^^^^^^^^", qry_composed)
-    qry_result = engine.run_query(dc_uid, qry_composed)
-    print("++++++++++++++++ qry result +++++++++++++++++", qry_result)
-    return qry_result
+    print("^^^^^^^^^^^^^^^^ final Query ^^^^^^^^^^\n", qry_composed)
+    try:
+        qry_result = engine.run_query(dc_uid, qry_composed)
+        # print("++++++++++++++++ qry result +++++++++++++++++", qry_result)
+        return {"query": qry_composed, "result": qry_result}
+    except Exception as error:
+        raise HTTPException(
+            status_code=500, detail=error)
