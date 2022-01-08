@@ -60,6 +60,20 @@ async def create_dc(request: Request,
     return db_dc
 
 
+@router.put("/update-dc/{dc_uid}", response_model=schema.DataConnectionOut)
+async def update_dc(dc_uid: str, request: Request,
+                    dc: schema.DataConnectionIn,
+                    db: Session = Depends(get_db)):
+    uid = request.state.uid
+
+    dc_info = await service.update_data_connection(db, dc_uid, dc, uid)
+    if dc_info:
+        return dc_info
+    else:
+        raise HTTPException(
+            status_code=500, detail="Something went wrong in server")
+
+
 @router.get("/connect-dc/{dc_uid}")
 async def connect_dc(dc_uid: str, db: Session = Depends(get_db)):
     db_dc = await service.get_dc_by_id(db, dc_uid)
