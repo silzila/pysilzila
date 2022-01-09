@@ -33,8 +33,8 @@ async def update_data_connection(db: Session, dc_uid: str,
     dc_info = await get_dc_by_id(db, dc_uid)
     if dc_info is None:
         raise HTTPException(
-            status_code=404, detail="Data Connection not exists")
-    db_dc = await get_dc_by_friendly_name(db, uid, dc.friendly_name)
+            status_code=404, detail="Data Connection does not exist")
+    db_dc = await check_friendly_name_in_other_dc(db, uid, dc.friendly_name, dc_uid)
     if db_dc:
         raise HTTPException(
             status_code=400, detail="Friendlly Name is already taken")
@@ -55,6 +55,15 @@ async def get_all_dc(db: Session, user_id: str):
     all_dc = await db.execute(select(model.DataConnection).where(
         model.DataConnection.user_id == user_id))
     return all_dc.scalars().all()
+
+
+async def check_friendly_name_in_other_dc(db: Session, uid: str, friendly_name: str, dc_uid: str):
+    dc = await db.execute(select(model.DataConnection).where(
+        and_(
+            model.DataConnection.user_id == uid,
+            model.DataConnection.friendly_name == friendly_name,
+            model.DataConnection.dc_uid != dc_uid)))
+    return dc.scalars().first()
 
 
 async def get_dc_by_friendly_name(db: Session, uid: str, friendly_name: str):

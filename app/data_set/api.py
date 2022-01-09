@@ -32,6 +32,17 @@ async def create_ds(request: Request, ds: schema.DataSetIn, db: Session = Depend
     return db_ds
 
 
+@router.put("/update-ds/{ds_uid}", response_model=schema.DataSetOut, dependencies=[Depends(JWTBearer())])
+async def update_ds(ds_uid: str, request: Request, ds: schema.DataSetIn, db: Session = Depends(get_db)):
+    uid = request.state.uid
+    ds_info = await service.update_data_set(db, ds_uid, ds, uid)
+    if ds_info:
+        return ds_info
+    else:
+        raise HTTPException(
+            status_code=500, detail="Something went wrong in server")
+
+
 @router.get("/get-all-ds", dependencies=[Depends(JWTBearer())])
 async def get_all_ds(request: Request, db: Session = Depends(get_db)):
     db_ds = await service.get_all_ds(db, request.state.uid)
