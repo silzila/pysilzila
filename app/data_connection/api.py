@@ -60,6 +60,15 @@ async def create_dc(request: Request,
     return db_dc
 
 
+@router.delete("/delete-dc/{dc_uid}")
+async def delete_dc(dc_uid: str, db: Session = Depends(get_db)):
+    deleted = await service.delete_data_connection(db, dc_uid)
+    if deleted is None:
+        raise HTTPException(
+            status_code=500, detail="Something went wrong in server")
+    return {"message": "Data Connection is deleted"}
+
+
 @router.put("/update-dc/{dc_uid}", response_model=schema.DataConnectionOut)
 async def update_dc(dc_uid: str, request: Request,
                     dc: schema.DataConnectionIn,

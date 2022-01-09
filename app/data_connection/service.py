@@ -17,6 +17,17 @@ async def create_data_connection(db: Session,
     return dc_item
 
 
+async def delete_data_connection(db: Session, dc_uid: str):
+    dc_item = await get_dc_by_id(db, dc_uid)
+    if dc_item is None:
+        raise HTTPException(
+            status_code=404, detail="Data Connection not exists")
+    await db.delete(dc_item)
+    await db.commit()
+    # db.flush()
+    return 1
+
+
 async def update_data_connection(db: Session, dc_uid: str,
                                  dc: schema.DataConnectionIn, uid: str):
     dc_info = await get_dc_by_id(db, dc_uid)
