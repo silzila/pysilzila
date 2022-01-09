@@ -4,3 +4,4 @@ venv/
 *sqlite3*.*
 *.db
 db_test/
+silila-frontend/package-lock.json

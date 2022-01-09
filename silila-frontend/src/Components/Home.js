@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
 
 import Login from "./LoginSignUp/Login";
+import SignUp from "./LoginSignUp/SignUp";
 
 const Home = (props) => {
     return (
@@ -11,12 +12,16 @@ const Home = (props) => {
                 <Router>
                     <Routes>
                         <Route exact path="/" element={<Login />} />
+                        <Route exact path="/login" element={<Login />} />
+                        <Route exact path="/signup" element={<SignUp />} />
                     </Routes>
                 </Router>
             ) : (
                 <Router>
                     <Routes>
                         <Route exact path="/" element={<Login />} />
+                        <Route exact path="/login" element={<Login />} />
+                        <Route exact path="/signup" element={<SignUp />} />
                     </Routes>
                 </Router>
             )}
