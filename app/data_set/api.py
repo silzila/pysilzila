@@ -8,6 +8,7 @@ from . import model, schema, service
 from . import query_builder
 from ..user.auth import JWTBearer
 from ..data_connection import engine
+from ..data_connection.service import get_dc_by_id
 
 router = APIRouter(prefix="/ds", tags=["Data Set"])
 
@@ -20,11 +21,16 @@ async def ds_home():
 @router.post("/create-ds", response_model=schema.DataSetOut, dependencies=[Depends(JWTBearer())])
 async def create_ds(request: Request, ds: schema.DataSetIn, db: Session = Depends(get_db)):
     uid = request.state.uid
+    # check if DC exists
+    db_dc = await get_dc_by_id(db, ds.dc_uid)
+    if db_dc is None:
+        raise HTTPException(
+            status_code=404, detail="Data Connection not exists")
+    # check if friendly name is already taken
     friendly_name_taken = await service.get_ds_by_friendly_name(db, uid, ds.friendly_name)
     if friendly_name_taken:
         raise HTTPException(
             status_code=400, detail="Friendlly Name is already used")
-    # return {"dummy": "things"}
     db_ds = await service.create_ds(db, ds)
     if db_ds is None:
         raise HTTPException(
@@ -46,6 +52,15 @@ async def update_ds(ds_uid: str, request: Request, ds: schema.DataSetIn, db: Ses
 @router.get("/get-all-ds", dependencies=[Depends(JWTBearer())])
 async def get_all_ds(request: Request, db: Session = Depends(get_db)):
     db_ds = await service.get_all_ds(db, request.state.uid)
+    if db_ds is None:
+        raise HTTPException(
+            status_code=404, detail="Data Set not exists")
+    return db_ds
+
+
+@router.get("/get-all-ds-by-dc_uid/{dc_uid}", dependencies=[Depends(JWTBearer())])
+async def get_ds_by_dc_uid(dc_uid: str, request: Request, db: Session = Depends(get_db)):
+    db_ds = await service.get_all_ds_by_dc_uid(db, dc_uid)
     if db_ds is None:
         raise HTTPException(
             status_code=404, detail="Data Set not exists")

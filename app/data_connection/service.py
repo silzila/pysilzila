@@ -5,6 +5,8 @@ from sqlalchemy.sql.elements import and_
 from sqlalchemy.sql.expression import update
 
 from . import model, schema, auth
+# from ..data_set.service import get_ds_by_dc_uid
+from ..data_set.model import DataSet
 
 
 async def create_data_connection(db: Session,
@@ -22,6 +24,9 @@ async def delete_data_connection(db: Session, dc_uid: str):
     if dc_item is None:
         raise HTTPException(
             status_code=404, detail="Data Connection not exists")
+
+    qry_del_ds = DataSet.__table__.delete().where(DataSet.dc_uid == dc_uid)
+    await db.execute(qry_del_ds)
     await db.delete(dc_item)
     await db.commit()
     # db.flush()
