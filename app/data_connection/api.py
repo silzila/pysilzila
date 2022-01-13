@@ -24,24 +24,24 @@ async def test_dc(dc: schema.DataConnectionIn,
     return await engine.test_connection(dc)
 
 
-@router.post("/close-dc")
+@router.post("/close-dc/{dc_uid}")
 async def close_dc(dc_uid: str):
     closed = await engine.close_connection(dc_uid)
-    if closed is not True:
-        raise HTTPException(
-            status_code=500, detail="Connection could not be closed")
-    else:
+    if closed:
         return {"message": "Connection is closed"}
 
 
 @router.post("/close-all-dc")
-async def close_all_dc():
-    closed = await engine.close_all_connection()
+async def close_all_dc(request: Request, db: Session = Depends(get_db)):
+    # get DC list for the user
+    uid = request.state.uid
+    user_dc_list = await service.get_dc_by_user(db, uid)
+
+    closed = await engine.close_all_connection(user_dc_list)
     if closed is not True:
         raise HTTPException(
             status_code=500, detail="Connections could not be closed")
-    else:
-        return {"message": "All Connections are closed"}
+    return {"message": "All Connections are closed for the user"}
 
 
 @router.post("/create-dc", response_model=schema.DataConnectionOut)

@@ -83,3 +83,16 @@ async def get_dc_by_id(db: Session, dc_uid: str):
     dc = await db.execute(select(model.DataConnection).where(
         model.DataConnection.dc_uid == dc_uid))
     return dc.scalars().first()
+
+
+async def get_dc_by_user(db: Session, uid: str):
+    stmt = select(model.DataConnection.dc_uid).where(
+        model.DataConnection.user_id == uid
+    )
+    dc_items = await db.execute(stmt)
+    # convert result to list
+    dc_list = dc_items.scalars().all()
+    if not dc_list:
+        raise HTTPException(
+            status_code=404, detail="User does not have any DC")
+    return dc_list
