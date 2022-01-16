@@ -84,3 +84,12 @@ class Query(BaseModel):
     measures: Optional[List[Dim]]
     fields: Optional[List[Field]]
     filters: Optional[List[Filter]]
+
+
+class ColumnFilter(BaseModel):
+    table_id: str
+    field_name: str
+    display_name: str
+    data_type: str
+    filter_type: Optional[str]
+    aggr: Optional[str]

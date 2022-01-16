@@ -180,6 +180,29 @@ def run_query(dc_uid: str, query: str):
             status_code=500, detail=err)
 
 
+def run_query_filter(dc_uid: str, query: str):
+    global db_pool
+    if not (db_pool and db_pool.get(dc_uid)):
+        raise HTTPException(
+            status_code=500, detail="Connect to DC first")
+    try:
+        records = db_pool[dc_uid]['engine'].execute(query)
+        if records:
+            result = [row for row in records]
+            print("result ==========", result)
+            if result and len(result[0]) >= 2:
+                res1 = [a[0] for a in result]
+                res2 = [a[1] for a in result]
+                _result = [res1, res2]
+                return _result
+            else:
+                _result = [a[0] for a in result]
+                return _result
+    except Exception as err:
+        raise HTTPException(
+            status_code=500, detail=err)
+
+
 def get_columns(dc_uid: str, schema_name: str, table_name: str):
     global db_pool
     if not (db_pool and db_pool.get(dc_uid)):

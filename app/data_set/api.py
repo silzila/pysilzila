@@ -2,6 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm.session import Session
 from starlette.requests import Request
 
+from app.data_set import query_builder_filter
+
 
 from ..database.service import get_db
 from . import model, schema, service
@@ -98,6 +100,17 @@ async def query(query: schema.Query, dc_uid: str, ds_uid: str):
         qry_result = engine.run_query(dc_uid, qry_composed)
         # print("++++++++++++++++ qry result +++++++++++++++++", qry_result)
         return {"query": qry_composed, "result": qry_result}
+    except Exception as error:
+        raise HTTPException(
+            status_code=500, detail=error)
+
+
+@router.post("/filter-options/{dc_uid}/{ds_uid}")
+async def query(query: schema.ColumnFilter, dc_uid: str, ds_uid: str):
+    qry_composed = await query_builder_filter.compose_query(query, dc_uid, ds_uid)
+    try:
+        qry_result = engine.run_query_filter(dc_uid, qry_composed)
+        return qry_result
     except Exception as error:
         raise HTTPException(
             status_code=500, detail=error)
