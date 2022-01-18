@@ -24,6 +24,19 @@ async def get_ds_by_friendly_name(db: Session, uid: str, friendly_name: str):
     return ds.scalars().first()
 
 
+async def get_all_ds_by_dc_uid(db: Session, dc_uid: str):
+    stmt = select(DataSet.friendly_name).where(
+        DataSet.dc_uid == dc_uid
+    )
+    ds = await db.execute(stmt)
+    # convert result to list
+    _res = ds.scalars().all()
+    if not _res:
+        raise HTTPException(
+            status_code=404, detail="No Data Set available for the Data Connection")
+    return {"friendly_name": _res}
+
+
 async def check_friendly_name_in_other_ds(db: Session, uid: str, friendly_name: str, ds_uid: str):
     stmt = select(DataSet).join(DataConnection).where(
         and_(

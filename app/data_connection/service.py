@@ -5,6 +5,8 @@ from sqlalchemy.sql.elements import and_
 from sqlalchemy.sql.expression import update
 
 from . import model, schema, auth
+# from ..data_set.service import get_ds_by_dc_uid
+from ..data_set.model import DataSet
 
 
 async def create_data_connection(db: Session,
@@ -22,6 +24,9 @@ async def delete_data_connection(db: Session, dc_uid: str):
     if dc_item is None:
         raise HTTPException(
             status_code=404, detail="Data Connection not exists")
+
+    qry_del_ds = DataSet.__table__.delete().where(DataSet.dc_uid == dc_uid)
+    await db.execute(qry_del_ds)
     await db.delete(dc_item)
     await db.commit()
     # db.flush()
@@ -78,3 +83,16 @@ async def get_dc_by_id(db: Session, dc_uid: str):
     dc = await db.execute(select(model.DataConnection).where(
         model.DataConnection.dc_uid == dc_uid))
     return dc.scalars().first()
+
+
+async def get_dc_by_user(db: Session, uid: str):
+    stmt = select(model.DataConnection.dc_uid).where(
+        model.DataConnection.user_id == uid
+    )
+    dc_items = await db.execute(stmt)
+    # convert result to list
+    dc_list = dc_items.scalars().all()
+    if not dc_list:
+        raise HTTPException(
+            status_code=404, detail="User does not have any DC")
+    return dc_list

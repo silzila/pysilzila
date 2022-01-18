@@ -42,16 +42,29 @@ async def close_connection(dc_uid: str) -> bool:
         except Exception as err:
             raise HTTPException(
                 status_code=500, detail=err)
+    else:
+        raise HTTPException(
+            status_code=404, detail="connection is not available")
 
 
-async def close_all_connection() -> bool:
+# on receiving all user DC list, checks with active DC list and deletes from engine
+async def close_all_connection(dc_list: list) -> bool:
     global db_pool
     try:
-        for dc in db_pool.values():
-            dc["engine"].dispose()
-        db_pool = {}
-
-        return True
+        if db_pool:
+            # first get active dc list of the user from engine list
+            user_active_dc_list = []
+            for dc in db_pool.keys():
+                for user_dc in dc_list:
+                    if dc == user_dc:
+                        user_active_dc_list.append(dc)
+            # delete the active DC list of the user from engine
+            for dc in user_active_dc_list:
+                db_pool[dc]["engine"].dispose()
+                del db_pool[dc]
+            return True
+        else:
+            return True
     except Exception as err:
         raise HTTPException(
             status_code=500, detail=err)
@@ -162,6 +175,29 @@ def run_query(dc_uid: str, query: str):
         if records:
             result = [dict(row) for row in records]
             return result
+    except Exception as err:
+        raise HTTPException(
+            status_code=500, detail=err)
+
+
+def run_query_filter(dc_uid: str, query: str):
+    global db_pool
+    if not (db_pool and db_pool.get(dc_uid)):
+        raise HTTPException(
+            status_code=500, detail="Connect to DC first")
+    try:
+        records = db_pool[dc_uid]['engine'].execute(query)
+        if records:
+            result = [row for row in records]
+            print("result ==========", result)
+            if result and len(result[0]) >= 2:
+                res1 = [a[0] for a in result]
+                res2 = [a[1] for a in result]
+                _result = [res1, res2]
+                return _result
+            else:
+                _result = [a[0] for a in result]
+                return _result
     except Exception as err:
         raise HTTPException(
             status_code=500, detail=err)
