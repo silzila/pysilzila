@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { serverEndPoint } from "../../ServerCall/EnvironmentVariables";
+import { validateEmail, validatePassword } from "../CommonFunctions";
 
 const initialState = {
     email: "",
@@ -15,7 +16,7 @@ const Login = () => {
     const [account, setAccount] = useState(initialState);
     const [loginStatus, setLoginStatus] = useState(false);
     const [loginError, setLoginError] = useState(false);
-    const [canLogin, setCanLogin] = useState(false);
+    const [serverErrorMessage, setServerErrorMessage] = useState("");
 
     const inputRef = useRef(null);
     const navigate = useNavigate();
@@ -25,26 +26,6 @@ const Login = () => {
     //  **************************************************************************************************************************
     //  Email
     //  **************************************************************************************************************************
-
-    const validateEmail = (e) => {
-        let emaill = account.email;
-        if (emaill.length > 0) {
-            var validEmail = false;
-            var re = /\S+@\S+\.\S+/;
-            validEmail = re.test(e.target.value);
-            if (validEmail) {
-                setAccount({
-                    ...account,
-                    emailError: "",
-                });
-            } else {
-                setAccount({
-                    ...account,
-                    emailError: "Please enter a valid email address",
-                });
-            }
-        }
-    };
 
     const resetEmailError = () => {
         setAccount({
@@ -59,21 +40,6 @@ const Login = () => {
     //  Password
     //  **************************************************************************************************************************
 
-    const checkPwdLen = (e) => {
-        console.log("blur pwd called");
-        let pwd = e.target.value;
-        if (pwd.length < 8) {
-            setAccount({
-                ...account,
-                passwordError: "Incorrect password",
-            });
-        } else {
-            setAccount({
-                ...account,
-                passwordError: "",
-            });
-        }
-    };
     const resetPwdLengthError = () => {
         setAccount({
             ...account,
@@ -106,11 +72,13 @@ const Login = () => {
         }
 
         if (canLogin) {
-            var token = await getToken();
-            console.log(token);
-            setTimeout(() => {
-                navigate("/dataConnection");
-            }, 1000);
+            var response = await getToken();
+            console.log(response);
+            if (response.status) {
+                setTimeout(() => {
+                    navigate("/dataConnection");
+                }, 1000);
+            }
         }
     }
 
@@ -130,10 +98,14 @@ const Login = () => {
             axios
                 .request(options)
                 .then(function (response) {
-                    resolve(response.data);
+                    setLoginStatus(true);
+                    resolve({ status: true, token: response.data });
                 })
                 .catch(function (error) {
-                    console.error(error);
+                    console.error("==================", error, "\n\n-----", error.response);
+                    setLoginError(true);
+                    setServerErrorMessage(error.response.data.detail);
+                    resolve({ status: false });
                 });
         });
     }
@@ -142,7 +114,7 @@ const Login = () => {
         if (loginStatus) {
             return (
                 <span className="loginSuccess">
-                    <h3>Logged in successfully!</h3>
+                    <h4>Logged in successfully!</h4>
                     <p>Redirecting....</p>
                 </span>
             );
@@ -152,7 +124,7 @@ const Login = () => {
                     <input type="submit" value="Login" />
                     <br />
                     <span id="emailHelp">
-                        Already have an account? <Link to="signup">Sign Up</Link>
+                        Already have an account? <Link to="/signup">Sign Up</Link>
                     </span>
                 </div>
             );
@@ -161,7 +133,7 @@ const Login = () => {
 
     const LoginError = () => {
         if (loginError) {
-            return <p className="loginFail">Something went wrong! Please try again</p>;
+            return <p className="loginFail">{serverErrorMessage}</p>;
         } else {
             return null;
         }
@@ -172,12 +144,12 @@ const Login = () => {
             <h3>Welcome to Silzila!</h3>
 
             <form onSubmit={handleSubmit} autoComplete="on">
-                <div className="" draggable="true">
+                <div draggable="true">
                     <input
                         ref={inputRef}
                         type="text"
-                        className={account.emailInputBorder}
                         placeholder="Email"
+                        value={account.email}
                         onChange={(e) =>
                             setAccount({
                                 ...account,
@@ -185,17 +157,22 @@ const Login = () => {
                             })
                         }
                         onFocus={resetEmailError}
-                        onBlur={validateEmail}
-                        value={account.email}
+                        onBlur={() => {
+                            setLoginError(false);
+                            var valid = validateEmail(account.email);
+                            if (valid) {
+                                setAccount({ ...account, emailError: "" });
+                            } else {
+                                setAccount({ ...account, emailError: "Enter valid email address" });
+                            }
+                        }}
                     />
-                    <span className={account.emailErrorTextColor}>{account.emailError}</span>
+                    <div>{account.emailError}</div>
                 </div>
 
-                <div className="">
+                <div>
                     <input
                         type="password"
-                        className={account.pwd1InputBorder}
-                        id="exampleInputPassword1"
                         placeholder="Password"
                         value={account.password}
                         onChange={(e) =>
@@ -204,12 +181,18 @@ const Login = () => {
                                 password: e.target.value,
                             })
                         }
-                        onBlur={checkPwdLen}
                         onFocus={resetPwdLengthError}
+                        onBlur={() => {
+                            setLoginError(false);
+                            var valid = validatePassword(account.password);
+                            if (valid) {
+                                setAccount({ ...account, passwordError: "" });
+                            } else {
+                                setAccount({ ...account, passwordError: "Minimum 8 characters" });
+                            }
+                        }}
                     />
-                    <span id="emailHelp" className={account.pwd1TextColor}>
-                        {account.passwordError}
-                    </span>
+                    <div>{account.passwordError}</div>
                 </div>
 
                 <div className="buttonSuccess">
