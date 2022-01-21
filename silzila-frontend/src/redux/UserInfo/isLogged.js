@@ -1,11 +1,14 @@
 let signedInObj = {
-    isUserLogged: "false",
+    isUserLogged: false,
     accessToken: "",
-    email: "",
 };
 
 const loggedReducer = (state = signedInObj, action) => {
     switch (action.type) {
+        case "USER_AUTHENTICATED":
+            console.log("User authenticated");
+            return action.payload;
+
         default:
             return state;
     }

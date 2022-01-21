@@ -3,6 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { serverEndPoint } from "../../ServerCall/EnvironmentVariables";
 import { validateEmail, validatePassword } from "../CommonFunctions";
+import { connect } from "react-redux";
+import { userAuthentication } from "../../redux/UserInfo/isLoggedActions";
+import FetchData from "../../ServerCall/FetchData";
 
 const initialState = {
     email: "",
@@ -12,7 +15,7 @@ const initialState = {
     passwordError: "",
 };
 
-const Login = () => {
+const Login = (props) => {
     const [account, setAccount] = useState(initialState);
     const [loginStatus, setLoginStatus] = useState(false);
     const [loginError, setLoginError] = useState(false);
@@ -40,7 +43,7 @@ const Login = () => {
     //  Password
     //  **************************************************************************************************************************
 
-    const resetPwdLengthError = () => {
+    const resetPwdError = () => {
         setAccount({
             ...account,
             passwordError: "",
@@ -57,57 +60,44 @@ const Login = () => {
         console.log(account);
 
         var canLogin = false;
-        if (account.email.length > 0 && account.password.length > 0) {
-            if (account.passwordError === "") {
-                console.log("Changed login status");
-                canLogin = true;
-            } else {
-                console.log("Some error in account password");
-            }
-        } else {
-            setAccount({
-                ...account,
-                emailError: "Please enter a valid email",
-            });
+        if (account.email.length > 0 && account.password.length > 0 && account.emailError === "" && account.passwordError === "") {
+            console.log("Changed login status");
+            canLogin = true;
         }
 
         if (canLogin) {
-            var response = await getToken();
-            console.log(response);
-            if (response.status) {
-                setTimeout(() => {
-                    navigate("/dataConnection");
-                }, 1000);
-            }
-        }
-    }
-
-    function getToken() {
-        return new Promise((resolve) => {
             const form = new FormData();
             form.append("username", account.email);
             form.append("password", account.password);
 
-            const options = {
+            var response = await FetchData({
+                requestType: "regular",
                 method: "POST",
-                url: `${serverEndPoint}user/signin`,
-                headers: { "Content-Type": "multipart/form-data" },
+                url: "user/signin",
                 data: form,
-            };
+                headers: { "Content-Type": "multipart/form-data" },
+            });
 
-            axios
-                .request(options)
-                .then(function (response) {
-                    setLoginStatus(true);
-                    resolve({ status: true, token: response.data });
-                })
-                .catch(function (error) {
-                    console.error("==================", error, "\n\n-----", error.response);
-                    setLoginError(true);
-                    setServerErrorMessage(error.response.data.detail);
-                    resolve({ status: false });
-                });
-        });
+            console.log(response);
+            if (response.status) {
+                setLoginStatus(true);
+                var payload = {
+                    isUserLogged: true,
+                    accessToken: response.data.access_token,
+                    tokenType: response.data.token_type,
+                };
+                props.userAuthentication(payload);
+                setTimeout(() => {
+                    navigate("/dataconnection");
+                }, 1000);
+            } else {
+                setLoginError(true);
+                setServerErrorMessage(response.data.detail);
+            }
+        } else {
+            setLoginError(true);
+            setServerErrorMessage("Provide valid credentials");
+        }
     }
 
     const BottomMessage = () => {
@@ -120,22 +110,17 @@ const Login = () => {
             );
         } else {
             return (
-                <div className="buttonText">
-                    <input type="submit" value="Login" />
-                    <br />
-                    <span id="emailHelp">
-                        Already have an account? <Link to="/signup">Sign Up</Link>
-                    </span>
-                </div>
+                <React.Fragment>
+                    {loginError ? <p className="loginFail">{serverErrorMessage}</p> : null}
+                    <div className="buttonText">
+                        <input type="submit" value="Login" />
+                        <br />
+                        <span id="emailHelp">
+                            Dont have an account yet? <Link to="/signup">Sign Up</Link>
+                        </span>
+                    </div>
+                </React.Fragment>
             );
-        }
-    };
-
-    const LoginError = () => {
-        if (loginError) {
-            return <p className="loginFail">{serverErrorMessage}</p>;
-        } else {
-            return null;
         }
     };
 
@@ -144,7 +129,7 @@ const Login = () => {
             <h3>Welcome to Silzila!</h3>
 
             <form onSubmit={handleSubmit} autoComplete="on">
-                <div draggable="true">
+                <div>
                     <input
                         ref={inputRef}
                         type="text"
@@ -181,7 +166,7 @@ const Login = () => {
                                 password: e.target.value,
                             })
                         }
-                        onFocus={resetPwdLengthError}
+                        onFocus={resetPwdError}
                         onBlur={() => {
                             setLoginError(false);
                             var valid = validatePassword(account.password);
@@ -196,12 +181,15 @@ const Login = () => {
                 </div>
 
                 <div className="buttonSuccess">
-                    <LoginError />
                     <BottomMessage />
                 </div>
             </form>
         </div>
     );
 };
-
-export default Login;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        userAuthentication: (payload) => dispatch(userAuthentication(payload)),
+    };
+};
+export default connect(null, mapDispatchToProps)(Login);

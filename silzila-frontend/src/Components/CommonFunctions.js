@@ -6,6 +6,20 @@ export const validateEmail = (email) => {
     return result;
 };
 
+export const validateMandatory = (value) => {
+    console.log(value);
+    if (value) {
+        return value.length >= 1 ? true : false;
+    } else {
+        console.log("Some mandatory field is missing");
+        return false;
+    }
+};
+
 export const validatePassword = (password) => {
-    return password.length >= 6 ? true : false;
+    return password.length >= 8 ? true : false;
+};
+
+export const validateEqualValues = (value1, value2) => {
+    return value1 === value2;
 };
