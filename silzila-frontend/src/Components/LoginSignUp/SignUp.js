@@ -87,7 +87,7 @@ const SignUp = () => {
             };
 
             var response = await FetchData({
-                requestType: "regular",
+                requestType: "withData",
                 method: "POST",
                 url: "user/signup",
                 data: form,

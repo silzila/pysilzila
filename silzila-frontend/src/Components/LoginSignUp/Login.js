@@ -1,7 +1,5 @@
 import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { serverEndPoint } from "../../ServerCall/EnvironmentVariables";
 import { validateEmail, validatePassword } from "../CommonFunctions";
 import { connect } from "react-redux";
 import { userAuthentication } from "../../redux/UserInfo/isLoggedActions";
@@ -71,7 +69,7 @@ const Login = (props) => {
             form.append("password", account.password);
 
             var response = await FetchData({
-                requestType: "regular",
+                requestType: "withData",
                 method: "POST",
                 url: "user/signin",
                 data: form,
@@ -88,7 +86,7 @@ const Login = (props) => {
                 };
                 props.userAuthentication(payload);
                 setTimeout(() => {
-                    navigate("/dataconnection");
+                    navigate("/datasetup");
                 }, 1000);
             } else {
                 setLoginError(true);

@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
-import DataConnection from "./DataConnection/DataConnection";
+import DataSetup from "./DataConnection/DataSetup";
 
 import Login from "./LoginSignUp/Login";
 import SignUp from "./LoginSignUp/SignUp";
@@ -16,7 +16,7 @@ const Home = (props) => {
                         <Route exact path="/login" element={<Login />} />
                         <Route exact path="/signup" element={<SignUp />} />
 
-                        <Route exact path="/dataconnection" element={<DataConnection />} />
+                        <Route exact path="/datasetup" element={<DataSetup />} />
                     </Routes>
                 </Router>
             ) : (
