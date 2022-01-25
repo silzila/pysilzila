@@ -1,6 +1,15 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const DataSet = () => {
+    var navigate = useNavigate();
+
+    const selectDataSet = () => {
+        setTimeout(() => {
+            navigate("/dataset");
+        }, 1000);
+    };
+
     return (
         <div className="dataSetContainer">
             <div className="containersHead">

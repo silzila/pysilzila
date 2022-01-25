@@ -9,6 +9,7 @@ Data Setup Page
     display: flex;
     padding: 2rem;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 .dcds {
@@ -16,6 +17,7 @@ Data Setup Page
     display: flex;
     flex-direction: column;
     margin-right: 1rem;
+    overflow: hidden;
 }
 
 .dataConnectionContainer {
@@ -23,16 +25,23 @@ Data Setup Page
     padding: 1rem;
     border-radius: 0.5rem;
     background-color: #f0f0f0;
+    box-sizing: border-box;
+    margin-bottom: 2rem;
+    overflow: auto;
 }
 
 .dataSetContainer {
-    box-sizing: border-box;
-    margin-top: 2rem;
     flex: 1;
     padding: 1rem;
     border-radius: 0.5rem;
     background-color: #f0f0f0;
+    overflow: hidden;
 }
+/* .connectionListContainer {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+} */
 
 .dashboardsContainer {
     flex: 1;
@@ -49,6 +58,7 @@ Data Setup Page
     font-weight: 600;
     display: flex;
     border-bottom: 1px solid rgb(192, 192, 192);
+    overflow: hidden;
 }
 
 .containerTitle {
@@ -75,10 +85,19 @@ Data Connections
 
 .dataConnectionList {
     margin: 10px;
-    background-color: rgb(250, 248, 248);
+    background-color: rgb(250, 250, 250);
     border-radius: 3px;
     display: flex;
     padding: 5px;
+}
+
+.dataConnectionName {
+    flex: 1;
+    text-align: left;
+}
+
+.inputFieldStyle {
+    margin-top: 25px;
 }
 
 /* 
