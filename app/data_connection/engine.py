@@ -165,19 +165,25 @@ def get_sample_records(dc_uid: str, schema_name: str, table_name: str):
             status_code=500, detail=err)
 
 
-def run_query(dc_uid: str, query: str):
+async def run_query(dc_uid: str, query: str):
     global db_pool
     if not (db_pool and db_pool.get(dc_uid)):
         raise HTTPException(
             status_code=500, detail="Connect to DC first")
     try:
         records = db_pool[dc_uid]['engine'].execute(query)
-        if records:
-            result = [dict(row) for row in records]
-            return result
-    except Exception as err:
+        try:
+            if records:
+                result = [dict(row) for row in records]
+                return result
+        except Exception as err:
+            raise HTTPException(
+                status_code=500, detail=err)
+    except SQLAlchemyError as err:
+        error = str(err.__dict__['orig'])
+        # return error
         raise HTTPException(
-            status_code=500, detail=err)
+            status_code=400, detail=error)
 
 
 def run_query_filter(dc_uid: str, query: str):

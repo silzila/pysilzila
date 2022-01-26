@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional, List
+from typing import Optional, List, Any, Literal
 
 ####################### Data Set Creation #########################
 
@@ -57,7 +57,8 @@ class Dim(BaseModel):
     table_id: str
     field_name: str
     display_name: str
-    data_type: str
+    data_type: Literal['text', 'integer',
+                       'decimal', 'boolean', 'date', 'timestamp']
     aggr: str
     expr: str
 
@@ -72,11 +73,14 @@ class Filter(BaseModel):
     table_id: str
     field_name: str
     display_name: str
-    data_type: str
-    aggr: str
-    include_exclude: str
-    expr_type: str
-    expr: str
+    data_type: Literal['text', 'integer',
+                       'decimal', 'boolean', 'date', 'timestamp']
+    user_selection: Optional[List[Any]]
+    aggr: Optional[Literal['year', 'month', 'quarter', 'dayofweek', 'day']]
+    negate: Optional[bool]
+    expr_type: Optional[Literal['equal_to', 'greater_than', 'less_than',
+                                'greater_than_equal_to', 'less_than_equal_to', 'between']]
+    expr: Optional[List[Any]]
 
 
 class Query(BaseModel):
