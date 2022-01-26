@@ -1,5 +1,7 @@
 from pydantic import BaseModel
-from typing import Optional, List, Any, Literal
+from typing import Optional, List, Any
+# from typing import Literal # 3.8 and above
+from typing_extensions import Literal  # 3.7 and below
 
 ####################### Data Set Creation #########################
 
@@ -78,7 +80,7 @@ class Filter(BaseModel):
     user_selection: Optional[List[Any]]
     aggr: Optional[Literal['year', 'month', 'quarter', 'dayofweek', 'day']]
     negate: Optional[bool]
-    expr_type: Optional[Literal['equal_to', 'greater_than', 'less_than',
+    expr_type: Optional[Literal['equal_to', 'not_equal_to', 'greater_than', 'less_than',
                                 'greater_than_equal_to', 'less_than_equal_to', 'between']]
     expr: Optional[List[Any]]
 

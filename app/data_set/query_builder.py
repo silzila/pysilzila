@@ -60,6 +60,8 @@ def expression_name_to_symbol(exprs):
     EXPRSN = None
     if exprs == 'equal_to':
         EXPRSN = '='
+    elif exprs == 'not_equal_to':
+        EXPRSN = '!='
     elif exprs == 'greater_than':
         EXPRSN = '>'
     elif exprs == 'less_than':
@@ -255,13 +257,20 @@ async def compose_query(req: schema.Query, dc_uid: str, ds_uid: str):
     WHERE = ""
     _where = []
     for val in req['filters']:
-        # get unique values
+        # check if Negative match or Positive match
+        _negate = ""
+        if val['negate'] == True and val['user_selection']:
+            if len(val['user_selection']) == 1:
+                _negate = "!"
+            elif len(val['user_selection']) >= 1:
+                _negate = "NOT"
+        # DIRECT MATCH filter
         if val['data_type'] in ('text', 'integer', 'decimal', 'boolean') and val['user_selection']:
             if len(val['user_selection']) == 1:
                 if val['data_type'] in ('text'):
-                    where = f"{val['table_id']}.{val['field_name']} = '{val['user_selection'][0]}'"
+                    where = f"{val['table_id']}.{val['field_name']} {_negate}= '{val['user_selection'][0]}'"
                 elif val['data_type'] in ('integer', 'decimal', 'boolean'):
-                    where = f"{val['table_id']}.{val['field_name']} = {val['user_selection'][0]}"
+                    where = f"{val['table_id']}.{val['field_name']} {_negate}= {val['user_selection'][0]}"
             elif len(val['user_selection']) > 1:
                 # for text fields, enclose filter members with quote, for numbers don't
                 if val['data_type'] in ('text'):
@@ -269,12 +278,12 @@ async def compose_query(req: schema.Query, dc_uid: str, ds_uid: str):
                                 "'" for opt in val['user_selection']]
                 elif val['data_type'] in ('integer', 'decimal', 'boolean'):
                     _options = val['user_selection']
-                where = f"{val['table_id']}.{val['field_name']} IN ({', '.join(map(str,_options))})"
+                where = f"{val['table_id']}.{val['field_name']} {_negate} IN ({', '.join(map(str,_options))})"
         # expressions like sales > 1000 or age between 10 and 20
         elif val['data_type'] in ('integer', 'decimal') and val['expr_type'] and val['expr']:
             if val['expr_type'] == 'between':
                 where = f"{val['table_id']}.{val['field_name']} BETWEEN {val['expr'][0]} AND {val['expr'][1]}"
-            elif val['expr_type'] in ('equal_to', 'greater_than', 'less_than', 'greater_than_equal_to', 'less_than_equal_to'):
+            elif val['expr_type'] in ('equal_to', 'not_equal_to', 'greater_than', 'less_than', 'greater_than_equal_to', 'less_than_equal_to'):
                 EXPRSN = expression_name_to_symbol(val['expr_type'])
                 where = f"{val['table_id']}.{val['field_name']} {EXPRSN} {val['expr'][0]}"
 
@@ -292,14 +301,14 @@ async def compose_query(req: schema.Query, dc_uid: str, ds_uid: str):
                     AGGRGN = 'DAY'
             if val['user_selection']:
                 if len(val['user_selection']) == 1:
-                    where = f"EXTRACT({AGGRGN} FROM {val['table_id']}.{val['field_name']})::INTEGER = {val['user_selection'][0]}"
+                    where = f"EXTRACT({AGGRGN} FROM {val['table_id']}.{val['field_name']})::INTEGER {_negate}= {val['user_selection'][0]}"
                 elif len(val['user_selection']) > 1:
                     _options = val['user_selection']
-                    where = f"EXTRACT({AGGRGN} FROM {val['table_id']}.{val['field_name']})::INTEGER IN ({', '.join(map(str, _options))})"
+                    where = f"EXTRACT({AGGRGN} FROM {val['table_id']}.{val['field_name']})::INTEGER {_negate} IN ({', '.join(map(str, _options))})"
             elif val['expr_type'] and val['expr']:
                 if val['expr_type'] == 'between':
                     where = f"EXTRACT({AGGRGN} FROM {val['table_id']}.{val['field_name']})::INTEGER BETWEEN {val['expr'][0]} AND {val['expr'][1]}"
-                elif val['expr_type'] in ('equal_to', 'greater_than', 'less_than', 'greater_than_equal_to', 'less_than_equal_to'):
+                elif val['expr_type'] in ('equal_to', 'not_equal_to', 'greater_than', 'less_than', 'greater_than_equal_to', 'less_than_equal_to'):
                     EXPRSN = expression_name_to_symbol(val['expr_type'])
                     where = f"EXTRACT({AGGRGN} FROM {val['table_id']}.{val['field_name']})::INTEGER {EXPRSN} {val['expr'][0]}"
         _where.append(where)
