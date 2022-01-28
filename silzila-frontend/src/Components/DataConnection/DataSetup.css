@@ -5,21 +5,26 @@ Data Setup Page
 */
 
 .dataSetup {
+    display: grid;
+    grid-template-columns: 50% 50%;
     height: 100vh;
-    display: flex;
+    /* display: flex; */
     padding: 2rem;
     box-sizing: border-box;
 }
 
 .dcds {
-    flex: 1;
+    /* flex: 1;
     display: flex;
     flex-direction: column;
-    margin-right: 1rem;
+    margin-right: 1rem; */
+    display: grid;
+    grid-template-rows: 50% 50%;
 }
 
 .dataConnectionContainer {
     flex: 1;
+    overflow: auto;
     padding: 1rem;
     border-radius: 0.5rem;
     background-color: #f0f0f0;
@@ -58,7 +63,7 @@ Data Setup Page
     flex: 1;
 }
 .containerButton {
-    background-color: #46d0fa;
+    background-color: black;
     border: none;
     border-radius: 3px;
     color: white;
@@ -74,11 +79,12 @@ Data Connections
 */
 
 .dataConnectionList {
-    margin: 10px;
-    background-color: rgb(250, 248, 248);
+    margin: 8px;
+    background-color: rgb(184, 180, 180);
     border-radius: 3px;
     display: flex;
-    padding: 5px;
+    padding: 10px;
+    height: 30px;
 }
 
 /* 
