@@ -11,6 +11,7 @@ from . import query_builder
 from ..user.auth import JWTBearer
 from ..data_connection import engine
 from ..data_connection.service import get_dc_by_id
+from app import data_connection
 
 router = APIRouter(prefix="/ds", tags=["Data Set"])
 
@@ -92,8 +93,49 @@ async def connect_ds(ds_uid: str, db: Session = Depends(get_db)):
     return {"message": "Data Set is Activated"}
 
 
+# this function activates both DC & DS if not activated
+async def activate_dc_ds(dc_uid: str, ds_uid: str, db: Session) -> str:
+    #################################################################################
+    # RUNNING QUERY requires 4 steps:
+    # 1. create DB pool for the DC (One time. Subsequently used from in-memorry for fast operation)
+    # 2. Load Schema of DS (One time. Subsequently used from in-memorry for fast operation)
+    # 3. Get Vendor (Dialect) Name and Build Query (Every time. Query is customized based on Dialect)
+    # 4. Run the built query with the DB Pool
+    #################################################################################
+    # if pool available for the DC, get dialect name
+    # else activate pool for the DC and then get dialect name
+    # dialect name (vendor name) is required to custom build query
+    vendor_name = await engine.get_vendor_name_from_db_pool(dc_uid)
+    if vendor_name == False:
+        db_dc = await get_dc_by_id(db, dc_uid)
+        if db_dc is None:
+            raise HTTPException(
+                status_code=404, detail="Data Connection not exists")
+        is_connected = await engine.create_connection(db_dc)
+        if not is_connected:
+            raise HTTPException(
+                status_code=500, detail="Could not make Data Connection")
+    vendor_name = await engine.get_vendor_name_from_db_pool(dc_uid)
+    #################################################################################
+    # load DS, check if already loaded, if not loaded, load it
+    is_ds_loaded = await engine.is_ds_active(dc_uid, ds_uid)
+    if is_ds_loaded == False:
+        # first, check if DS available
+        db_ds = await service.get_ds_by_id(db, ds_uid)
+        if db_ds is None:
+            raise HTTPException(
+                status_code=404, detail="Data Set not exists")
+        is_activated = await engine.activate_ds(db_ds)
+        if is_activated is None:
+            raise HTTPException(
+                status_code=404, detail="Data Set Could not be activated")
+    return vendor_name
+
+
 @router.post("/query/{dc_uid}/{ds_uid}")
-async def query(query: schema.Query, dc_uid: str, ds_uid: str):
+async def query(query: schema.Query, dc_uid: str, ds_uid: str, db: Session = Depends(get_db)):
+    vendor_name = await activate_dc_ds(dc_uid, ds_uid, db)
+    print("Vendor Name =====", vendor_name)
     qry_composed = await query_builder.compose_query(query, dc_uid, ds_uid)
     print("^^^^^^^^^^^^^^^^ final Query ^^^^^^^^^^\n", qry_composed)
     # try:
@@ -107,7 +149,9 @@ async def query(query: schema.Query, dc_uid: str, ds_uid: str):
 
 
 @router.post("/filter-options/{dc_uid}/{ds_uid}")
-async def query(query: schema.ColumnFilter, dc_uid: str, ds_uid: str):
+async def query(query: schema.ColumnFilter, dc_uid: str, ds_uid: str, db: Session = Depends(get_db)):
+    vendor_name = await activate_dc_ds(dc_uid, ds_uid, db)
+    print("Vendor Name =====", vendor_name)
     qry_composed = await query_builder_filter.compose_query(query, dc_uid, ds_uid)
     try:
         qry_result = engine.run_query_filter(dc_uid, qry_composed)

@@ -4,7 +4,7 @@ from ..data_set.schema import DataSetOut
 from fastapi import HTTPException
 
 # to Test Connection
-from sqlalchemy import create_engine, inspect, MetaData, Table
+from sqlalchemy import create_engine, inspect, MetaData, Table, true
 from sqlalchemy.sql import text
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -86,12 +86,23 @@ async def create_connection(dc: schema.DataConnectionPool):
             db_pool[dc.dc_uid]["engine"].connect()
             db_pool[dc.dc_uid]["insp"] = inspect(db_pool[dc.dc_uid]["engine"])
             db_pool[dc.dc_uid]["meta"] = MetaData()
-            # db_pool[dc.dc_uid]["engine"].dispose()
+            db_pool[dc.dc_uid]["vendor"] = dc.vendor
             # print("create_connection fn calling...... engine created now")
             return True
         except SQLAlchemyError as err:
             raise HTTPException(
                 status_code=500, detail=err)
+
+
+async def is_ds_active(dc_uid: str, ds_uid: str) -> bool:
+    global db_pool
+    if not (db_pool and db_pool.get(dc_uid)):
+        raise HTTPException(
+            status_code=500, detail="DC is not connected")
+    if db_pool.get(dc_uid).get('data_schema') and db_pool[dc_uid]['data_schema'][ds_uid]:
+        return True
+    else:
+        return False
 
 
 async def activate_ds(ds: DataSetOut):
@@ -163,6 +174,13 @@ def get_sample_records(dc_uid: str, schema_name: str, table_name: str):
     except Exception as err:
         raise HTTPException(
             status_code=500, detail=err)
+
+
+async def get_vendor_name_from_db_pool(dc_uid: str):
+    global db_pool
+    if not (db_pool and db_pool.get(dc_uid)):
+        return False
+    return db_pool[dc_uid]["vendor"]
 
 
 async def run_query(dc_uid: str, query: str):
