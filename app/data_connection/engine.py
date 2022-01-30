@@ -7,6 +7,7 @@ from fastapi import HTTPException
 from sqlalchemy import create_engine, inspect, MetaData, Table, true
 from sqlalchemy.sql import text
 from sqlalchemy.exc import SQLAlchemyError
+import urllib.parse
 
 # ENV Variables
 from .db_libraries import DB_LIBRARIES
@@ -18,7 +19,8 @@ db_pool = {}
 
 async def test_connection(dc: schema.DataConnectionIn) -> dict:
     if dc.vendor in DB_LIBRARIES:
-        conn_str = f"{dc.vendor}+{DB_LIBRARIES[dc.vendor]}://{dc.username}:{dc.password}@{dc.url}:{dc.port}/{dc.db_name}"
+        # urllib.parse.quote_plus is used to encode if any special characters appear
+        conn_str = f"{dc.vendor}+{DB_LIBRARIES[dc.vendor]}://{dc.username}:{urllib.parse.quote_plus(dc.password)}@{dc.url}:{dc.port}/{dc.db_name}"
         engine = create_engine(conn_str)
         try:
             engine.connect()
@@ -78,7 +80,7 @@ async def create_connection(dc: schema.DataConnectionPool):
     else:
         decrypted_password = auth.decrypt_password(dc.password)
         # print("decrypted Password =============", decrypted_password)
-        conn_str = f"{dc.vendor}+{DB_LIBRARIES[dc.vendor]}://{dc.username}:{decrypted_password}@{dc.url}:{dc.port}/{dc.db_name}"
+        conn_str = f"{dc.vendor}+{DB_LIBRARIES[dc.vendor]}://{dc.username}:{urllib.parse.quote_plus(decrypted_password)}@{dc.url}:{dc.port}/{dc.db_name}"
         db_pool[dc.dc_uid] = {}
         db_pool[dc.dc_uid]["engine"] = create_engine(conn_str, echo=False,
                                                      pool_size=2, max_overflow=5)
