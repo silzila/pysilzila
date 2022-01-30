@@ -204,7 +204,7 @@ async def run_query(dc_uid: str, query: str):
             status_code=400, detail=error)
 
 
-def run_query_filter(dc_uid: str, query: str):
+async def run_query_filter(dc_uid: str, query: str):
     global db_pool
     if not (db_pool and db_pool.get(dc_uid)):
         raise HTTPException(
@@ -213,7 +213,6 @@ def run_query_filter(dc_uid: str, query: str):
         records = db_pool[dc_uid]['engine'].execute(query)
         if records:
             result = [row for row in records]
-            print("result ==========", result)
             if result and len(result[0]) >= 2:
                 res1 = [a[0] for a in result]
                 res2 = [a[1] for a in result]

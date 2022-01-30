@@ -2,12 +2,12 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm.session import Session
 from starlette.requests import Request
 
-from app.data_set import query_builder_filter
+from app.query_builder import query_composer_filter
 
 
 from ..database.service import get_db
 from . import model, schema, service
-from . import query_builder
+from ..query_builder import query_composer
 from ..user.auth import JWTBearer
 from ..data_connection import engine
 from ..data_connection.service import get_dc_by_id
@@ -136,7 +136,7 @@ async def activate_dc_ds(dc_uid: str, ds_uid: str, db: Session) -> str:
 async def query(query: schema.Query, dc_uid: str, ds_uid: str, db: Session = Depends(get_db)):
     vendor_name = await activate_dc_ds(dc_uid, ds_uid, db)
     print("Vendor Name =====", vendor_name)
-    qry_composed = await query_builder.compose_query(query, dc_uid, ds_uid)
+    qry_composed = await query_composer.compose_query(query, dc_uid, ds_uid, vendor_name)
     print("^^^^^^^^^^^^^^^^ final Query ^^^^^^^^^^\n", qry_composed)
     # try:
     qry_result = await engine.run_query(dc_uid, qry_composed)
@@ -152,10 +152,10 @@ async def query(query: schema.Query, dc_uid: str, ds_uid: str, db: Session = Dep
 async def query(query: schema.ColumnFilter, dc_uid: str, ds_uid: str, db: Session = Depends(get_db)):
     vendor_name = await activate_dc_ds(dc_uid, ds_uid, db)
     print("Vendor Name =====", vendor_name)
-    qry_composed = await query_builder_filter.compose_query(query, dc_uid, ds_uid)
-    try:
-        qry_result = engine.run_query_filter(dc_uid, qry_composed)
-        return qry_result
-    except Exception as error:
-        raise HTTPException(
-            status_code=500, detail=error)
+    qry_composed = await query_composer_filter.compose_query(query, dc_uid, ds_uid, vendor_name)
+    # try:
+    qry_result = await engine.run_query_filter(dc_uid, qry_composed)
+    return qry_result
+    # except Exception as error:
+    #     raise HTTPException(
+    #         status_code=500, detail=error)
