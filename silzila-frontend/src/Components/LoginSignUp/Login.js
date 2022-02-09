@@ -1,9 +1,11 @@
 import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { validateEmail, validatePassword } from "../CommonFunctions";
+import { validateEmail, validatePassword } from "../CommonFunctions/CommonFunctions";
 import { connect } from "react-redux";
 import { userAuthentication } from "../../redux/UserInfo/isLoggedActions";
 import FetchData from "../../ServerCall/FetchData";
+import {Button, Input} from '@mui/material'
+import './LoginSignUp.css'
 
 const initialState = {
     email: "",
@@ -53,6 +55,7 @@ const Login = (props) => {
     //  **************************************************************************************************************************
 
     async function handleSubmit(e) {
+        console.log("form submit performed");
         e.preventDefault();
 
         console.log(account);
@@ -86,7 +89,7 @@ const Login = (props) => {
                 };
                 props.userAuthentication(payload);
                 setTimeout(() => {
-                    navigate("/datasetup");
+                    navigate("/datahome");
                 }, 1000);
             } else {
                 setLoginError(true);
@@ -111,7 +114,7 @@ const Login = (props) => {
                 <React.Fragment>
                     {loginError ? <p className="loginFail">{serverErrorMessage}</p> : null}
                     <div className="buttonText">
-                        <input type="submit" value="Login" />
+                        <Button id="loginSignupButton" variant="contained" type="submit" value="Login" >Login</Button>
                         <br />
                         <span id="emailHelp">
                             Dont have an account yet? <Link to="/signup">Sign Up</Link>
@@ -123,11 +126,11 @@ const Login = (props) => {
     };
 
     return (
-        <div>
-            <h3>Welcome to Silzila!</h3>
+        <div id="container1">
+            <h2>Welcome to Silzila!</h2>
 
             <form onSubmit={handleSubmit} autoComplete="on">
-                <div>
+                <div id="formElement">
                     <input
                         ref={inputRef}
                         type="text"
@@ -139,6 +142,7 @@ const Login = (props) => {
                                 email: e.target.value,
                             })
                         }
+                        className="inputElement"
                         onFocus={resetEmailError}
                         onBlur={() => {
                             setLoginError(false);
@@ -150,10 +154,10 @@ const Login = (props) => {
                             }
                         }}
                     />
-                    <div>{account.emailError}</div>
+                    <div id="error">{account.emailError}</div>
                 </div>
 
-                <div>
+                <div id="formElement">
                     <input
                         type="password"
                         placeholder="Password"
@@ -164,6 +168,7 @@ const Login = (props) => {
                                 password: e.target.value,
                             })
                         }
+                        className="inputElement"
                         onFocus={resetPwdError}
                         onBlur={() => {
                             setLoginError(false);
@@ -175,7 +180,7 @@ const Login = (props) => {
                             }
                         }}
                     />
-                    <div>{account.passwordError}</div>
+                    <div id="error">{account.passwordError}</div>
                 </div>
 
                 <div className="buttonSuccess">

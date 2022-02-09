@@ -1,7 +1,8 @@
+import { Button } from "@mui/material";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import FetchData from "../../ServerCall/FetchData";
-import { validateEmail, validateEqualValues, validateMandatory, validatePassword } from "../CommonFunctions";
+import { validateEmail, validateEqualValues, validateMandatory, validatePassword } from "../CommonFunctions/CommonFunctions";
 
 const initialState = {
     name: "",
@@ -125,7 +126,7 @@ const SignUp = () => {
                 <React.Fragment>
                     {signUpError ? <p className="loginFail">{serverErrorMessage}</p> : null}
                     <div className="buttonText">
-                        <input type="submit" value="Sign Up" />
+                        <Button id="loginSignupButton" variant="contained" type="submit" value="Sign Up">sign Up</Button>
                         <br />
                         <span id="emailHelp">
                             Already have an account? <Link to="/login">Login</Link>
@@ -137,10 +138,10 @@ const SignUp = () => {
     };
 
     return (
-        <div>
-            <h3>Welcome to Silzila</h3>
+        <div id="container1">
+            <h2>Welcome to Silzila</h2>
             <form onSubmit={handleSubmit} autoComplete="on">
-                <div>
+                <div id="formElement">
                     <input
                         type="text"
                         placeholder="Name"
@@ -151,6 +152,7 @@ const SignUp = () => {
                                 name: e.target.value,
                             })
                         }
+                        className="inputElement"
                         onFocus={resetNameError}
                         onBlur={() => {
                             setSignUpError(false);
@@ -162,10 +164,10 @@ const SignUp = () => {
                             }
                         }}
                     />
-                    <div>{account.nameError}</div>
+                    <div id="error">{account.nameError}</div>
                 </div>
 
-                <div>
+                <div id="formElement">
                     <input
                         type="text"
                         placeholder="Email"
@@ -176,6 +178,7 @@ const SignUp = () => {
                                 email: e.target.value,
                             })
                         }
+                        className="inputElement"
                         onFocus={resetEmailError}
                         onBlur={() => {
                             setSignUpError(false);
@@ -187,10 +190,10 @@ const SignUp = () => {
                             }
                         }}
                     />
-                    <div>{account.emailError}</div>
+                    <div id="error">{account.emailError}</div>
                 </div>
 
-                <div>
+                <div id="formElement">
                     <input
                         type="password"
                         placeholder="Password"
@@ -201,6 +204,7 @@ const SignUp = () => {
                                 password: e.target.value,
                             })
                         }
+                        className="inputElement"
                         onFocus={resetPasswordError}
                         onBlur={() => {
                             setSignUpError(false);
@@ -212,10 +216,10 @@ const SignUp = () => {
                             }
                         }}
                     />
-                    <div>{account.passwordError}</div>
+                    <div id="error">{account.passwordError}</div>
                 </div>
 
-                <div>
+                <div id="formElement">
                     <input
                         type="password"
                         placeholder="Re-enterPassword"
@@ -226,6 +230,7 @@ const SignUp = () => {
                                 password2: e.target.value,
                             })
                         }
+                        className="inputElement"
                         onFocus={resetPassword2Error}
                         onBlur={() => {
                             setSignUpError(false);
@@ -237,7 +242,7 @@ const SignUp = () => {
                             }
                         }}
                     />
-                    <div>{account.password2Error}</div>
+                    <div id="error">{account.password2Error}</div>
                 </div>
                 <BottomMessage />
             </form>
