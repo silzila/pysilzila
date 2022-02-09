@@ -17,12 +17,35 @@ DB_SECRET = config("DB_SECRET")
 db_pool = {}
 
 
+def create_connection_string(dc: schema.DataConnectionIn, decrypted_password: str = None) -> str:
+    vendor = dc.vendor
+    library = DB_LIBRARIES[dc.vendor]
+    server = dc.url
+    database = dc.db_name
+    username = dc.username
+    port = dc.port
+    # driver info is extra details and is only uesd for MS SQL Server
+    driver = 'ODBC Driver 17 for SQL Server'
+    # for test connection use fresh password from schema, for saved connection use decrypted pass
+    # urllib.parse.quote_plus is used to encode if any special characters appear
+    if decrypted_password == None:
+        password = urllib.parse.quote_plus(dc.password)
+    else:
+        password = urllib.parse.quote_plus(decrypted_password)
+    # construct Vendor specfic connection string
+    if vendor == 'mssql':
+        conn_str = f"{vendor}+{library}://{username}:{password}@{server}:{port}/{database}?driver={driver}"
+    else:
+        conn_str = f"{vendor}+{library}://{username}:{password}@{server}:{port}/{database}"
+    return conn_str
+
+
 async def test_connection(dc: schema.DataConnectionIn) -> dict:
     if dc.vendor in DB_LIBRARIES:
-        # urllib.parse.quote_plus is used to encode if any special characters appear
-        conn_str = f"{dc.vendor}+{DB_LIBRARIES[dc.vendor]}://{dc.username}:{urllib.parse.quote_plus(dc.password)}@{dc.url}:{dc.port}/{dc.db_name}"
+        conn_str = create_connection_string(dc)
         engine = create_engine(conn_str)
         try:
+            # if can establish connection then success
             engine.connect()
             engine.dispose()
             return {"message": "Test Seems OK"}
@@ -72,15 +95,16 @@ async def close_all_connection(dc_list: list) -> bool:
             status_code=500, detail=err)
 
 
-async def create_connection(dc: schema.DataConnectionPool):
+async def create_connection(dc: schema.DataConnectionPool) -> bool:
     global db_pool
+    # if connection pool is already created for the DC
     if db_pool.get(dc.dc_uid):
-        # print("create_connection fn calling...... engine already available")
         return True
+    # fresh creation of connection pool for the DC
     else:
         decrypted_password = auth.decrypt_password(dc.password)
-        # print("decrypted Password =============", decrypted_password)
-        conn_str = f"{dc.vendor}+{DB_LIBRARIES[dc.vendor]}://{dc.username}:{urllib.parse.quote_plus(decrypted_password)}@{dc.url}:{dc.port}/{dc.db_name}"
+        # conn_str = f"{dc.vendor}+{DB_LIBRARIES[dc.vendor]}://{dc.username}:{urllib.parse.quote_plus(decrypted_password)}@{dc.url}:{dc.port}/{dc.db_name}"
+        conn_str = create_connection_string(dc, decrypted_password)
         db_pool[dc.dc_uid] = {}
         db_pool[dc.dc_uid]["engine"] = create_engine(conn_str, echo=False,
                                                      pool_size=2, max_overflow=5)
@@ -89,7 +113,7 @@ async def create_connection(dc: schema.DataConnectionPool):
             db_pool[dc.dc_uid]["insp"] = inspect(db_pool[dc.dc_uid]["engine"])
             db_pool[dc.dc_uid]["meta"] = MetaData()
             db_pool[dc.dc_uid]["vendor"] = dc.vendor
-            # print("create_connection fn calling...... engine created now")
+            # print("insp =================== ", db_pool[dc.dc_uid]["insp"])
             return True
         except SQLAlchemyError as err:
             raise HTTPException(

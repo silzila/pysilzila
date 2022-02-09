@@ -2,6 +2,7 @@ from .schema_recursive_search import schema_recursive_search
 
 
 async def build_relationship(req, data_schema) -> str:
+    print("running build relationship function----------------------")
 
     # unique_tables will hold all unique requested tables
     unique_tables = {

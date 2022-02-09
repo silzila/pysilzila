@@ -1,12 +1,14 @@
 def build_select_clause(req: list, select_dim_list: list) -> str:
-    SELECT = ""
-    _select = []
-    # select_dim_list = []
+    SELECT = ""  # holds final select clause string
+    _select = []  # holds individual select column as list
     select_meas_list = []
+    # iterating List of Dimension Fields
     for val in req["dims"]:
+        # for non Date fields, Keep column as is
         if val['data_type'] in ('text', 'boolean', 'integer', 'decimal'):
             field_string = f"{val['table_id']}.{val['field_name']}"
             select_dim_list.append(field_string)
+        # for date fields, need to Parse as year, month, etc.. to aggreate
         elif val['data_type'] in ('date', 'timestamp'):
             if val['aggr'] in ('year', 'month', 'quarter', 'dayofweek', 'day'):
                 # four digit year -> 1998
@@ -14,18 +16,21 @@ def build_select_clause(req: list, select_dim_list: list) -> str:
                     field_string = f"EXTRACT(YEAR FROM {val['table_id']}.{val['field_name']})::INTEGER AS {val['field_name']}_year"
                     select_dim_list.append(field_string)
                 # month name -> August
+                # for month, also give month number for column sorting
                 if val['aggr'] == 'month':
                     field_string1 = f"EXTRACT(MONTH FROM {val['table_id']}.{val['field_name']})::INTEGER AS {val['field_name']}_month_index"
                     field_string2 = f"TRIM(TO_CHAR({val['table_id']}.{val['field_name']}, 'Month')) AS {val['field_name']}_month"
                     select_dim_list.append(field_string1)
                     select_dim_list.append(field_string2)
                 # quarter name -> Q3
+                # for quarter, also give quarter number for column sorting
                 elif val['aggr'] == 'quarter':
                     field_string1 = f"EXTRACT(QUARTER FROM {val['table_id']}.{val['field_name']})::INTEGER AS {val['field_name']}_quarter_index"
                     field_string2 = f"CONCAT('Q', EXTRACT(QUARTER FROM {val['table_id']}.{val['field_name']})::INTEGER) AS {val['field_name']}_quarter"
                     select_dim_list.append(field_string1)
                     select_dim_list.append(field_string2)
                 # day Name -> Wednesday
+                # for day of week, also give day of week number for column sorting
                 elif val['aggr'] == 'dayofweek':
                     field_string1 = f"EXTRACT(DOW FROM {val['table_id']}.{val['field_name']})::INTEGER +1 AS {val['field_name']}_dayofweek_index"
                     field_string2 = f"TRIM(TO_CHAR({val['table_id']}.{val['field_name']}, 'Day')) AS {val['field_name']}_dayofweek"
@@ -37,11 +42,14 @@ def build_select_clause(req: list, select_dim_list: list) -> str:
                     select_dim_list.append(field_string)
 
     _select.extend(select_dim_list)
-
+    # iterating List of Measure Fields
     for val in req["measures"]:
-        if val['data_type'] in ('text'):
+        # if text or boolean field in measure then just count the field
+        if val['data_type'] in ('text', 'boolean'):
             field_string = f"COUNT({val['table_id']}.{val['field_name']}) AS {val['field_name']}_count"
             select_meas_list.append(field_string)
+        # for date fields, parse to year, month, etc.. and then COUNT the field
+        # FUTURE WORK, add min, max to date fields
         elif val['data_type'] in ('date', 'timestamp'):
             if val['aggr'] in ('year', 'month', 'quarter', 'dayofweek', 'day'):
                 # four digit year -> 1998
@@ -64,6 +72,7 @@ def build_select_clause(req: list, select_dim_list: list) -> str:
                 elif val['aggr'] == 'day':
                     field_string = f"COUNT(EXTRACT(DAY FROM {val['table_id']}.{val['field_name']})::INTEGER) AS {val['field_name']}_day_count"
                     select_meas_list.append(field_string)
+        # for number fields, do aggregationd
         elif val['data_type'] in ('integer', 'decimal'):
             aggrn = 'sum'
             if val['aggr'] in ('min', 'max', 'avg'):

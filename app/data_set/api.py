@@ -111,8 +111,8 @@ async def activate_dc_ds(dc_uid: str, ds_uid: str, db: Session) -> str:
         if db_dc is None:
             raise HTTPException(
                 status_code=404, detail="Data Connection not exists")
-        is_connected = await engine.create_connection(db_dc)
-        if not is_connected:
+        connect = await engine.create_connection(db_dc)
+        if not connect:
             raise HTTPException(
                 status_code=500, detail="Could not make Data Connection")
     vendor_name = await engine.get_vendor_name_from_db_pool(dc_uid)
