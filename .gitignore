@@ -5,3 +5,5 @@ venv/
 *.db
 db_test/
 silzila-frontend/package-lock.json
+out/linecounter.txt
+out/linecounter.json

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import FetchData from "../../ServerCall/FetchData";
 import { SelectListItem } from "../CommonFunctions/SelectListItem";
-import ModeEditOutlineTwoToneIcon from "@mui/icons-material/ModeEditOutlineTwoTone";
+import { VisibilitySharp } from "@mui/icons-material";
+
 import { Alert, Button, TextField, Tooltip } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 
@@ -76,25 +77,6 @@ const DataConnection = (props) => {
         }
     };
 
-    const checkPassLen = (e) => {
-        let pass = e.target.value;
-        if (pass.length < 8) {
-            setAccount({
-                ...account,
-                passwordError: "your password should contain atleast 8 charecters",
-                // passwordInputBorder: "form-control form-text border-danger",
-                passwordTextColor: "form-text text-left text-danger ",
-            });
-        } else {
-            setAccount({
-                ...account,
-                passwordError: "",
-                passwordTextColor: "form-text text-left text-muted ",
-                // passwordInputBorder: "form-control",
-            });
-        }
-    };
-
     const handleonTest = async () => {
         let data = {
             friendly_name: account.friendly_name,
@@ -114,11 +96,7 @@ const DataConnection = (props) => {
             data: data,
         });
 
-        console.log(response);
-        console.log(response.status);
         if (response.status && response.data.message === "Test Seems OK") {
-            console.log(response.data.message);
-            console.log("Test success condition");
             setSeverity("success");
             setOpenAlert(true);
             setTestMessage("Test Seems Ok");
@@ -127,8 +105,6 @@ const DataConnection = (props) => {
                 setTestMessage("");
             }, 3000);
         } else {
-            console.log("Test fail condition");
-            console.log(response.data.detail);
             setSeverity("error");
             setOpenAlert(true);
             setTestMessage(response.data.detail);
@@ -187,7 +163,7 @@ const DataConnection = (props) => {
     return (
         <div className="dataConnectionContainer">
             <div className="containersHead">
-                <div className="containerTitle">Data Connection</div>
+                <div className="containerTitle">Data Connections</div>
 
                 <input
                     className="containerButton"
@@ -214,17 +190,11 @@ const DataConnection = (props) => {
                                         <div className="dataConnectionName">
                                             {dc.friendly_name} (<i className="">{dc.db_name}</i>){" "}
                                         </div>
-                                        <div
-                                        //  onClick={() => handleEdit(dc.dc_uid)}
-                                        >
-                                            {xprops.open ? (
-                                                <React.Fragment>
-                                                    <Tooltip title="Edit Data Connection" arrow placement="right-start">
-                                                        <ModeEditOutlineTwoToneIcon style={{ height: "1rem" }} />
-                                                    </Tooltip>
-                                                </React.Fragment>
-                                            ) : null}
-                                        </div>
+                                        {xprops.open ? (
+                                            <Tooltip title="View / Edit Data Connection" arrow placement="right-start">
+                                                <VisibilitySharp style={{ width: "1rem", height: "1rem", margin: "auto" }} />
+                                            </Tooltip>
+                                        ) : null}
                                     </div>
                                 )}
                             />
@@ -321,11 +291,9 @@ const DataConnection = (props) => {
                                 onChange={(e) => setAccount({ ...account, password: e.target.value })}
                                 required={true}
                                 variant="outlined"
-                                // onBlur={checkPassLen}
                             />
                         </div>
                         <small className={account.passwordTextColor}>{account.passwordError}</small>
-                        {/* <small style={{color:'green'}}>{testMessage}</small> */}
                         <Dialog
                             open={openAlert}
                             // onClose={handleAertClose}
@@ -351,7 +319,6 @@ const DataConnection = (props) => {
                                 }}
                             >
                                 <div>
-                                    {/* <Button variant="contained" onClick={handleOpen}>cancel</Button> */}
                                     <Button variant="contained" onClick={handleonTest}>
                                         Test
                                     </Button>
