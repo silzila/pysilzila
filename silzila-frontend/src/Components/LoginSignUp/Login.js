@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { validateEmail, validatePassword } from "../CommonFunctions";
+import { validateEmail, validatePassword } from "../CommonFunctions/CommonFunctions";
 import { connect } from "react-redux";
 import { userAuthentication } from "../../redux/UserInfo/isLoggedActions";
 import FetchData from "../../ServerCall/FetchData";
@@ -55,6 +55,7 @@ const Login = (props) => {
     //  **************************************************************************************************************************
 
     async function handleSubmit(e) {
+        console.log("form submit performed");
         e.preventDefault();
 
         console.log(account);
@@ -88,7 +89,7 @@ const Login = (props) => {
                 };
                 props.userAuthentication(payload);
                 setTimeout(() => {
-                    navigate("/datasetup");
+                    navigate("/datahome");
                 }, 1000);
             } else {
                 setLoginError(true);

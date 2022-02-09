@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import FetchData from "../../ServerCall/FetchData";
-import { validateEmail, validateEqualValues, validateMandatory, validatePassword } from "../CommonFunctions";
+import { validateEmail, validateEqualValues, validateMandatory, validatePassword } from "../CommonFunctions/CommonFunctions";
 
 const initialState = {
     name: "",
