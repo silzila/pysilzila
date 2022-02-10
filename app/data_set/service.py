@@ -127,6 +127,7 @@ async def create_ds(db: Session, ds: schema.DataSetIn):
                 else:
                     _rel[i] = {"table2": tbl['id2']}
 
+    # print("_rel dict =============", _rel)
     for idx, val in enumerate(_rel):
         data_schema['relationships'][idx]['table1'] = _rel[idx]['table1']
         data_schema['relationships'][idx]['table2'] = _rel[idx]['table2']

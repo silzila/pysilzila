@@ -91,8 +91,8 @@ async def connect_dc(dc_uid: str, db: Session = Depends(get_db)):
             status_code=404, detail="Data Connection not exists")
     # db_dc.de = auth.decrypt_password(db_dc.password)
     # return {"message": db_dc}
-    is_connected = await engine.create_connection(db_dc)
-    if not is_connected:
+    connect = await engine.create_connection(db_dc)
+    if not connect:
         raise HTTPException(
             status_code=500, detail="Could not make Data Connection")
     return {"message": "success"}
