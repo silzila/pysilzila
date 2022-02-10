@@ -1,7 +1,7 @@
 import React from "react";
-
-const Canvas = () => {
-    return <div className="canvas">Canvas</div>;
+import { connect } from "react-redux";
+const Canvas = (props) => {
+	return <div className="canvas">canvas</div>;
 };
 
 export default Canvas;

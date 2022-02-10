@@ -8,36 +8,36 @@ import Login from "./LoginSignUp/Login";
 import SignUp from "./LoginSignUp/SignUp";
 
 const Home = (props) => {
-    return (
-        <React.Fragment>
-            {props.isUserLogged ? (
-                <Router>
-                    <Routes>
-                        <Route exact path="/" element={<Login />} />
-                        <Route exact path="/login" element={<Login />} />
-                        <Route exact path="/signup" element={<SignUp />} />
+	return (
+		<React.Fragment>
+			{props.isUserLogged ? (
+				<Router>
+					<Routes>
+						<Route exact path="/" element={<Login />} />
+						<Route exact path="/login" element={<Login />} />
+						<Route exact path="/signup" element={<SignUp />} />
 
-                        <Route exact path="/datahome" element={<DataHome />} />
-                        <Route exact path="/newdataset" element={<NewDataSet />} />
-                    </Routes>
-                </Router>
-            ) : (
-                <Router>
-                    <Routes>
-                        <Route exact path="/" element={<Login />} />
-                        <Route exact path="/login" element={<Login />} />
-                        <Route exact path="/signup" element={<SignUp />} />
-                    </Routes>
-                </Router>
-            )}
-        </React.Fragment>
-    );
+						<Route exact path="/datahome" element={<DataHome />} />
+						<Route exact path="/newdataset" element={<NewDataSet />} />
+					</Routes>
+				</Router>
+			) : (
+				<Router>
+					<Routes>
+						<Route exact path="/" element={<Login />} />
+						<Route exact path="/login" element={<Login />} />
+						<Route exact path="/signup" element={<SignUp />} />
+					</Routes>
+				</Router>
+			)}
+		</React.Fragment>
+	);
 };
 
 const mapStateToProps = (state) => {
-    return {
-        isUserLogged: state.isLogged.isUserLogged,
-    };
+	return {
+		isUserLogged: state.isLogged.isUserLogged,
+	};
 };
 
 export default connect(mapStateToProps, null)(Home);

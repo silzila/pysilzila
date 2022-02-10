@@ -1,17 +1,12 @@
-from . import schema
-from ..data_connection import engine
-
 from fastapi import HTTPException
 
 
-# for populating fields dropped into filter
-async def compose_query(req: schema.ColumnFilter, dc_uid: str, ds_uid: str):
-    req = req.dict()
-    # print("request ========", req)
-    data_schema = await engine.get_data_schema(dc_uid, ds_uid)
-    table1 = list(filter(
-        lambda obj: obj["id"] == req['table_id'], data_schema["tables"]))[0]
-    FROM_TBL = f"{table1['schema_name']}.{table1['table_name']} AS {table1['id']}"
+'''
+This function is used to to show filter options when a user drags and drops a field into filter
+'''
+
+
+async def get_filter_values_pg(req, FROM_TBL):
     # get distinct values - text & number fields
     if req['data_type'] in ('text', 'boolean') or (req['data_type']
                                                    in ('integer', 'decimal') and req['filter_type'] == 'select members'):

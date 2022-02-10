@@ -1,9 +1,8 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import FetchData from "../../ServerCall/FetchData";
 import { SelectListItem } from "../CommonFunctions/SelectListItem";
 import { VisibilitySharp } from "@mui/icons-material";
-
 import { Alert, Tooltip } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import FormDialog from "./FormDialog";

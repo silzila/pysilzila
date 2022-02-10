@@ -4,9 +4,10 @@ from ..data_set.schema import DataSetOut
 from fastapi import HTTPException
 
 # to Test Connection
-from sqlalchemy import create_engine, inspect, MetaData, Table
+from sqlalchemy import create_engine, inspect, MetaData, Table, true
 from sqlalchemy.sql import text
 from sqlalchemy.exc import SQLAlchemyError
+import urllib.parse
 
 # ENV Variables
 from .db_libraries import DB_LIBRARIES
@@ -16,11 +17,35 @@ DB_SECRET = config("DB_SECRET")
 db_pool = {}
 
 
+def create_connection_string(dc: schema.DataConnectionIn, decrypted_password: str = None) -> str:
+    vendor = dc.vendor
+    library = DB_LIBRARIES[dc.vendor]
+    server = dc.url
+    database = dc.db_name
+    username = dc.username
+    port = dc.port
+    # driver info is extra details and is only uesd for MS SQL Server
+    driver = 'ODBC Driver 17 for SQL Server'
+    # for test connection use fresh password from schema, for saved connection use decrypted pass
+    # urllib.parse.quote_plus is used to encode if any special characters appear
+    if decrypted_password == None:
+        password = urllib.parse.quote_plus(dc.password)
+    else:
+        password = urllib.parse.quote_plus(decrypted_password)
+    # construct Vendor specfic connection string
+    if vendor == 'mssql':
+        conn_str = f"{vendor}+{library}://{username}:{password}@{server}:{port}/{database}?driver={driver}"
+    else:
+        conn_str = f"{vendor}+{library}://{username}:{password}@{server}:{port}/{database}"
+    return conn_str
+
+
 async def test_connection(dc: schema.DataConnectionIn) -> dict:
     if dc.vendor in DB_LIBRARIES:
-        conn_str = f"{dc.vendor}+{DB_LIBRARIES[dc.vendor]}://{dc.username}:{dc.password}@{dc.url}:{dc.port}/{dc.db_name}"
+        conn_str = create_connection_string(dc)
         engine = create_engine(conn_str)
         try:
+            # if can establish connection then success
             engine.connect()
             engine.dispose()
             return {"message": "Test Seems OK"}
@@ -70,15 +95,16 @@ async def close_all_connection(dc_list: list) -> bool:
             status_code=500, detail=err)
 
 
-async def create_connection(dc: schema.DataConnectionPool):
+async def create_connection(dc: schema.DataConnectionPool) -> bool:
     global db_pool
+    # if connection pool is already created for the DC
     if db_pool.get(dc.dc_uid):
-        # print("create_connection fn calling...... engine already available")
         return True
+    # fresh creation of connection pool for the DC
     else:
         decrypted_password = auth.decrypt_password(dc.password)
-        # print("decrypted Password =============", decrypted_password)
-        conn_str = f"{dc.vendor}+{DB_LIBRARIES[dc.vendor]}://{dc.username}:{decrypted_password}@{dc.url}:{dc.port}/{dc.db_name}"
+        # conn_str = f"{dc.vendor}+{DB_LIBRARIES[dc.vendor]}://{dc.username}:{urllib.parse.quote_plus(decrypted_password)}@{dc.url}:{dc.port}/{dc.db_name}"
+        conn_str = create_connection_string(dc, decrypted_password)
         db_pool[dc.dc_uid] = {}
         db_pool[dc.dc_uid]["engine"] = create_engine(conn_str, echo=False,
                                                      pool_size=2, max_overflow=5)
@@ -86,12 +112,23 @@ async def create_connection(dc: schema.DataConnectionPool):
             db_pool[dc.dc_uid]["engine"].connect()
             db_pool[dc.dc_uid]["insp"] = inspect(db_pool[dc.dc_uid]["engine"])
             db_pool[dc.dc_uid]["meta"] = MetaData()
-            # db_pool[dc.dc_uid]["engine"].dispose()
-            # print("create_connection fn calling...... engine created now")
+            db_pool[dc.dc_uid]["vendor"] = dc.vendor
+            # print("insp =================== ", db_pool[dc.dc_uid]["insp"])
             return True
         except SQLAlchemyError as err:
             raise HTTPException(
                 status_code=500, detail=err)
+
+
+async def is_ds_active(dc_uid: str, ds_uid: str) -> bool:
+    global db_pool
+    if not (db_pool and db_pool.get(dc_uid)):
+        raise HTTPException(
+            status_code=500, detail="DC is not connected")
+    if db_pool.get(dc_uid).get('data_schema') and db_pool[dc_uid]['data_schema'][ds_uid]:
+        return True
+    else:
+        return False
 
 
 async def activate_ds(ds: DataSetOut):
@@ -165,6 +202,13 @@ def get_sample_records(dc_uid: str, schema_name: str, table_name: str):
             status_code=500, detail=err)
 
 
+async def get_vendor_name_from_db_pool(dc_uid: str):
+    global db_pool
+    if not (db_pool and db_pool.get(dc_uid)):
+        return False
+    return db_pool[dc_uid]["vendor"]
+
+
 async def run_query(dc_uid: str, query: str):
     global db_pool
     if not (db_pool and db_pool.get(dc_uid)):
@@ -186,7 +230,7 @@ async def run_query(dc_uid: str, query: str):
             status_code=400, detail=error)
 
 
-def run_query_filter(dc_uid: str, query: str):
+async def run_query_filter(dc_uid: str, query: str):
     global db_pool
     if not (db_pool and db_pool.get(dc_uid)):
         raise HTTPException(
@@ -195,7 +239,6 @@ def run_query_filter(dc_uid: str, query: str):
         records = db_pool[dc_uid]['engine'].execute(query)
         if records:
             result = [row for row in records]
-            print("result ==========", result)
             if result and len(result[0]) >= 2:
                 res1 = [a[0] for a in result]
                 res2 = [a[1] for a in result]
