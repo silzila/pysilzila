@@ -106,10 +106,10 @@ const DataSetReducer = (state = initialState, action) => {
 
         case "REMOVE_ARROWS":
             const y = state.arrows.filter((arr) => {
-                return arr.startTableName != action.payload;
+                return arr.startTableName !== action.payload;
             });
             const z = y.filter((arr) => {
-                return arr.endTableName != action.payload;
+                return arr.endTableName !== action.payload;
             });
             return update(state, {
                 arrows: {

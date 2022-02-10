@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { setConnectionValue, setDataSchema, setFriendlyName, setUserTable } from "../../redux/Dataset/datasetActions";
+import {
+    setConnectionValue,
+    setDataSchema,
+    setFriendlyName,
+    setUserTable,
+} from "../../redux/Dataset/datasetActions";
 import FetchData from "../../ServerCall/FetchData";
 import { ChangeConnection } from "../CommonFunctions/DialogComponents";
 import { SelectListItem } from "../CommonFunctions/SelectListItem";
@@ -46,7 +51,6 @@ const Sidebar = (props) => {
         });
         setConnectionId(dc_uid);
         props.setConnection(dc_uid);
-        // props.setFriendlyName(fname);
         props.setUserTable([]);
 
         var res = await FetchData({
@@ -171,7 +175,6 @@ const Sidebar = (props) => {
                                             xprops={xprops}
                                             connectionId={connectionId}
                                             selectedSchema={selectedSchema}
-                                            // {...propsfromSideBar}
                                         />
                                     </div>
                                 )}
@@ -198,7 +201,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         setConnection: (pl) => dispatch(setConnectionValue(pl)),
-        // setFriendlyName: (pl) => dispatch(setFriendlyName(pl)),
         setDataSchema: (pl) => dispatch(setDataSchema(pl)),
         setUserTable: (userTable) => dispatch(setUserTable(userTable)),
     };
