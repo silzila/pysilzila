@@ -52,12 +52,9 @@ const DataSetReducer = (state = initialState, action) => {
             });
 
         case "SET_TABLES":
-            const userTable = [...action.payload].map((el) => {
-                return { tableName: el, isSelected: false };
-            });
             return update(state, {
                 tables: {
-                    $set: [...userTable],
+                    $set: action.payload,
                 },
             });
 
@@ -116,6 +113,9 @@ const DataSetReducer = (state = initialState, action) => {
                     $set: [...z],
                 },
             });
+
+        case "RESET_STATE":
+            return initialState;
 
         default:
             return state;
