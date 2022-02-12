@@ -38,15 +38,18 @@ function TableData({
 					minWidth: "auto",
 				}}
 			>
-				<DialogTitle>
-					<div style={{ display: "flex", flexDirection: "row" }}>
-						<p>View Product</p>
-						<CloseOutlined onClick={handleClose} />
-					</div>
-					<div style={{ display: "flex", flexDirection: "row" }}>
-						<p>{selectedTable}</p>
-						<p>Rows : {tableData.length}</p>
-					</div>
+				<DialogTitle
+					style={{
+						display: "flex",
+						flexDirection: "row",
+						columnGap: "2rem",
+						// columnCount: "3",
+						justifyContent: "space-between",
+					}}
+				>
+					<p style={{ float: "left" }}>{selectedTable}</p>
+					<p>Rows Displayed: {tableData.length}</p>
+					<CloseOutlined style={{ float: "rigth" }} onClick={handleClose} />
 				</DialogTitle>
 				<DialogContent>
 					<Table stickyHeader>

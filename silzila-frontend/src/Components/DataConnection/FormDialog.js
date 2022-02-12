@@ -1,8 +1,9 @@
-import React from "react";
-import { Dialog } from "@mui/material";
+import React, { useState } from "react";
+import { Dialog, Popover } from "@mui/material";
 import "./DataSetup.css";
 import { TextField, Button } from "@mui/material";
 import FetchData from "../../ServerCall/FetchData";
+import TextFieldComponent from "../../Components/CommonFunctions/TextFieldComponent";
 
 function FormDialog({
 	//state
@@ -22,10 +23,15 @@ function FormDialog({
 	handleMode,
 	handleRegister,
 	getInformation,
+	handleonUpdate,
 
 	//value
 	token,
 }) {
+	const [dcDel, setDcDel] = useState(false);
+	const [dcDelMeg, setDcDelMeg] = useState("");
+	let dsList = [];
+
 	// =================================================
 	// Test DataConnection
 	// =================================================
@@ -71,6 +77,40 @@ function FormDialog({
 	// Delete Dc
 	// ==============================================================
 
+	const deleteDcWarning = async () => {
+		var result = await FetchData({
+			requestType: "noData",
+			method: "GET",
+			url: "ds/get-all-ds",
+			headers: { Authorization: `Bearer ${token}` },
+		});
+
+		console.log(result);
+		if (result.status) {
+			result.data.map((ds) => {
+				if (ds.dc_uid === account.dc_uid) {
+					dsList.push(ds.friendly_name);
+				}
+			});
+			if (dsList.length !== 0) {
+				setDcDel(true);
+				setDcDelMeg(
+					"Following Datasets are using this dataConnection," +
+						"are you sure you still want to delete this Connection?" +
+						"\n" +
+						dsList.map((ds) => ds)
+				);
+			} else {
+				setDcDel(true);
+				setDcDelMeg("Are you sure you want to delete this connection?");
+			}
+		} else {
+			console.log(result.data.detail);
+			dsList = [];
+			setDcDel(true);
+		}
+	};
+
 	const deleteDc = async () => {
 		var result = await FetchData({
 			requestType: "noData",
@@ -79,6 +119,7 @@ function FormDialog({
 			headers: { Authorization: `Bearer ${token}` },
 		});
 		if (result.status) {
+			setDcDel(false);
 			console.log("Delete Dc", result.data);
 			setSeverity("success");
 			setOpenAlert(true);
@@ -87,6 +128,7 @@ function FormDialog({
 				setOpenAlert(false);
 				setTestMessage("");
 				showAndHideForm();
+				setDcDelMeg("");
 				getInformation();
 			}, 3000);
 		} else {
@@ -100,133 +142,150 @@ function FormDialog({
 			}, 3000);
 		}
 	};
+	// =========================================================================
+	// On Form Submit (register Or update)
+	// =========================================================================
 
-	// ================================================
-	// Update DC
-	// ================================================
-
-	const handleonUpdate = async () => {
-		console.log(regOrUpdate, "92");
-		var data = {
-			vendor: account.vendor,
-			url: account.url,
-			port: account.port,
-			db_name: account.db_name,
-			username: account.username,
-			password: account.password,
-			friendly_name: account.friendly_name,
-		};
-
-		var response = await FetchData({
-			requestType: "withData",
-			method: "PUT",
-			url: "dc/update-dc/" + dataConnId,
-			headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-			data: data,
-		});
-
-		if (response.status) {
-			console.log("Update Dc Response", response.data);
-			setSeverity("success");
-			setOpenAlert(true);
-			setTestMessage("Updated Successfully!");
-			setTimeout(() => {
-				setOpenAlert(false);
-				setTestMessage("");
-				showAndHideForm();
-				getInformation();
-			}, 3000);
-		} else {
-			console.log("Update Dc error", response);
-			setSeverity("error");
-			setOpenAlert(true);
-			setTestMessage(response.data.detail);
-			setTimeout(() => {
-				setOpenAlert(false);
-				setTestMessage("");
-			}, 3000);
+	const onSubmit = () => {
+		if (
+			account.vendor !== "" &&
+			account.url !== "" &&
+			account.port !== "" &&
+			account.db_name !== "" &&
+			account.username !== "" &&
+			account.friendly_name !== "" &&
+			account.password !== ""
+		) {
+			console.log(regOrUpdate);
+			if (regOrUpdate === "Update") {
+				handleonUpdate();
+			}
+			if (regOrUpdate === "Register") {
+				handleRegister();
+			}
 		}
 	};
 
 	return (
 		<>
 			<Dialog open={showForm} onClose={showAndHideForm}>
-				<div style={{ padding: "10px", width: "380px" }}>
+				<div style={{ padding: "10px", width: "400px" }}>
 					<form
 						style={{
 							textAlign: "center",
 							alignItems: "center",
 							display: "flex",
 							flexDirection: "column",
-							rowGap: "1rem",
+							rowGap: "10px",
 						}}
 					>
 						<h3>Data Connection</h3>
-						<TextField
-							style={{ width: "70%" }}
-							label="Vendor"
-							type="text"
-							disabled={viewMode}
+						{/*========================== Reusable Component from ../CommonFunctions/TextFieldComponents========================= */}
+						<TextFieldComponent
 							onChange={(e) => setAccount({ ...account, vendor: e.target.value })}
-							value={account.vendor}
-							required={true}
+							onFocus={() => setAccount({ ...account, vendorError: "" })}
+							onBlur={() => {
+								if (account.vendor.length === 0) {
+									setAccount({
+										...account,
+										vendorError: "vendor should not be Empty",
+									});
+								}
+							}}
+							{...{ viewMode, value: account.vendor, lable: "Vendor" }}
 						/>
-						<TextField
-							style={{ width: "70%" }}
-							label="Url"
-							type="text"
-							disabled={viewMode}
+						<small style={{ color: "red" }}>{account.vendorError}</small>
+						<TextFieldComponent
 							onChange={(e) => setAccount({ ...account, url: e.target.value })}
-							value={account.url}
-							required={true}
+							onFocus={() => setAccount({ ...account, urlError: "" })}
+							onBlur={() => {
+								if (account.url.length === 0) {
+									setAccount({
+										...account,
+										urlError: "url should not be Empty",
+									});
+								}
+							}}
+							{...{ viewMode, value: account.url, lable: "Url" }}
 						/>
-						<TextField
-							style={{ width: "70%" }}
-							label="Port"
-							type="number"
-							disabled={viewMode}
+						<small style={{ color: "red" }}>{account.urlError}</small>
+						<TextFieldComponent
 							onChange={(e) => setAccount({ ...account, port: e.target.value })}
-							value={account.port}
-							required={true}
+							onFocus={() => setAccount({ ...account, portError: "" })}
+							onBlur={() => {
+								if (account.port.length === 0) {
+									setAccount({
+										...account,
+										portError: "port should not be Empty",
+									});
+								}
+							}}
+							{...{ viewMode, value: account.port, lable: "Port", type: "number" }}
 						/>
-						<TextField
-							style={{ width: "70%" }}
-							label="Database name"
-							type="text"
-							disabled={viewMode}
+						<small style={{ color: "red" }}>{account.portError}</small>
+						<TextFieldComponent
 							onChange={(e) => setAccount({ ...account, db_name: e.target.value })}
-							value={account.db_name}
-							required={true}
+							onFocus={() => setAccount({ ...account, db_nameError: "" })}
+							onBlur={() => {
+								if (account.db_name.length === 0) {
+									setAccount({
+										...account,
+										db_nameError: "Database should not be Empty",
+									});
+								}
+							}}
+							{...{ viewMode, value: account.db_name, lable: "Database" }}
 						/>
-						<TextField
-							style={{ width: "70%" }}
-							label="Username"
-							type="text"
-							disabled={viewMode}
+						<small style={{ color: "red" }}>{account.db_nameError}</small>
+						<TextFieldComponent
 							onChange={(e) => setAccount({ ...account, username: e.target.value })}
-							value={account.username}
-							required={true}
+							onFocus={() => setAccount({ ...account, usernameError: "" })}
+							onBlur={() => {
+								if (account.username.length === 0) {
+									setAccount({
+										...account,
+										usernameError: "Username should not be Empty",
+									});
+								}
+							}}
+							{...{ viewMode, value: account.username, lable: "Usename" }}
 						/>
-						<TextField
-							style={{ width: "70%" }}
-							label="friendly name"
-							type="text"
-							disabled={viewMode}
+						<small style={{ color: "red" }}>{account.usernameError}</small>
+						<TextFieldComponent
 							onChange={(e) =>
 								setAccount({ ...account, friendly_name: e.target.value })
 							}
-							value={account.friendly_name}
-							required={true}
+							onFocus={() => setAccount({ ...account, friendly_nameError: "" })}
+							onBlur={() => {
+								if (account.friendly_name.length === 0) {
+									setAccount({
+										...account,
+										friendly_nameError: "Friendly Name should not be Empty",
+									});
+								}
+							}}
+							{...{ viewMode, value: account.friendly_name, lable: "Friendly name" }}
 						/>
-						<TextField
-							style={{ width: "70%" }}
-							label="Password"
-							type="password"
-							disabled={viewMode}
+						<small style={{ color: "red" }}>{account.friendly_nameError}</small>
+						<TextFieldComponent
 							onChange={(e) => setAccount({ ...account, password: e.target.value })}
-							value={account.password}
-							required={true}
+							onFocus={() => setAccount({ ...account, passwordError: "" })}
+							onBlur={() => {
+								if (account.password.length === 0) {
+									setAccount({
+										...account,
+										passwordError: "Password should not be Empty",
+									});
+								}
+							}}
+							{...{
+								viewMode,
+								value: account.password,
+								lable: "Password",
+								type: "password",
+							}}
 						/>
+						<small style={{ color: "red" }}>{account.passwordError}</small>
 						{viewMode ? (
 							<div
 								style={{
@@ -240,6 +299,7 @@ function FormDialog({
 								<Button
 									id="formButton"
 									variant="contained"
+									style={{ backgroundColor: "black" }}
 									onClick={showAndHideForm}
 								>
 									Cancel
@@ -255,18 +315,21 @@ function FormDialog({
 								>
 									Edit
 								</Button>
-								<Button id="formButton" variant="contained" onClick={deleteDc}>
+								<Button
+									id="formButton"
+									variant="contained"
+									style={{ backgroundColor: "red" }}
+									onClick={deleteDcWarning}
+								>
 									Delete
 								</Button>
 							</div>
 						) : (
 							<div
 								style={{
-									margin: "8px auto",
-									width: "70%",
+									margin: "10px auto",
 									display: "flex",
-									flexDirection: "row",
-									columnGap: "10%",
+									columnGap: "40px",
 								}}
 							>
 								<Button id="formButton" variant="contained" onClick={handleonTest}>
@@ -274,10 +337,10 @@ function FormDialog({
 								</Button>
 								<Button
 									id="formButton"
+									type="submit"
 									variant="contained"
-									onClick={
-										regOrUpdate === "Update" ? handleonUpdate : handleRegister
-									}
+									style={{ backgroundColor: "green" }}
+									onClick={onSubmit}
 								>
 									{regOrUpdate}
 								</Button>
@@ -286,6 +349,40 @@ function FormDialog({
 					</form>
 				</div>
 			</Dialog>
+			<Popover
+				anchorOrigin={{
+					vertical: "center",
+					horizontal: "center",
+				}}
+				anchorReference="anchorPosition"
+				anchorPosition={{ top: 300, left: 530 }}
+				open={dcDel}
+				onClose={() => {
+					setDcDel(false);
+				}}
+			>
+				<p>{dcDelMeg}</p>
+				<div style={{ margin: "0px 0px 0px auto", display: "flex", columnGap: "20px" }}>
+					<Button
+						id="formButton"
+						variant="contained"
+						style={{ backgroundColor: "black", float: "left" }}
+						onClick={() => {
+							setDcDel(false);
+						}}
+					>
+						Cancel
+					</Button>
+					<Button
+						onClick={deleteDc}
+						id="formButton"
+						variant="contained"
+						style={{ backgroundColor: "red" }}
+					>
+						Delete
+					</Button>
+				</div>
+			</Popover>
 		</>
 	);
 }

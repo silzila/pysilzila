@@ -6,25 +6,23 @@ import { VisibilitySharp } from "@mui/icons-material";
 import { Alert, Tooltip } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import FormDialog from "./FormDialog";
+import { NotificationDialog } from "../CommonFunctions/DialogComponents";
 
 const initialState = {
 	vendor: "",
-	vendorInputBorder: "form-control",
+	vendorError: "",
 	url: "",
-	urlInputBorder: "form-control",
+	urlError: "",
 	port: "",
-	portInputBorder: "form-control",
+	portError: "",
 	db_name: "",
-	db_nameInputBorder: "form-control",
+	db_nameError: "",
 	username: "",
-	usernameInputBorder: "form-control",
+	userNameError: "",
 	friendly_name: "",
-	friendly_nameInputBorder: "form-control",
 	friendly_nameError: "",
 	password: "",
 	passwordError: "",
-	passwordInputBorder: "form-control",
-	passwordTextColor: "form-text text-muted",
 };
 
 const DataConnection = (props) => {
@@ -159,6 +157,51 @@ const DataConnection = (props) => {
 		}
 	};
 
+	// ==============================================================
+	// Update Dc
+	// ==============================================================
+	const handleonUpdate = async () => {
+		var data = {
+			vendor: account.vendor,
+			url: account.url,
+			port: account.port,
+			db_name: account.db_name,
+			username: account.username,
+			password: account.password,
+			friendly_name: account.friendly_name,
+		};
+
+		var response = await FetchData({
+			requestType: "withData",
+			method: "PUT",
+			url: "dc/update-dc/" + dataConnId,
+			headers: { "Content-Type": "application/json", Authorization: `Bearer ${props.token}` },
+			data: data,
+		});
+
+		if (response.status) {
+			console.log("Update Dc Response", response.data);
+			setSeverity("success");
+			setOpenAlert(true);
+			setTestMessage("Updated Successfully!");
+			setTimeout(() => {
+				setOpenAlert(false);
+				setTestMessage("");
+				showAndHideForm();
+				getInformation();
+			}, 3000);
+		} else {
+			console.log("Update Dc error", response);
+			setSeverity("error");
+			setOpenAlert(true);
+			setTestMessage(response.data.detail);
+			setTimeout(() => {
+				setOpenAlert(false);
+				setTestMessage("");
+			}, 3000);
+		}
+	};
+
 	// ===========================================================
 	// props to form Component
 	// ===========================================================
@@ -179,6 +222,7 @@ const DataConnection = (props) => {
 		dataConnId,
 		handleRegister,
 		getInformation,
+		handleonUpdate,
 	};
 
 	return (
@@ -234,13 +278,15 @@ const DataConnection = (props) => {
 					})}
 			</div>
 			<FormDialog {...properties} />
-			<Dialog
-				open={openAlert}
-				aria-labelledby="alert-dialog-title"
-				aria-describedby="alert-dialog-description"
-			>
-				<Alert severity={severity}>{testMessage}</Alert>
-			</Dialog>
+			<NotificationDialog
+				onNotifClose={() => {
+					setOpenAlert(false);
+					setTestMessage("");
+				}}
+				severity={severity}
+				testMessage={testMessage}
+				openAlert={openAlert}
+			/>
 		</div>
 	);
 };
