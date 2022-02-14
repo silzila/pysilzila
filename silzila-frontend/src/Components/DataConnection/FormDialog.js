@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Dialog, Popover } from "@mui/material";
 import "./DataSetup.css";
 import { TextField, Button } from "@mui/material";
 import FetchData from "../../ServerCall/FetchData";
 import TextFieldComponent from "../../Components/CommonFunctions/TextFieldComponent";
+import CloseIcon from "@mui/icons-material/Close";
 
 function FormDialog({
 	//state
@@ -31,41 +32,76 @@ function FormDialog({
 	const [dcDel, setDcDel] = useState(false);
 	const [dcDelMeg, setDcDelMeg] = useState("");
 	let dsList = [];
+	const [btnEnable, setBtnEnable] = useState(false);
+
+	const btnEnabelDisable = () => {
+		if (
+			account.vendor !== "" &&
+			account.url !== "" &&
+			account.port !== "" &&
+			account.db_name !== "" &&
+			account.username !== "" &&
+			account.friendly_name !== "" &&
+			account.password !== ""
+		) {
+			setBtnEnable(false);
+		} else {
+			setBtnEnable(true);
+		}
+	};
 
 	// =================================================
 	// Test DataConnection
 	// =================================================
 	const handleonTest = async () => {
-		let data = {
-			friendly_name: account.friendly_name,
-			vendor: account.vendor,
-			url: account.url,
-			port: account.port,
-			db_name: account.db_name,
-			username: account.username,
-			password: account.password,
-		};
+		if (
+			account.vendor !== "" &&
+			account.url !== "" &&
+			account.port !== "" &&
+			account.db_name !== "" &&
+			account.username !== "" &&
+			account.friendly_name !== "" &&
+			account.password !== ""
+		) {
+			let data = {
+				friendly_name: account.friendly_name,
+				vendor: account.vendor,
+				url: account.url,
+				port: account.port,
+				db_name: account.db_name,
+				username: account.username,
+				password: account.password,
+			};
 
-		var response = await FetchData({
-			requestType: "withData",
-			method: "POST",
-			url: "dc/test-dc",
-			headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-			data: data,
-		});
+			var response = await FetchData({
+				requestType: "withData",
+				method: "POST",
+				url: "dc/test-dc",
+				headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+				data: data,
+			});
 
-		if (response.status && response.data.message === "Test Seems OK") {
-			setSeverity("success");
-			setOpenAlert(true);
-			setTestMessage("Test Seems Ok");
-			setTimeout(() => {
-				setOpenAlert(false);
-				setTestMessage("");
-			}, 3000);
+			if (response.status && response.data.message === "Test Seems OK") {
+				setSeverity("success");
+				setOpenAlert(true);
+				setTestMessage("Test Seems Ok");
+				setTimeout(() => {
+					setOpenAlert(false);
+					setTestMessage("");
+				}, 3000);
+			} else {
+				setSeverity("error");
+				setOpenAlert(true);
+				setTestMessage(response.data.detail);
+				setTimeout(() => {
+					setOpenAlert(false);
+					setTestMessage("");
+				}, 4000);
+			}
 		} else {
 			setSeverity("error");
 			setOpenAlert(true);
-			setTestMessage(response.data.detail);
+			setTestMessage("Please Fillout All the fields");
 			setTimeout(() => {
 				setOpenAlert(false);
 				setTestMessage("");
@@ -96,9 +132,10 @@ function FormDialog({
 				setDcDel(true);
 				setDcDelMeg(
 					"Following Datasets are using this dataConnection," +
-						"are you sure you still want to delete this Connection?" +
 						"\n" +
-						dsList.map((ds) => ds)
+						dsList.map((ds) => <p>{ds}</p>) +
+						"\n" +
+						"are you sure you want to delete this Connection?"
 				);
 			} else {
 				setDcDel(true);
@@ -168,21 +205,44 @@ function FormDialog({
 
 	return (
 		<>
-			<Dialog open={showForm} onClose={showAndHideForm}>
+			<Dialog
+				open={showForm}
+				// onClose={showAndHideForm}
+			>
 				<div style={{ padding: "10px", width: "400px" }}>
 					<form
 						style={{
-							textAlign: "center",
+							// textAlign: "center",
 							alignItems: "center",
 							display: "flex",
 							flexDirection: "column",
 							rowGap: "10px",
 						}}
 					>
-						<h3>Data Connection</h3>
+						<div
+							style={{
+								display: "grid",
+								gridTemplateColumns: "95% 5%",
+								textAlign: "center",
+								width: "100%",
+							}}
+						>
+							{viewMode ? (
+								<h3>Data Connection</h3>
+							) : regOrUpdate === "Update" ? (
+								<h3>Edit Data Connection</h3>
+							) : (
+								<h3>Create Data Connection</h3>
+							)}
+
+							<CloseIcon onClick={showAndHideForm} />
+						</div>
 						{/*========================== Reusable Component from ../CommonFunctions/TextFieldComponents========================= */}
 						<TextFieldComponent
-							onChange={(e) => setAccount({ ...account, vendor: e.target.value })}
+							onChange={(e) => {
+								setAccount({ ...account, vendor: e.target.value });
+								btnEnabelDisable();
+							}}
 							onFocus={() => setAccount({ ...account, vendorError: "" })}
 							onBlur={() => {
 								if (account.vendor.length === 0) {
@@ -190,13 +250,17 @@ function FormDialog({
 										...account,
 										vendorError: "vendor should not be Empty",
 									});
+									btnEnabelDisable();
 								}
 							}}
 							{...{ viewMode, value: account.vendor, lable: "Vendor" }}
 						/>
 						<small style={{ color: "red" }}>{account.vendorError}</small>
 						<TextFieldComponent
-							onChange={(e) => setAccount({ ...account, url: e.target.value })}
+							onChange={(e) => {
+								setAccount({ ...account, url: e.target.value });
+								btnEnabelDisable();
+							}}
 							onFocus={() => setAccount({ ...account, urlError: "" })}
 							onBlur={() => {
 								if (account.url.length === 0) {
@@ -204,13 +268,17 @@ function FormDialog({
 										...account,
 										urlError: "url should not be Empty",
 									});
+									btnEnabelDisable();
 								}
 							}}
 							{...{ viewMode, value: account.url, lable: "Url" }}
 						/>
 						<small style={{ color: "red" }}>{account.urlError}</small>
 						<TextFieldComponent
-							onChange={(e) => setAccount({ ...account, port: e.target.value })}
+							onChange={(e) => {
+								setAccount({ ...account, port: e.target.value });
+								btnEnabelDisable();
+							}}
 							onFocus={() => setAccount({ ...account, portError: "" })}
 							onBlur={() => {
 								if (account.port.length === 0) {
@@ -218,13 +286,17 @@ function FormDialog({
 										...account,
 										portError: "port should not be Empty",
 									});
+									btnEnabelDisable();
 								}
 							}}
 							{...{ viewMode, value: account.port, lable: "Port", type: "number" }}
 						/>
 						<small style={{ color: "red" }}>{account.portError}</small>
 						<TextFieldComponent
-							onChange={(e) => setAccount({ ...account, db_name: e.target.value })}
+							onChange={(e) => {
+								setAccount({ ...account, db_name: e.target.value });
+								btnEnabelDisable();
+							}}
 							onFocus={() => setAccount({ ...account, db_nameError: "" })}
 							onBlur={() => {
 								if (account.db_name.length === 0) {
@@ -232,13 +304,17 @@ function FormDialog({
 										...account,
 										db_nameError: "Database should not be Empty",
 									});
+									btnEnabelDisable();
 								}
 							}}
 							{...{ viewMode, value: account.db_name, lable: "Database" }}
 						/>
 						<small style={{ color: "red" }}>{account.db_nameError}</small>
 						<TextFieldComponent
-							onChange={(e) => setAccount({ ...account, username: e.target.value })}
+							onChange={(e) => {
+								setAccount({ ...account, username: e.target.value });
+								btnEnabelDisable();
+							}}
 							onFocus={() => setAccount({ ...account, usernameError: "" })}
 							onBlur={() => {
 								if (account.username.length === 0) {
@@ -246,15 +322,17 @@ function FormDialog({
 										...account,
 										usernameError: "Username should not be Empty",
 									});
+									btnEnabelDisable();
 								}
 							}}
 							{...{ viewMode, value: account.username, lable: "Usename" }}
 						/>
 						<small style={{ color: "red" }}>{account.usernameError}</small>
 						<TextFieldComponent
-							onChange={(e) =>
-								setAccount({ ...account, friendly_name: e.target.value })
-							}
+							onChange={(e) => {
+								setAccount({ ...account, friendly_name: e.target.value });
+								btnEnabelDisable();
+							}}
 							onFocus={() => setAccount({ ...account, friendly_nameError: "" })}
 							onBlur={() => {
 								if (account.friendly_name.length === 0) {
@@ -262,13 +340,17 @@ function FormDialog({
 										...account,
 										friendly_nameError: "Friendly Name should not be Empty",
 									});
+									btnEnabelDisable();
 								}
 							}}
 							{...{ viewMode, value: account.friendly_name, lable: "Friendly name" }}
 						/>
 						<small style={{ color: "red" }}>{account.friendly_nameError}</small>
 						<TextFieldComponent
-							onChange={(e) => setAccount({ ...account, password: e.target.value })}
+							onChange={(e) => {
+								setAccount({ ...account, password: e.target.value });
+								btnEnabelDisable();
+							}}
 							onFocus={() => setAccount({ ...account, passwordError: "" })}
 							onBlur={() => {
 								if (account.password.length === 0) {
@@ -276,6 +358,7 @@ function FormDialog({
 										...account,
 										passwordError: "Password should not be Empty",
 									});
+									btnEnabelDisable();
 								}
 							}}
 							{...{
@@ -289,27 +372,18 @@ function FormDialog({
 						{viewMode ? (
 							<div
 								style={{
-									margin: "8px auto",
-									width: "70%",
+									margin: "10px auto",
 									display: "flex",
-									flexDirection: "row",
-									columnGap: "10%",
+									columnGap: "40px",
 								}}
 							>
-								<Button
-									id="formButton"
-									variant="contained"
-									style={{ backgroundColor: "black" }}
-									onClick={showAndHideForm}
-								>
-									Cancel
-								</Button>
 								<Button
 									id="formButton"
 									variant="contained"
 									value="Edit"
 									onClick={(e) => {
 										setViewMode(false);
+										setBtnEnable(true);
 										handleMode(e);
 									}}
 								>
@@ -332,7 +406,12 @@ function FormDialog({
 									columnGap: "40px",
 								}}
 							>
-								<Button id="formButton" variant="contained" onClick={handleonTest}>
+								<Button
+									id="formButton"
+									variant="contained"
+									onClick={handleonTest}
+									disabled={btnEnable}
+								>
 									Test
 								</Button>
 								<Button
@@ -341,6 +420,7 @@ function FormDialog({
 									variant="contained"
 									style={{ backgroundColor: "green" }}
 									onClick={onSubmit}
+									disabled={btnEnable}
 								>
 									{regOrUpdate}
 								</Button>
@@ -357,9 +437,9 @@ function FormDialog({
 				anchorReference="anchorPosition"
 				anchorPosition={{ top: 300, left: 530 }}
 				open={dcDel}
-				onClose={() => {
-					setDcDel(false);
-				}}
+				// onClose={() => {
+				// 	setDcDel(false);
+				// }}
 			>
 				<p>{dcDelMeg}</p>
 				<div style={{ margin: "0px 0px 0px auto", display: "flex", columnGap: "20px" }}>

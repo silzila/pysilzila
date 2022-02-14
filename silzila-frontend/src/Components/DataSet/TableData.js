@@ -29,7 +29,7 @@ function TableData({
 		<>
 			<Dialog
 				open={showTableData}
-				onClose={handleClose}
+				// onClose={handleClose}
 				style={{
 					margin: "20px auto",
 					maxHeight: "90vh",
@@ -43,8 +43,8 @@ function TableData({
 						display: "flex",
 						flexDirection: "row",
 						columnGap: "2rem",
-						// columnCount: "3",
 						justifyContent: "space-between",
+						fontSize: "16px",
 					}}
 				>
 					<p style={{ float: "left" }}>{selectedTable}</p>
@@ -74,7 +74,7 @@ function TableData({
 						<TableBody style={{ width: "auto" }}>
 							{tableData.map((data, i) => {
 								return (
-									<TableRow key={i}>
+									<TableRow key={i} id="TRow">
 										{objKeys.map((obj) => {
 											return <TableCell>{data[obj]}</TableCell>;
 										})}
