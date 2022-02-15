@@ -34,6 +34,8 @@ const TableList = (props) => {
                         isSelected: el.isSelected,
                         alias: tableName,
                         columns: arrayWithUid,
+                        dcId: props.connectionId,
+                        schema: props.schema,
                     };
                 }
             });

@@ -98,6 +98,24 @@ async def connect_dc(dc_uid: str, db: Session = Depends(get_db)):
     return {"message": "success"}
 
 
+# helper function to run before getting meta data from DBs
+# sets up connection pool if not created before
+async def activate_dc(dc_uid: str, db: Session):
+    dc_activated = await engine.is_dc_active(dc_uid)
+    if not dc_activated:
+        print("**************************not activated")
+        db_dc = await service.get_dc_by_id(db, dc_uid)
+        if db_dc is None:
+            raise HTTPException(
+                status_code=404, detail="Data Connection not exists")
+        connect = await engine.create_connection(db_dc)
+        if not connect:
+            raise HTTPException(
+                status_code=500, detail="Could not make Data Connection")
+        return True
+    return True
+
+
 @router.get("/get-dc/{dc_uid}", response_model=schema.DataConnectionOut)
 async def read_dc(dc_uid: str, db: Session = Depends(get_db)):
     db_dc = await service.get_dc_by_id(db, dc_uid)
@@ -108,26 +126,33 @@ async def read_dc(dc_uid: str, db: Session = Depends(get_db)):
 
 
 @router.get("/schemas/{dc_uid}")
-async def read_schema_names(dc_uid: str):
+async def read_schema_names(dc_uid: str, db: Session = Depends(get_db)):
+    await activate_dc(dc_uid, db)
     return engine.get_schema_names(dc_uid)
 
 
 @router.get("/tables/{dc_uid}/{schema_name}")
-async def read_table_names(dc_uid: str, schema_name: str):
+async def read_table_names(dc_uid: str, schema_name: str,
+                           db: Session = Depends(get_db)):
+    await activate_dc(dc_uid, db)
     return engine.get_table_names(dc_uid, schema_name)
 
 
-@router.get("/columns/{dc_uid}/{schema_name}/{table_name}")
-async def read_column_names(dc_uid: str, schema_name: str, table_name: str):
+@ router.get("/columns/{dc_uid}/{schema_name}/{table_name}")
+async def read_column_names(dc_uid: str, schema_name: str, table_name: str,
+                            db: Session = Depends(get_db)):
+    await activate_dc(dc_uid, db)
     return engine.get_columns(dc_uid, schema_name, table_name)
 
 
-@router.get("/sample-records/{dc_uid}/{schema_name}/{table_name}")
-async def read_sample_records(dc_uid: str, schema_name: str, table_name: str):
+@ router.get("/sample-records/{dc_uid}/{schema_name}/{table_name}")
+async def read_sample_records(dc_uid: str, schema_name: str, table_name: str,
+                              db: Session = Depends(get_db)):
+    await activate_dc(dc_uid, db)
     return engine.get_sample_records(dc_uid, schema_name, table_name)
 
 
-@router.get("/get-all-dc", response_model=List[schema.DataConnectionOut])
+@ router.get("/get-all-dc", response_model=List[schema.DataConnectionOut])
 async def get_all_dc(request: Request, db: Session = Depends(get_db)):
     db_dc = await service.get_all_dc(db, request.state.uid)
     if db_dc is None:

@@ -105,17 +105,18 @@ async def activate_dc_ds(dc_uid: str, ds_uid: str, db: Session) -> str:
     # if pool available for the DC, get dialect name
     # else activate pool for the DC and then get dialect name
     # dialect name (vendor name) is required to custom build query
+    vendor_name = False
     vendor_name = await engine.get_vendor_name_from_db_pool(dc_uid)
     if vendor_name == False:
         db_dc = await get_dc_by_id(db, dc_uid)
         if db_dc is None:
             raise HTTPException(
                 status_code=404, detail="Data Connection not exists")
-        connect = await engine.create_connection(db_dc)
-        if not connect:
+        connected = await engine.create_connection(db_dc)
+        if not connected:
             raise HTTPException(
                 status_code=500, detail="Could not make Data Connection")
-    vendor_name = await engine.get_vendor_name_from_db_pool(dc_uid)
+        vendor_name = await engine.get_vendor_name_from_db_pool(dc_uid)
     #################################################################################
     # load DS, check if already loaded, if not loaded, load it
     is_ds_loaded = await engine.is_ds_active(dc_uid, ds_uid)

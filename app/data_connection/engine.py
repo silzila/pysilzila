@@ -5,6 +5,7 @@ from fastapi import HTTPException
 
 # to Test Connection
 from sqlalchemy import create_engine, inspect, MetaData, Table, true
+from sqlalchemy.orm.session import Session
 from sqlalchemy.sql import text
 from sqlalchemy.exc import SQLAlchemyError
 import urllib.parse
@@ -129,6 +130,13 @@ async def is_ds_active(dc_uid: str, ds_uid: str) -> bool:
         return True
     else:
         return False
+
+
+async def is_dc_active(dc_uid: str) -> bool:
+    global db_pool
+    if not (db_pool and db_pool.get(dc_uid)):
+        return False
+    return True
 
 
 async def activate_ds(ds: DataSetOut):
