@@ -5,3 +5,6 @@ venv/
 *.db
 db_test/
 silila-frontend/package-lock.json
+silzila-frontend/package-lock.json
+out/linecounter.json
+out/linecounter.txt
