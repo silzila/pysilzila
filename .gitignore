@@ -4,7 +4,6 @@ venv/
 *sqlite3*.*
 *.db
 db_test/
-silila-frontend/package-lock.json
-silzila-frontend/package-lock.json
 out/linecounter.json
 out/linecounter.txt
+silzila-frontend/package-lock.json

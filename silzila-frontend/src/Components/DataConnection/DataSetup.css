@@ -35,13 +35,14 @@ Data Setup Page
     padding: 1rem;
     border-radius: 0.5rem;
     background-color: #f0f0f0;
-    overflow: hidden;
+    overflow: auto;
 }
-/* .connectionListContainer {
+
+.connectionListContainer {
     display: flex;
     flex-direction: column;
-    overflow: auto;
-} */
+    overflow: hidden;
+}
 
 .dashboardsContainer {
     flex: 1;
@@ -57,8 +58,10 @@ Data Setup Page
     padding-bottom: 1rem;
     font-weight: 600;
     display: flex;
-    border-bottom: 1px solid rgb(192, 192, 192);
     overflow: hidden;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-bottom: 1px solid rgb(192, 192, 192);
 }
 
 .containerTitle {
@@ -76,6 +79,7 @@ Data Setup Page
     width: 60px;
     font-size: 18px;
     cursor: pointer;
+    /* margin-right: 10px; */
 }
 
 .containerButton:hover {
@@ -89,7 +93,7 @@ Data Connections
 */
 
 .dataConnectionList {
-    margin: 10px;
+    margin: 8px;
     background-color: rgb(250, 250, 250);
     border-radius: 3px;
     display: flex;
@@ -103,6 +107,25 @@ Data Connections
 
 .inputFieldStyle {
     margin-top: 25px;
+}
+
+.MuiPopover-paper {
+    padding: 20px;
+    width: 30rem;
+    display: flex;
+    flex-direction: column;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+}
+
+/* TODO: */
+/* 1.height,width,space between textFields have to set */
+
+.formTF {
+    height: 35px;
+    padding: 5px;
+    font-size: 14px;
+    margin: 10px;
 }
 
 /* 
@@ -120,7 +143,7 @@ Datasets
 .sidebar {
     width: 16rem;
     background-color: #f0f0f0;
-
+    border-right: 1px solid #e4e4e4;
     padding: 1rem;
     overflow-y: auto;
     overflow-x: hidden;
@@ -189,3 +212,18 @@ Datasets
 DashboardList
 ------------------------------------------------- 
 */
+
+/* 
+-------------------------------------------------
+TableData
+------------------------------------------------- 
+*/
+
+#TRow:nth-child(even) {
+    background-color: rgb(245, 245, 245);
+}
+
+#TColumn {
+    padding: 3px;
+    height: 28px;
+}
