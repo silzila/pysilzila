@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Dialog, Popover } from "@mui/material";
+import { Dialog, MenuItem, Popover, Select } from "@mui/material";
 import "./DataSetup.css";
 import { TextField, Button } from "@mui/material";
 import FetchData from "../../ServerCall/FetchData";
@@ -112,6 +112,23 @@ function FormDialog({
 	// ==============================================================
 	// Delete Dc
 	// ==============================================================
+	const dslistitem = () => {
+		if (dsList.length !== 0) {
+			return (
+				<React.Fragment>
+					<p>
+						Following Datasets are using this connection,
+						{dsList.map((el) => (
+							<p style={{ color: "red" }}>{el}</p>
+						))}
+						Are you sure to delete this Connection?
+					</p>
+				</React.Fragment>
+			);
+		} else {
+			return <p>Are you sure to delete this Connection?</p>;
+		}
+	};
 
 	const deleteDcWarning = async () => {
 		var result = await FetchData({
@@ -120,7 +137,6 @@ function FormDialog({
 			url: "ds/get-all-ds",
 			headers: { Authorization: `Bearer ${token}` },
 		});
-
 		console.log(result);
 		if (result.status) {
 			result.data.map((ds) => {
@@ -128,19 +144,8 @@ function FormDialog({
 					dsList.push(ds.friendly_name);
 				}
 			});
-			if (dsList.length !== 0) {
-				setDcDel(true);
-				setDcDelMeg(
-					"Following Datasets are using this dataConnection," +
-						"\n" +
-						dsList.map((ds) => <p>{ds}</p>) +
-						"\n" +
-						"are you sure you want to delete this Connection?"
-				);
-			} else {
-				setDcDel(true);
-				setDcDelMeg("Are you sure you want to delete this connection?");
-			}
+			setDcDel(true);
+			setDcDelMeg(dslistitem());
 		} else {
 			console.log(result.data.detail);
 			dsList = [];
@@ -203,6 +208,8 @@ function FormDialog({
 		}
 	};
 
+	console.log(account.vendor, "vendor");
+
 	return (
 		<>
 			<Dialog
@@ -238,7 +245,10 @@ function FormDialog({
 							<CloseIcon onClick={showAndHideForm} />
 						</div>
 						{/*========================== Reusable Component from ../CommonFunctions/TextFieldComponents========================= */}
-						<TextFieldComponent
+						<Select
+							style={{ width: "60%", height: "45px" }}
+							disabled={viewMode}
+							value={account.vendor}
 							onChange={(e) => {
 								setAccount({ ...account, vendor: e.target.value });
 								btnEnabelDisable();
@@ -253,8 +263,10 @@ function FormDialog({
 									btnEnabelDisable();
 								}
 							}}
-							{...{ viewMode, value: account.vendor, lable: "Vendor" }}
-						/>
+						>
+							<MenuItem value="postgresql">Postgresql</MenuItem>
+							<MenuItem value="mysql">Mysql</MenuItem>
+						</Select>
 						<small style={{ color: "red" }}>{account.vendorError}</small>
 						<TextFieldComponent
 							onChange={(e) => {
@@ -325,7 +337,7 @@ function FormDialog({
 									btnEnabelDisable();
 								}
 							}}
-							{...{ viewMode, value: account.username, lable: "Usename" }}
+							{...{ viewMode, value: account.username, lable: "Username" }}
 						/>
 						<small style={{ color: "red" }}>{account.usernameError}</small>
 						<TextFieldComponent
@@ -378,7 +390,6 @@ function FormDialog({
 								}}
 							>
 								<Button
-									id="formButton"
 									variant="contained"
 									value="Edit"
 									onClick={(e) => {
@@ -390,7 +401,6 @@ function FormDialog({
 									Edit
 								</Button>
 								<Button
-									id="formButton"
 									variant="contained"
 									style={{ backgroundColor: "red" }}
 									onClick={deleteDcWarning}
@@ -407,7 +417,6 @@ function FormDialog({
 								}}
 							>
 								<Button
-									id="formButton"
 									variant="contained"
 									onClick={handleonTest}
 									disabled={btnEnable}
@@ -415,7 +424,6 @@ function FormDialog({
 									Test
 								</Button>
 								<Button
-									id="formButton"
 									type="submit"
 									variant="contained"
 									style={{ backgroundColor: "green" }}
@@ -441,7 +449,7 @@ function FormDialog({
 				// 	setDcDel(false);
 				// }}
 			>
-				<p>{dcDelMeg}</p>
+				<small>{dcDelMeg}</small>
 				<div style={{ margin: "0px 0px 0px auto", display: "flex", columnGap: "20px" }}>
 					<Button
 						id="formButton"

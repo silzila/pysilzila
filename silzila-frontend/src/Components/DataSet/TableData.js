@@ -27,16 +27,10 @@ function TableData({
 	};
 	return (
 		<>
+			{/* TODO Dialog width have to be increased */}
 			<Dialog
 				open={showTableData}
 				// onClose={handleClose}
-				style={{
-					margin: "20px auto",
-					maxHeight: "90vh",
-					maxWidth: "90vw",
-					minHeight: "auto",
-					minWidth: "auto",
-				}}
 			>
 				<DialogTitle
 					style={{
@@ -76,7 +70,7 @@ function TableData({
 								return (
 									<TableRow key={i} id="TRow">
 										{objKeys.map((obj) => {
-											return <TableCell>{data[obj]}</TableCell>;
+											return <TableCell id="TColumn">{data[obj]}</TableCell>;
 										})}
 									</TableRow>
 								);
