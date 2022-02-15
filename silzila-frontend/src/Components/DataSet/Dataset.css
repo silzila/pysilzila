@@ -1,23 +1,21 @@
 .canvas {
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .canvasStyle {
     flex: 1;
-    /* width: 100%; */
     position: relative;
+    overflow: auto;
+    display: flex;
 }
 
 .draggableBox {
-    border: gainsboro 2px solid;
-    border-radius: 0.5px;
-    width: 200px;
+    border: 1px solid #d7d9db;
+    max-width: 300px;
     margin: 20px;
-    display: grid;
-    grid-template-rows: auto auto;
-    max-height: auto;
-    background-color: white;
+    display: inline-block;
 }
 
 .bottomBar {
@@ -37,4 +35,54 @@
     background-color: #d7d9db;
     padding: 5px 10px;
     display: flex;
+}
+
+.columnBox {
+    position: relative;
+    padding: 5px;
+    border-top: 1px solid #d7d9db;
+    display: flex;
+}
+
+.columnItem {
+    padding: auto;
+    cursor: pointer;
+}
+
+.ellip {
+    flex: 1;
+    padding: auto 10px;
+    text-align: left;
+}
+
+.ellip:hover {
+    white-space: normal;
+    /* overflow: hidden; */
+    text-overflow: unset;
+    width: fit-content;
+    text-align: left;
+    /* background-color: white; */
+}
+.connectPoint {
+    opacity: 0.5;
+    background-color: grey;
+}
+.connectPoint:hover {
+    background-color: rgb(95, 95, 95);
+    opacity: 1;
+}
+
+/* ==================== relationShip popover====================     */
+.RelPopover {
+    width: auto;
+    height: auto;
+    overflow: auto;
+    padding: 1rem;
+    /* display: grid; */
+    /* grid-template-columns: 30% 70%; */
+}
+.div1 {
+    /* display: grid;
+    grid-template-rows: 10% 90%;
+    width: 400px; */
 }

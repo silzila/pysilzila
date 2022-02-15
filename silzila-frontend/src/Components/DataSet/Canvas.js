@@ -4,6 +4,8 @@ import BottomBar from "./BottomBar";
 import "./Dataset.css";
 import Tables from "./Tables";
 
+import Xarrow, { Xwrapper } from "react-xarrows";
+
 const Canvas = ({
     // state
     tempTable,
@@ -22,16 +24,31 @@ const Canvas = ({
     return (
         <div className="canvas">
             <div className="canvasStyle" id="canvasTableArea">
-                {tempTable &&
-                    tempTable.map((table) => {
-                        return (
-                            <Tables
-                                tableData={table}
-
-                                // addArrow={addArrow}
-                            />
-                        );
-                    })}
+                <Xwrapper>
+                    {tempTable &&
+                        tempTable.map((table) => {
+                            return <Tables tableData={table} />;
+                        })}
+                    {arrows &&
+                        arrows.map((ar, index) => {
+                            return (
+                                <div
+                                    className="arrowIcon"
+                                    // TODO OnClick function should open Relationship popover with the values pre-selected
+                                    // onClick={() => clickOnArrowfunc(index)}
+                                >
+                                    <Xarrow
+                                        start={ar.start}
+                                        end={ar.end}
+                                        color="grey"
+                                        strokeWidth={2}
+                                        showHead={ar.showHead}
+                                        showTail={ar.showTail}
+                                    />
+                                </div>
+                            );
+                        })}
+                </Xwrapper>
             </div>
             <BottomBar />
         </div>
@@ -46,6 +63,8 @@ const mapStateToProps = (state) => {
         token: state.isLogged.accessToken,
     };
 };
+
+// TODO Create action calls in separate file
 
 const mapDispatchToProps = (dispatch) => {
     return {

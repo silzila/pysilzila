@@ -3,6 +3,8 @@ import React, { useRef, useState } from "react";
 import Draggable from "react-draggable";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { connect } from "react-redux";
+import CanvasTableColumns from "./CanvasTableColumns";
+import { useXarrow } from "react-xarrows";
 
 const Tables = ({
     // props
@@ -17,6 +19,7 @@ const Tables = ({
     // dipatch
 }) => {
     const dragRef = useRef();
+    const updateXarrow = useXarrow();
 
     let tableItems = tableData.columns;
     let tableId = tableData.tableName;
@@ -40,72 +43,77 @@ const Tables = ({
     };
 
     return (
-        <Draggable ref={dragRef} handle={`#${tableId}`} bounds="#canvasTableArea">
-            <div className="draggableTable">
-                {inputField ? (
-                    <div>
-                        <TextField
-                            variant="standard"
-                            id="name"
-                            className="inputArea"
-                            value={newName}
-                            onChange={(e) => {
-                                e.preventDefault();
-                                setNewName(e.target.value);
-                            }}
-                        />
-                        <Button
-                            type="button"
-                            className="button_Ok"
-                            onClick={() => changeTableName(alias)}
-                        >
-                            Ok
-                        </Button>
-                    </div>
-                ) : (
-                    <div className="draggableBoxTitle" id={tableId}>
-                        <div
-                            onDoubleClick={() => {
-                                setInputField(true);
-                                setNewName(alias);
-                                setTimeout(() => {
-                                    // selectText();
-                                }, 10);
-                            }}
-                        >
-                            {alias}
-                        </div>
+        <div>
+            <Draggable
+                ref={dragRef}
+                handle={`#${tableId}`}
+                bounds="#canvasTableArea"
+                onDrag={updateXarrow}
+                onStop={updateXarrow}
+            >
+                <div className="draggableBox">
+                    {inputField ? (
                         <div>
-                            <MoreVertIcon
-                                style={{ float: "right" }}
-                                onClick={() => {
-                                    setSelectedTable(tableTitle);
-                                    setOpen(true);
+                            <TextField
+                                variant="standard"
+                                id="name"
+                                className="inputArea"
+                                value={newName}
+                                onChange={(e) => {
+                                    e.preventDefault();
+                                    setNewName(e.target.value);
                                 }}
                             />
+                            <Button
+                                type="button"
+                                className="button_Ok"
+                                onClick={() => changeTableName(alias)}
+                            >
+                                Ok
+                            </Button>
                         </div>
-                    </div>
-                )}
-                {tableItems.map((item, index) => {
-                    return (
-                        <div>{item.column_name}</div>
-                        // <Columns
-                        // columnName={item.column_name}
-                        //     tableName={tableTitle}
-                        //     itemType={item.data_type}
-                        //     index={index}
-                        //     {...{
-                        //         addArrow,
-                        //         handler: "right",
-                        //         itemId: item.uid,
-                        //         tableId: tableId,
-                        //         dragRef,
-                        //     }}
-                        //     />
-                    );
-                })}
-            </div>
-        </Draggable>
+                    ) : (
+                        <div className="draggableBoxTitle" id={tableId}>
+                            <div
+                                onDoubleClick={() => {
+                                    setInputField(true);
+                                    setNewName(alias);
+                                    setTimeout(() => {
+                                        // selectText();
+                                    }, 10);
+                                }}
+                            >
+                                {alias}
+                            </div>
+                            <div>
+                                <MoreVertIcon
+                                    style={{ float: "right" }}
+                                    onClick={() => {
+                                        setSelectedTable(tableTitle);
+                                        setOpen(true);
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    )}
+                    {tableItems.map((item, index) => {
+                        return (
+                            // <div>{item.column_name}</div>
+                            <CanvasTableColumns
+                                columnName={item.column_name}
+                                tableName={tableTitle}
+                                itemType={item.data_type}
+                                index={index}
+                                handler="right"
+                                itemId={item.uid}
+                                tableId={tableId}
+                                dragRef={dragRef}
+                            />
+                        );
+                    })}
+                </div>
+            </Draggable>
+        </div>
     );
 };
 

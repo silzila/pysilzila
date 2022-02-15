@@ -30,6 +30,7 @@ const DataSetReducer = (state = initialState, action) => {
     console.log(action.type, action.payload);
 
     switch (action.type) {
+        // sets DC id to state
         case "SET_CONNECTION_VALUE":
             return update(state, {
                 connection: {
@@ -37,6 +38,7 @@ const DataSetReducer = (state = initialState, action) => {
                 },
             });
 
+        // sets Friendly name to state
         case "SET_FRIENDLY_NAME":
             return update(state, {
                 friendly_name: {
@@ -44,6 +46,7 @@ const DataSetReducer = (state = initialState, action) => {
                 },
             });
 
+        // sets Schema Name to state
         case "SET_DATA_SCHEMA":
             return update(state, {
                 schema: {
@@ -51,6 +54,7 @@ const DataSetReducer = (state = initialState, action) => {
                 },
             });
 
+        // sets list of tables for a selected schema to state
         case "SET_TABLES":
             return update(state, {
                 tables: {
@@ -58,6 +62,7 @@ const DataSetReducer = (state = initialState, action) => {
                 },
             });
 
+        // When a table in sidebar is checked / unchecked, update state accordingly
         case "ON_CHECKED":
             console.log(action.payload);
             const x = state.tables.map((tab) => {
@@ -94,6 +99,7 @@ const DataSetReducer = (state = initialState, action) => {
                 },
             });
 
+        // Tables that are selected in sidebar and to be displayed in canvas
         case "ADD_TABLE":
             return update(state, {
                 tempTable: {
@@ -101,6 +107,7 @@ const DataSetReducer = (state = initialState, action) => {
                 },
             });
 
+        // Remove all arrows belonging to a particular table (whether the arrow starts or ends in this table)
         case "REMOVE_ARROWS":
             const y = state.arrows.filter((arr) => {
                 return arr.startTableName !== action.payload;
@@ -114,8 +121,31 @@ const DataSetReducer = (state = initialState, action) => {
                 },
             });
 
+        // bring to Initial state. Used when dataconnection is changed from sidebar
         case "RESET_STATE":
             return initialState;
+
+        // Adding information required to draw an arrow
+        case "ADD_ARROWS":
+            return update(state, {
+                arrows: {
+                    $push: [action.payload],
+                },
+            });
+
+        case "CLICK_ON_ARROW":
+            return update(state, {
+                arrows: {
+                    $set: [...action.payload],
+                },
+            });
+
+        case "SET_ARROW_TYPE":
+            return update(state, {
+                arrowType: {
+                    $set: [...action.payload],
+                },
+            });
 
         default:
             return state;
