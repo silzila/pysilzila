@@ -31,7 +31,7 @@ function FormDialog({
 }) {
 	const [dcDel, setDcDel] = useState(false);
 	const [dcDelMeg, setDcDelMeg] = useState("");
-	let dsList = [];
+	let dsList = ["abcd", "efgh", "ijkl"];
 	const [btnEnable, setBtnEnable] = useState(false);
 
 	const btnEnabelDisable = () => {
@@ -116,17 +116,24 @@ function FormDialog({
 		if (dsList.length !== 0) {
 			return (
 				<React.Fragment>
-					<p>
+					<div
+						style={{
+							fontSize: "16px",
+							margin: "10px",
+						}}
+					>
 						Following Datasets are using this connection,
-						{dsList.map((el) => (
-							<p style={{ color: "red" }}>{el}</p>
-						))}
+						<div style={{ height: "5rem", overflow: "auto", margin: "10px" }}>
+							{dsList.map((el) => (
+								<p style={{ color: "red", margin: "0px" }}>{el}</p>
+							))}
+						</div>
 						Are you sure to delete this Connection?
-					</p>
+					</div>
 				</React.Fragment>
 			);
 		} else {
-			return <p>Are you sure to delete this Connection?</p>;
+			return <div>Are you sure to delete this Connection?</div>;
 		}
 	};
 
@@ -248,6 +255,8 @@ function FormDialog({
 						<Select
 							style={{ width: "60%", height: "45px" }}
 							disabled={viewMode}
+							label="Vendor"
+							variant="outlined"
 							value={account.vendor}
 							onChange={(e) => {
 								setAccount({ ...account, vendor: e.target.value });
@@ -443,18 +452,20 @@ function FormDialog({
 					horizontal: "center",
 				}}
 				anchorReference="anchorPosition"
-				anchorPosition={{ top: 300, left: 530 }}
+				anchorPosition={{ top: 200, left: 530 }}
 				open={dcDel}
-				// onClose={() => {
-				// 	setDcDel(false);
-				// }}
 			>
-				<small>{dcDelMeg}</small>
+				<p>{dcDelMeg}</p>
 				<div style={{ margin: "0px 0px 0px auto", display: "flex", columnGap: "20px" }}>
 					<Button
-						id="formButton"
 						variant="contained"
-						style={{ backgroundColor: "black", float: "left" }}
+						style={{
+							backgroundColor: "black",
+							float: "left",
+							height: "30px",
+							width: "40px",
+							fontSize: "12px",
+						}}
 						onClick={() => {
 							setDcDel(false);
 						}}
@@ -463,9 +474,13 @@ function FormDialog({
 					</Button>
 					<Button
 						onClick={deleteDc}
-						id="formButton"
 						variant="contained"
-						style={{ backgroundColor: "red" }}
+						style={{
+							backgroundColor: "red",
+							height: "30px",
+							width: "40px",
+							fontSize: "12px",
+						}}
 					>
 						Delete
 					</Button>
