@@ -1,14 +1,3 @@
-// =================================================================================
-//
-// TODO:
-//
-// 1. Checked table names disappear when we move from page to page.
-//
-//      Eg. After selecting table A from one schema 1, once we move
-//      to schema 2 and come back to schema 1, the table A must be checked.
-//      This state is not saved and is missed
-// =================================================================================
-
 import React, { useState } from "react";
 import { Checkbox, Tooltip } from "@mui/material";
 
@@ -42,6 +31,8 @@ const TableList = (props) => {
                         isSelected: el.isSelected,
                         alias: tableName,
                         columns: arrayWithUid,
+                        dcId: props.connectionId,
+                        schema: props.schema,
                     };
                 }
             });
@@ -96,7 +87,10 @@ const TableList = (props) => {
                         handleOpen(props.table.tableName);
                     }}
                 >
-                    <VisibilityOutlinedIcon className="tableIcon" style={{ width: "1rem", height: "1rem", margin: "auto 5px" }} />
+                    <VisibilityOutlinedIcon
+                        className="tableIcon"
+                        style={{ width: "1rem", height: "1rem", margin: "auto 5px" }}
+                    />
                 </Tooltip>
             ) : (
                 ""

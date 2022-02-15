@@ -25,6 +25,10 @@ export const toggleOnChecked = (data) => {
 export const removeArrows = (pl) => {
     return { type: "REMOVE_ARROWS", payload: pl };
 };
+export const resetState = () => {
+    return { type: "RESET_STATE" };
+};
+
 // =============================================================================
 // Actions from Canvas
 // =============================================================================

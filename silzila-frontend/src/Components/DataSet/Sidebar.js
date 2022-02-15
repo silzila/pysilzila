@@ -1,12 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { setConnectionValue, setDataSchema, setFriendlyName, setUserTable } from "../../redux/Dataset/datasetActions";
+import {
+    setConnectionValue,
+    setDataSchema,
+    setFriendlyName,
+    setUserTable,
+} from "../../redux/Dataset/datasetActions";
 import FetchData from "../../ServerCall/FetchData";
 import { ChangeConnection } from "../CommonFunctions/DialogComponents";
 import { SelectListItem } from "../CommonFunctions/SelectListItem";
 import TableList from "./TableList";
 
-const Sidebar = (props) => {
+const Sidebar = ({
+    // state
+    token,
+    tableList,
+    tempTable,
+
+    // dispatch
+    setConnection,
+    setDataSchema,
+    setUserTable,
+}) => {
     const [selectedConnection, setSelectedConnection] = useState("");
     const [connectionList, setConnectionList] = useState([]);
     const [connectionId, setConnectionId] = useState();
@@ -14,18 +29,47 @@ const Sidebar = (props) => {
     const [selectedSchema, setSelectedSchema] = useState("");
 
     const [openDlg, setOpenDlg] = useState(false);
-    const [x, setX] = useState(false);
+    const [resetDataset, setResetDataset] = useState(false);
+
+    const [dcToResetTo, setDcToResetTo] = useState("");
+
+    const onConnectionChange = (e) => {
+        console.log(e.target.value);
+        console.log(tempTable.length);
+        if (tempTable.length > 0) {
+            setDcToResetTo(e.target.value);
+            setOpenDlg(true);
+        } else {
+            setSelectedConnection(e.target.value);
+            getSchemaList(e.target.value);
+            setSelectedSchema("");
+            setDataSchema("");
+        }
+    };
 
     useEffect(() => {
         getAllDc();
     }, []);
+
+    console.log(dcToResetTo);
+
+    useEffect(() => {
+        if (resetDataset) {
+            console.log("Reseting DC name");
+            setSelectedConnection(dcToResetTo);
+            getSchemaList(dcToResetTo);
+            setSelectedSchema("");
+            setDataSchema("");
+            setResetDataset(false);
+        }
+    }, [resetDataset]);
 
     const getAllDc = async () => {
         var res = await FetchData({
             requestType: "noData",
             method: "GET",
             url: "dc/get-all-dc",
-            headers: { Authorization: `Bearer ${props.token}` },
+            headers: { Authorization: `Bearer ${token}` },
         });
 
         console.log(res);
@@ -36,8 +80,8 @@ const Sidebar = (props) => {
         }
     };
 
-    const getSchemaList = async (e) => {
-        const dc_uid = e.target.value;
+    const getSchemaList = async (uid) => {
+        const dc_uid = uid;
         let fname;
         connectionList.map((con) => {
             if (con.dc_uid === dc_uid) {
@@ -45,16 +89,15 @@ const Sidebar = (props) => {
             }
         });
         setConnectionId(dc_uid);
-        props.setConnection(dc_uid);
-        // props.setFriendlyName(fname);
-        props.setUserTable([]);
+        setConnection(dc_uid);
+        setUserTable([]);
 
         var res = await FetchData({
             requestType: "noData",
             method: "GET",
             url: `dc/connect-dc/${dc_uid}`,
-            headers: { Authorization: `Bearer ${props.token}` },
-            token: props.token,
+            headers: { Authorization: `Bearer ${token}` },
+            token: token,
         });
 
         console.log(res);
@@ -65,8 +108,8 @@ const Sidebar = (props) => {
                     requestType: "noData",
                     method: "GET",
                     url: `dc/schemas/${dc_uid}`,
-                    headers: { Authorization: `Bearer ${props.token}` },
-                    token: props.token,
+                    headers: { Authorization: `Bearer ${token}` },
+                    token: token,
                 });
 
                 console.log(res2);
@@ -85,20 +128,34 @@ const Sidebar = (props) => {
         console.log(e.target.value);
         const schema = e.target.value;
         setSelectedSchema(schema);
-        props.setDataSchema(schema);
+        setDataSchema(schema);
 
         var res = await FetchData({
             requestType: "noData",
             method: "GET",
             url: `dc/tables/${connectionId}/${schema}`,
-            headers: { Authorization: `Bearer ${props.token}` },
-            token: props.token,
+            headers: { Authorization: `Bearer ${token}` },
+            token: token,
         });
 
         console.log(res);
         if (res.status) {
-            props.setUserTable(res.data);
-            setX(true);
+            const userTable = res.data.map((el) => {
+                console.log(el, tempTable, connectionId, schema);
+                var tableAlreadyChecked = tempTable.filter(
+                    (tbl) =>
+                        tbl.dcId === connectionId && tbl.schema === schema && tbl.tableName === el
+                )[0];
+                console.log(tableAlreadyChecked);
+                if (tableAlreadyChecked) {
+                    return { tableName: el, isSelected: true };
+                }
+                return { tableName: el, isSelected: false };
+            });
+
+            console.log(userTable);
+
+            setUserTable(userTable);
         } else {
             console.log(res);
         }
@@ -111,11 +168,7 @@ const Sidebar = (props) => {
                 <select
                     className="selectBar"
                     onChange={(e) => {
-                        setSelectedConnection(e.target.value);
-
-                        getSchemaList(e);
-                        setSelectedSchema("");
-                        props.setDataSchema("");
+                        onConnectionChange(e);
                     }}
                     value={selectedConnection}
                 >
@@ -152,9 +205,9 @@ const Sidebar = (props) => {
 
             <React.Fragment>
                 <div className="sidebarHeading">Tables</div>
-                {props.tableList.length !== 0 ? (
-                    props.tableList &&
-                    props.tableList.map((tab) => {
+                {tableList.length !== 0 ? (
+                    tableList &&
+                    tableList.map((tab) => {
                         return (
                             <SelectListItem
                                 key={tab.tableName}
@@ -171,7 +224,6 @@ const Sidebar = (props) => {
                                             xprops={xprops}
                                             connectionId={connectionId}
                                             selectedSchema={selectedSchema}
-                                            // {...propsfromSideBar}
                                         />
                                     </div>
                                 )}
@@ -183,7 +235,7 @@ const Sidebar = (props) => {
                 )}
             </React.Fragment>
 
-            <ChangeConnection open={openDlg} setOpen={setOpenDlg} />
+            <ChangeConnection open={openDlg} setOpen={setOpenDlg} setReset={setResetDataset} />
         </div>
     );
 };
@@ -192,13 +244,13 @@ const mapStateToProps = (state) => {
     return {
         token: state.isLogged.accessToken,
         tableList: state.dataSetState.tables,
+        tempTable: state.dataSetState.tempTable,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         setConnection: (pl) => dispatch(setConnectionValue(pl)),
-        // setFriendlyName: (pl) => dispatch(setFriendlyName(pl)),
         setDataSchema: (pl) => dispatch(setDataSchema(pl)),
         setUserTable: (userTable) => dispatch(setUserTable(userTable)),
     };
