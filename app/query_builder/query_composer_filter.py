@@ -1,7 +1,9 @@
 # from turtle import st
 from ..data_set import schema
 from ..data_connection import engine
-from .sql_dialect.postgres_filter import get_filter_values_pg
+from .sql_dialect.filter_postgres import get_filter_values_pg
+from .sql_dialect.filter_mysql import get_filter_values_mysql
+from .sql_dialect.filter_mssql import get_filter_values_mssql
 
 from fastapi import HTTPException
 
@@ -19,4 +21,8 @@ async def compose_query(req: schema.ColumnFilter, dc_uid: str, ds_uid: str, vend
     ####################### Query changes as per dialect ############################
     if vendor_name == 'postgresql':
         QUERY = await get_filter_values_pg(req, FROM_TBL)
+    elif vendor_name == 'mysql':
+        QUERY = await get_filter_values_mysql(req, FROM_TBL)
+    elif vendor_name == 'mssql':
+        QUERY = await get_filter_values_mssql(req, FROM_TBL)
     return QUERY

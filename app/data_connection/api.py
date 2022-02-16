@@ -103,7 +103,7 @@ async def connect_dc(dc_uid: str, db: Session = Depends(get_db)):
 async def activate_dc(dc_uid: str, db: Session):
     dc_activated = await engine.is_dc_active(dc_uid)
     if not dc_activated:
-        print("**************************not activated")
+        # print("**************************not activated")
         db_dc = await service.get_dc_by_id(db, dc_uid)
         if db_dc is None:
             raise HTTPException(
