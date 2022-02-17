@@ -5,85 +5,85 @@ Data Setup Page
 */
 
 .dataSetup {
-    height: 100vh;
-    display: flex;
-    padding: 2rem;
-    box-sizing: border-box;
-    overflow: hidden;
+	height: 100vh;
+	display: flex;
+	padding: 2rem;
+	box-sizing: border-box;
+	overflow: hidden;
 }
 
 .dcds {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    margin-right: 1rem;
-    overflow: hidden;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	margin-right: 1rem;
+	overflow: hidden;
 }
 
 .dataConnectionContainer {
-    flex: 1;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    background-color: #f0f0f0;
-    box-sizing: border-box;
-    margin-bottom: 2rem;
-    overflow: auto;
+	flex: 1;
+	padding: 1rem;
+	border-radius: 0.5rem;
+	background-color: #f0f0f0;
+	box-sizing: border-box;
+	margin-bottom: 2rem;
+	overflow: auto;
 }
 
 .dataSetContainer {
-    flex: 1;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    background-color: #f0f0f0;
-    overflow: auto;
+	flex: 1;
+	padding: 1rem;
+	border-radius: 0.5rem;
+	background-color: #f0f0f0;
+	overflow: auto;
 }
 
 .connectionListContainer {
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
 }
 
 .dashboardsContainer {
-    flex: 1;
-    margin-left: 1rem;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    background-color: #f0f0f0;
+	flex: 1;
+	margin-left: 1rem;
+	padding: 1rem;
+	border-radius: 0.5rem;
+	background-color: #f0f0f0;
 }
 
 .containersHead {
-    box-sizing: border-box;
-    width: 100%;
-    padding-bottom: 1rem;
-    font-weight: 600;
-    display: flex;
-    overflow: hidden;
-    padding-left: 10px;
-    padding-right: 10px;
-    border-bottom: 1px solid rgb(192, 192, 192);
+	box-sizing: border-box;
+	width: 100%;
+	padding-bottom: 1rem;
+	font-weight: 600;
+	display: flex;
+	overflow: hidden;
+	padding-left: 10px;
+	padding-right: 10px;
+	border-bottom: 1px solid rgb(192, 192, 192);
 }
 
 .containerTitle {
-    display: flex;
-    align-items: center;
-    margin-right: 1rem;
-    flex: 1;
+	display: flex;
+	align-items: center;
+	margin-right: 1rem;
+	flex: 1;
 }
 .containerButton {
-    background-color: #000000;
-    border: none;
-    border-radius: 3px;
-    color: white;
-    height: 35px;
-    width: 60px;
-    font-size: 18px;
-    cursor: pointer;
-    /* margin-right: 10px; */
+	background-color: #000000;
+	border: none;
+	border-radius: 3px;
+	color: white;
+	height: 35px;
+	width: 60px;
+	font-size: 18px;
+	cursor: pointer;
+	/* margin-right: 10px; */
 }
 
 .containerButton:hover {
-    background-color: #055f7a;
+	background-color: #055f7a;
 }
 
 /* 
@@ -93,39 +93,39 @@ Data Connections
 */
 
 .dataConnectionList {
-    margin: 8px;
-    background-color: rgb(250, 250, 250);
-    border-radius: 3px;
-    display: flex;
-    padding: 5px;
+	margin: 8px;
+	background-color: rgb(250, 250, 250);
+	border-radius: 3px;
+	display: flex;
+	padding: 5px;
 }
 
 .dataConnectionName {
-    flex: 1;
-    text-align: left;
+	flex: 1;
+	text-align: left;
 }
 
 .inputFieldStyle {
-    margin-top: 25px;
+	margin-top: 25px;
 }
 
 .MuiPopover-paper {
-    padding: 20px;
-    width: 30rem;
-    display: flex;
-    flex-direction: column;
-    font-size: 18px;
-    letter-spacing: 0.5px;
+	padding: 20px;
+	width: 30rem;
+	display: flex;
+	flex-direction: column;
+	font-size: 18px;
+	letter-spacing: 0.5px;
 }
 
 /* TODO: */
 /* 1.height,width,space between textFields have to set */
 
 .formTF {
-    height: 35px;
-    padding: 5px;
-    font-size: 14px;
-    margin: 10px;
+	height: 35px;
+	padding: 5px;
+	font-size: 14px;
+	margin: 10px;
 }
 
 /* 
@@ -135,77 +135,77 @@ Datasets
 */
 
 .createDatasetPage {
-    display: flex;
-    height: 100vh;
-    overflow: hidden;
+	display: flex;
+	height: 100vh;
+	overflow: hidden;
 }
 
 .sidebar {
-    width: 16rem;
-    background-color: #f0f0f0;
-    border-right: 1px solid #e4e4e4;
-    padding: 1rem;
-    overflow-y: auto;
-    overflow-x: hidden;
-    /* resize: horizontal; */
-    /* gridTemplateRows: '15% 15% 70%', rowGap: '5px', overflowY: 'auto' */
+	width: 16rem;
+	background-color: #f0f0f0;
+	border-right: 1px solid #e4e4e4;
+	padding: 1rem;
+	overflow-y: auto;
+	overflow-x: hidden;
+	/* resize: horizontal; */
+	/* gridTemplateRows: '15% 15% 70%', rowGap: '5px', overflowY: 'auto' */
 }
 
 .selectBar {
-    width: 90%;
-    height: 45px;
-    border-radius: 5px;
-    background-color: #e8e9eb;
-    padding: 8px;
-    margin: 0.5rem 0 1.5rem 0;
+	width: 90%;
+	height: 45px;
+	border-radius: 5px;
+	background-color: #e8e9eb;
+	padding: 8px;
+	margin: 0.5rem 0 1.5rem 0;
 }
 
 .sidebarHeading {
-    font-weight: bold;
-    font-size: 12px;
-    /* padding: 1rem 0 0.5rem 0; */
+	font-weight: bold;
+	font-size: 12px;
+	/* padding: 1rem 0 0.5rem 0; */
 }
 
 .sidebarHeading::first-child {
-    padding-top: 0.5rem;
+	padding-top: 0.5rem;
 }
 
 .canvas {
-    flex: 1;
-    overflow: auto;
+	flex: 1;
+	overflow: auto;
 }
 .tableListStyle {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    margin-top: 5px;
-    padding: 2px;
-    font-size: 14px;
-    /* overflow: auto; */
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	margin-top: 5px;
+	padding: 2px;
+	font-size: 14px;
+	/* overflow: auto; */
 }
 .tableListStyle:hover {
-    box-shadow: 0 0 2px 2px #c9c9c9;
-    border-radius: 5px;
-    /* font-weight: bold; */
-    background-color: white;
+	box-shadow: 0 0 2px 2px #c9c9c9;
+	border-radius: 5px;
+	/* font-weight: bold; */
+	background-color: white;
 }
 .selectTableInput {
-    margin: auto 5px;
-    height: 6px;
-    width: 6px;
+	margin: auto 5px;
+	height: 6px;
+	width: 6px;
 }
 .tableIcon {
-    margin: auto 5px;
-    height: 15px;
-    width: 15px;
+	margin: auto 5px;
+	height: 15px;
+	width: 15px;
 }
 .tableName {
-    margin: auto 5px;
-    flex: 1;
-    text-align: left;
-    align-items: center;
-    overflow-x: hidden;
-    text-overflow: ellipsis;
+	margin: auto 5px;
+	flex: 1;
+	text-align: left;
+	align-items: center;
+	overflow-x: hidden;
+	text-overflow: ellipsis;
 }
 /* 
 -------------------------------------------------
@@ -220,10 +220,10 @@ TableData
 */
 
 #TRow:nth-child(even) {
-    background-color: rgb(245, 245, 245);
+	background-color: rgb(245, 245, 245);
 }
 
 #TColumn {
-    padding: 3px;
-    height: 28px;
+	padding: 3px;
+	height: 28px;
 }
