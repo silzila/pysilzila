@@ -14,15 +14,15 @@ const middleware = [reduxThunk];
 const store = createStore(allReducers, composeWithDevTools(applyMiddleware(...middleware)));
 
 function App() {
-    return (
-        <Provider store={store}>
-            <DndProvider backend={HTML5Backend}>
-                <div className="App">
-                    <Home />
-                </div>
-            </DndProvider>
-        </Provider>
-    );
+	return (
+		<Provider store={store}>
+			<DndProvider backend={HTML5Backend}>
+				<div className="App">
+					<Home />
+				</div>
+			</DndProvider>
+		</Provider>
+	);
 }
 
 export default App;

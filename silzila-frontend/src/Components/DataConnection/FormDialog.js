@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Dialog, MenuItem, Popover, Select } from "@mui/material";
+import { Dialog, FormControl, InputLabel, MenuItem, Popover, Select } from "@mui/material";
 import "./DataSetup.css";
 import { TextField, Button } from "@mui/material";
 import FetchData from "../../ServerCall/FetchData";
@@ -29,6 +29,8 @@ function FormDialog({
 	//value
 	token,
 }) {
+	// TODO Fix the warning "A component is changing an uncontrolled input to be controlled"
+
 	const [dcDel, setDcDel] = useState(false);
 	const [dcDelMeg, setDcDelMeg] = useState("");
 	let dsList = ["abcd", "efgh", "ijkl"];
@@ -252,30 +254,35 @@ function FormDialog({
 							<CloseIcon onClick={showAndHideForm} />
 						</div>
 						{/*========================== Reusable Component from ../CommonFunctions/TextFieldComponents========================= */}
-						<Select
-							style={{ width: "60%", height: "45px" }}
-							disabled={viewMode}
-							label="Vendor"
-							variant="outlined"
-							value={account.vendor}
-							onChange={(e) => {
-								setAccount({ ...account, vendor: e.target.value });
-								btnEnabelDisable();
-							}}
-							onFocus={() => setAccount({ ...account, vendorError: "" })}
-							onBlur={() => {
-								if (account.vendor.length === 0) {
-									setAccount({
-										...account,
-										vendorError: "vendor should not be Empty",
-									});
+
+						<FormControl style={{ width: "60%" }}>
+							<InputLabel id="selectVendor">Vendor</InputLabel>
+							<Select
+								required
+								fullWidth
+								labelId="selectVendor"
+								disabled={viewMode}
+								variant="outlined"
+								value={account.vendor}
+								onChange={(e) => {
+									setAccount({ ...account, vendor: e.target.value });
 									btnEnabelDisable();
-								}
-							}}
-						>
-							<MenuItem value="postgresql">Postgresql</MenuItem>
-							<MenuItem value="mysql">Mysql</MenuItem>
-						</Select>
+								}}
+								onFocus={() => setAccount({ ...account, vendorError: "" })}
+								onBlur={() => {
+									if (account.vendor.length === 0) {
+										setAccount({
+											...account,
+											vendorError: "vendor should not be Empty",
+										});
+										btnEnabelDisable();
+									}
+								}}
+							>
+								<MenuItem value="postgresql">Postgresql</MenuItem>
+								<MenuItem value="mysql">Mysql</MenuItem>
+							</Select>
+						</FormControl>
 						<small style={{ color: "red" }}>{account.vendorError}</small>
 						<TextFieldComponent
 							onChange={(e) => {

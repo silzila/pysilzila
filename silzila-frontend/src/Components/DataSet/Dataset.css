@@ -1,88 +1,88 @@
 .canvas {
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
 }
 
 .canvasStyle {
-    flex: 1;
-    position: relative;
-    overflow: auto;
-    display: flex;
+	flex: 1;
+	position: relative;
+	overflow: auto;
+	display: flex;
 }
 
 .draggableBox {
-    border: 1px solid #d7d9db;
-    max-width: 300px;
-    margin: 20px;
-    display: inline-block;
+	border: 1px solid #d7d9db;
+	max-width: 300px;
+	margin: 20px;
+	display: inline-block;
 }
 
 .bottomBar {
-    height: 3rem;
-    background-color: #f0f0f0;
-    border-top: 1px solid #e4e4e4;
+	height: 3rem;
+	background-color: #f0f0f0;
+	border-top: 1px solid #e4e4e4;
 }
 
 .draggableTable {
-    display: inline-block;
-    margin: 20px;
+	display: inline-block;
+	margin: 20px;
 }
 
 .draggableBoxTitle {
-    /* text-align: center; */
-    cursor: pointer;
-    background-color: #d7d9db;
-    padding: 5px 10px;
-    display: flex;
+	/* text-align: center; */
+	cursor: pointer;
+	background-color: #d7d9db;
+	padding: 5px 10px;
+	display: flex;
 }
 
 .columnBox {
-    position: relative;
-    padding: 5px;
-    border-top: 1px solid #d7d9db;
-    display: flex;
+	position: relative;
+	padding: 5px;
+	border-top: 1px solid #d7d9db;
+	display: flex;
 }
 
 .columnItem {
-    padding: auto;
-    cursor: pointer;
+	padding: auto;
+	cursor: pointer;
 }
 
 .ellip {
-    flex: 1;
-    padding: auto 10px;
-    text-align: left;
+	flex: 1;
+	padding: auto 10px;
+	text-align: left;
 }
 
 .ellip:hover {
-    white-space: normal;
-    /* overflow: hidden; */
-    text-overflow: unset;
-    width: fit-content;
-    text-align: left;
-    /* background-color: white; */
+	white-space: normal;
+	/* overflow: hidden; */
+	text-overflow: unset;
+	width: fit-content;
+	text-align: left;
+	/* background-color: white; */
 }
 .connectPoint {
-    opacity: 0.5;
-    background-color: grey;
+	opacity: 0.5;
+	background-color: grey;
 }
 .connectPoint:hover {
-    background-color: rgb(95, 95, 95);
-    opacity: 1;
+	background-color: rgb(95, 95, 95);
+	opacity: 1;
 }
 
 /* ==================== relationShip popover====================     */
 .RelPopover {
-    width: auto;
-    height: auto;
-    overflow: auto;
-    padding: 1rem;
-    /* display: grid; */
-    /* grid-template-columns: 30% 70%; */
+	width: auto;
+	height: auto;
+	overflow: auto;
+	padding: 1rem;
+	/* display: grid; */
+	/* grid-template-columns: 30% 70%; */
 }
 .div1 {
-    /* display: grid;
+	/* display: grid;
     grid-template-rows: 10% 90%;
     width: 400px; */
 }
