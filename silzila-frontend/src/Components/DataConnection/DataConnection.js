@@ -278,7 +278,7 @@ const DataConnection = (props) => {
 			</div>
 			<FormDialog {...properties} />
 			<NotificationDialog
-				onNotifClose={() => {
+				onCloseAlert={() => {
 					setOpenAlert(false);
 					setTestMessage("");
 				}}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import BottomBar from "./BottomBar";
 import "./Dataset.css";
@@ -12,29 +12,43 @@ import {
 	setArrows,
 	setArrowType,
 } from "../../redux/Dataset/datasetActions";
+import RelationshipDefiningComponent from "./RelationshipDefiningComponent";
 
 const Canvas = ({
 	// state
 	tempTable,
 	arrows,
-	arrowType,
+	// arrowType,
 	token,
 
 	// dispatch
 	addArrows,
 	clickOnArrow,
-	setArrowType,
+	// setArrowType,
 	// setArrows,
 	// resetArrows,
 	resetState,
 }) => {
+	const [showCard, setShowCard] = useState(false);
+	const [arrowPropexisting, setArrowPropexisting] = useState({});
+	const [existingArrow, setExistingArrow] = useState(false);
+
+	const clickOnArrowfunc = (index) => {
+		setExistingArrow(true);
+		const temp = arrows.filter((el, i) => {
+			return i === index;
+		});
+		setArrowPropexisting(...temp);
+		setShowCard(true);
+	};
+
 	return (
 		<div className="canvas">
 			<div className="canvasStyle" id="canvasTableArea">
 				<Xwrapper>
 					{tempTable &&
-						tempTable.map((table) => {
-							return <Tables tableData={table} />;
+						tempTable.map((table, i) => {
+							return <Tables key={i} tableData={table} />;
 						})}
 					{arrows &&
 						arrows.map((ar, index) => {
@@ -42,8 +56,8 @@ const Canvas = ({
 								<div
 									className="arrowIcon"
 									id="arr"
-									// TODO OnClick function should open Relationship popover with the values pre-selected
-									// onClick={() => clickOnArrowfunc(index)}
+									// TODO OnClick function should open Relationship popover with the values pre-selected - completed
+									onClick={() => clickOnArrowfunc(index)}
 								>
 									<Xarrow
 										start={ar.start}
@@ -52,6 +66,7 @@ const Canvas = ({
 										strokeWidth={2}
 										showHead={ar.showHead}
 										showTail={ar.showTail}
+										key={index}
 									/>
 								</div>
 							);
@@ -59,6 +74,14 @@ const Canvas = ({
 				</Xwrapper>
 			</div>
 			<BottomBar />
+			<RelationshipDefiningComponent
+				setShowCard={setShowCard}
+				id="idarrow"
+				showCard={showCard}
+				arrowPropexisting={arrowPropexisting}
+				existingArrow={existingArrow}
+				setExistingArrow={setExistingArrow}
+			/>
 		</div>
 	);
 };
@@ -71,8 +94,6 @@ const mapStateToProps = (state) => {
 		token: state.isLogged.accessToken,
 	};
 };
-
-// TODO Create action calls in separate file
 
 const mapDispatchToProps = (dispatch) => {
 	return {

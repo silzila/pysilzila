@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Dialog, MenuItem, Popover, Select } from "@mui/material";
+import { Dialog, InputLabel, MenuItem, Popover, Select } from "@mui/material";
 import "./DataSetup.css";
 import { TextField, Button } from "@mui/material";
 import FetchData from "../../ServerCall/FetchData";
@@ -254,9 +254,10 @@ function FormDialog({
 						{/*========================== Reusable Component from ../CommonFunctions/TextFieldComponents========================= */}
 						<Select
 							style={{ width: "60%", height: "45px" }}
-							disabled={viewMode}
 							label="Vendor"
+							disabled={viewMode}
 							variant="outlined"
+							defaultValue={""}
 							value={account.vendor}
 							onChange={(e) => {
 								setAccount({ ...account, vendor: e.target.value });
