@@ -79,6 +79,15 @@ async def read_ds(ds_uid: str, db: Session = Depends(get_db)):
     return db_ds
 
 
+@router.delete("/delete-ds/{ds_uid}")
+async def delete_ds(ds_uid: str, db: Session = Depends(get_db)):
+    deleted = await service.delete_ds(db, ds_uid)
+    if deleted is None:
+        raise HTTPException(
+            status_code=500, detail="Something went wrong in server")
+    return {"message": "Data Set is deleted"}
+
+
 @router.get("/connect-ds/{ds_uid}")
 async def connect_ds(ds_uid: str, db: Session = Depends(get_db)):
     # first, check if DS available
@@ -135,6 +144,10 @@ async def activate_dc_ds(dc_uid: str, ds_uid: str, db: Session) -> str:
 
 @router.post("/query/{dc_uid}/{ds_uid}")
 async def query(query: schema.Query, dc_uid: str, ds_uid: str, db: Session = Depends(get_db)):
+    # at least one column should be sent in query, else raise error
+    if not (query.dims or query.measures):
+        raise HTTPException(
+            status_code=401, detail="At least one dim or measue should be provided")
     vendor_name = await activate_dc_ds(dc_uid, ds_uid, db)
     print("Vendor Name =====", vendor_name)
     qry_composed = await query_composer.compose_query(query, dc_uid, ds_uid, vendor_name)
@@ -149,7 +162,7 @@ async def query(query: schema.Query, dc_uid: str, ds_uid: str, db: Session = Dep
     #         status_code=401, detail="error")
 
 
-@router.post("/filter-options/{dc_uid}/{ds_uid}")
+@ router.post("/filter-options/{dc_uid}/{ds_uid}")
 async def query(query: schema.ColumnFilter, dc_uid: str, ds_uid: str, db: Session = Depends(get_db)):
     vendor_name = await activate_dc_ds(dc_uid, ds_uid, db)
     print("Vendor Name =====", vendor_name)

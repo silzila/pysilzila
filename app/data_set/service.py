@@ -210,6 +210,18 @@ async def update_data_set(db: Session, ds_uid: str, ds: schema.DataSetIn, uid: s
     return resp
 
 
+async def delete_ds(db: Session, ds_uid: str):
+    ds_item = await get_ds_by_id(db, ds_uid)
+    if ds_item is None:
+        raise HTTPException(
+            status_code=404, detail="Data Set not exists")
+    qry_del_ds = DataSet.__table__.delete().where(DataSet.ds_uid == ds_uid)
+    await db.execute(qry_del_ds)
+    await db.commit()
+    # db.flush()
+    return 1
+
+
 async def get_all_ds(db: Session, user_id: str):
     stmt = select(Bundle("dataset", DataSet.friendly_name, DataSet.dc_uid, DataSet.ds_uid)).join(DataConnection).where(
         DataConnection.user_id == user_id
