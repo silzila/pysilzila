@@ -24,43 +24,43 @@ import jwtDecode from "jwt-decode";
 // };
 
 const FetchData = async ({ requestType, method, url, data, headers, token }) => {
-    // if (token) {
-    //     var token2 = await CheckTokenValidity(token);
-    //     console.log(token, "\n", token2);
-    // }
+	// if (token) {
+	//     var token2 = await CheckTokenValidity(token);
+	//     console.log(token, "\n", token2);
+	// }
 
-    // if (token2) {
-    //  -------- below promise code here --------
-    // } else {
-    //     return { status: false, data: { detail: "Token Expired" } };
-    // }
+	// if (token2) {
+	//  -------- below promise code here --------
+	// } else {
+	//     return { status: false, data: { detail: "Token Expired" } };
+	// }
 
-    return new Promise((resolve) => {
-        switch (requestType) {
-            case "withData":
-                console.log(data);
-                axios({ method, url: serverEndPoint + url, headers, data })
-                    .then((res) => resolve({ status: true, data: res.data }))
-                    .catch((err) => {
-                        console.log(err.response.data);
-                        resolve({ status: false, data: err.response.data });
-                    });
-                break;
+	return new Promise((resolve) => {
+		switch (requestType) {
+			case "withData":
+				console.log(data);
+				axios({ method, url: serverEndPoint + url, headers, data })
+					.then((res) => resolve({ status: true, data: res.data }))
+					.catch((err) => {
+						console.log(err.response.data);
+						resolve({ status: false, data: err.response.data });
+					});
+				break;
 
-            case "noData":
-                axios({ method, url: serverEndPoint + url, headers })
-                    .then((res) => resolve({ status: true, data: res.data }))
-                    .catch((err) => {
-                        console.log(err.response.data);
-                        resolve({ status: false, data: err.response.data });
-                    });
-                break;
+			case "noData":
+				axios({ method, url: serverEndPoint + url, headers })
+					.then((res) => resolve({ status: true, data: res.data }))
+					.catch((err) => {
+						console.log(err.response.data);
+						resolve({ status: false, data: err.response.data });
+					});
+				break;
 
-            default:
-                console.log("Fetch Data -- No fetch case made");
-                break;
-        }
-    });
+			default:
+				console.log("Fetch Data -- No fetch case made");
+				break;
+		}
+	});
 };
 
 export default FetchData;

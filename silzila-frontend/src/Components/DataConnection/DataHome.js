@@ -5,15 +5,15 @@ import DataConnection from "./DataConnection";
 import "./DataSetup.css";
 
 const DataHome = () => {
-    return (
-        <div className="dataSetup">
-            <div className="dcds">
-                <DataConnection />
-                <DataSetList />
-            </div>
-            <DashBoardList />
-        </div>
-    );
+	return (
+		<div className="dataSetup">
+			<div className="dcds">
+				<DataConnection />
+				<DataSetList />
+			</div>
+			<DashBoardList />
+		</div>
+	);
 };
 
 export default DataHome;
