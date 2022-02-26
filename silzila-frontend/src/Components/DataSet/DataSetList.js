@@ -26,7 +26,7 @@ const DataSetList = (props) => {
 
 		console.log(result);
 		if (result.status) {
-			setDataSetList(dataSetList, ...result.data);
+			setDataSetList(result.data);
 		} else {
 			console.log(result.data.detail);
 		}
