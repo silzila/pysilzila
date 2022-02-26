@@ -6,10 +6,15 @@ import JoinLeftIcon from "@mui/icons-material/JoinLeft";
 import JoinInnerIcon from "@mui/icons-material/JoinInner";
 import JoinRightIcon from "@mui/icons-material/JoinRight";
 
+// // TODO PopOver must not go away when clicked outside.
+// // If it goes away, then no arrow should be added
 export const RelationShipPopover = ({
 	// props
 	showCard,
 	setShowCard,
+
+	// TODO: Add another props that captures whether this popover is opened by adding new arrow or by clicking already existing arrow
+	// If it is from existing arrow, then all relationships must be already loaded
 }) => {
 	const state = useSelector((state) => state.dataSetState);
 	const dispatch = useDispatch();
@@ -89,6 +94,7 @@ export const RelationShipPopover = ({
 		setRowMatchId2();
 	};
 
+	// TODO Move all dispatch calls to actions file
 	const onToggle = (ID, ity) => {
 		const newType = [...state.arrowType].map((el, i) => {
 			if (el.id === ID) {
@@ -100,6 +106,9 @@ export const RelationShipPopover = ({
 		});
 		console.log(newType);
 
+		// Where is the arrowType used?
+		// TODO Looks like arrowType is used just to set some parameters in the actual 'arrow' state
+		// This arrowType can be removed from state and only arrow can be used
 		dispatch({ type: "SET_ARROW_TYPE", payload: newType });
 
 		const newArray = [...state.arrows].map((arr) => {
@@ -116,6 +125,8 @@ export const RelationShipPopover = ({
 
 		console.log(newArray);
 
+		// TODO Two redux calls with same dispatch 'CLICK_ON_ARROW' with different payload
+		//  going simultaneously here. Need to be modified.
 		dispatch({ type: "CLICK_ON_ARROW", payload: newArray });
 		onClose();
 
@@ -167,6 +178,7 @@ export const RelationShipPopover = ({
 		}
 	};
 	return (
+		// TODO Change styling of this popover card
 		<Popover
 			open={showCard}
 			className="RelPopover"
@@ -208,6 +220,7 @@ export const RelationShipPopover = ({
 									<div>{el.startTableName}</div>
 									<div>{el.endTableName}</div>
 
+									{/*TODO Need to move the table columns below all dropdowns */}
 									<div>{el.startColumnName}</div>
 									<div>{el.endColumnName}</div>
 								</div>
@@ -278,6 +291,7 @@ export const RelationShipPopover = ({
 					<Button
 						style={{ backgroundColor: "grey", position: "absolute" }}
 						variant="contained"
+						// TODO This function call is deeply nested. Refactoring would be better!
 						onClick={onSet}
 					>
 						Set

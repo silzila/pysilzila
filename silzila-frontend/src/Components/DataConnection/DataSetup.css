@@ -118,6 +118,8 @@ Data Connections
     letter-spacing: 0.5px;
 } */
 
+/* TODO: 1.height,width,space between textFields have to set */
+
 .formTF {
 	height: 35px;
 	padding: 5px;

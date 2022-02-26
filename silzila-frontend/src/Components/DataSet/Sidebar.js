@@ -1,12 +1,7 @@
 import { List, MenuItem, Select } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import {
-	setConnectionValue,
-	setDataSchema,
-	setFriendlyName,
-	setUserTable,
-} from "../../redux/Dataset/datasetActions";
+import { setConnectionValue, setDataSchema, setFriendlyName, setUserTable } from "../../redux/Dataset/datasetActions";
 import FetchData from "../../ServerCall/FetchData";
 import { ChangeConnection } from "../CommonFunctions/DialogComponents";
 import { SelectListItem } from "../CommonFunctions/SelectListItem";
@@ -144,8 +139,7 @@ const Sidebar = ({
 			const userTable = res.data.map((el) => {
 				console.log(el, tempTable, connectionId, schema);
 				var tableAlreadyChecked = tempTable.filter(
-					(tbl) =>
-						tbl.dcId === connectionId && tbl.schema === schema && tbl.tableName === el
+					(tbl) => tbl.dcId === connectionId && tbl.schema === schema && tbl.tableName === el
 				)[0];
 				console.log(tableAlreadyChecked);
 				if (tableAlreadyChecked) {
@@ -164,44 +158,45 @@ const Sidebar = ({
 
 	return (
 		<div className="sidebar">
+			{/* TODO Change the input fields to MUI */}
 			<div className="sidebarHeading">Connection</div>
 			<div>
-				<Select
+				<select
 					className="selectBar"
 					onChange={(e) => {
 						onConnectionChange(e);
 					}}
 					value={selectedConnection}
 				>
-					{/* <option value="" disabled hidden>
-                        {"--Select Connection--"}
-                    </option> */}
+					<option value="" disabled hidden>
+						{"--Select Connection--"}
+					</option>
 					{connectionList &&
 						connectionList.map((connection, i) => {
 							return (
-								<MenuItem value={connection.dc_uid} key={connection.dc_uid}>
+								<option value={connection.dc_uid} key={connection.dc_uid}>
 									{connection.db_name} ({connection.friendly_name})
-								</MenuItem>
+								</option>
 							);
 						})}
-				</Select>
+				</select>
 			</div>
 
 			<div className="sidebarHeading">Schema</div>
 			<div>
-				<Select className="selectBar" onChange={(e) => getTables(e)} value={selectedSchema}>
-					{/* <option value="" disabled hidden>
+				<select className="selectBar" onChange={(e) => getTables(e)} value={selectedSchema}>
+					<option value="" disabled hidden>
 						{"--Select Schema--"}
-					</option> */}
+					</option>
 					{schemaList &&
 						schemaList.map((schema) => {
 							return (
-								<MenuItem value={schema} key={schema}>
+								<option value={schema} key={schema}>
 									{schema}
-								</MenuItem>
+								</option>
 							);
 						})}
-				</Select>
+				</select>
 			</div>
 
 			<React.Fragment>

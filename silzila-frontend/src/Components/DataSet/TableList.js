@@ -111,12 +111,7 @@ const TableList = (props) => {
 			</span>
 
 			{props.xprops.open ? (
-				<Tooltip
-					title="View Table"
-					arrow
-					placement="right-start"
-					style={{ float: "right" }}
-				>
+				<Tooltip title="View Table" arrow placement="right-start" style={{ float: "right" }}>
 					<VisibilityOutlinedIcon
 						className="tableIcon"
 						style={{ width: "1rem", height: "1rem", margin: "auto 5px" }}
@@ -147,7 +142,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		onChecked: (data) => dispatch(toggleOnChecked(data)),
-		addTable: (payload) => dispatch(addTable(payload)),
+		addTable: (payload) => dispatch({ type: "ADD_TABLE", payload: payload }),
 		removeArrows: (pl) => dispatch(removeArrows(pl)),
 	};
 };
