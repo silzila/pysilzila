@@ -5,7 +5,7 @@ const TextFieldComponent = ({ onChange, onFocus, onBlur, value, viewMode, lable,
 	return (
 		<TextField
 			style={{ width: "60%" }}
-			className="formTF"
+			// className="formTF"
 			type={type}
 			label={lable}
 			disabled={viewMode}

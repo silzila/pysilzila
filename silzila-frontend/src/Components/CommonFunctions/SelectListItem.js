@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 export const SelectListItem = (props) => {
-    const [open, setOpen] = useState(false);
+	const [open, setOpen] = useState(false);
 
-    return props.render({ open, setOpen });
+	return props.render({ open, setOpen });
 };
