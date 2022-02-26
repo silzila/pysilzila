@@ -3,7 +3,7 @@ import { Checkbox, Tooltip } from "@mui/material";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import FetchData from "../../ServerCall/FetchData";
 import { connect } from "react-redux";
-import { removeArrows, toggleOnChecked } from "../../redux/Dataset/datasetActions";
+import { addTable, removeArrows, toggleOnChecked } from "../../redux/Dataset/datasetActions";
 import TableData from "./TableData";
 
 const TableList = (props) => {
@@ -147,7 +147,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		onChecked: (data) => dispatch(toggleOnChecked(data)),
-		addTable: (payload) => dispatch({ type: "ADD_TABLE", payload: payload }),
+		addTable: (payload) => dispatch(addTable(payload)),
 		removeArrows: (pl) => dispatch(removeArrows(pl)),
 	};
 };

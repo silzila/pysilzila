@@ -4,30 +4,13 @@ const initialState = {
 	connection: "",
 	schema: "",
 	tables: [],
-	arrowType: [
-		{ id: 1, isSelected: false, name: "One to One", showHead: false, showTail: false },
-		{ id: 2, isSelected: false, name: "One to Many", showHead: true, showTail: false },
-		{ id: 3, isSelected: false, name: "Many to One", showHead: false, showTail: true },
-		{ id: 4, isSelected: false, name: "Many to Many", showHead: true, showTail: true },
-	],
-	actions: [
-		{ id: 1, actionName: "Remove" },
-		{ id: 2, actionName: "Rename" },
-	],
 	arrows: [],
 	tempTable: [],
-	rowUniqueness: [
-		{ id: 1, name: "Every Row is Unique" },
-		{ id: 2, name: "Row May Repeat" },
-	],
-	rowMatch: [
-		{ id: 1, name: "Keep All Rows", image: "" },
-		{ id: 2, name: "Keep only Matching Row", image: "" },
-	],
+	relationships: [],
 };
 
 const DataSetReducer = (state = initialState, action) => {
-	console.log(action.type, action.payload);
+	// console.log(action.type, action.payload);
 
 	switch (action.type) {
 		// sets DC id to state
@@ -124,6 +107,21 @@ const DataSetReducer = (state = initialState, action) => {
 		// bring to Initial state. Used when dataconnection is changed from sidebar
 		case "RESET_STATE":
 			return initialState;
+
+		//
+		case "ADD_OBJ_IN_TABLE_COLUMN":
+			return update(state, {
+				relationships: {
+					$set: [...action.payload],
+				},
+			});
+
+		case "ADD_NEW_RELATIONSHIP":
+			return update(state, {
+				relationships: {
+					$push: [action.payload],
+				},
+			});
 
 		// Adding information required to draw an arrow
 		case "ADD_ARROWS":

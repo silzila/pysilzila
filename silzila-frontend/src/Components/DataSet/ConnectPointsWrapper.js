@@ -23,6 +23,9 @@ const ConnectPointsWrapper = ({
 	dragRef,
 	boxRef,
 	index,
+	itemType,
+	columnName,
+	tableName,
 }) => {
 	const ref1 = useRef();
 	const [position, setPosition] = useState({});
@@ -42,8 +45,12 @@ const ConnectPointsWrapper = ({
 				setBeingDragged(true);
 
 				// TODO Pass on all the information about columnId, itemType, tableName, index, etc
-				// through the setData method
-				e.dataTransfer.setData("connect", itemId);
+				// through the setData method - completed
+				e.dataTransfer.setData("connectItemId", itemId);
+				e.dataTransfer.setData("connectIndex", index);
+				e.dataTransfer.setData("connectTableName", tableName);
+				e.dataTransfer.setData("connectColumnName", columnName);
+				e.dataTransfer.setData("connectItemType", itemType);
 			}}
 			onDrag={(e) => {
 				const { offsetTop, offsetLeft } = boxRef.current;
