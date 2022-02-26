@@ -44,8 +44,6 @@ const ConnectPointsWrapper = ({
 			onDragStart={(e) => {
 				setBeingDragged(true);
 
-				// TODO Pass on all the information about columnId, itemType, tableName, index, etc
-				// through the setData method - completed
 				e.dataTransfer.setData("connectItemId", itemId);
 				e.dataTransfer.setData("connectIndex", index);
 				e.dataTransfer.setData("connectTableName", tableName);

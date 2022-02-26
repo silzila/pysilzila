@@ -56,6 +56,13 @@ const Tables = ({
 	};
 
 	const onAddingArrow = (obj) => {
+		// TODO: Check if arrow are from same two tables but in reverse direction
+		// Eg., Landmark Post (DC) >>> Public (Schema) >>>
+		// Table 1 - Category; Table2 - SubCategory
+		// Connecting categoryId from table 1 to subCategoryId in table 2
+		// Connecting subcategory from table 2 to category from table 1
+		// In this case, tableColumns inside relationship is not capturing the data properly
+
 		if (arrows.length === 0) {
 			setArrowProp(obj);
 			setShowCard(true);

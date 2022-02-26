@@ -64,9 +64,6 @@ const CanvasTableColumns = ({
 					) {
 						console.log(e.dataTransfer.getData("connectItemId"));
 					} else {
-						// TODO Re-format the code to capture info from the getData method instead of
-						// the following methods - getTableName, getColumnIndex, getColumnName, getColumnType - completed
-
 						// Check if relationship popover should open
 						// Need to open only when there is no relationship defined between these tables
 
@@ -97,10 +94,6 @@ const CanvasTableColumns = ({
 								cardinality: "one to many",
 							};
 							onAddingArrow(refs);
-
-							// // TODO Shouldn't add arrow here. need to add arrow after the relationship is defined.
-							// // What if the user wants to cancel from defining relation type? - completed
-							// addArrows(refs);
 						}
 					}
 				}}
@@ -118,10 +111,6 @@ const CanvasTableColumns = ({
 						itemType,
 						columnName,
 						tableName,
-
-						// TODO: Pass itemType, index, tableName and columnName to the ConnectedPointsWrapper
-						// and pass it through the setData method so that these things could be captured
-						// while the drop it complete in the column -completed
 					}}
 				/>
 			</div>

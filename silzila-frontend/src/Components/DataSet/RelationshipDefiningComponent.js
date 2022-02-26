@@ -8,7 +8,6 @@ import JoinRightIcon from "@mui/icons-material/JoinRight";
 import data from "./Data.json";
 import {
 	FindCardinality,
-	FindCardinality1,
 	FindIntegrity,
 	FindRowMatchId,
 	FindRowUniqueId,
@@ -21,9 +20,6 @@ import {
 } from "../../redux/Dataset/datasetActions";
 import { NotificationDialog } from "../CommonFunctions/DialogComponents";
 import { CloseOutlined } from "@mui/icons-material";
-
-// TODO PopOver must not go away when clicked outside. - partialy completed
-// If it goes away, then no arrow should be added
 
 const RelationshipDefiningComponent = ({
 	// props
@@ -40,9 +36,6 @@ const RelationshipDefiningComponent = ({
 	clickOnArrow,
 	setArrowType,
 	addArrows,
-
-	// TODO: Add another props that captures whether this popover is opened by adding new arrow or by clicking already existing arrow
-	// If it is from existing arrow, then all relationships must be already loaded
 }) => {
 	const [rowUniqueId1, setRowUniqueId1] = useState();
 	const [rowMatchId1, setRowMatchId1] = useState();
@@ -176,7 +169,7 @@ const RelationshipDefiningComponent = ({
 				...arrowProp,
 				isSelected: false,
 				integrity: FindIntegrity(rowMatchId1, rowMatchId2),
-				cardinality: FindCardinality1(rowUniqueId1, rowUniqueId2),
+				cardinality: FindCardinality(rowUniqueId1, rowUniqueId2),
 				showHead: FindShowHead(),
 				showTail: FindShowTail(),
 			};
@@ -246,6 +239,7 @@ const RelationshipDefiningComponent = ({
 	};
 
 	return (
+		// TODO: Layout doesn't have proper padding all around. Also, select width is not constant.
 		<React.Fragment>
 			<Popover
 				open={showCard}
@@ -346,6 +340,12 @@ const RelationshipDefiningComponent = ({
 							})}
 						</Select>
 					</div>
+
+					{/*TODO List al column pairs between both table. Eg.,
+							Table 1					Table2
+							Column 1				Column 1
+							Column 2				Column 2
+						*/}
 
 					{/* ------------------------------------- buutons-------------------------------------------------- */}
 

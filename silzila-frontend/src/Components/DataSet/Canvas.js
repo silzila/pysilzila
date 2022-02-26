@@ -56,7 +56,6 @@ const Canvas = ({
 								<div
 									className="arrowIcon"
 									id="arr"
-									// TODO OnClick function should open Relationship popover with the values pre-selected - completed
 									onClick={() => clickOnArrowfunc(index)}
 								>
 									<Xarrow

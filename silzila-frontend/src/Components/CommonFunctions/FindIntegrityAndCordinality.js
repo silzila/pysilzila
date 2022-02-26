@@ -1,17 +1,17 @@
-export const FindCardinality = (showHead, showTail) => {
-	if (showHead === true && showTail === true) {
-		return "many to many";
-	}
-	if (showHead === false && showTail === false) {
-		return "one to one";
-	}
-	if (showHead === true && showTail === false) {
-		return "one to many";
-	}
-	if (showHead === false && showTail === true) {
-		return "many to one";
-	}
-};
+// export const FindCardinality = (showHead, showTail) => {
+// 	if (showHead === true && showTail === true) {
+// 		return "many to many";
+// 	}
+// 	if (showHead === false && showTail === false) {
+// 		return "one to one";
+// 	}
+// 	if (showHead === true && showTail === false) {
+// 		return "one to many";
+// 	}
+// 	if (showHead === false && showTail === true) {
+// 		return "many to one";
+// 	}
+// };
 
 export const FindRowMatchId = (ity) => {
 	console.log(ity);
@@ -59,7 +59,7 @@ export const FindRowUniqueId = (cty) => {
 	}
 };
 
-export const FindCardinality1 = (Id1, Id2) => {
+export const FindCardinality = (Id1, Id2) => {
 	if (parseInt(Id1) === 1 && parseInt(Id2) === 1) {
 		return "one to one";
 	}
