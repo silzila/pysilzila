@@ -6,9 +6,158 @@ import { connect } from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const BottomBar = () => {
-	// TODO Parse dataSet info and make api call to create Dataset
-	return <div className="bottomBar">BottomBar</div>;
+const BottomBar = ({
+	//state
+	schema,
+	tempTable,
+	arrows,
+	connection,
+	token,
+	relationships,
+}) => {
+	const [fname, setFname] = useState("");
+	const [openAlert, setOpenAlert] = useState(false);
+	const [testMessage, setTestMessage] = useState("");
+	const [severity, setSeverity] = useState("success");
+	const navigate = useNavigate();
+	console.log(fname);
+
+	const tbs = [];
+
+	const checkTableRelationShip = (data_schema_tables, tableWithRelation) => {
+		if (data_schema_tables.length > 1) {
+			data_schema_tables.map((el) => {
+				if (tableWithRelation.includes(el.table_name)) {
+					console.log("----");
+				} else {
+					tbs.push(el.table_name);
+				}
+			});
+		}
+		if (tbs.length !== 0) {
+			setSeverity("error");
+			setOpenAlert(true);
+			setTestMessage(
+				"Error: Every table should have atleast one relationship.\n" +
+					"tables with no Relationship\t" +
+					tbs.map((el) => el)
+			);
+			setTimeout(() => {
+				setOpenAlert(false);
+				setTestMessage("");
+			}, 4000);
+		}
+		if (tbs.length === 0 || (data_schema_tables.length === 1 && relationships.length === 0)) {
+			const options = {
+				method: "POST",
+				url: "https://silzila.org/api/ds/create-ds",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				data: {
+					dc_uid: connection,
+					friendly_name: fname,
+					data_schema: {
+						tables: [...data_schema_tables],
+						relationships: [...relationships],
+					},
+				},
+			};
+			console.log(options.data);
+			axios
+				.request(options)
+				.then(function (response) {
+					console.log(response.data);
+					setSeverity("success");
+					setOpenAlert(true);
+					setTestMessage("Saved Successfully!");
+					setTimeout(() => {
+						setOpenAlert(false);
+						setTestMessage("");
+						navigate("/datahome");
+					}, 2000);
+				})
+				.catch(function (error) {
+					console.log(error.response.data.detail);
+					setSeverity("error");
+					setOpenAlert(true);
+					setTestMessage(error.response.data.detail);
+					setTimeout(() => {
+						setOpenAlert(false);
+						setTestMessage("");
+					}, 4000);
+				});
+		}
+		if (data_schema_tables.length > 1 && relationships.length === 0) {
+			setSeverity("error");
+			setOpenAlert(true);
+			setTestMessage(
+				"Error: Every table should have atleast one relationship.\n" +
+					"tables with no Relationship\t" +
+					tbs.map((el) => el)
+			);
+			setTimeout(() => {
+				setOpenAlert(false);
+				setTestMessage("");
+			}, 4000);
+		}
+	};
+
+	const onSendData = () => {
+		if (fname !== "") {
+			const uid = new ShortUniqueId({ length: 8 });
+			const data_schema_tables = tempTable.map((el) => {
+				return { table_name: el.tableName, schema_name: schema, id: uid() };
+			});
+			console.log(data_schema_tables);
+			const temp1 = [];
+			const temp2 = [];
+			arrows.forEach((el) => {
+				temp1.push(el.startTableName);
+				temp2.push(el.endTableName);
+			});
+			const tableWithRelation = [...temp1, ...temp2];
+			checkTableRelationShip(data_schema_tables, tableWithRelation);
+		} else {
+			setSeverity("error");
+			setOpenAlert(true);
+			setTestMessage("Please Enter Friendly Name");
+			setTimeout(() => {
+				setOpenAlert(false);
+				setTestMessage("");
+			}, 4000);
+		}
+	};
+
+	return (
+		<div className="bottomBar">
+			<label>Friendly name</label>
+			<TextField onChange={(e) => setFname(e.target.value)} variant="outlined" />
+			<Button variant="contained" onClick={onSendData}>
+				Send
+			</Button>
+			<NotificationDialog
+				onCloseAlert={() => {
+					setOpenAlert(false);
+					setTestMessage("");
+				}}
+				severity={severity}
+				testMessage={testMessage}
+				openAlert={openAlert}
+			/>
+		</div>
+	);
+};
+const mapStateToProps = (state) => {
+	return {
+		schema: state.dataSetState.schema,
+		tempTable: state.dataSetState.tempTable,
+		arrows: state.dataSetState.arrows,
+		connection: state.dataSetState.connection,
+		token: state.isLogged.accessToken,
+		relationships: state.dataSetState.relationships,
+	};
 };
 
 const mapDispatchToProps = (dispatch) => {

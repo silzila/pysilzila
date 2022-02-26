@@ -2,15 +2,18 @@ import { Alert, Button, Dialog } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { resetState } from "../../redux/Dataset/datasetActions";
 
-export const NotificationDialog = ({ openAlert, severity, testMessage }) => {
+export const NotificationDialog = ({ openAlert, severity, testMessage, onCloseAlert }) => {
 	return (
 		<>
-			<Dialog open={openAlert} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
-				{severity === "error" ? (
-					<Alert severity={severity}>{testMessage}</Alert>
-				) : (
-					<Alert severity={severity}>{testMessage}</Alert>
-				)}
+			<Dialog
+				open={openAlert}
+				aria-labelledby="alert-dialog-title"
+				aria-describedby="alert-dialog-description"
+				onClose={onCloseAlert}
+			>
+				<Alert style={{ padding: "30px" }} severity={severity}>
+					{testMessage}
+				</Alert>
 			</Dialog>
 		</>
 	);
@@ -36,7 +39,8 @@ export const ChangeConnection = ({ open, setOpen, setReset }) => {
 					<br />
 					<br />
 					<p style={{ fontWeight: "normal" }}>
-						Changing connection will reset this dataset creation. Do you want to discard the progress?
+						Changing connection will reset this dataset creation. Do you want to discard
+						the progress?
 					</p>
 				</div>
 				<div style={{ padding: "15px", justifyContent: "space-around", display: "flex" }}>
