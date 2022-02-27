@@ -2,7 +2,6 @@
 // Actions from Sidebar
 // =============================================================================
 
-import { TableSortLabel } from "@mui/material";
 import { useSelector } from "react-redux";
 
 export const setConnectionValue = (pl) => {

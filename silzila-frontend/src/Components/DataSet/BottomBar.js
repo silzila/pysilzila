@@ -6,6 +6,8 @@ import { connect } from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+// TODO: Cleanup redux after new dataset is created.
+
 const BottomBar = ({
 	//state
 	schema,
