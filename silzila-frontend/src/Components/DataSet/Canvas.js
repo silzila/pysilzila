@@ -14,7 +14,8 @@ import {
 } from "../../redux/Dataset/datasetActions";
 import RelationshipDefiningComponent from "./RelationshipDefiningComponent";
 
-// TODO Add table to the canvas where it doesn't overflow the current space.
+// TODO: Priority 10 - Canvas overflow fixing
+// Add table to the canvas where it doesn't overflow the current space.
 
 const Canvas = ({
 	// state
