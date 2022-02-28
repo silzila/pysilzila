@@ -27,7 +27,8 @@ function TableData({
 	};
 	return (
 		<>
-			{/* TODO Dialog width have to be increased */}
+			{/* TODO: Priority 10 - Styling Fix
+			 Dialog width have to be increased */}
 			<Dialog
 				open={showTableData}
 				// onClose={handleClose}

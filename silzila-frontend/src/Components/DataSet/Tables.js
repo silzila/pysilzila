@@ -56,7 +56,8 @@ const Tables = ({
 	};
 
 	const onAddingArrow = (obj) => {
-		// TODO: Check if arrow are from same two tables but in reverse direction
+		// TODO: Priority 1 - New arrow within existing relationship
+		// Check if arrow are from same two tables but in reverse direction
 		// Eg., Landmark Post (DC) >>> Public (Schema) >>>
 		// Table 1 - Category; Table2 - SubCategory
 		// Connecting categoryId from table 1 to subCategoryId in table 2
