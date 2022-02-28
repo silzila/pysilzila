@@ -62,12 +62,13 @@ const DataSetList = (props) => {
 										<div className="dataConnectionName">{dc.friendly_name}</div>
 
 										{xprops.open ? (
-											// TODO: This icon must be view / edit icon. Implement edit dataset functionality.
+											// TODO: Implement edit dataset functionality.
 											<Tooltip
-												title="Edit Data Connection"
+												title="Edit Dataset"
 												arrow
 												placement="right-start"
 											>
+												{/* TODO: This icon must be view / edit icon. */}
 												<ModeEditOutlineTwoTone
 													style={{
 														width: "1rem",
