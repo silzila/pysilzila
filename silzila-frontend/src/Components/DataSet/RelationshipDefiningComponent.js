@@ -1,4 +1,4 @@
-import { Button, MenuItem, Popover, Select } from "@mui/material";
+import { Button, Card, MenuItem, Popover, Select } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { connect, useSelector } from "react-redux";
 import JoinFullIcon from "@mui/icons-material/JoinFull";
@@ -38,6 +38,9 @@ const RelationshipDefiningComponent = ({
 	clickOnArrow,
 	setArrowType,
 	addArrows,
+
+	//state
+	relationships,
 }) => {
 	const [rowUniqueId1, setRowUniqueId1] = useState();
 	const [rowMatchId1, setRowMatchId1] = useState();
@@ -263,13 +266,15 @@ const RelationshipDefiningComponent = ({
 			>
 				<CloseOutlined style={{ float: "right" }} onClick={onClose} />
 				<div className="relpopoverContainer">
-					<p id="selectRel">Select Relationship</p>
-
-					<h5 className="selIntegerityandCadinality">Select Uniqueness (cardinality)</h5>
+					<p id="relTitle">Select Relationship</p>
 
 					{/* --------------------Table Names----------------------------------- */}
 
 					{TableNames()}
+
+					{/* ------------------------------------------------------------------------ */}
+
+					<h5 className="selIntegerityandCadinality">Select Uniqueness (cardinality)</h5>
 
 					{/* ----------------------------dropdown---------------------------------------- */}
 
@@ -312,7 +317,7 @@ const RelationshipDefiningComponent = ({
 
 					{/* ------------------------------------- column names---------------------------------- */}
 
-					{ColumnNames()}
+					{/* {ColumnNames()} */}
 
 					{/* ------------------------------------- dropdown------------------------------------------ */}
 
@@ -346,7 +351,28 @@ const RelationshipDefiningComponent = ({
 						</Select>
 					</div>
 
-					{/*TODO: Priority 5 -  List al column pairs between both table.
+					<div>
+						<div>
+							<h6>table1</h6>
+							<h6>table2</h6>
+						</div>
+						<div>
+							{relationships &&
+								relationships.map((item) => {
+									return item.table1_columns.map((el) => {
+										return <h6>{el}</h6>;
+									});
+								})}
+							{relationships &&
+								relationships.map((item) => {
+									return item.table2_columns.map((el) => {
+										return <h6>{el}</h6>;
+									});
+								})}
+						</div>
+					</div>
+
+					{/*TODO: Priority 5 -  List al column pairs between both table. - completed
 							 Eg.,
 							Table 1					Table2
 							Column 1				Column 1
@@ -374,6 +400,11 @@ const RelationshipDefiningComponent = ({
 		</React.Fragment>
 	);
 };
+const mapStateToProps = (state) => {
+	return {
+		relationships: state.dataSetState.relationships,
+	};
+};
 const mapDispatchToProps = (dispatch) => {
 	return {
 		clickOnArrow: (payload) => dispatch(clickOnArrow(payload)),
@@ -382,4 +413,4 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-export default connect(null, mapDispatchToProps)(RelationshipDefiningComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(RelationshipDefiningComponent);

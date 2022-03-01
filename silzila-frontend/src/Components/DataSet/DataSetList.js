@@ -1,8 +1,9 @@
-import ModeEditOutlineTwoTone from "@mui/icons-material/ModeEditOutlineTwoTone";
+import { VisibilitySharp } from "@mui/icons-material";
 import { Tooltip } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { resetState } from "../../redux/Dataset/datasetActions";
 import FetchData from "../../ServerCall/FetchData";
 import { SelectListItem } from "../CommonFunctions/SelectListItem";
 
@@ -12,7 +13,9 @@ const DataSetList = (props) => {
 	const [dataSetList, setDataSetList] = useState([]);
 
 	useEffect(() => {
+		props.resetState();
 		getInformation();
+
 		// eslint-disable-next-line
 	}, []);
 
@@ -37,7 +40,7 @@ const DataSetList = (props) => {
 			<div className="containersHead">
 				<div className="containerTitle">Datasets</div>
 
-				{/* TODO: Priority 1:  Reset dataset values (Same from BottomBar.js) 
+				{/* TODO: Priority 1:  Reset dataset values (Same from BottomBar.js)  - completed
 				Make sure the NewDataSet page doesn't have any old values in state */}
 				<input
 					className="containerButton"
@@ -66,17 +69,19 @@ const DataSetList = (props) => {
 										{xprops.open ? (
 											// TODO: Priority 1 - Implement edit dataset functionality.
 											<Tooltip
-												title="Edit Dataset"
+												title="View/Edit Dataset"
 												arrow
 												placement="right-start"
 											>
-												{/* TODO: This icon must be view / edit icon. */}
-												<ModeEditOutlineTwoTone
+												{/* TODO: This icon must be view / edit icon.  - completed*/}
+												{/* changed from ModeEditOutlineTwoTone to Visibilitysharp */}
+												<VisibilitySharp
 													style={{
 														width: "1rem",
 														height: "1rem",
 														margin: "auto",
 													}}
+													onClick={() => window.alert("hi")}
 												/>
 											</Tooltip>
 										) : null}
@@ -89,11 +94,15 @@ const DataSetList = (props) => {
 		</div>
 	);
 };
-
+const mapDispatchToProps = (dispatch) => {
+	return {
+		resetState: () => dispatch(resetState()),
+	};
+};
 const mapStateToProps = (state) => {
 	return {
 		token: state.isLogged.accessToken,
 	};
 };
 
-export default connect(mapStateToProps, null)(DataSetList);
+export default connect(mapStateToProps, mapDispatchToProps)(DataSetList);

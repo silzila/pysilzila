@@ -29,14 +29,14 @@ function FormDialog({
 	//value
 	token,
 }) {
-	// TODO: Priority 10 - Warning about best practice
+	// TODO: Priority 10 - Warning about best practice - completed
 	// Fix the warning "A component is changing an uncontrolled input to be controlled"
 	// Looks like this error is coming because one of the values of account is
 	// changing from null to some value
 
 	const [dcDel, setDcDel] = useState(false);
 	const [dcDelMeg, setDcDelMeg] = useState("");
-	let dsList = ["abcd", "efgh", "ijkl"];
+	let dsList = [];
 	const [btnEnable, setBtnEnable] = useState(false);
 
 	const btnEnabelDisable = () => {

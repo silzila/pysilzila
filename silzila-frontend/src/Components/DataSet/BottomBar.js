@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-// TODO: Priority 1 - Reset dataset values
+// TODO: Priority 1 - Reset dataset values - completed
 // Cleanup redux after new dataset is created, or when going back to data home and coming here again
 
 const BottomBar = ({

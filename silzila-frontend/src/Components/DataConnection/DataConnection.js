@@ -102,7 +102,17 @@ const DataConnection = (props) => {
 		// console.log(result);
 		if (result.status) {
 			console.log("Read Dc", result.data);
-			setAccount(result.data);
+			var data = {
+				...initialState,
+				vendor: result.data.vendor,
+				url: result.data.url,
+				port: result.data.port,
+				db_name: result.data.db_name,
+				username: result.data.username,
+				friendly_name: result.data.friendly_name,
+			};
+			setAccount(data);
+			// setAccount(result.data);
 			setShowForm(true);
 			setViewMode(true);
 		} else {

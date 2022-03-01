@@ -6,10 +6,10 @@
 }
 
 .canvasStyle {
-	flex: 1;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, 230px);
 	position: relative;
 	overflow: auto;
-	display: flex;
 }
 
 .draggableBox {
@@ -81,6 +81,8 @@ Relationship popover
 	display: flex;
 	flex-direction: column;
 	/* background-color: aquamarine; */
+	padding: 20px;
+	width: auto;
 }
 .relpopoverItem {
 	display: flex;
@@ -95,14 +97,14 @@ Relationship popover
 	margin-top: 1rem;
 }
 
-#cancelBtn {
-	background-color: red;
-	color: white;
-	margin-top: 1rem;
-}
+/* #cancelBtn { */
+/* background-color: red; */
+/* color: white; */
+/* margin-top: 1rem; */
+/* } */
 .relpopoverSelect {
 	height: 40px;
-	width: 10rem;
+	width: 12rem;
 }
 .tbl_clm_name {
 	display: flex;
@@ -118,7 +120,7 @@ Relationship popover
 	flex-basis: 80px;
 	text-align: center;
 }
-#selectRel {
+#relTitle {
 	align-self: center;
 	margin: 0;
 	color: rgb(9, 13, 255);

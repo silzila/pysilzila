@@ -14,7 +14,7 @@ import {
 } from "../../redux/Dataset/datasetActions";
 import RelationshipDefiningComponent from "./RelationshipDefiningComponent";
 
-// TODO: Priority 10 - Canvas overflow fixing
+// TODO: Priority 10 - Canvas overflow fixing - completed
 // Add table to the canvas where it doesn't overflow the current space.
 
 const Canvas = ({
@@ -77,7 +77,7 @@ const Canvas = ({
 					<RenderArrows />
 				</Xwrapper>
 			</div>
-			<BottomBar />
+			{/* <BottomBar /> */}
 			<RelationshipDefiningComponent
 				setShowCard={setShowCard}
 				id="idarrow"
