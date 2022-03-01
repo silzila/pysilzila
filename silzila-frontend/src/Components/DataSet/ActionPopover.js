@@ -15,7 +15,7 @@ const ActionPopover = (props) => {
 			>
 				{data.actions.map((act, i) => {
 					return (
-						<div>
+						<div key={i}>
 							<Button
 								style={{ backgroundColor: "grey" }}
 								variant="contained"
