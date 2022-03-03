@@ -37,7 +37,7 @@ const DataSetList = (props) => {
 			<div className="containersHead">
 				<div className="containerTitle">Datasets</div>
 
-				{/* TODO: Priority 1:  Reset dataset values (Same from BottomBar.js) 
+				{/* TODO: Priority 1 - Reset dataset values (Same from BottomBar.js) 
 				Make sure the NewDataSet page doesn't have any old values in state */}
 				<input
 					className="containerButton"

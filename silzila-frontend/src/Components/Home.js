@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import DataHome from "./DataConnection/DataHome";
 import NewDataSet from "./DataSet/NewDataSet";
+import DataViewer from "./DataViewer/DataViewer";
 
 import Login from "./LoginSignUp/Login";
 import SignUp from "./LoginSignUp/SignUp";
@@ -19,6 +20,7 @@ const Home = (props) => {
 
 						<Route exact path="/datahome" element={<DataHome />} />
 						<Route exact path="/newdataset" element={<NewDataSet />} />
+						<Route exact path="/dataviewer" element={<DataViewer />} />
 					</Routes>
 				</Router>
 			) : (

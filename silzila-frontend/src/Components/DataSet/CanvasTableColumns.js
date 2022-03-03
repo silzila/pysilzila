@@ -57,6 +57,12 @@ const CanvasTableColumns = ({
 				id={itemId}
 				onDragOver={(e) => e.preventDefault()}
 				onDrop={(e) => {
+					// TODO: Priority 5 - Check table arrow loop
+					// Make sure the tables in a new connection doesn't already have a link between them
+					// Eg., 			A -> B -> C
+					// 					A -> D
+					// A new connection between B & D  or C & D shouldn't happen
+
 					// Check if both column types (Arrow start and end column) are of same dataType
 					if (
 						e.dataTransfer.getData("connectItemId") === itemId ||
