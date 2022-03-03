@@ -50,6 +50,16 @@ const BottomBar = ({
 				setTestMessage("");
 			}, 4000);
 		}
+
+		// TODO: Priority 2 - Tables array should also include friendlyTableName / alias
+		//
+		// 	Eg.,	{
+		// 				table_name: "category",
+		// 				schema_name: "pos",
+		// 				id: "sLBuiJCY",
+		// 				alias: "My Category",
+		// 			};
+
 		if (tbs.length === 0 || (data_schema_tables.length === 1 && relationships.length === 0)) {
 			const options = {
 				method: "POST",

@@ -14,11 +14,11 @@ const chartPropLeft = {
 			axesEdited: false,
 			chartAxes: [
 				{
-					name: "Category",
+					name: "Dimension",
 					fields: [],
 				},
 				{
-					name: "Value",
+					name: "Measure",
 					fields: [],
 				},
 				{
@@ -193,11 +193,11 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 						axesEdited: false,
 						chartAxes: [
 							{
-								name: "Category",
+								name: "Dimension",
 								fields: [],
 							},
 							{
-								name: "Value",
+								name: "Measure",
 								fields: [],
 							},
 							{
@@ -348,11 +348,11 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 						axesEdited: false,
 						chartAxes: [
 							{
-								name: "Category",
+								name: "Dimension",
 								fields: [],
 							},
 							{
-								name: "Value",
+								name: "Measure",
 								fields: [],
 							},
 							{

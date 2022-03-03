@@ -106,7 +106,7 @@ const CanvasTableColumns = ({
 			>
 				<div className="columnItem">{itemTypeIcon(itemType)}</div>
 				{/* <div class="ellip">{columnName}</div> */}
-				<div>{columnName}</div>
+				<div style={{ padding: "0 5px" }}>{columnName}</div>
 				<ConnectPointsWrapper
 					{...{
 						itemId,

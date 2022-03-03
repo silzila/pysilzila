@@ -346,7 +346,7 @@ const RelationshipDefiningComponent = ({
 						</Select>
 					</div>
 
-					{/*TODO: Priority 5 -  List al column pairs between both table.
+					{/*TODO: Priority 5 - List al column pairs between both table.
 							 Eg.,
 							Table 1					Table2
 							Column 1				Column 1

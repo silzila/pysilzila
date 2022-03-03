@@ -1,6 +1,8 @@
 import { Button, Popover } from "@mui/material";
 import data from "../DataSet/Data.json";
 
+// TODO: Priority 2 - Action button functions
+// Functions like remove & rename are to be implemented
 const ActionPopover = (props) => {
 	const { open, setOpen, anchorEl } = props;
 	return (

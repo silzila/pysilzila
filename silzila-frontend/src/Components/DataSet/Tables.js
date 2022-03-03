@@ -213,6 +213,7 @@ const Tables = ({
 					) : (
 						<div className="draggableBoxTitle" id={tableId}>
 							<div
+								style={{ flex: 1 }}
 								onDoubleClick={() => {
 									setInputField(true);
 									setNewName(alias);

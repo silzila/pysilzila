@@ -3,12 +3,12 @@ const ChartsInfo = {
 		dropZones: [
 			{ name: "Filter", allowedNumbers: 64, min: 0 },
 			{
-				name: "Category",
+				name: "Dimension",
 				allowedNumbers: 1,
 				min: 1,
 				dataType: ["text", "string", "timestamp"],
 			},
-			{ name: "Value", allowedNumbers: 1, min: 1, dataType: ["int", "float", "double"] },
+			{ name: "Measure", allowedNumbers: 1, min: 1, dataType: ["int", "float", "double"] },
 		],
 		showSwap: false,
 	},
@@ -16,12 +16,12 @@ const ChartsInfo = {
 		dropZones: [
 			{ name: "Filter", allowedNumbers: 64, min: 0 },
 			{
-				name: "Category",
+				name: "Dimension",
 				allowedNumbers: 1,
 				min: 1,
 				dataType: ["text", "string", "timestamp"],
 			},
-			{ name: "Value", allowedNumbers: 1, min: 1, dataType: ["int", "float", "double"] },
+			{ name: "Measure", allowedNumbers: 1, min: 1, dataType: ["int", "float", "double"] },
 		],
 		showSwap: false,
 	},
@@ -29,12 +29,12 @@ const ChartsInfo = {
 		dropZones: [
 			{ name: "Filter", allowedNumbers: 64, min: 0 },
 			{
-				name: "Category",
+				name: "Dimension",
 				allowedNumbers: 1,
 				min: 1,
 				dataType: ["text", "string", "timestamp"],
 			},
-			{ name: "Value", allowedNumbers: 4, min: 1, dataType: ["int", "float", "double"] },
+			{ name: "Measure", allowedNumbers: 4, min: 1, dataType: ["int", "float", "double"] },
 		],
 		showSwap: true,
 	},
@@ -42,12 +42,12 @@ const ChartsInfo = {
 		dropZones: [
 			{ name: "Filter", allowedNumbers: 64, min: 0 },
 			{
-				name: "Category",
+				name: "Dimension",
 				allowedNumbers: 1,
 				min: 1,
 				dataType: ["text", "string", "timestamp"],
 			},
-			{ name: "Value", allowedNumbers: 4, min: 1, dataType: ["int", "float", "double"] },
+			{ name: "Measure", allowedNumbers: 4, min: 1, dataType: ["int", "float", "double"] },
 		],
 		showSwap: true,
 	},
@@ -55,12 +55,12 @@ const ChartsInfo = {
 		dropZones: [
 			{ name: "Filter", allowedNumbers: 64, min: 0 },
 			{
-				name: "Category",
+				name: "Dimension",
 				allowedNumbers: 1,
 				min: 1,
 				dataType: ["text", "string", "timestamp"],
 			},
-			{ name: "Value", allowedNumbers: 4, min: 1, dataType: ["int", "float", "double"] },
+			{ name: "Measure", allowedNumbers: 4, min: 1, dataType: ["int", "float", "double"] },
 		],
 		showSwap: true,
 	},
@@ -68,12 +68,12 @@ const ChartsInfo = {
 		dropZones: [
 			{ name: "Filter", allowedNumbers: 64, min: 0 },
 			{
-				name: "Category",
+				name: "Dimension",
 				allowedNumbers: 1,
 				min: 1,
 				dataType: ["text", "string", "timestamp"],
 			},
-			{ name: "Value", allowedNumbers: 4, min: 1, dataType: ["int", "float", "double"] },
+			{ name: "Measure", allowedNumbers: 4, min: 1, dataType: ["int", "float", "double"] },
 		],
 		showSwap: true,
 	},
@@ -87,7 +87,7 @@ const ChartsInfo = {
 				min: 1,
 				dataType: ["text", "string", "timestamp"],
 			},
-			{ name: "Value", allowedNumbers: 1, min: 1, dataType: ["int", "float", "double"] },
+			{ name: "Measure", allowedNumbers: 1, min: 1, dataType: ["int", "float", "double"] },
 		],
 		showSwap: true,
 	},
@@ -101,7 +101,7 @@ const ChartsInfo = {
 				min: 0,
 				dataType: ["text", "string", "timestamp"],
 			},
-			{ name: "Value", allowedNumbers: 64, min: 0, dataType: ["int", "float", "double"] },
+			{ name: "Measure", allowedNumbers: 64, min: 0, dataType: ["int", "float", "double"] },
 		],
 		showSwap: false,
 	},
@@ -116,8 +116,8 @@ const ChartsInfo = {
 	calendar: {
 		dropZones: [
 			{ name: "Filter", allowedNumbers: 64, min: 0 },
-			{ name: "Category", allowedNumbers: 1, min: 1, dataType: ["timestamp"] },
-			{ name: "Value", allowedNumbers: 1, min: 1, dataType: ["int", "float", "double"] },
+			{ name: "Dimension", allowedNumbers: 1, min: 1, dataType: ["timestamp"] },
+			{ name: "Measure", allowedNumbers: 1, min: 1, dataType: ["int", "float", "double"] },
 		],
 		showSwap: false,
 	},
@@ -125,7 +125,7 @@ const ChartsInfo = {
 		dropZones: [
 			{ name: "Filter", allowedNumbers: 64, min: 0 },
 			{
-				name: "Category",
+				name: "Dimension",
 				allowedNumbers: 1,
 				min: 1,
 				dataType: ["text", "string", "timestamp"],
@@ -138,8 +138,8 @@ const ChartsInfo = {
 	bullet: {
 		dropZones: [
 			{ name: "Filter", allowedNumbers: 64 },
-			{ name: "Category", allowedNumbers: 1 },
-			{ name: "Value", allowedNumbers: 4 },
+			{ name: "Dimension", allowedNumbers: 1 },
+			{ name: "Measure", allowedNumbers: 4 },
 		],
 		showSwap: false,
 	},
