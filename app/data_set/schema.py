@@ -10,6 +10,11 @@ class Table(BaseModel):
     table_name: str
     schema_name: str
     id: str
+    alias: str
+
+
+class Tables(BaseModel):
+    __root__: List[Table]
 
 
 class Relationship(BaseModel):
