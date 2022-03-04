@@ -29,7 +29,8 @@ function FormDialog({
 	//value
 	token,
 }) {
-	// TODO Fix the warning "A component is changing an uncontrolled input to be controlled"
+	// TODO: Priority 10 - Warning about best practice
+	// Fix the warning "A component is changing an uncontrolled input to be controlled"
 	// Looks like this error is coming because one of the values of account is
 	// changing from null to some value
 

@@ -14,6 +14,9 @@ import {
 } from "../../redux/Dataset/datasetActions";
 import RelationshipDefiningComponent from "./RelationshipDefiningComponent";
 
+// TODO: Priority 10 - Canvas overflow fixing
+// Add table to the canvas where it doesn't overflow the current space.
+
 const Canvas = ({
 	// state
 	tempTable,
@@ -42,6 +45,27 @@ const Canvas = ({
 		setShowCard(true);
 	};
 
+	const RenderArrows = () => {
+		return (
+			arrows &&
+			arrows.map((ar, index) => {
+				return (
+					<div className="arrowIcon" id="arr" onClick={() => clickOnArrowfunc(index)}>
+						<Xarrow
+							start={ar.start}
+							end={ar.end}
+							color="grey"
+							strokeWidth={2}
+							showHead={ar.showHead}
+							showTail={ar.showTail}
+							key={index}
+						/>
+					</div>
+				);
+			})
+		);
+	};
+
 	return (
 		<div className="canvas">
 			<div className="canvasStyle" id="canvasTableArea">
@@ -50,26 +74,7 @@ const Canvas = ({
 						tempTable.map((table) => {
 							return <Tables tableData={table} key={table.tableName} />;
 						})}
-					{arrows &&
-						arrows.map((ar, index) => {
-							return (
-								<div
-									className="arrowIcon"
-									id="arr"
-									onClick={() => clickOnArrowfunc(index)}
-								>
-									<Xarrow
-										start={ar.start}
-										end={ar.end}
-										color="grey"
-										strokeWidth={2}
-										showHead={ar.showHead}
-										showTail={ar.showTail}
-										key={index}
-									/>
-								</div>
-							);
-						})}
+					<RenderArrows />
 				</Xwrapper>
 			</div>
 			<BottomBar />
