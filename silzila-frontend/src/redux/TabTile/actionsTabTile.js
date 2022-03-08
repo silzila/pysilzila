@@ -193,6 +193,14 @@ export const toggleEditingTile = (isTrue) => {
 	return { type: "EDITING_TILE", payload: isTrue };
 };
 
+export const setSelectedDataSetList = (payload) => {
+	return { type: "SET_SELECTED_DATASET_LIST", payload };
+};
+
+export const setTablesForSelectedDataSets = (payload) => {
+	return { type: "TABLES_FOR_SELECTED_DATASETS", payload };
+};
+
 export const setDragging = (dragging) => {
 	return { type: "SET_DRAGGING", payload: dragging };
 };

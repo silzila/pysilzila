@@ -3,10 +3,17 @@ import { Tooltip } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setDatasetList } from "../../redux/Dataset/datasetActions";
 import FetchData from "../../ServerCall/FetchData";
 import { SelectListItem } from "../CommonFunctions/SelectListItem";
 
-const DataSetList = (props) => {
+const DataSetList = ({
+	// state
+	token,
+
+	// dispatch
+	setDataSetListToStore,
+}) => {
 	var navigate = useNavigate();
 
 	const [dataSetList, setDataSetList] = useState([]);
@@ -21,12 +28,13 @@ const DataSetList = (props) => {
 			requestType: "noData",
 			method: "GET",
 			url: "ds/get-all-ds",
-			headers: { Authorization: `Bearer ${props.token}` },
+			headers: { Authorization: `Bearer ${token}` },
 		});
 
 		console.log(result);
 		if (result.status) {
 			setDataSetList(result.data);
+			setDataSetListToStore(result.data);
 		} else {
 			console.log(result.data.detail);
 		}
@@ -96,4 +104,10 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, null)(DataSetList);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		setDataSetListToStore: (dataSetList) => dispatch(setDatasetList(dataSetList)),
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DataSetList);

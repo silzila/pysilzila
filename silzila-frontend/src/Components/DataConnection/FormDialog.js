@@ -263,6 +263,7 @@ function FormDialog({
 							<Select
 								required
 								fullWidth
+								label="vendor"
 								labelId="selectVendor"
 								disabled={viewMode}
 								variant="outlined"

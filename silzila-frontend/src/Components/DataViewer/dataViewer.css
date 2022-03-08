@@ -40,7 +40,7 @@
 	padding: 2px 0 0 0;
 	text-align: left;
 	background-color: rgb(238, 238, 238);
-	border-bottom: 1px solid rgb(211, 211, 211);
+	/* border-bottom: 1px solid rgb(211, 211, 211); */
 }
 
 /* ========================================================================================== */
@@ -58,7 +58,7 @@
 	margin: 0;
 	padding: 0 0 2px 0;
 	text-align: left;
-	border-top: 1px solid rgb(211, 211, 211);
+	/* border-top: 1px solid rgb(211, 211, 211); */
 }
 .tableDisplayToggle {
 	height: 1.75rem;

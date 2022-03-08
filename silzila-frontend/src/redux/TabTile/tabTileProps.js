@@ -1,3 +1,5 @@
+import update from "immutability-helper";
+
 const initialProperties = {
 	// for dynamic rendering
 
@@ -25,15 +27,21 @@ const initialProperties = {
 	selectedTabId: 1,
 	nextTabId: 2,
 	editTabName: false,
+
 	selectedTileName: "Tile - 1",
 	selectedTileId: 1,
 	nextTileId: 2,
 	editTileName: false,
+
 	selectedTable: "o48g0uyaqt",
+
 	dragging: false,
 	chartPropUpdated: false,
 	showDash: false,
 	dashGridSize: null,
+
+	selectedDataSetList: [],
+	tablesForSelectedDataSets: {},
 };
 
 const tabTilePropsReducer = (state = initialProperties, action) => {
@@ -81,6 +89,16 @@ const tabTilePropsReducer = (state = initialProperties, action) => {
 
 		case "SET_DASH_GRID_SIZE":
 			return { ...state, dashGridSize: action.payload };
+
+		case "SET_SELECTED_DATASET_LIST":
+			console.log(action.payload);
+			return {
+				...state,
+				selectedDataSetList: [...state.selectedDataSetList, action.payload],
+			};
+
+		case "TABLES_FOR_SELECTED_DATASETS":
+			return update(state, { tablesForSelectedDataSets: { $merge: action.payload } });
 
 		default:
 			return state;

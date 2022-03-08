@@ -45,6 +45,11 @@ const TableList = (props) => {
 	};
 
 	const checkAndUncheck = (e) => {
+		/* TODO: Priority 1 - BUG in deleting arrow
+				When a table is unchecked from Sidebar, If it has the same table name
+				as another table from another schema, the arrows are deleted here also.
+				This behaviour should not happen
+		*/
 		console.log(e.target.value);
 		props.onChecked(e.target.value);
 

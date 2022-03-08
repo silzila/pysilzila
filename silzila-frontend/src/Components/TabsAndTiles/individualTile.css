@@ -7,33 +7,34 @@
 	margin-left: 5px;
 	padding: 0 0 0 10px;
 	cursor: pointer;
+	background-color: rgb(211, 211, 211);
 }
 .commonTile:hover {
 	color: #404040;
-	border-bottom: 1px solid gray;
+	/* border-bottom: 1px solid gray;
 	border-left: 1px solid gray;
-	border-right: 1px solid gray;
+	border-right: 1px solid gray; */
 	background: #fff;
 }
 .plusTile {
 	padding: 0 10px;
-	border-top: 3px solid transparent;
-	border-bottom: 1px solid #a9a9a9;
+	border-top: 2px solid transparent;
+	/* border-bottom: 1px solid #a9a9a9;
 	border-left: 1px solid #a9a9a9;
-	border-right: 1px solid #a9a9a9;
+	border-right: 1px solid #a9a9a9; */
 }
 .indiItemTile {
 	color: gray;
-	border-top: 3px solid transparent;
-	border-bottom: 1px solid #a9a9a9;
+	border-top: 2px solid transparent;
+	/* border-bottom: 1px solid #a9a9a9;
 	border-left: 1px solid #a9a9a9;
-	border-right: 1px solid #a9a9a9;
+	border-right: 1px solid #a9a9a9; */
 }
 .indiItemHighlightTile {
-	border-top: 3px solid #007bff;
-	border-bottom: 1px solid gray;
+	border-top: 2px solid #007bff;
+	/* border-bottom: 1px solid gray;
 	border-left: 1px solid #a9a9a9;
-	border-right: 1px solid #a9a9a9;
+	border-right: 1px solid #a9a9a9; */
 	background: white;
 }
 .closeTile {
@@ -56,7 +57,7 @@
 	margin-left: 5px;
 	border-radius: 0px 0px 5px 5px;
 	padding: 0 0 0 10px;
-	border-top: 3px solid #007bff;
+	border-top: 2px solid #007bff;
 	border-bottom: 1px solid #a9a9a9;
 	border-left: 1px solid #a9a9a9;
 	border-right: 1px solid #a9a9a9;
