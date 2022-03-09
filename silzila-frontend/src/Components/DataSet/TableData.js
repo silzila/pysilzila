@@ -27,7 +27,7 @@ function TableData({
 	};
 	return (
 		<>
-			{/* TODO: Priority 10 - Styling Fix
+			{/* TODO: Priority 10 - Styling Fix - completed (cant apply maxWith)
 			 Dialog width have to be increased */}
 			<Dialog
 				open={showTableData}
@@ -46,7 +46,7 @@ function TableData({
 					<p>Rows Displayed: {tableData.length}</p>
 					<CloseOutlined style={{ float: "rigth" }} onClick={handleClose} />
 				</DialogTitle>
-				<DialogContent>
+				<DialogContent style={{ minWidth: "35vw", maxWidth: "auto" }}>
 					<Table stickyHeader>
 						<TableHead>
 							<TableRow>

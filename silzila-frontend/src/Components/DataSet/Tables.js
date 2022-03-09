@@ -41,11 +41,12 @@ const Tables = ({
 	const [selectedTable, setSelectedTable] = useState();
 	const [open, setOpen] = useState(false);
 	const [anchorEl, setAnchorEl] = useState(null);
+	const [anchorEl2, setAnchorEl2] = useState(null);
 	const [showCard, setShowCard] = useState(false);
 	const [arrowProp, setArrowProp] = useState([]);
 
 	const changeTableName = (tableName) => {
-		const newTable = [...tempTable].map((tab) => {
+		const newTable = [...tempTable].forEach((tab) => {
 			if (tab.alias === tableName) {
 				tab.alias = newName;
 			}
@@ -165,7 +166,7 @@ const Tables = ({
 	};
 
 	const addInTableColumn = (obj) => {
-		const payload = relationships.map((el) => {
+		const payload = relationships.forEach((el) => {
 			if (el.table1 === obj.table1 && el.table2 === obj.table2) {
 				el.table1_columns = [...el.table1_columns, ...obj.table1_columns];
 				el.table2_columns = [...el.table2_columns, ...obj.table2_columns];
@@ -223,6 +224,12 @@ const Tables = ({
 							>
 								{alias}
 							</div>
+							<span class="tooltiptext">
+								<small>
+									Table: {tableTitle}
+									<br /> schema: {tableData.schema}
+								</small>
+							</span>
 							<div>
 								<MoreVertIcon
 									style={{ float: "right" }}
@@ -242,6 +249,7 @@ const Tables = ({
 								key={item.uid}
 								columnName={item.column_name}
 								tableName={tableTitle}
+								table_Uid={tableData.table_Uid}
 								itemType={item.data_type}
 								index={index}
 								handler="right"
@@ -249,7 +257,7 @@ const Tables = ({
 								tableId={tableId}
 								dragRef={dragRef}
 								onAddingArrow={onAddingArrow}
-								key={item.uid}
+								setAnchorEl2={setAnchorEl2}
 							/>
 						);
 					})}
@@ -263,6 +271,7 @@ const Tables = ({
 				setArrowProp={setArrowProp}
 				showCard={showCard}
 				addRelationship={addRelationship}
+				anchorEl={anchorEl2}
 			/>
 		</div>
 	);

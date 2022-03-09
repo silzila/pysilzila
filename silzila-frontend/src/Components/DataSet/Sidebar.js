@@ -6,28 +6,37 @@ import {
 	setDataSchema,
 	setFriendlyName,
 	setUserTable,
+	setTempTables,
 } from "../../redux/Dataset/datasetActions";
 import FetchData from "../../ServerCall/FetchData";
 import { ChangeConnection } from "../CommonFunctions/DialogComponents";
 import { SelectListItem } from "../CommonFunctions/SelectListItem";
 import TableList from "./TableList";
+import getTableColumns from "./TableList";
 
 const Sidebar = ({
+	//props
+	editMode,
 	// state
 	token,
 	tableList,
 	tempTable,
+	connectionToEdit,
+	schemaToEdit,
+
+	// tablesWithRel,
 
 	// dispatch
 	setConnection,
 	setDataSchema,
 	setUserTable,
+	setTempTables,
 }) => {
 	const [selectedConnection, setSelectedConnection] = useState("");
+	const [selectedSchema, setSelectedSchema] = useState("");
 	const [connectionList, setConnectionList] = useState([]);
 	const [connectionId, setConnectionId] = useState();
 	const [schemaList, setSchemaList] = useState([]);
-	const [selectedSchema, setSelectedSchema] = useState("");
 
 	const [openDlg, setOpenDlg] = useState(false);
 	const [resetDataset, setResetDataset] = useState(false);
@@ -49,7 +58,15 @@ const Sidebar = ({
 	};
 
 	useEffect(() => {
-		getAllDc();
+		if (editMode) {
+			getAllDc();
+			setConnectionId(connectionToEdit);
+			setSelectedConnection(connectionToEdit);
+			setSelectedSchema(schemaToEdit);
+			getSchemaList(connectionToEdit);
+		} else {
+			getAllDc();
+		}
 	}, []);
 
 	console.log(dcToResetTo);
@@ -91,7 +108,9 @@ const Sidebar = ({
 		});
 		setConnectionId(dc_uid);
 		setConnection(dc_uid);
-		setUserTable([]);
+		if (!editMode) {
+			setUserTable([]);
+		}
 
 		var res = await FetchData({
 			requestType: "noData",
@@ -126,11 +145,10 @@ const Sidebar = ({
 	};
 
 	const getTables = async (e) => {
-		console.log(e.target.value);
-		const schema = e.target.value;
+		const schema = e;
 		setSelectedSchema(schema);
 		setDataSchema(schema);
-
+		// if (connectionToEdit) {
 		var res = await FetchData({
 			requestType: "noData",
 			method: "GET",
@@ -138,30 +156,30 @@ const Sidebar = ({
 			headers: { Authorization: `Bearer ${token}` },
 			token: token,
 		});
+		console.log(res, "tablesList");
 
-		console.log(res);
 		if (res.status) {
 			const userTable = res.data.map((el) => {
-				console.log(el, tempTable, connectionId, schema);
-				var tableAlreadyChecked = tempTable.filter(
-					(tbl) =>
-						tbl.dcId === connectionId && tbl.schema === schema && tbl.tableName === el
-				)[0];
-				console.log(tableAlreadyChecked);
-				if (tableAlreadyChecked) {
-					return { tableName: el, isSelected: true };
+				if (tempTable.length !== 0) {
+					var tableAlreadyChecked = tempTable.filter(
+						(tbl) =>
+							tbl.dcId === connectionId &&
+							tbl.schema === schema &&
+							tbl.tableName === el
+					)[0];
 				}
-				return { tableName: el, isSelected: false };
+				if (tableAlreadyChecked) {
+					return { tableName: el, isSelected: true, table_uid: schema.concat(el) };
+				}
+				return { tableName: el, isSelected: false, table_uid: schema.concat(el) };
 			});
 
 			console.log(userTable);
-
 			setUserTable(userTable);
 		} else {
 			console.log(res);
 		}
 	};
-
 	return (
 		<div className="sidebar">
 			<div className="sidebarHeading">Connection</div>
@@ -171,11 +189,8 @@ const Sidebar = ({
 					onChange={(e) => {
 						onConnectionChange(e);
 					}}
-					value={selectedConnection}
+					defaultValue={connectionToEdit ? connectionToEdit : selectedConnection}
 				>
-					{/* <option value="" disabled hidden>
-                        {"--Select Connection--"}
-                    </option> */}
 					{connectionList &&
 						connectionList.map((connection, i) => {
 							return (
@@ -189,10 +204,11 @@ const Sidebar = ({
 
 			<div className="sidebarHeading">Schema</div>
 			<div>
-				<Select className="selectBar" onChange={(e) => getTables(e)} value={selectedSchema}>
-					{/* <option value="" disabled hidden>
-						{"--Select Schema--"}
-					</option> */}
+				<Select
+					className="selectBar"
+					onChange={(e) => getTables(e.target.value)}
+					defaultValue={schemaToEdit ? schemaToEdit : selectedSchema}
+				>
 					{schemaList &&
 						schemaList.map((schema) => {
 							return (
@@ -247,6 +263,12 @@ const mapStateToProps = (state) => {
 		token: state.isLogged.accessToken,
 		tableList: state.dataSetState.tables,
 		tempTable: state.dataSetState.tempTable,
+		connectionToEdit: state.dataSetState.connection,
+		schemaToEdit: state.dataSetState.schema,
+
+		// connectionToEdit: state.editDs.selectedConnection,
+		// schemaToEdit: state.editDs.selectedSchema,
+		// tablesWithRel: state.editDs.tablesWithRel,
 	};
 };
 
@@ -255,6 +277,7 @@ const mapDispatchToProps = (dispatch) => {
 		setConnection: (pl) => dispatch(setConnectionValue(pl)),
 		setDataSchema: (pl) => dispatch(setDataSchema(pl)),
 		setUserTable: (userTable) => dispatch(setUserTable(userTable)),
+		setTempTables: (pl) => dispatch(setTempTables(pl)),
 	};
 };
 

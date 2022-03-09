@@ -59,6 +59,21 @@ export const FindRowUniqueId = (cty) => {
 	}
 };
 
+export const findShowHeadAndshowTail = (cty) => {
+	switch (cty) {
+		case "one to one":
+			return { showHead: false, showTail: false };
+		case "one to many":
+			return { showHead: true, showTail: false };
+		case "many to one":
+			return { showHead: false, showTail: true };
+		case "many to many":
+			return { showHead: true, showTail: true };
+		default:
+			return null;
+	}
+};
+
 export const FindCardinality = (Id1, Id2) => {
 	if (parseInt(Id1) === 1 && parseInt(Id2) === 1) {
 		return "one to one";

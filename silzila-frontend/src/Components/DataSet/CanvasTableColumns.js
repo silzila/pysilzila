@@ -15,6 +15,8 @@ const CanvasTableColumns = ({
 	handler,
 	dragRef,
 	onAddingArrow,
+	setAnchorEl2,
+	table_Uid,
 
 	// state
 	tempTable,
@@ -55,7 +57,9 @@ const CanvasTableColumns = ({
 			<div
 				className="columnBox"
 				id={itemId}
-				onDragOver={(e) => e.preventDefault()}
+				onDragOver={(e) => {
+					e.preventDefault();
+				}}
 				onDrop={(e) => {
 					// Check if both column types (Arrow start and end column) are of same dataType
 					if (
@@ -80,17 +84,18 @@ const CanvasTableColumns = ({
 							const refs = {
 								isSelected: true,
 								startTableName: e.dataTransfer.getData("connectTableName"),
-								startColumnIndex: e.dataTransfer.getData("connectIndex"),
+								table1_Uid: e.dataTransfer.getData("connecttableUid"),
+								table2_Uid: table_Uid,
+								// startColumnIndex: e.dataTransfer.getData("connectIndex"),
 								start: e.dataTransfer.getData("connectItemId"),
 								endTableName: tableName,
-								endColumnIndex: index,
+								// endColumnIndex: index,
 								end: itemId,
 								integrity: "full",
 								startColumnName: e.dataTransfer.getData("connectColumnName"),
 								endColumnName: columnName,
 								showHead: true,
 								showTail: false,
-								//newly added
 								cardinality: "one to many",
 							};
 							onAddingArrow(refs);
@@ -111,6 +116,8 @@ const CanvasTableColumns = ({
 						itemType,
 						columnName,
 						tableName,
+						setAnchorEl2,
+						table_Uid,
 					}}
 				/>
 			</div>

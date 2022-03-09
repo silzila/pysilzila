@@ -8,8 +8,15 @@ export const setConnectionValue = (pl) => {
 	return { type: "SET_CONNECTION_VALUE", payload: pl };
 };
 
+export const setDsId = (pl) => {
+	return { type: "SET_DS_ID", payload: pl };
+};
+
 export const setDataSchema = (pl) => {
 	return { type: "SET_DATA_SCHEMA", payload: pl };
+};
+export const setFriendlyName = (pl) => {
+	return { type: "SET_FRIENDLY_NAME", payload: pl };
 };
 
 export const setUserTable = (userTable) => {
@@ -31,6 +38,10 @@ export const resetState = () => {
 	return { type: "RESET_STATE" };
 };
 
+export const setTempTables = (pl) => {
+	return { type: "SET_TEMP_TABLE", payload: pl };
+};
+
 // =============================================================================
 // Actions from Canvas
 // =============================================================================
@@ -46,6 +57,11 @@ export const setArrowType = (payload) => {
 export const setArrows = (pl) => {
 	return { type: "SET_ARROWS", payload: pl };
 };
+
+export const setRelationship = (pl) => {
+	return { type: "SET_RELATIONSHIP", payload: pl };
+};
+
 export const resetArrows = () => {
 	return { type: "RESET_ARROWS_ARRAY" };
 };

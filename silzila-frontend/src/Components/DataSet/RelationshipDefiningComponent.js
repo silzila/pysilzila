@@ -33,6 +33,7 @@ const RelationshipDefiningComponent = ({
 	existingArrow,
 	setExistingArrow,
 	addRelationship,
+	anchorEl,
 
 	//dispatch
 	clickOnArrow,
@@ -141,7 +142,9 @@ const RelationshipDefiningComponent = ({
 		setRowUniqueId2();
 		setRowMatchId2();
 		setArrowProp([]);
-		setExistingArrow(false);
+		if (existingArrow) {
+			setExistingArrow(false);
+		}
 		onCloseAlert();
 	};
 
@@ -178,14 +181,6 @@ const RelationshipDefiningComponent = ({
 				showHead: FindShowHead(),
 				showTail: FindShowTail(),
 			};
-			// const obj = {
-			// 	startTableName: arrowProp.startTableName,
-			// 	endTableName: arrowProp.endTableName,
-			// 	cardinality: refs.cardinality,
-			// 	integrity: refs.integrity,
-			// 	startColumnName:arrowProp.startColumnName,
-			// 	endColumnName: arrowProp.endColumnName,
-			// };
 			console.log(refs, "ref");
 			addArrows(refs);
 			addRelationship(refs);
@@ -244,26 +239,10 @@ const RelationshipDefiningComponent = ({
 	};
 
 	return (
-		// TODO: Priority 10 - Styling Fix required
+		// TODO: Priority 10 - Styling Fix required - partially completed
 		//  Layout doesn't have proper padding all around. Also, select width is not constant.
 		<React.Fragment>
-			<Popover
-				open={showCard}
-				anchorReference="anchorPosition"
-				anchorPosition={{ top: 200, left: 400 }}
-				anchorOrigin={{
-					vertical: "top",
-					horizontal: "left",
-				}}
-				transformOrigin={{
-					vertical: "top",
-					horizontal: "left",
-				}}
-				// anchorReference="anchorEl"
-
-				// TODO Priority 5 - Kasthuri created. Positioning relationship popover
-				// set anchorEl={}
-			>
+			<Popover open={showCard} anchorEl={anchorEl}>
 				<CloseOutlined style={{ float: "right" }} onClick={onClose} />
 				<div className="relpopoverContainer">
 					<p id="relTitle">Select Relationship</p>
@@ -350,27 +329,30 @@ const RelationshipDefiningComponent = ({
 							})}
 						</Select>
 					</div>
-
-					<div>
+					{relationships.length !== 0 ? (
 						<div>
-							<h6>table1</h6>
-							<h6>table2</h6>
+							<div className="tbl_clm_name">
+								<h6>Table 1</h6>
+								<h6>Table 2</h6>
+							</div>
+							<div style={{ display: "flex", justifyContent: "space-around" }}>
+								<div style={{ textAlign: "center" }}>
+									{relationships.map((item) => {
+										return item.table1_columns.map((el) => {
+											return <p>{el}</p>;
+										});
+									})}
+								</div>
+								<div style={{ textAlign: "center" }}>
+									{relationships.map((item) => {
+										return item.table2_columns.map((el) => {
+											return <p>{el}</p>;
+										});
+									})}
+								</div>
+							</div>
 						</div>
-						<div>
-							{relationships &&
-								relationships.map((item) => {
-									return item.table1_columns.map((el) => {
-										return <h6>{el}</h6>;
-									});
-								})}
-							{relationships &&
-								relationships.map((item) => {
-									return item.table2_columns.map((el) => {
-										return <h6>{el}</h6>;
-									});
-								})}
-						</div>
-					</div>
+					) : null}
 
 					{/*TODO: Priority 5 -  List al column pairs between both table. - completed
 							 Eg.,

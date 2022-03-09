@@ -77,7 +77,7 @@ const Canvas = ({
 					<RenderArrows />
 				</Xwrapper>
 			</div>
-			{/* <BottomBar /> */}
+			<BottomBar />
 			<RelationshipDefiningComponent
 				setShowCard={setShowCard}
 				id="idarrow"

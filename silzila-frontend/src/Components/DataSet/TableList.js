@@ -30,6 +30,7 @@ const TableList = (props) => {
 					});
 					console.log(arrayWithUid);
 					obj = {
+						table_uid: el.table_uid,
 						tableName: tableName,
 						isSelected: el.isSelected,
 						alias: tableName,
@@ -44,17 +45,18 @@ const TableList = (props) => {
 		}
 	};
 
-	const checkAndUncheck = (e) => {
-		console.log(e.target.value);
-		props.onChecked(e.target.value);
+	const checkAndUncheck = (e, tableUid) => {
+		console.log(e.target.value, tableUid);
+		// props.onChecked(e.target.value);
+		props.onChecked(tableUid);
 
 		if (e.target.checked) {
 			getTableColumns(e.target.value);
 		} else {
 			if (props.tempTable.length !== 0) {
 				props.tempTable.map((el) => {
-					if (el.tableName === e.target.value) {
-						props.removeArrows(e.target.value);
+					if (el.table_uid === tableUid) {
+						props.removeArrows(tableUid);
 					}
 				});
 			}
@@ -102,8 +104,9 @@ const TableList = (props) => {
 				style={{ width: "1rem", height: "1rem", margin: "auto 5px auto 0" }}
 				size="1rem"
 				checked={props.table.isSelected ? true : false}
-				onClick={checkAndUncheck}
+				onClick={(e) => checkAndUncheck(e, props.table.table_uid)}
 				value={props.table.tableName}
+				// value={props.table.table_uid}
 			/>
 
 			<span className="tableName" title={props.table.tableName}>

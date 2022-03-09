@@ -26,10 +26,13 @@ const ConnectPointsWrapper = ({
 	itemType,
 	columnName,
 	tableName,
+	setAnchorEl2,
+	table_Uid,
 }) => {
 	const ref1 = useRef();
 	const [position, setPosition] = useState({});
 	const [beingDragged, setBeingDragged] = useState(false);
+	// setAnchorEl2(ref1);
 
 	return (
 		<div
@@ -40,15 +43,19 @@ const ConnectPointsWrapper = ({
 				...position,
 			}}
 			draggable
-			onMouseDown={(e) => e.stopPropagation()}
+			onMouseDown={(e) => {
+				e.stopPropagation();
+				console.log(e.currentTarget);
+				setAnchorEl2(e.currentTarget);
+			}}
 			onDragStart={(e) => {
 				setBeingDragged(true);
-
 				e.dataTransfer.setData("connectItemId", itemId);
 				e.dataTransfer.setData("connectIndex", index);
 				e.dataTransfer.setData("connectTableName", tableName);
 				e.dataTransfer.setData("connectColumnName", columnName);
 				e.dataTransfer.setData("connectItemType", itemType);
+				e.dataTransfer.setData("connecttableUid", table_Uid);
 			}}
 			onDrag={(e) => {
 				const { offsetTop, offsetLeft } = boxRef.current;
@@ -62,7 +69,7 @@ const ConnectPointsWrapper = ({
 				});
 			}}
 			ref={ref1}
-			onDragEnd={() => {
+			onDragEnd={(e) => {
 				console.log(ref1, "ref1");
 				setPosition({});
 				setBeingDragged(false);

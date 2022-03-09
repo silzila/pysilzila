@@ -3,13 +3,15 @@
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
+	height: 100vh;
 }
 
 .canvasStyle {
 	display: grid;
+	min-height: 92vh;
 	grid-template-columns: repeat(auto-fit, 230px);
 	position: relative;
-	overflow: auto;
+	overflow-y: auto;
 }
 
 .draggableBox {
@@ -20,9 +22,21 @@
 }
 
 .bottomBar {
-	height: 3rem;
+	height: 8vh;
 	background-color: #f0f0f0;
 	border-top: 1px solid #e4e4e4;
+	/* display: flex; */
+	width: 100%;
+}
+.bottomBar .MuiButton-contained {
+	height: 30px;
+	float: right;
+	margin: 20px;
+}
+
+.bottomBar .MuiOutlinedInput-input {
+	height: 15px;
+	/* float: left; */
 }
 
 .draggableTable {
@@ -80,7 +94,6 @@ Relationship popover
 .relpopoverContainer {
 	display: flex;
 	flex-direction: column;
-	/* background-color: aquamarine; */
 	padding: 20px;
 	width: auto;
 }
@@ -104,7 +117,7 @@ Relationship popover
 /* } */
 .relpopoverSelect {
 	height: 40px;
-	width: 12rem;
+	min-width: 12rem;
 }
 .tbl_clm_name {
 	display: flex;
@@ -119,6 +132,7 @@ Relationship popover
 	flex-shrink: 0;
 	flex-basis: 80px;
 	text-align: center;
+	/* width: 4rem; */
 }
 #relTitle {
 	align-self: center;
@@ -132,4 +146,25 @@ Relationship popover
 	margin: 0.5rem;
 	color: rgb(232, 15, 240);
 	padding: 5px;
+}
+
+.draggableBoxTitle .tooltiptext {
+	visibility: hidden;
+	background-color: rgb(252, 249, 249);
+	text-align: center;
+	padding: 2px;
+	font-size: 12px;
+	width: 120px;
+	border: 1px solid black;
+	position: absolute;
+	z-index: 1;
+	top: -5px;
+	left: 105%;
+	opacity: 0;
+	transition: opacity 3s;
+}
+
+.draggableBoxTitle:hover .tooltiptext {
+	visibility: visible;
+	opacity: 1;
 }

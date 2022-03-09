@@ -1,8 +1,11 @@
+import { Update } from "@mui/icons-material";
 import update from "immutability-helper";
 
 const initialState = {
+	dsId: "",
 	connection: "",
 	schema: "",
+	friendly_name: "",
 	tables: [],
 	arrows: [],
 	tempTable: [],
@@ -17,6 +20,14 @@ const DataSetReducer = (state = initialState, action) => {
 		case "SET_CONNECTION_VALUE":
 			return update(state, {
 				connection: {
+					$set: action.payload,
+				},
+			});
+
+		// sets DS id to state
+		case "SET_DS_ID":
+			return update(state, {
+				dsId: {
 					$set: action.payload,
 				},
 			});
@@ -49,13 +60,13 @@ const DataSetReducer = (state = initialState, action) => {
 		case "ON_CHECKED":
 			console.log(action.payload);
 			const x = state.tables.map((tab) => {
-				if (tab.tableName === action.payload) {
+				if (tab.table_uid === action.payload) {
 					if (tab.isSelected === true) {
 						var yes = window.confirm("are you sure you want to remove this table");
 						if (yes) {
 							tab.isSelected = !tab.isSelected;
 							state.tempTable.map((el) => {
-								if (el.tableName === tab.tableName) {
+								if (el.table_uid === tab.table_uid) {
 									el.isSelected = false;
 								}
 							});
@@ -72,7 +83,6 @@ const DataSetReducer = (state = initialState, action) => {
 				return item.isSelected === true;
 			});
 			console.log(tempArray);
-
 			return update(state, {
 				tables: {
 					$set: [...x],
@@ -93,10 +103,10 @@ const DataSetReducer = (state = initialState, action) => {
 		// Remove all arrows belonging to a particular table (whether the arrow starts or ends in this table)
 		case "REMOVE_ARROWS":
 			const y = state.arrows.filter((arr) => {
-				return arr.startTableName !== action.payload;
+				return arr.table1_Uid !== action.payload;
 			});
 			const z = y.filter((arr) => {
-				return arr.endTableName !== action.payload;
+				return arr.table2_Uid !== action.payload;
 			});
 			return update(state, {
 				arrows: {
@@ -141,6 +151,26 @@ const DataSetReducer = (state = initialState, action) => {
 		case "SET_ARROW_TYPE":
 			return update(state, {
 				arrowType: {
+					$set: [...action.payload],
+				},
+			});
+
+		case "SET_TEMP_TABLE":
+			return update(state, {
+				tempTable: {
+					$set: [...action.payload],
+				},
+			});
+		case "SET_ARROWS":
+			return update(state, {
+				arrows: {
+					$set: [...action.payload],
+				},
+			});
+
+		case "SET_RELATIONSHIP":
+			return update(state, {
+				relationships: {
 					$set: [...action.payload],
 				},
 			});

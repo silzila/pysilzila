@@ -1,11 +1,12 @@
-import { Button, TextField } from "@mui/material";
-import React, { useState } from "react";
+import { Button, Dialog, TextField } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { NotificationDialog } from "../CommonFunctions/DialogComponents";
 import ShortUniqueId from "short-unique-id";
 import { connect } from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import CloseIcon from "@mui/icons-material/Close";
+import { resetState } from "../../redux/Dataset/datasetActions";
 // TODO: Priority 1 - Reset dataset values - completed
 // Cleanup redux after new dataset is created, or when going back to data home and coming here again
 
@@ -17,12 +18,25 @@ const BottomBar = ({
 	connection,
 	token,
 	relationships,
+	friendly_name,
+	dsId,
 }) => {
 	const [fname, setFname] = useState("");
 	const [openAlert, setOpenAlert] = useState(false);
 	const [testMessage, setTestMessage] = useState("");
 	const [severity, setSeverity] = useState("success");
+	const [sendOrUpdate, setSendOrUpdate] = useState("send");
+	const [open, setOpen] = useState(false);
+	const [editMode, setEditMode] = useState(false);
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (friendly_name) {
+			setFname(friendly_name);
+			setSendOrUpdate("update");
+			setEditMode(true);
+		}
+	}, []);
 	console.log(fname);
 
 	const tbs = [];
@@ -51,9 +65,18 @@ const BottomBar = ({
 			}, 4000);
 		}
 		if (tbs.length === 0 || (data_schema_tables.length === 1 && relationships.length === 0)) {
+			var meth;
+			var apiurl;
+			if (editMode) {
+				meth = "PUT";
+				apiurl = "https://silzila.org/api/ds/update-ds/" + dsId;
+			} else {
+				meth = "POST";
+				apiurl = "https://silzila.org/api/ds/create-ds";
+			}
 			const options = {
-				method: "POST",
-				url: "https://silzila.org/api/ds/create-ds",
+				method: meth,
+				url: apiurl,
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
@@ -111,7 +134,12 @@ const BottomBar = ({
 		if (fname !== "") {
 			const uid = new ShortUniqueId({ length: 8 });
 			const data_schema_tables = tempTable.map((el) => {
-				return { table_name: el.tableName, schema_name: schema, id: uid() };
+				return {
+					table_name: el.tableName,
+					schema_name: schema,
+					id: uid(),
+					alias: el.alias,
+				};
 			});
 			console.log(data_schema_tables);
 			const temp1 = [];
@@ -133,12 +161,25 @@ const BottomBar = ({
 		}
 	};
 
+	const onCancelOnDataset = () => {
+		setOpen(true);
+	};
+
 	return (
 		<div className="bottomBar">
-			<label>Friendly name</label>
-			<TextField onChange={(e) => setFname(e.target.value)} variant="outlined" />
+			<div style={{ float: "left" }}>
+				<label>Friendly name</label>
+				<TextField
+					value={fname}
+					onChange={(e) => setFname(e.target.value)}
+					variant="outlined"
+				/>
+			</div>
 			<Button variant="contained" onClick={onSendData}>
-				Send
+				{sendOrUpdate}
+			</Button>
+			<Button variant="contained" onClick={onCancelOnDataset}>
+				cancel
 			</Button>
 			<NotificationDialog
 				onCloseAlert={() => {
@@ -149,6 +190,44 @@ const BottomBar = ({
 				testMessage={testMessage}
 				openAlert={openAlert}
 			/>
+			<Dialog open={open}>
+				<div
+					style={{
+						display: "flex",
+						flexDirection: "column",
+						padding: "5px",
+						width: "350px",
+						height: "auto",
+						justifyContent: "center",
+					}}
+				>
+					<div style={{ fontWeight: "bold", textAlign: "center" }}>
+						CANCEL DATASET CREATION
+						<CloseIcon style={{ float: "right" }} onClick={() => setOpen(false)} />
+						<br />
+						<br />
+						<p style={{ fontWeight: "normal" }}>
+							Cancel will reset this dataset creation. Do you want to discard the
+							progress?
+						</p>
+					</div>
+					<div
+						style={{ padding: "15px", justifyContent: "space-around", display: "flex" }}
+					>
+						<Button
+							style={{ backgroundColor: "red" }}
+							variant="contained"
+							onClick={() => {
+								resetState();
+								setOpen(false);
+								// setReset(true);
+							}}
+						>
+							Ok
+						</Button>
+					</div>
+				</div>
+			</Dialog>
 		</div>
 	);
 };
@@ -160,15 +239,14 @@ const mapStateToProps = (state) => {
 		connection: state.dataSetState.connection,
 		token: state.isLogged.accessToken,
 		relationships: state.dataSetState.relationships,
+		friendly_name: state.dataSetState.friendly_name,
+		dsId: state.dataSetState.dsId,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		// addArrows: (arrow) => dispatch(addArrows(arrow)),
-		// clickOnArrow: (payload) => dispatch(clickOnArrow(payload)),
-		// setArrowType: (payload) => dispatch(setArrowType(payload)),
-		// resetState: () => dispatch(resetState()),
+		resetState: () => dispatch(resetState()),
 	};
 };
 export default connect(mapStateToProps, mapDispatchToProps)(BottomBar);

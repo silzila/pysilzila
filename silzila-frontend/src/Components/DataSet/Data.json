@@ -16,5 +16,7 @@
         { "id": 2, "isSelected": false, "name": "One to Many", "showHead": true, "showTail": false },
         { "id": 3, "isSelected": false, "name": "Many to One", "showHead": false, "showTail": true },
         { "id": 4, "isSelected": false, "name": "Many to Many", "showHead": true, "showTail": true }
-    ]
+    ],
+    "tablesFromServer":[],
+    "relationshipsFromServer":[]
 }
