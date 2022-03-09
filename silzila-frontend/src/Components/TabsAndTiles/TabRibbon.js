@@ -27,7 +27,6 @@ const TabRibbon = ({
 	const handleSelectTab = (tabName, tabId) => {
 		// handle how to get selected tile for the switching tab and update it in two places - tabTileProps and tabState
 		let tabObj = tabState.tabs[tabId];
-		console.log(tabObj);
 
 		selectTab(tabName, tabId, tabObj.showDash);
 
@@ -82,13 +81,11 @@ const TabRibbon = ({
 
 	// called when tabName is doubleClicked
 	const handleRenameTabBegin = (tabId) => {
-		console.log("HANDLE_RENAME_TAB_BEGIN:", tabId);
 		enableRenameTab(tabId, true);
 	};
 
 	// called when renaming tab is complete
 	const handleRenameTabComplete = (renameValue, tabId) => {
-		console.log("HANDLE_RENAME_TAB_COMPLETE:", renameValue, tabId);
 		// enableRenameTab(tabId, false);
 		completeRenameTab(renameValue, tabId);
 	};

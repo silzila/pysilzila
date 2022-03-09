@@ -48,7 +48,6 @@ const DataConnection = (props) => {
 			headers: { Authorization: `Bearer ${props.token}` },
 		});
 
-		console.log(result);
 		if (result.status) {
 			setDataConnectionList(result.data);
 		} else {
@@ -61,7 +60,6 @@ const DataConnection = (props) => {
 	//=============== set Mode ===============================
 
 	const handleMode = (e) => {
-		// console.log(e.target.value);
 		if (e.target.value === "New") {
 			setRegOrUpdate("Register");
 		} else if (e.target.value === "Edit") {
@@ -99,9 +97,7 @@ const DataConnection = (props) => {
 			headers: { Authorization: `Bearer ${props.token}` },
 		});
 
-		// console.log(result);
 		if (result.status) {
-			console.log("Read Dc", result.data);
 			setAccount(result.data);
 			setShowForm(true);
 			setViewMode(true);
@@ -115,7 +111,6 @@ const DataConnection = (props) => {
 	//  ==============================================================
 
 	const handleRegister = async () => {
-		console.log("REGISTER BUTTON CLICKED");
 		var data = {
 			vendor: account.vendor,
 			url: account.url,
@@ -179,7 +174,6 @@ const DataConnection = (props) => {
 		});
 
 		if (response.status) {
-			console.log("Update Dc Response", response.data);
 			setSeverity("success");
 			setOpenAlert(true);
 			setTestMessage("Updated Successfully!");

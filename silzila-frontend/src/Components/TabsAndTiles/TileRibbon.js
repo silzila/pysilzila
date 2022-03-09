@@ -19,17 +19,11 @@ const TileRibbon = ({
 	removeTile,
 }) => {
 	const handleAddTile = () => {
-		console.log("----------------------------");
-		console.log("HANDLE_ADD_TILE");
-
 		let tabObj = tabState.tabs[tabTileProps.selectedTabId];
 		addTile(tabObj.tabId, tabObj.nextTileId, tabTileProps.selectedTable);
 	};
 
 	const handleSelectTile = (tileId, tileName, tabId, tabName) => {
-		console.log("----------------------------");
-		console.log("HANDLE_SELECT_TILE");
-
 		let tabObj = tabState.tabs[tabTileProps.selectedTabId];
 		let nextTileId = tabObj.nextTileId;
 
@@ -39,32 +33,20 @@ const TileRibbon = ({
 	};
 
 	const handleRenameTileBegin = (tabId, tileId) => {
-		console.log("----------------------------");
-		console.log("HANDLE_TILE_RENAME_ENABLE");
-		console.log(tabId, tileId);
 		enableRenameTile(tabId, tileId, true);
 	};
 
 	const handleRenameTileComplete = (renameValue, tabId, tileId) => {
-		console.log("----------------------------");
-		console.log("HANDLE_TILE_RENAME_COMPLETE");
 		let tabObj = tabState.tabs[tabTileProps.selectedTabId];
 		let nextTileId = tabObj.nextTileId;
 		completeRenameTile(tabId, tileId, renameValue, nextTileId, false);
 	};
 
 	const handleRemoveTile = (tabId, tileId) => {
-		console.log("----------------------------");
-		console.log("HANDLE_TILE_REMOVE");
-
 		let tilesForSelectedTab = tileState.tileList[tabId];
-		// console.log(tilesForSelectedTab);
 
 		let numTiles = tilesForSelectedTab.length;
 		let tileIndex = tilesForSelectedTab.findIndex((tile) => tile === `${tabId}.${tileId}`);
-		// let tileKey = tilesForSelectedTab[tileIndex];
-		// let tileObj = tileState.tiles[tileKey];
-		// console.log(tileObj);
 
 		let prevSelectedTile = tabTileProps.selectedTileId;
 		if (tileId === prevSelectedTile) {
@@ -80,7 +62,6 @@ const TileRibbon = ({
 
 				if (tileIndex !== 0) {
 					let newTileKey = tilesForSelectedTab[tileIndex - 1];
-					// console.log(newTileKey);
 
 					let newTileObj = tileState.tiles[newTileKey];
 					selectedTileName = newTileObj.tileName;

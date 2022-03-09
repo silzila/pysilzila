@@ -45,7 +45,6 @@ const CanvasTableColumns = ({
 				return <PriorityHigh fontSize="15px" />;
 
 			default:
-				console.log(type);
 				return null;
 		}
 	};
@@ -68,7 +67,7 @@ const CanvasTableColumns = ({
 						e.dataTransfer.getData("connectItemId") === itemId ||
 						e.dataTransfer.getData("connectTableName") === tableName
 					) {
-						console.log(e.dataTransfer.getData("connectItemId"));
+						// console.log(e.dataTransfer.getData("connectItemId"));
 					} else {
 						// Check if relationship popover should open
 						// Need to open only when there is no relationship defined between these tables

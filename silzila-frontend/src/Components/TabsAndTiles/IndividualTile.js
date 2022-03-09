@@ -28,7 +28,6 @@ function IndividualTile({
 			<form
 				style={{ display: "inline" }}
 				onSubmit={(evt) => {
-					console.log(evt);
 					evt.currentTarget.querySelector("input").blur();
 					evt.preventDefault();
 				}}

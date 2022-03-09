@@ -31,7 +31,6 @@ const DataSetList = ({
 			headers: { Authorization: `Bearer ${token}` },
 		});
 
-		console.log(result);
 		if (result.status) {
 			setDataSetList(result.data);
 			setDataSetListToStore(result.data);

@@ -29,25 +29,18 @@ const DataViewerBottom = ({
 	setTablesForDs,
 	addRecords,
 }) => {
-	console.log(JSON.parse(JSON.stringify(tabTileProps)));
-	console.log(JSON.parse(JSON.stringify(chartProps)));
-
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 	var selectedChartProp = chartProps.properties[propKey];
 	var tables = tabTileProps?.tablesForSelectedDataSets?.[selectedChartProp?.selectedDs?.ds_uid];
-	console.log(propKey, selectedChartProp);
 
 	const [open, setOpen] = useState(false);
 	const [selectedDataset, setSelectedDataset] = useState("");
-
-	console.log("Selected Dataset =====", selectedDataset?.ds_uid);
 
 	// When a new dataset is added to the tile for work,
 	// set it in SelectedDataSet of tabTileProps
 	useEffect(async () => {
 		if (selectedDataset !== "") {
 			var isAlready = tabTileProps.selectedDataSetList.filter((ds) => ds === selectedDataset);
-			console.log(isAlready);
 			if (isAlready.length > 0) {
 				window.alert("Dataset already in selected list");
 			} else {
@@ -59,7 +52,6 @@ const DataViewerBottom = ({
 			}
 		}
 	}, [selectedDataset]);
-	console.log(selectedDataset);
 
 	// When a Dataset is selected, make sure the tables for that dataset is present in store.
 	// If not, get it from server and save in store
@@ -68,12 +60,9 @@ const DataViewerBottom = ({
 			tabTileProps?.tablesForSelectedDataSets?.[selectedChartProp?.selectedDs?.ds_uid] ===
 			undefined
 		) {
-			console.log("Get Tables from server");
 			var tablesFromServer = await getTables(selectedChartProp.selectedDs?.ds_uid);
 
 			setTablesForDs({ [selectedDataset.ds_uid]: tablesFromServer });
-		} else {
-			console.log("already tables present for this dataset");
 		}
 	}, [selectedChartProp.selectedDs]);
 
@@ -95,40 +84,24 @@ const DataViewerBottom = ({
 	const handleDataSetChange = (value) => {
 		if (value === "addNewDataset") {
 			setOpen(true);
-			console.log("Show popover now");
 		} else {
 			var dsObj = tabTileProps.selectedDataSetList.filter((ds) => ds.ds_uid === value)[0];
-			console.log(dsObj);
 			setSelectedDs(propKey, dsObj);
 		}
 	};
 
 	const handleTableChange = async (table, dsUid) => {
-		console.log("To handle when table is changed in dvb");
-
-		console.log(table.id, table.schema_name, selectedChartProp.selectedTable);
-
-		if (table.id === selectedChartProp.selectedTable) {
-			console.log("Same Table selcted");
-		} else {
+		if (table.id !== selectedChartProp.selectedTable) {
 			setSelectedTable(propKey, { [selectedChartProp.selectedDs.ds_uid]: table.id });
 
 			if (sampleRecords?.[selectedChartProp.selectedDs?.ds_uid]?.[table.id]) {
-				console.log("Can Show table records");
 			} else {
-				// TODO: Priority 1 (Saravanan)
-
 				var dc_uid = selectedChartProp.selectedDs?.dc_uid;
 				var tableRecords = await getTableData(dc_uid, table.schema_name, table.table_name);
-				console.log(tableRecords);
 
 				var ds_uid = selectedChartProp.selectedDs?.ds_uid;
-				console.log(ds_uid, table);
 
 				addRecords(ds_uid, table.id, tableRecords);
-				// setTableRecords() to store
-
-				console.log("Get table records from server");
 			}
 		}
 	};
@@ -141,14 +114,8 @@ const DataViewerBottom = ({
 			headers: { Authorization: `Bearer ${token}` },
 		});
 
-		console.log("Get Table Data", res);
 		if (res.status) {
-			console.log("table Data", res.data);
 			return res.data;
-			// setTableData(res.data);
-			// setShowTableData(true);
-			// var keys = Object.keys(res.data[0]);
-			// setObjKeys([...keys]);
 		} else {
 			console.log("Get Table Data Error".res.data.detail);
 		}
@@ -156,15 +123,7 @@ const DataViewerBottom = ({
 
 	const TableListForDs = () => {
 		if (tables !== undefined) {
-			console.log(tables);
-
 			return tables.map((table) => {
-				// console.log(
-				// 	table.id,
-				// 	selectedChartProp.selectedTable,
-				// 	selectedDataset.ds_uid,
-				// 	selectedChartProp.selectedDs?.ds_uid
-				// );
 				return (
 					<div
 						className={
@@ -196,7 +155,6 @@ const DataViewerBottom = ({
 						value={selectedChartProp.selectedDs?.ds_uid}
 						variant="outlined"
 						onChange={(e) => {
-							console.log(e.target.value);
 							handleDataSetChange(e.target.value);
 						}}
 					>
@@ -223,10 +181,6 @@ const DataViewerBottom = ({
 				/>
 			</div>
 			<div className="tileTableView">
-				{console.log(
-					"=-=-=-=-=-=-=-=-=-=-\n",
-					selectedChartProp.selectedTable?.[selectedChartProp.selectedDs.ds_uid]
-				)}
 				{selectedChartProp.selectedTable?.[selectedChartProp.selectedDs.ds_uid] ? (
 					<DisplayTable
 						dsId={selectedChartProp.selectedDs?.ds_uid}

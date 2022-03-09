@@ -143,7 +143,6 @@ const Tables = ({
 			table1_columns: [arrow.startColumnName],
 			table2_columns: [arrow.endColumnName],
 		};
-		console.log(payload, "payload");
 		if (relationships.length !== 0) {
 			const isFound = relationships.some((element) => {
 				if (
@@ -153,7 +152,6 @@ const Tables = ({
 					return true;
 				}
 			});
-			console.log(isFound);
 			if (isFound) {
 				addInTableColumn(payload);
 			} else {

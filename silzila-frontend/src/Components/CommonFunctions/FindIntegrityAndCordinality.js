@@ -14,7 +14,6 @@
 // };
 
 export const FindRowMatchId = (ity) => {
-	console.log(ity);
 	switch (ity) {
 		case "full":
 			return { rowMatchId1: 1, rowMatchId2: 1 };

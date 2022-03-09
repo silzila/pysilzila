@@ -50,7 +50,6 @@ const tabTilePropsReducer = (state = initialProperties, action) => {
 			return { ...state, nextTabId: state.nextTabId + 1 };
 
 		case "SELECTED_TAB":
-			console.log(action.payload.showDash);
 			return {
 				...state,
 				selectedTabId: action.payload.tabId,
@@ -91,7 +90,6 @@ const tabTilePropsReducer = (state = initialProperties, action) => {
 			return { ...state, dashGridSize: action.payload };
 
 		case "SET_SELECTED_DATASET_LIST":
-			console.log(action.payload);
 			return {
 				...state,
 				selectedDataSetList: [...state.selectedDataSetList, action.payload],

@@ -17,8 +17,6 @@ const ChartAxes = ({
 		dropZones.push(ChartsInfo[chartProp.properties[propKey].chartType].dropZones[i].name);
 	}
 
-	console.log(dropZones);
-
 	return (
 		<div className="charAxesArea">
 			{dropZones.map((zone, zoneI) => (

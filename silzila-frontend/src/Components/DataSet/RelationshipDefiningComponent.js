@@ -183,7 +183,6 @@ const RelationshipDefiningComponent = ({
 			// 	startColumnName:arrowProp.startColumnName,
 			// 	endColumnName: arrowProp.endColumnName,
 			// };
-			console.log(refs, "ref");
 			addArrows(refs);
 			addRelationship(refs);
 			onClose();
@@ -291,7 +290,6 @@ const RelationshipDefiningComponent = ({
 						<Select
 							onChange={(e) => {
 								handleRowUniqueId2(e);
-								console.log(e.target.value);
 							}}
 							className="relpopoverSelect"
 							defaultValue={existingArrow ? rowUniqueId2 : ""}

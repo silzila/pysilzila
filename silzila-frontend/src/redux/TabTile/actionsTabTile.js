@@ -65,45 +65,11 @@ export const showDashboardInTab = (tabId, showDash) => {
 	return { type: "SHOW_DASHBOARD_IN_TAB", payload: { tabId, showDash } };
 };
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!
-// ---------------------------------------------------------------
-// Actions from dashboard during graph drag and resize operations
-// ---------------------------------------------------------------
-
-// export const updateTabDashDetails = (checked, propKey, dashSpecs, tabId, propIndex) => {
-// 	console.log(checked, propKey, dashSpecs, tabId);
-// 	return {
-// 		type: "UPDATE_DASH_GRAPH_DETAILS",
-// 		payload: { checked, propKey, dashSpecs, tabId, propIndex },
-// 	};
-// };
-
-// export const updateDashGraphPosition = (tabId, propKey, x, y) => {
-// 	console.log(tabId, propKey, x, y);
-// 	return { type: "UPDATE_DASH_GRAPH_POSITION", payload: { tabId, propKey, x, y } };
-// };
-
-// export const updateDashGraphSize = (tabId, propKey, x, y, width, height) => {
-// 	console.log(tabId, propKey, x, y, width, height);
-// 	return { type: "UPDATE_DASH_GRAPH_SIZE", payload: { tabId, propKey, x, y, width, height } };
-// };
-
-// export const updateGraphHighlight = (tabId, propKey, highlight) => {
-// 	console.log("SET_GRAPH_BORDER_HIGHLIGHT", tabId, propKey, highlight);
-// 	return { type: "SET_GRAPH_BORDER_HIGHLIGHT", payload: { tabId, propKey, highlight } };
-// };
-
-// export const resetGraphHighlight = (tabId) => {
-// 	console.log("RESET_GRAPH_BORDER_HIGHLIGHT", tabId);
-// 	return { type: "RESET_GRAPH_BORDER_HIGHLIGHT", payload: { tabId } };
-// };
-
 //  *************************************************************
 //  to tile state reducer
 //  *************************************************************
 
 export const addTile = (tabId, tileId, newTab) => {
-	console.log("Adding new tile :", newTab);
 	if (!newTab) {
 		return { type: "ADD_TILE", payload: { tabId, tileId } };
 	} else {
@@ -234,7 +200,6 @@ export const setDashGridSize = (gridSize) => {
 //  *************************************************************
 
 export const actionsToAddTab = ({ tabId, table }) => {
-	console.log("ACTION: Adding a new tab & Updating related settings");
 	let tabname = `Tab - ${tabId}`;
 	return (dispatch) => {
 		dispatch(addTab(tabId));
@@ -245,7 +210,6 @@ export const actionsToAddTab = ({ tabId, table }) => {
 };
 
 export const actionsToSelectTab = ({ tabName, tabId, showDash }) => {
-	console.log("ACTION: actions to select tab called");
 	return (dispatch) => {
 		dispatch(updateSelectedTab(tabName, tabId, showDash));
 	};
@@ -253,12 +217,10 @@ export const actionsToSelectTab = ({ tabName, tabId, showDash }) => {
 
 export const actionsToRemoveTab = ({ tabName, tabId, tabToRemoveIndex, newObj }) => {
 	return (dispatch) => {
-		console.log("ACTION: remove tag dispatch group called");
 		dispatch(removeTab(tabName, tabId, tabToRemoveIndex));
 		dispatch(removeTilesOfTab(tabName, tabId));
 		dispatch(removeMultiplePropLeft(tabId));
 		if (newObj) {
-			console.log("ACTION: Updating Selection when closing tab", newObj);
 			dispatch(updateSelectedTab(newObj.tabName, newObj.tabId));
 			dispatch(
 				updateSelectedTile(
@@ -272,15 +234,12 @@ export const actionsToRemoveTab = ({ tabName, tabId, tabToRemoveIndex, newObj })
 };
 
 export const actionsToEnableRenameTab = ({ tabId, isTrue }) => {
-	console.log("ACTION: Enable editing dispatch group called");
 	return (dispatch) => {
 		dispatch(toggleEditingTab(isTrue));
 	};
 };
 
 export const actionsToRenameTab = ({ renameValue, tabId }) => {
-	console.log("ACTION: completing renaming tab dispatch group");
-	console.log(renameValue);
 	return (dispatch) => {
 		dispatch(updateSelectedTab(renameValue, tabId));
 		dispatch(updateTabNameOfTile(renameValue, tabId));
@@ -294,9 +253,7 @@ export const actionsToRenameTab = ({ renameValue, tabId }) => {
 //  *************************************************************
 
 export const actionsToAddTile = ({ tabId, nextTileId, table, fromTab: newTab }) => {
-	console.log("ACTION: adding new tile dispatch group");
 	let tileName = `Tile - ${nextTileId}`;
-	console.log("From Tab: ", newTab);
 	return (dispatch) => {
 		dispatch(addTile(tabId, nextTileId, newTab));
 		dispatch(updateNextTileId(nextTileId, tabId));

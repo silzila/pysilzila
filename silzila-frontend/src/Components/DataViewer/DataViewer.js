@@ -60,7 +60,6 @@ function DataViewer({
 						}
 						onClick={() => {
 							showDashBoard(tabTileProps.selectedTabId, true);
-							console.log("Open Dashboard");
 						}}
 					>
 						Dashboard

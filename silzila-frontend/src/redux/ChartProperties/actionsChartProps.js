@@ -2,7 +2,6 @@
 // Chart Axes (left Column) CRUD Operations
 
 export const addProp = (tabId, nextTileId, table, newTab) => {
-	console.log("ADD_PROP_LEFT", table);
 	if (newTab) {
 		return { type: "ADD_NEW_PROP_FROM_TAB", payload: { tabId, tileId: nextTileId, table } };
 	} else {
@@ -14,12 +13,10 @@ export const addProp = (tabId, nextTileId, table, newTab) => {
 };
 
 export const removeChartPropLeft = (tabId, tileId, propKey, tileIndex) => {
-	console.log("DELETING_CHART_PROP_ITEM");
 	return { type: "DELETE_PROP", payload: { tabId, tileId, propKey, tileIndex } };
 };
 
 export const removeMultiplePropLeft = (tabId) => {
-	console.log("DELETING MULTIPLE PROPS");
 	return { type: "DELETE_PROPS_OF_TAB", payload: tabId };
 };
 

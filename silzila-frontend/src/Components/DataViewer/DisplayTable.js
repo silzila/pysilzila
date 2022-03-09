@@ -21,7 +21,6 @@ const DisplayTable = ({
 	const GetHeaders = () => {
 		if (SampleRecords) {
 			var keys = getKeys(SampleRecords[0]);
-			console.log("Keys ", keys);
 			return keys.map((key, index) => {
 				return (
 					<th

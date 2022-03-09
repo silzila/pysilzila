@@ -23,7 +23,6 @@ const BottomBar = ({
 	const [testMessage, setTestMessage] = useState("");
 	const [severity, setSeverity] = useState("success");
 	const navigate = useNavigate();
-	console.log(fname);
 
 	const tbs = [];
 
@@ -31,7 +30,6 @@ const BottomBar = ({
 		if (data_schema_tables.length > 1) {
 			data_schema_tables.map((el) => {
 				if (tableWithRelation.includes(el.table_name)) {
-					console.log("----");
 				} else {
 					tbs.push(el.table_name);
 				}
@@ -61,6 +59,7 @@ const BottomBar = ({
 		// 			};
 
 		if (tbs.length === 0 || (data_schema_tables.length === 1 && relationships.length === 0)) {
+			// TODO: Priority 5 - Change the below method to use FetchData function like other API calls
 			const options = {
 				method: "POST",
 				url: "https://silzila.org/api/ds/create-ds",
@@ -77,11 +76,9 @@ const BottomBar = ({
 					},
 				},
 			};
-			console.log(options.data);
 			axios
 				.request(options)
 				.then(function (response) {
-					console.log(response.data);
 					setSeverity("success");
 					setOpenAlert(true);
 					setTestMessage("Saved Successfully!");
@@ -123,7 +120,6 @@ const BottomBar = ({
 			const data_schema_tables = tempTable.map((el) => {
 				return { table_name: el.tableName, schema_name: schema, id: uid() };
 			});
-			console.log(data_schema_tables);
 			const temp1 = [];
 			const temp2 = [];
 			arrows.forEach((el) => {

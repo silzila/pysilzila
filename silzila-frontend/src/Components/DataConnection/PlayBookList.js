@@ -37,7 +37,6 @@ const PlayBookList = ({
 			navigate("/dataviewer");
 		}
 	}, [selectedDataset]);
-	console.log(selectedDataset);
 
 	const getTables = async (uid) => {
 		var result = await FetchData({

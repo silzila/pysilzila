@@ -42,7 +42,6 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 		// Left Column properties CRUD Operation
 
 		case "ADD_NEW_PROP":
-			console.log("ADDING NEW CHART_PROP_LEFT");
 			let tileKey = `${action.payload.tabId}.${action.payload.tileId}`;
 
 			return {
@@ -114,7 +113,6 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 			};
 
 		case "DELETE_PROP":
-			console.log("DELETING PROPERTY");
 			return update(state, {
 				properties: { $unset: [action.payload.propKey] },
 				propList: { [action.payload.tabId]: { $splice: [[action.payload.tileIndex, 1]] } },
@@ -122,8 +120,6 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 
 		case "DELETE_PROPS_OF_TAB":
 			let propsToRemove = state.propList[action.payload];
-			console.log(propsToRemove);
-			console.log("DELETING MULTIPLE PROPS");
 			return update(state, {
 				properties: { $unset: propsToRemove },
 				propList: { $unset: [action.payload] },

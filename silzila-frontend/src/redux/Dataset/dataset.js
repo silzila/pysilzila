@@ -11,8 +11,6 @@ const initialState = {
 };
 
 const DataSetReducer = (state = initialState, action) => {
-	// console.log(action.type, action.payload);
-
 	switch (action.type) {
 		// sets DC id to state
 		case "SET_CONNECTION_VALUE":
@@ -32,7 +30,6 @@ const DataSetReducer = (state = initialState, action) => {
 
 		// When a table in sidebar is checked / unchecked, update state accordingly
 		case "ON_CHECKED":
-			console.log(action.payload);
 			const x = state.tables.map((tab) => {
 				if (tab.tableName === action.payload) {
 					if (tab.isSelected === true) {
@@ -51,12 +48,10 @@ const DataSetReducer = (state = initialState, action) => {
 				}
 				return tab;
 			});
-			console.log("X", x);
 
 			const tempArray = state.tempTable.filter((item) => {
 				return item.isSelected === true;
 			});
-			console.log(tempArray);
 
 			return update(state, { tables: { $set: [...x] }, tempTable: { $set: [...tempArray] } });
 

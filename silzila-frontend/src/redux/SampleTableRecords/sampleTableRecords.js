@@ -3,8 +3,6 @@ import update from "immutability-helper";
 const SampleRecordsReducer = (state = {}, action) => {
 	switch (action.type) {
 		case "ADD_TABLE_RECORDS":
-			console.log(action.payload.ds_uid, action.payload.tableId, action.payload.tableRecords);
-
 			if (state[action.payload.ds_uid] !== undefined) {
 				return update(state, {
 					[action.payload.ds_uid]: {
