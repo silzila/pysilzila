@@ -48,8 +48,12 @@ const TableList = (props) => {
 		/* TODO: Priority 1 - BUG in deleting arrow
 				When a table is unchecked from Sidebar, If it has the same table name
 				as another table from another schema, the arrows are deleted here also.
-				This behaviour should not happen
-		*/
+				This behaviour should not happen	*/
+
+		/* TODO: Priority 2 - Create Unique id for Tables
+				Create unique id for any table added to canvas and 
+				Use this unique id for defining relationship 	*/
+
 		console.log(e.target.value);
 		props.onChecked(e.target.value);
 

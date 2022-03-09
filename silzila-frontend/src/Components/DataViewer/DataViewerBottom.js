@@ -5,6 +5,7 @@ import {
 	setSelectedDsInTile,
 	setSelectedTableInTile,
 } from "../../redux/ChartProperties/actionsChartProps";
+import { addTableRecords } from "../../redux/SampleTableRecords/sampleTableRecordsActions";
 import {
 	setSelectedDataSetList,
 	setTablesForSelectedDataSets,
@@ -19,23 +20,27 @@ const DataViewerBottom = ({
 	token,
 	tabTileProps,
 	chartProps,
+	sampleRecords,
 
 	// dispatch
 	setSelectedDataSetList,
 	setSelectedDs,
 	setSelectedTable,
 	setTablesForDs,
+	addRecords,
 }) => {
 	console.log(JSON.parse(JSON.stringify(tabTileProps)));
 	console.log(JSON.parse(JSON.stringify(chartProps)));
 
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 	var selectedChartProp = chartProps.properties[propKey];
-	var tables = tabTileProps?.tablesForSelectedDataSets?.[selectedChartProp?.selectedDs];
+	var tables = tabTileProps?.tablesForSelectedDataSets?.[selectedChartProp?.selectedDs?.ds_uid];
 	console.log(propKey, selectedChartProp);
 
 	const [open, setOpen] = useState(false);
 	const [selectedDataset, setSelectedDataset] = useState("");
+
+	console.log("Selected Dataset =====", selectedDataset?.ds_uid);
 
 	// When a new dataset is added to the tile for work,
 	// set it in SelectedDataSet of tabTileProps
@@ -49,7 +54,7 @@ const DataViewerBottom = ({
 				// TODO: Priority 1 - Open in new tab if any of the column by default for now
 				// Later in left already has a field in it.
 				setSelectedDataSetList(selectedDataset);
-				setSelectedDs(propKey, selectedDataset.ds_uid);
+				setSelectedDs(propKey, selectedDataset);
 				setOpen(false);
 			}
 		}
@@ -60,10 +65,11 @@ const DataViewerBottom = ({
 	// If not, get it from server and save in store
 	useEffect(async () => {
 		if (
-			tabTileProps?.tablesForSelectedDataSets?.[selectedChartProp?.selectedDs] === undefined
+			tabTileProps?.tablesForSelectedDataSets?.[selectedChartProp?.selectedDs?.ds_uid] ===
+			undefined
 		) {
 			console.log("Get Tables from server");
-			var tablesFromServer = await getTables(selectedChartProp.selectedDs);
+			var tablesFromServer = await getTables(selectedChartProp.selectedDs?.ds_uid);
 
 			setTablesForDs({ [selectedDataset.ds_uid]: tablesFromServer });
 		} else {
@@ -91,69 +97,85 @@ const DataViewerBottom = ({
 			setOpen(true);
 			console.log("Show popover now");
 		} else {
-			var dsObj = tabTileProps.selectedDataSetList.filter((ds) => ds.ds_uid === value);
+			var dsObj = tabTileProps.selectedDataSetList.filter((ds) => ds.ds_uid === value)[0];
 			console.log(dsObj);
-			setSelectedDs(propKey, value);
+			setSelectedDs(propKey, dsObj);
 		}
 	};
 
-	const handleTableChange = (tableId, schemaName) => {
+	const handleTableChange = async (table, dsUid) => {
 		console.log("To handle when table is changed in dvb");
 
-		console.log(tableId, schemaName, selectedChartProp.selectedTable);
+		console.log(table.id, table.schema_name, selectedChartProp.selectedTable);
 
-		if (tableId === selectedChartProp.selectedTable) {
+		if (table.id === selectedChartProp.selectedTable) {
 			console.log("Same Table selcted");
 		} else {
-			setSelectedTable(propKey, tableId);
+			setSelectedTable(propKey, { [selectedChartProp.selectedDs.ds_uid]: table.id });
 
-			// Check if the table is in store
-			// if yes, display the table
-			// if No, get table from server, save in store and display the table
+			if (sampleRecords?.[selectedChartProp.selectedDs?.ds_uid]?.[table.id]) {
+				console.log("Can Show table records");
+			} else {
+				// TODO: Priority 1 (Saravanan)
+
+				var dc_uid = selectedChartProp.selectedDs?.dc_uid;
+				var tableRecords = await getTableData(dc_uid, table.schema_name, table.table_name);
+				console.log(tableRecords);
+
+				var ds_uid = selectedChartProp.selectedDs?.ds_uid;
+				console.log(ds_uid, table);
+
+				addRecords(ds_uid, table.id, tableRecords);
+				// setTableRecords() to store
+
+				console.log("Get table records from server");
+			}
 		}
 	};
 
-	// const getTableData = async (table) => {
-	// 	var res = await FetchData({
-	// 		requestType: "noData",
-	// 		method: "GET",
-	// 		url: "dc/sample-records/" + props.connectionId + "/" + props.schema + "/" + table,
-	// 		headers: { Authorization: `Bearer ${props.token}` },
-	// 	});
+	const getTableData = async (dc_uid, schema_name, table_name) => {
+		var res = await FetchData({
+			requestType: "noData",
+			method: "GET",
+			url: "dc/sample-records/" + dc_uid + "/" + schema_name + "/" + table_name,
+			headers: { Authorization: `Bearer ${token}` },
+		});
 
-	// 	console.log("Get Table Data", res);
-	// 	if (res.status) {
-	// 		console.log("table Data", res.data);
-	// 		setTableData(res.data);
-	// 		setShowTableData(true);
-	// 		var keys = Object.keys(res.data[0]);
-	// 		setObjKeys([...keys]);
-	// 	} else {
-	// 		console.log("Get Table Data Error".res.data.detail);
-	// 	}
-	// };
+		console.log("Get Table Data", res);
+		if (res.status) {
+			console.log("table Data", res.data);
+			return res.data;
+			// setTableData(res.data);
+			// setShowTableData(true);
+			// var keys = Object.keys(res.data[0]);
+			// setObjKeys([...keys]);
+		} else {
+			console.log("Get Table Data Error".res.data.detail);
+		}
+	};
 
 	const TableListForDs = () => {
 		if (tables !== undefined) {
 			console.log(tables);
 
 			return tables.map((table) => {
-				console.log(
-					table.id,
-					selectedChartProp.selectedTable,
-					selectedDataset.ds_uid,
-					selectedChartProp.selectedDs
-				);
+				// console.log(
+				// 	table.id,
+				// 	selectedChartProp.selectedTable,
+				// 	selectedDataset.ds_uid,
+				// 	selectedChartProp.selectedDs?.ds_uid
+				// );
 				return (
 					<div
 						className={
-							table.id === selectedChartProp.selectedTable
+							table.id ===
+							selectedChartProp.selectedTable?.[selectedChartProp.selectedDs?.ds_uid]
 								? "dsIndiTableInTileSelected"
 								: "dsIndiTableInTile"
 						}
 						key={table.id}
 						onClick={() => {
-							handleTableChange(table.id, table.schema_name);
+							handleTableChange(table);
 						}}
 					>
 						{table.alias}
@@ -171,7 +193,7 @@ const DataViewerBottom = ({
 					<Select
 						label="DataSet"
 						labelId="selectDataSet"
-						value={selectedChartProp.selectedDs}
+						value={selectedChartProp.selectedDs?.ds_uid}
 						variant="outlined"
 						onChange={(e) => {
 							console.log(e.target.value);
@@ -201,39 +223,19 @@ const DataViewerBottom = ({
 				/>
 			</div>
 			<div className="tileTableView">
-				<DisplayTable />
+				{console.log(
+					"=-=-=-=-=-=-=-=-=-=-\n",
+					selectedChartProp.selectedTable?.[selectedChartProp.selectedDs.ds_uid]
+				)}
+				{selectedChartProp.selectedTable?.[selectedChartProp.selectedDs.ds_uid] ? (
+					<DisplayTable
+						dsId={selectedChartProp.selectedDs?.ds_uid}
+						table={
+							selectedChartProp.selectedTable[selectedChartProp.selectedDs?.ds_uid]
+						}
+					/>
+				) : null}
 			</div>
-
-			{/* TODO: Priority 1 (Saravanan) - DS Select list and tableList 
-
-				DONE: First div with width of 14.5rem to host the dropdown and list of tables
-				
-				DONE: Dropdown:
-					Add Dataset option
-						Popover the list of datasets from previous page. Once selected,
-							See if the dataset is in already selected list
-								if NO, save the dataset list in store
-								if YES, Provide a warning saying Dataset was already selected
-					List of already selected Datasets
-
-
-				DONE: Tables List:
-					List all tables for a selected dataset. 
-
-			*/}
-
-			{/* TODO: Priority 1 (Saravanan) - Table Selection and API call
-
-				Table list Click actions:
-					Set selected Table in chartPropsLeft in this tile. 
-					Get sample columns
-					Display table
-
-				 When a table is selected, see if it is already on selected list and if the records are available.
-				 get the sample records for this table and save in redux */}
-
-			{/* TODO: Priority 1 (Saravanan) - Display the table that was just selected
-				Use the previous table format and display the current selected table */}
 		</div>
 	);
 };
@@ -243,6 +245,7 @@ const mapStateToProps = (state) => {
 		token: state.isLogged.accessToken,
 		tabTileProps: state.tabTileProps,
 		chartProps: state.chartPropsLeft,
+		sampleRecords: state.sampleRecords,
 	};
 };
 
@@ -254,6 +257,8 @@ const mapDispatchToProps = (dispatch) => {
 		setSelectedDs: (propKey, selectedDs) => dispatch(setSelectedDsInTile(propKey, selectedDs)),
 		setSelectedTable: (propKey, selectedTable) =>
 			dispatch(setSelectedTableInTile(propKey, selectedTable)),
+		addRecords: (ds_uid, tableId, tableRecords) =>
+			dispatch(addTableRecords(ds_uid, tableId, tableRecords)),
 	};
 };
 

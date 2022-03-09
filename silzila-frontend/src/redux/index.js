@@ -7,6 +7,7 @@ import tabStateReducer from "./TabTile/tabState";
 import tileStateReducer from "./TabTile/tileState";
 import tabTilePropsReducer from "./TabTile/tabTileProps";
 import chartPropLeftReducer from "./ChartProperties/chartPropLeft";
+import SampleRecordsReducer from "./SampleTableRecords/sampleTableRecords";
 
 const allReducers = combineReducers({
 	isLogged: loggedReducer,
@@ -17,6 +18,7 @@ const allReducers = combineReducers({
 	tabTileProps: tabTilePropsReducer,
 
 	chartPropsLeft: chartPropLeftReducer,
+	sampleRecords: SampleRecordsReducer,
 });
 
 export default allReducers;

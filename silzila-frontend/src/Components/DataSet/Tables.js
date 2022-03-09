@@ -211,7 +211,11 @@ const Tables = ({
 							</Button>
 						</div>
 					) : (
-						<div className="draggableBoxTitle" id={tableId}>
+						<div
+							className="draggableBoxTitle"
+							id={tableId}
+							title={`${tableData.tableName} (${tableData.schema})`}
+						>
 							<div
 								style={{ flex: 1 }}
 								onDoubleClick={() => {

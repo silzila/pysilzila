@@ -32,7 +32,7 @@ const PlayBookList = ({
 
 			var datasetFromServer = await getTables(selectedDataset.ds_uid);
 			setTablesForDs({ [selectedDataset.ds_uid]: datasetFromServer });
-			setSelectedDs(selectedDataset.ds_uid);
+			setSelectedDs(selectedDataset);
 
 			navigate("/dataviewer");
 		}

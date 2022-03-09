@@ -28,7 +28,7 @@ const chartPropLeft = {
 
 			// DataViewerBottom Dataset selected and tables to list
 			selectedDs: "",
-			selectedTable: "",
+			selectedTable: {},
 		},
 	},
 
@@ -36,35 +36,6 @@ const chartPropLeft = {
 };
 
 const chartPropLeftReducer = (state = chartPropLeft, action) => {
-	// const findCardIndex = (propKey, fromBIndex, fromUid) => {
-	// 	var removeIndex = state.properties[propKey].chartAxes[fromBIndex].fields.findIndex(
-	// 		(obj) => obj.uId === fromUid
-	// 	);
-	// 	return removeIndex;
-	// };
-
-	// const findCardObject = (propKey, bIndex, uId) => {
-	// 	var cardIndex = state.properties[propKey].chartAxes[bIndex].fields.findIndex(
-	// 		(obj) => obj.uId === uId
-	// 	);
-	// 	var card = state.properties[propKey].chartAxes[bIndex].fields[cardIndex];
-	// 	console.log(cardIndex, card);
-	// 	return {
-	// 		cardIndex,
-	// 		card,
-	// 	};
-	// };
-
-	// const axesTemplate = (chartType) => {
-	// 	var axesTemplateArray = [];
-
-	// 	ChartsInfo[chartType].dropZones.map((zone) => {
-	// 		var bin = { name: zone.name, fields: [] };
-	// 		axesTemplateArray.push(bin);
-	// 	});
-	// 	return axesTemplateArray;
-	// };
-
 	switch (action.type) {
 		// ########################################################################################################################
 		// ########################################################################################################################
@@ -169,7 +140,7 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 			return update(state, {
 				properties: {
 					[action.payload.propKey]: {
-						selectedTable: { $set: action.payload.selectedTable },
+						selectedTable: { $merge: action.payload.selectedTable },
 					},
 				},
 			});
