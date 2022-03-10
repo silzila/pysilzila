@@ -60,7 +60,6 @@ const tabStateReducer = (state = initialTabState, action) => {
 		// ==================================================================
 
 		case "UPDATE_NEXT_TILE_ID":
-			console.log(action.payload.tabId, action.payload.tileId);
 			return update(state, {
 				tabs: {
 					[action.payload.tabId]: { nextTileId: { $set: action.payload.tileId + 1 } },

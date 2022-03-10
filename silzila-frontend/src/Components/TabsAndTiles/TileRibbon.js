@@ -20,7 +20,16 @@ const TileRibbon = ({
 }) => {
 	const handleAddTile = () => {
 		let tabObj = tabState.tabs[tabTileProps.selectedTabId];
-		addTile(tabObj.tabId, tabObj.nextTileId, tabTileProps.selectedTable);
+
+		var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
+
+		addTile(
+			tabObj.tabId,
+			tabObj.nextTileId,
+			tabTileProps.selectedTable,
+			chartProp.properties[propKey].selectedDs,
+			chartProp.properties[propKey].selectedTable
+		);
 	};
 
 	const handleSelectTile = (tileId, tileName, tabId, tabName) => {
@@ -141,8 +150,17 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		addTile: (tabId, nextTileId, table) =>
-			dispatch(actions.actionsToAddTile({ tabId, nextTileId, table, fromTab: false })),
+		addTile: (tabId, nextTileId, table, selectedDataset, selectedTables) =>
+			dispatch(
+				actions.actionsToAddTile({
+					tabId,
+					nextTileId,
+					table,
+					fromTab: false,
+					selectedDs: selectedDataset,
+					selectedTablesInDs: selectedTables,
+				})
+			),
 
 		selectTile: (tabId, tileName, tileId, nextTileId, fileId, fromTab) =>
 			dispatch(

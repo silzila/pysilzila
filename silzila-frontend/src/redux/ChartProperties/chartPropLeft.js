@@ -70,6 +70,9 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 								fields: [],
 							},
 						],
+
+						selectedDs: action.payload.selectedDs,
+						selectedTable: action.payload.selectedTablesInDs,
 					},
 				},
 				propList: {
@@ -107,6 +110,8 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 								fields: [],
 							},
 						],
+						selectedDs: action.payload.selectedDs,
+						selectedTable: action.payload.selectedTablesInDs,
 					},
 				},
 				propList: { ...state.propList, [action.payload.tabId]: [tileKey2] },

@@ -1,13 +1,22 @@
 // ==============================================================
 // Chart Axes (left Column) CRUD Operations
 
-export const addProp = (tabId, nextTileId, table, newTab) => {
+export const addProp = (tabId, nextTileId, table, newTab, selectedDs, selectedTablesInDs) => {
 	if (newTab) {
-		return { type: "ADD_NEW_PROP_FROM_TAB", payload: { tabId, tileId: nextTileId, table } };
+		return {
+			type: "ADD_NEW_PROP_FROM_TAB",
+			payload: { tabId, tileId: nextTileId, table, selectedDs, selectedTablesInDs },
+		};
 	} else {
 		return {
 			type: "ADD_NEW_PROP",
-			payload: { tabId: tabId, tileId: nextTileId, table: table },
+			payload: {
+				tabId: tabId,
+				tileId: nextTileId,
+				table: table,
+				selectedDs,
+				selectedTablesInDs,
+			},
 		};
 	}
 };

@@ -199,13 +199,22 @@ export const setDashGridSize = (gridSize) => {
 //  Tab actions for multiple dispatches
 //  *************************************************************
 
-export const actionsToAddTab = ({ tabId, table }) => {
+export const actionsToAddTab = ({ tabId, table, selectedDs, selectedTablesInDs }) => {
 	let tabname = `Tab - ${tabId}`;
 	return (dispatch) => {
 		dispatch(addTab(tabId));
 		dispatch(updateNextTabId());
 		dispatch(updateSelectedTab(tabname, tabId, false));
-		dispatch(actionsToAddTile({ tabId: tabId, nextTileId: 1, table: table, fromTab: true }));
+		dispatch(
+			actionsToAddTile({
+				tabId: tabId,
+				nextTileId: 1,
+				table: table,
+				fromTab: true,
+				selectedDs,
+				selectedTablesInDs,
+			})
+		);
 	};
 };
 
@@ -252,14 +261,21 @@ export const actionsToRenameTab = ({ renameValue, tabId }) => {
 //  Tile actions for multiple dispatches
 //  *************************************************************
 
-export const actionsToAddTile = ({ tabId, nextTileId, table, fromTab: newTab }) => {
+export const actionsToAddTile = ({
+	tabId,
+	nextTileId,
+	table,
+	fromTab: newTab,
+	selectedDs,
+	selectedTablesInDs,
+}) => {
 	let tileName = `Tile - ${nextTileId}`;
 	return (dispatch) => {
 		dispatch(addTile(tabId, nextTileId, newTab));
 		dispatch(updateNextTileId(nextTileId, tabId));
 		dispatch(updateSelectedTile(tileName, nextTileId, nextTileId + 1));
 		dispatch(updateSelectedTileToTab(tabId, tileName, nextTileId));
-		dispatch(addProp(tabId, nextTileId, table, newTab));
+		dispatch(addProp(tabId, nextTileId, table, newTab, selectedDs, selectedTablesInDs));
 		dispatch(showDashBoard(false));
 	};
 };

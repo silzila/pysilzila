@@ -25,6 +25,7 @@
 	overflow: auto;
 }
 .dsIndiTableInTile {
+	border-radius: 2px;
 	background-color: white;
 	margin: 0 0.25rem 0.25rem 0;
 	padding: 1px 0 1px 0.5rem;
@@ -35,6 +36,7 @@
 	background-color: rgb(211, 211, 211);
 }
 .dsIndiTableInTileSelected {
+	border-radius: 2px;
 	background-color: white;
 	font-weight: 600;
 	border: 1px solid rgb(0, 123, 255);
@@ -57,13 +59,13 @@
 	border-radius: 2px;
 	position: sticky;
 	top: 0;
-	background-color: rgb(211, 211, 211);
+	background-color: rgb(231, 231, 231);
 	font-weight: normal;
 	cursor: move;
 	font-weight: 600;
 }
 .tableHeadings:hover {
-	background-color: rgb(189, 189, 189);
+	background-color: rgb(211, 211, 211);
 }
 .tableRows:nth-child(odd) {
 	background-color: white;

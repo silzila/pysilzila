@@ -21,7 +21,15 @@ const TabRibbon = ({
 }) => {
 	const handleAddTab = () => {
 		let tabId = tabTileProps.nextTabId;
-		addTab(tabId, tabTileProps.selectedTable);
+
+		var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
+
+		addTab(
+			tabId,
+			tabTileProps.selectedTable,
+			chartProp.properties[propKey].selectedDs,
+			chartProp.properties[propKey].selectedTable
+		);
 	};
 
 	const handleSelectTab = (tabName, tabId) => {
@@ -138,7 +146,8 @@ const mapDispatchToProps = (dispatch) => {
 		// Tab related dispatch methods
 		// ###########################################################
 
-		addTab: (tabId, table) => dispatch(actions.actionsToAddTab({ tabId, table })),
+		addTab: (tabId, table, selectedDs, selectedTablesInDs) =>
+			dispatch(actions.actionsToAddTab({ tabId, table, selectedDs, selectedTablesInDs })),
 
 		selectTab: (tabName, tabId, showDash) =>
 			dispatch(actions.actionsToSelectTab({ tabName, tabId, showDash })),
