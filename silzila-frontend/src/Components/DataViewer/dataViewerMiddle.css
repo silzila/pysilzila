@@ -4,6 +4,7 @@
 	display: flex;
 	transition: all 0.2s cubic-bezier(0, 1.26, 0.8, 1.28);
 	overflow: hidden;
+	margin-bottom: 0.5rem;
 	/* border-top: 1px solid rgb(225, 225, 225); */
 }
 .centerColumn {

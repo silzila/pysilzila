@@ -9,6 +9,7 @@ const DisplayTable = ({
 
 	// state
 	tableRecords,
+	tabTileProps,
 }) => {
 	var SampleRecords = tableRecords?.[dsId]?.[table];
 
@@ -61,8 +62,30 @@ const DisplayTable = ({
 		} else return null;
 	};
 
-	return (
-		<div className="tableViewAndControls ">
+	const RenderButtons = () => {
+		if (SampleRecords) {
+			var keys = getKeys(SampleRecords[0]);
+			return keys.map((key, index) => {
+				return (
+					<button
+						key={key}
+						className="boxContainer"
+						draggable="true"
+						// onDragStart={(e) => handleDragStart(e, columnsData[index])}
+					>
+						<Box name={key} type="card" fieldData={key} />
+					</button>
+				);
+			});
+		} else return null;
+	};
+
+	return tabTileProps.columnsOnlyDisplay ? (
+		<div className="showColumnsOnly">
+			<RenderButtons />
+		</div>
+	) : (
+		<div className="tableViewAndControls">
 			<table className="displayTable">
 				<thead>
 					<tr>
@@ -76,7 +99,7 @@ const DisplayTable = ({
 };
 
 const mapStateToProps = (state) => {
-	return { tableRecords: state.sampleRecords };
+	return { tableRecords: state.sampleRecords, tabTileProps: state.tabTileProps };
 };
 
 export default connect(mapStateToProps, null)(DisplayTable);

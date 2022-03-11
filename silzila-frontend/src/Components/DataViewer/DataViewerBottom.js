@@ -144,11 +144,19 @@ const DataViewerBottom = ({
 		} else return null;
 	};
 
+	var selectInput = { fontSize: "12px", padding: "2px 1rem" };
+
 	return (
 		<div className="dataViewerBottom">
 			<div className="dataSetAndTableList">
-				<FormControl fullWidth size="small">
-					<InputLabel id="selectDataSet">DataSet</InputLabel>
+				<FormControl
+					fullWidth
+					size="small"
+					style={{ background: "white", fontSize: "12px" }}
+				>
+					<InputLabel id="selectDataSet" sx={{ fontSize: "12px", lineHeight: "1.5rem" }}>
+						DataSet
+					</InputLabel>
 					<Select
 						label="DataSet"
 						labelId="selectDataSet"
@@ -157,12 +165,22 @@ const DataViewerBottom = ({
 						onChange={(e) => {
 							handleDataSetChange(e.target.value);
 						}}
+						sx={{ height: "1.5rem", fontSize: "14px" }}
 					>
-						<MenuItem value="addNewDataset">Add Dataset</MenuItem>
-						<Divider />
+						<MenuItem
+							sx={{
+								fontSize: "12px",
+								padding: "2px 1rem",
+								borderBottom: "1px solid lightgray",
+							}}
+							value="addNewDataset"
+						>
+							Add Dataset
+						</MenuItem>
+						{/* <Divider sx={{ margin: "1px" }} /> */}
 						{tabTileProps.selectedDataSetList.map((ds) => {
 							return (
-								<MenuItem value={ds.ds_uid} key={ds.ds_uid}>
+								<MenuItem sx={selectInput} value={ds.ds_uid} key={ds.ds_uid}>
 									{ds.friendly_name}
 								</MenuItem>
 							);

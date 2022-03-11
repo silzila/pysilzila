@@ -27,8 +27,14 @@ const chartPropLeft = {
 			],
 
 			// DataViewerBottom Dataset selected and tables to list
-			selectedDs: "",
-			selectedTable: {},
+			selectedDs: {
+				friendly_name: "landmark post",
+				dc_uid: "post",
+				ds_uid: "dspost",
+			},
+			selectedTable: {
+				dspost: "pos",
+			},
 		},
 	},
 

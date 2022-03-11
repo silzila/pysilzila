@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import ChartsInfo from "./ChartsInfo2";
 import "./ChartAxes.css";
+import Dustbin from "./Dustbin";
 
 const ChartAxes = ({
 	// props
@@ -20,10 +21,7 @@ const ChartAxes = ({
 	return (
 		<div className="charAxesArea">
 			{dropZones.map((zone, zoneI) => (
-				<div className="chartAxis" key={zoneI}>
-					{zone}
-				</div>
-				// <Dustbin2 bIndex={zoneI} name={zone} propKey={propKey} key={zoneI} />
+				<Dustbin bIndex={zoneI} name={zone} propKey={propKey} key={zoneI} />
 			))}
 		</div>
 	);

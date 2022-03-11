@@ -187,6 +187,10 @@ export const setDashGridSize = (gridSize) => {
 	return { type: "SET_DASH_GRID_SIZE", payload: gridSize };
 };
 
+export const toggleColumnsOnlyDisplay = (columns) => {
+	return { type: "TOGGLE_COLUMNS_ONLY_DISPLAY", payload: columns };
+};
+
 //  ***************************************************************************************************************************
 //  ***************************************************************************************************************************
 //
