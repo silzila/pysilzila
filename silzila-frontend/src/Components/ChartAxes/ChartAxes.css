@@ -1,0 +1,19 @@
+.charAxesArea {
+	width: 14.5rem;
+	display: flex;
+	flex-direction: column;
+}
+.chartAxis {
+	flex: 1;
+	background-color: #eee;
+	display: flex;
+	flex-direction: column;
+	text-align: left;
+}
+
+.axisTitle {
+	background-color: #d3d3d3;
+	color: #404040;
+	font-weight: 600;
+	padding: 0 0.5rem;
+}

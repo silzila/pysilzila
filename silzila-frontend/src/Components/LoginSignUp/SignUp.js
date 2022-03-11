@@ -69,7 +69,6 @@ const SignUp = () => {
 	};
 
 	const handleSubmit = async () => {
-		console.log("Handlesubmit function called", account);
 		var canSignUp = false;
 
 		if (
@@ -99,8 +98,6 @@ const SignUp = () => {
 				data: form,
 				headers: { "Content-Type": "application/json" },
 			});
-
-			console.log(response);
 
 			if (response.status) {
 				setSignUpStatus(true);

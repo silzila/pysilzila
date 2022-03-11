@@ -35,8 +35,6 @@ const Sidebar = ({
 	const [dcToResetTo, setDcToResetTo] = useState("");
 
 	const onConnectionChange = (e) => {
-		console.log(e.target.value);
-		console.log(tempTable.length);
 		if (tempTable.length > 0) {
 			setDcToResetTo(e.target.value);
 			setOpenDlg(true);
@@ -52,11 +50,8 @@ const Sidebar = ({
 		getAllDc();
 	}, []);
 
-	console.log(dcToResetTo);
-
 	useEffect(() => {
 		if (resetDataset) {
-			console.log("Reseting DC name");
 			setSelectedConnection(dcToResetTo);
 			getSchemaList(dcToResetTo);
 			setSelectedSchema("");
@@ -73,7 +68,6 @@ const Sidebar = ({
 			headers: { Authorization: `Bearer ${token}` },
 		});
 
-		console.log(res);
 		if (res.status) {
 			setConnectionList(res.data);
 		} else {
@@ -101,9 +95,7 @@ const Sidebar = ({
 			token: token,
 		});
 
-		console.log(res);
 		if (res.status) {
-			console.log(res.data);
 			if (res.data.message === "success") {
 				var res2 = await FetchData({
 					requestType: "noData",
@@ -113,7 +105,6 @@ const Sidebar = ({
 					token: token,
 				});
 
-				console.log(res2);
 				if (res2.status) {
 					setSchemaList(res2.data);
 				} else {
@@ -126,7 +117,6 @@ const Sidebar = ({
 	};
 
 	const getTables = async (e) => {
-		console.log(e.target.value);
 		const schema = e.target.value;
 		setSelectedSchema(schema);
 		setDataSchema(schema);
@@ -139,22 +129,17 @@ const Sidebar = ({
 			token: token,
 		});
 
-		console.log(res);
 		if (res.status) {
 			const userTable = res.data.map((el) => {
-				console.log(el, tempTable, connectionId, schema);
 				var tableAlreadyChecked = tempTable.filter(
 					(tbl) =>
 						tbl.dcId === connectionId && tbl.schema === schema && tbl.tableName === el
 				)[0];
-				console.log(tableAlreadyChecked);
 				if (tableAlreadyChecked) {
 					return { tableName: el, isSelected: true };
 				}
 				return { tableName: el, isSelected: false };
 			});
-
-			console.log(userTable);
 
 			setUserTable(userTable);
 		} else {

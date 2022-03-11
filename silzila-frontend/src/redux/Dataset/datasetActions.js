@@ -52,7 +52,7 @@ export const resetArrows = () => {
 
 // ===============================================================
 // Actions from Tables
-// =================================================================
+// ===============================================================
 
 export const AddItemInTableColumn = (pl) => {
 	const state = useSelector((state) => state);
@@ -68,4 +68,11 @@ export const AddItemInTableColumn = (pl) => {
 
 export const addNewRelationship = (payload) => {
 	return { type: "ADD_NEW_RELATIONSHIP", payload: payload };
+};
+
+// ===============================================================
+// Add DatasetList from Datahome
+// ===============================================================
+export const setDatasetList = (payload) => {
+	return { type: "SET_DATASET_LIST", payload };
 };
