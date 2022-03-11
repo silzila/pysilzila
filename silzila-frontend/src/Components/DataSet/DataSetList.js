@@ -18,10 +18,12 @@ import FetchData from "../../ServerCall/FetchData";
 import { findShowHeadAndshowTail } from "../CommonFunctions/FindIntegrityAndCordinality";
 import { SelectListItem } from "../CommonFunctions/SelectListItem";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { NotificationDialog } from "../CommonFunctions/DialogComponents";
 
 const DataSetList = ({
 	//state
 	token,
+	stateSchema,
 
 	// dispatch
 	resetState,
@@ -37,7 +39,9 @@ const DataSetList = ({
 	var navigate = useNavigate();
 
 	const [dataSetList, setDataSetList] = useState([]);
-
+	const [openAlert, setOpenAlert] = useState(false);
+	const [testMessage, setTestMessage] = useState("");
+	const [severity, setSeverity] = useState("success");
 	useEffect(() => {
 		resetState();
 		getInformation();
@@ -55,10 +59,15 @@ const DataSetList = ({
 		if (result.status) {
 			console.log(result.data);
 			let res = result.data;
+			const schemaNames = res.data_schema.tables.map((el) => {
+				return el.schema_name;
+			});
+			let uniqueSchema = [...new Set(schemaNames)];
+			console.log(uniqueSchema);
 			let schema = res.data_schema.tables[0].schema_name;
 			setConnectionValue(res.dc_uid);
 			setDsId(dsuid);
-			setDataSchema(res.data_schema.tables[0].schema_name);
+			setDataSchema(schema);
 			setFriendlyName(res.friendly_name);
 			setRelationship(res.data_schema.relationships);
 			console.log(res.data_schema.relationships);
@@ -68,35 +77,32 @@ const DataSetList = ({
 				if (el.table1_columns.length !== 1) {
 					let len = el.table1_columns.length;
 					let i = 0;
+					var obj = {
+						table1_uid: schema.concat(el.table1),
+						table2_uid: schema.concat(el.table2),
+						isSelected: false,
+						startTableName: el.table1,
+						start: el.table1.concat(el.table1_columns[i]),
+						endTableName: el.table2,
+						end: el.table2.concat(el.table2_columns[i]),
+						integrity: el.ref_integrity,
+						startColumnName: el.table1_columns[i],
+						endColumnName: el.table2_columns[i],
+						cardinality: el.cardinality,
+						showHead: showHeadAndshowTail.showHead,
+						showTail: showHeadAndshowTail.showTail,
+					};
 					while (i <= len) {
 						i++;
 						return {
-							isSelected: false,
-							startTableName: el.table1,
-							start: el.table1.concat(el.table1_columns[i]),
-							endTableName: el.table2,
-							end: el.table2.concat(el.table2_columns[i]),
-							integrity: el.ref_integrity,
-							startColumnName: el.table1_columns[i],
-							endColumnName: el.table2_columns[i],
-							cardinality: el.cardinality,
-							showHead: showHeadAndshowTail.showHead,
-							showTail: showHeadAndshowTail.showTail,
+							...obj,
+							isSelected: true,
 						};
 					}
 				} else {
 					return {
+						...obj,
 						isSelected: false,
-						startTableName: el.table1,
-						start: el.table1.concat(el.table1_columns[0]),
-						endTableName: el.table2,
-						end: el.table2.concat(el.table2_columns[0]),
-						integrity: el.ref_integrity,
-						startColumnName: el.table1_columns[0],
-						endColumnName: el.table2_columns[0],
-						cardinality: el.cardinality,
-						showHead: showHeadAndshowTail.showHead,
-						showTail: showHeadAndshowTail.showTail,
 					};
 				}
 			});
@@ -135,12 +141,23 @@ const DataSetList = ({
 			console.log(res.data, "tablesList");
 			const userTable = res.data.map((el) => {
 				var tableAlready_Checked = tables.filter(
+					//have to make changes in  schema
 					(tbl) => tbl.schema_name === schema && tbl.table_name === el
 				)[0];
 				if (tableAlready_Checked) {
-					return { tableName: el, isSelected: true };
+					return {
+						tableName: el,
+						isSelected: true,
+						table_uid: schema.concat(el),
+						// uid: tbl.id,
+					};
 				}
-				return { tableName: el, isSelected: false };
+				return {
+					tableName: el,
+					isSelected: false,
+					table_uid: schema.concat(el),
+					// uid: tbl.id,
+				};
 			});
 			const x = userTable.filter((el) => {
 				return el.isSelected === true;
@@ -148,6 +165,7 @@ const DataSetList = ({
 			const canvasTables = await Promise.all(
 				x.map(async (el) => {
 					return {
+						table_uid: el.table_uid,
 						schema: schema,
 						dcId: connection,
 						columns: await getColumns(connection, schema, el.tableName),
@@ -176,9 +194,30 @@ const DataSetList = ({
 		if (result.status) {
 			console.log(result.data);
 			const arrayWithUid = result.data.map((data) => {
+				// TODO  tableName.concat(data.column_name).concat(schema)
 				return { uid: tableName.concat(data.column_name), ...data };
 			});
 			return arrayWithUid;
+		} else {
+			console.log(result.detail);
+		}
+	};
+
+	const deleteDs = async (dsUid) => {
+		var result = await FetchData({
+			requestType: "noData",
+			method: "DELETE",
+			url: "ds/delete-ds/" + dsUid,
+			headers: { Authorization: `Bearer ${token}` },
+		});
+		if (result.status) {
+			setSeverity("success");
+			setOpenAlert(true);
+			setTestMessage("Deleted Successfully!");
+			setTimeout(() => {
+				setOpenAlert(false);
+				setTestMessage("");
+			}, 2000);
 		} else {
 			console.log(result.detail);
 		}
@@ -233,14 +272,21 @@ const DataSetList = ({
 														}}
 														onClick={() => editDs(dc.ds_uid)}
 													/>
-													{/* <DeleteIcon
+													<DeleteIcon
 														style={{
 															width: "1rem",
 															height: "1rem",
 															margin: "auto",
 														}}
-														onClick={() => console.log("delete")}
-													/> */}
+														onClick={() => {
+															var yes = window.confirm(
+																"are you sure you want to Delete thi DS?"
+															);
+															if (yes) {
+																deleteDs(dc.ds_uid);
+															}
+														}}
+													/>
 												</div>
 											</Tooltip>
 										) : null}
@@ -250,6 +296,12 @@ const DataSetList = ({
 						);
 					})}
 			</div>
+
+			<NotificationDialog
+				openAlert={openAlert}
+				severity={severity}
+				testMessage={testMessage}
+			/>
 		</div>
 	);
 };
@@ -269,6 +321,7 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
 	return {
 		token: state.isLogged.accessToken,
+		stateSchema: state.dataSetState.schema,
 	};
 };
 

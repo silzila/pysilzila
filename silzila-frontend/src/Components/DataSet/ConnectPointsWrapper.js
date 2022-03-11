@@ -27,7 +27,7 @@ const ConnectPointsWrapper = ({
 	columnName,
 	tableName,
 	setAnchorEl2,
-	table_Uid,
+	table_uid,
 }) => {
 	const ref1 = useRef();
 	const [position, setPosition] = useState({});
@@ -55,7 +55,7 @@ const ConnectPointsWrapper = ({
 				e.dataTransfer.setData("connectTableName", tableName);
 				e.dataTransfer.setData("connectColumnName", columnName);
 				e.dataTransfer.setData("connectItemType", itemType);
-				e.dataTransfer.setData("connecttableUid", table_Uid);
+				e.dataTransfer.setData("connecttableUid", table_uid);
 			}}
 			onDrag={(e) => {
 				const { offsetTop, offsetLeft } = boxRef.current;

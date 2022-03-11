@@ -26,7 +26,10 @@ const TableList = (props) => {
 			props.tableList.map((el) => {
 				if (el.tableName === tableName && el.isSelected === true) {
 					const arrayWithUid = result.data.map((data) => {
-						return { uid: tableName.concat(data.column_name), ...data };
+						return {
+							uid: tableName.concat(data.column_name).concat(props.schema),
+							...data,
+						};
 					});
 					console.log(arrayWithUid);
 					obj = {
@@ -106,7 +109,6 @@ const TableList = (props) => {
 				checked={props.table.isSelected ? true : false}
 				onClick={(e) => checkAndUncheck(e, props.table.table_uid)}
 				value={props.table.tableName}
-				// value={props.table.table_uid}
 			/>
 
 			<span className="tableName" title={props.table.tableName}>

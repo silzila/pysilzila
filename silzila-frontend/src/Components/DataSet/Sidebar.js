@@ -57,6 +57,13 @@ const Sidebar = ({
 		}
 	};
 
+	const onChangeonSchema = (e) => {
+		console.log(e.target.value);
+		setSelectedSchema(e.target.value);
+		setDataSchema(e.target.value);
+		getTables(e.target.value);
+	};
+
 	useEffect(() => {
 		if (editMode) {
 			getAllDc();
@@ -146,9 +153,8 @@ const Sidebar = ({
 
 	const getTables = async (e) => {
 		const schema = e;
-		setSelectedSchema(schema);
-		setDataSchema(schema);
-		// if (connectionToEdit) {
+		// setSelectedSchema(schema);
+		// setDataSchema(schema);
 		var res = await FetchData({
 			requestType: "noData",
 			method: "GET",
@@ -206,7 +212,8 @@ const Sidebar = ({
 			<div>
 				<Select
 					className="selectBar"
-					onChange={(e) => getTables(e.target.value)}
+					// onChange={(e) => getTables(e.target.value)}
+					onChange={(e) => onChangeonSchema(e)}
 					defaultValue={schemaToEdit ? schemaToEdit : selectedSchema}
 				>
 					{schemaList &&

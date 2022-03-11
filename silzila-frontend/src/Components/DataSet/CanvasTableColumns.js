@@ -16,7 +16,7 @@ const CanvasTableColumns = ({
 	dragRef,
 	onAddingArrow,
 	setAnchorEl2,
-	table_Uid,
+	table_uid,
 
 	// state
 	tempTable,
@@ -28,6 +28,8 @@ const CanvasTableColumns = ({
 	const [openAlert, setOpenAlert] = useState(false);
 	const [severity, setseverity] = useState("success");
 	const [testMessage, setTestMessage] = useState("");
+
+	console.log(table_uid, "canvasTablesColumns");
 
 	const itemTypeIcon = (type) => {
 		switch (type) {
@@ -84,8 +86,8 @@ const CanvasTableColumns = ({
 							const refs = {
 								isSelected: true,
 								startTableName: e.dataTransfer.getData("connectTableName"),
-								table1_Uid: e.dataTransfer.getData("connecttableUid"),
-								table2_Uid: table_Uid,
+								table1_uid: e.dataTransfer.getData("connecttableUid"),
+								table2_uid: table_uid,
 								// startColumnIndex: e.dataTransfer.getData("connectIndex"),
 								start: e.dataTransfer.getData("connectItemId"),
 								endTableName: tableName,
@@ -117,7 +119,7 @@ const CanvasTableColumns = ({
 						columnName,
 						tableName,
 						setAnchorEl2,
-						table_Uid,
+						table_uid,
 					}}
 				/>
 			</div>

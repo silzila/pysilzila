@@ -8,7 +8,7 @@ const initialState = {
 	friendly_name: "",
 	tables: [],
 	arrows: [],
-	tempTable: [],
+	tempTable: [], //canvasTables
 	relationships: [],
 };
 

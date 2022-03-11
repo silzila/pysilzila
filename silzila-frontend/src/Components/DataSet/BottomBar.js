@@ -136,7 +136,7 @@ const BottomBar = ({
 			const data_schema_tables = tempTable.map((el) => {
 				return {
 					table_name: el.tableName,
-					schema_name: schema,
+					schema_name: el.schema,
 					id: uid(),
 					alias: el.alias,
 				};

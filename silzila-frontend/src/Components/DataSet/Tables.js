@@ -75,10 +75,19 @@ const Tables = ({
 				//  case1
 				//  ==============================================
 
-				if (
-					obj.startTableName === arr.startTableName &&
-					obj.endTableName === arr.endTableName
-				) {
+				// if (
+				// 	obj.startTableName === arr.startTableName &&
+				// 	obj.endTableName === arr.endTableName
+				// )
+				if (obj.table1_uid === arr.table1_uid && obj.table2_uid === arr.table2_uid) {
+					// if (obj.table1_uid !== arr.table1_uid || obj.table2_uid !== arr.table2_uid) {
+					// 	window.alert("different schema");
+					// 	count = count + 1;
+					// 	if (count === 1) {
+					// 		setShowCard(true);
+					// 		setArrowProp(obj);
+					// 	}
+					// } else {
 					count = count + 1;
 					obj.isSelected = false;
 					obj.integrity = arr.integrity;
@@ -90,15 +99,17 @@ const Tables = ({
 						addArrows(obj);
 						addRelationship(obj);
 					}
+					// }
 				}
 
 				// ===========================================================
 				// case 2
 				// ===========================================================
-				if (
-					obj.startTableName === arr.endTableName &&
-					obj.endTableName === arr.startTableName
-				) {
+				// if (
+				// obj.startTableName === arr.endTableName &&
+				// obj.endTableName === arr.startTableName
+				// )
+				if (obj.table1_uid === arr.table2_uid && obj.table2_uid === arr.table1_uid) {
 					count = count + 1;
 					obj.isSelected = false;
 					obj.showHead = arr.showTail;
@@ -113,13 +124,18 @@ const Tables = ({
 				// ================================================================
 				// case 3
 				// ================================================================
+				// if (
+				// 	(obj.startTableName !== arr.startTableName &&
+				// 		obj.endTableName !== arr.endTableName) ||
+				// 	(obj.startTableName !== arr.startTableName &&
+				// 		obj.endTableName === arr.endTableName) ||
+				// 	(obj.startTableName === arr.startTableName &&
+				// 		obj.endTableName !== arr.endTableName)
+				// )
 				if (
-					(obj.startTableName !== arr.startTableName &&
-						obj.endTableName !== arr.endTableName) ||
-					(obj.startTableName !== arr.startTableName &&
-						obj.endTableName === arr.endTableName) ||
-					(obj.startTableName === arr.startTableName &&
-						obj.endTableName !== arr.endTableName)
+					(obj.table1_uid !== arr.table1_uid && obj.table2_uid !== arr.table2_uid) ||
+					(obj.table1_uid !== arr.table1_uid && obj.table2_uid === arr.table2_uid) ||
+					(obj.table1_uid === arr.table1_uid && obj.table2_uid !== arr.table2_uid)
 				) {
 					count = count + 1;
 					if (count === 1) {
@@ -249,7 +265,7 @@ const Tables = ({
 								key={item.uid}
 								columnName={item.column_name}
 								tableName={tableTitle}
-								table_Uid={tableData.table_Uid}
+								table_uid={tableData.table_uid}
 								itemType={item.data_type}
 								index={index}
 								handler="right"
