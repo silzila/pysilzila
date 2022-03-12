@@ -201,7 +201,7 @@ def get_sample_records(dc_uid: str, schema_name: str, table_name: str):
         raise HTTPException(
             status_code=500, detail="Connect to DC first")
     try:
-        qry = text(f"select * from {schema_name}.{table_name} limit 200;")
+        qry = text(f"select * from {schema_name}.{table_name} limit 100;")
         records = db_pool[dc_uid]['engine'].execute(qry)
         result = [dict(row) for row in records]
         return result
