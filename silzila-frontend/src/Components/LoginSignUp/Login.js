@@ -24,8 +24,6 @@ const Login = (props) => {
 	const inputRef = useRef(null);
 	const navigate = useNavigate();
 
-	console.log(account);
-
 	//  **************************************************************************************************************************
 	//  Email
 	//  **************************************************************************************************************************
@@ -56,9 +54,6 @@ const Login = (props) => {
 
 	async function handleSubmit(e) {
 		e.preventDefault();
-		console.log("form submit performed");
-
-		console.log(account);
 
 		var canLogin = false;
 		if (
@@ -67,7 +62,6 @@ const Login = (props) => {
 			account.emailError === "" &&
 			account.passwordError === ""
 		) {
-			console.log("Changed login status");
 			canLogin = true;
 		}
 
@@ -84,7 +78,6 @@ const Login = (props) => {
 				headers: { "Content-Type": "multipart/form-data" },
 			});
 
-			console.log(response);
 			if (response.status) {
 				setLoginStatus(true);
 				var payload = {

@@ -183,7 +183,6 @@ const RelationshipDefiningComponent = ({
 			// 	startColumnName:arrowProp.startColumnName,
 			// 	endColumnName: arrowProp.endColumnName,
 			// };
-			console.log(refs, "ref");
 			addArrows(refs);
 			addRelationship(refs);
 			onClose();
@@ -258,7 +257,7 @@ const RelationshipDefiningComponent = ({
 				}}
 				// anchorReference="anchorEl"
 
-				// TODO Priority 5 - Kasthuri created. Positioning relationship popover
+				// TODO: Priority 5 - Kasthuri created. Positioning relationship popover
 				// set anchorEl={}
 			>
 				<CloseOutlined style={{ float: "right" }} onClick={onClose} />
@@ -291,7 +290,6 @@ const RelationshipDefiningComponent = ({
 						<Select
 							onChange={(e) => {
 								handleRowUniqueId2(e);
-								console.log(e.target.value);
 							}}
 							className="relpopoverSelect"
 							defaultValue={existingArrow ? rowUniqueId2 : ""}
@@ -346,7 +344,7 @@ const RelationshipDefiningComponent = ({
 						</Select>
 					</div>
 
-					{/*TODO: Priority 5 -  List al column pairs between both table.
+					{/*TODO: Priority 5 - List al column pairs between both table.
 							 Eg.,
 							Table 1					Table2
 							Column 1				Column 1

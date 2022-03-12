@@ -1,0 +1,22 @@
+.dashboardWrapper {
+	flex: 1;
+	display: flex;
+	background-color: #eee;
+	overflow: hidden;
+}
+.dashboardOuter {
+	box-sizing: border-box;
+	background-color: #fff;
+	flex: 1;
+	overflow: hidden;
+	padding-left: 5px;
+}
+.dashboardArea {
+	box-sizing: border-box;
+	border: 1px solid #d3d3d3;
+	border-top: none;
+}
+.tileListContainer {
+	width: 15rem;
+	border-left: 1px solid #d3d3d3;
+}

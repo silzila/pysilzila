@@ -38,7 +38,6 @@ const FetchData = async ({ requestType, method, url, data, headers, token }) => 
 	return new Promise((resolve) => {
 		switch (requestType) {
 			case "withData":
-				console.log(data);
 				axios({ method, url: serverEndPoint + url, headers, data })
 					.then((res) => resolve({ status: true, data: res.data }))
 					.catch((err) => {

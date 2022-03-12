@@ -16,7 +16,6 @@ const loggedReducer = (
 				accessToken: action.payload.accessToken,
 				tokenType: action.payload.tokenType,
 			};
-			console.log("User authenticated");
 			localStorage.setItem("accountInfo", JSON.stringify(info));
 
 			return action.payload;

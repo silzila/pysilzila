@@ -143,7 +143,6 @@ const Tables = ({
 			table1_columns: [arrow.startColumnName],
 			table2_columns: [arrow.endColumnName],
 		};
-		console.log(payload, "payload");
 		if (relationships.length !== 0) {
 			const isFound = relationships.some((element) => {
 				if (
@@ -153,7 +152,6 @@ const Tables = ({
 					return true;
 				}
 			});
-			console.log(isFound);
 			if (isFound) {
 				addInTableColumn(payload);
 			} else {
@@ -211,8 +209,13 @@ const Tables = ({
 							</Button>
 						</div>
 					) : (
-						<div className="draggableBoxTitle" id={tableId}>
+						<div
+							className="draggableBoxTitle"
+							id={tableId}
+							title={`${tableData.tableName} (${tableData.schema})`}
+						>
 							<div
+								style={{ flex: 1 }}
 								onDoubleClick={() => {
 									setInputField(true);
 									setNewName(alias);

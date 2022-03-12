@@ -63,7 +63,6 @@ const ConnectPointsWrapper = ({
 			}}
 			ref={ref1}
 			onDragEnd={() => {
-				console.log(ref1, "ref1");
 				setPosition({});
 				setBeingDragged(false);
 			}}

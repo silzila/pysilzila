@@ -13,7 +13,6 @@ const TableList = (props) => {
 	const [objKeys, setObjKeys] = useState([]);
 
 	const getTableColumns = async (tableName) => {
-		console.log(tableName);
 		var result = await FetchData({
 			requestType: "noData",
 			method: "GET",
@@ -21,14 +20,12 @@ const TableList = (props) => {
 			headers: { Authorization: `Bearer ${props.token}` },
 		});
 		if (result.status) {
-			console.log("res.data.columns", result.data);
 			let obj;
 			props.tableList.map((el) => {
 				if (el.tableName === tableName && el.isSelected === true) {
 					const arrayWithUid = result.data.map((data) => {
 						return { uid: tableName.concat(data.column_name), ...data };
 					});
-					console.log(arrayWithUid);
 					obj = {
 						tableName: tableName,
 						isSelected: el.isSelected,
@@ -39,13 +36,20 @@ const TableList = (props) => {
 					};
 				}
 			});
-			console.log(obj);
 			props.addTable(obj);
 		}
 	};
 
 	const checkAndUncheck = (e) => {
-		console.log(e.target.value);
+		/* TODO: Priority 1 - BUG in deleting arrow
+				When a table is unchecked from Sidebar, If it has the same table name
+				as another table from another schema, the arrows are deleted here also.
+				This behaviour should not happen	*/
+
+		/* TODO: Priority 2 - Create Unique id for Tables
+				Create unique id for any table added to canvas and 
+				Use this unique id for defining relationship 	*/
+
 		props.onChecked(e.target.value);
 
 		if (e.target.checked) {
@@ -72,9 +76,7 @@ const TableList = (props) => {
 			headers: { Authorization: `Bearer ${props.token}` },
 		});
 
-		console.log("Get Table Data", res);
 		if (res.status) {
-			console.log("table Data", res.data);
 			setTableData(res.data);
 			setShowTableData(true);
 			var keys = Object.keys(res.data[0]);

@@ -45,7 +45,6 @@ const CanvasTableColumns = ({
 				return <PriorityHigh fontSize="15px" />;
 
 			default:
-				console.log(type);
 				return null;
 		}
 	};
@@ -57,12 +56,18 @@ const CanvasTableColumns = ({
 				id={itemId}
 				onDragOver={(e) => e.preventDefault()}
 				onDrop={(e) => {
+					// TODO: Priority 5 - Check table arrow loop
+					// Make sure the tables in a new connection doesn't already have a link between them
+					// Eg., 			A -> B -> C
+					// 					A -> D
+					// A new connection between B & D  or C & D shouldn't happen
+
 					// Check if both column types (Arrow start and end column) are of same dataType
 					if (
 						e.dataTransfer.getData("connectItemId") === itemId ||
 						e.dataTransfer.getData("connectTableName") === tableName
 					) {
-						console.log(e.dataTransfer.getData("connectItemId"));
+						// console.log(e.dataTransfer.getData("connectItemId"));
 					} else {
 						// Check if relationship popover should open
 						// Need to open only when there is no relationship defined between these tables
@@ -100,7 +105,7 @@ const CanvasTableColumns = ({
 			>
 				<div className="columnItem">{itemTypeIcon(itemType)}</div>
 				{/* <div class="ellip">{columnName}</div> */}
-				<div>{columnName}</div>
+				<div style={{ padding: "0 5px" }}>{columnName}</div>
 				<ConnectPointsWrapper
 					{...{
 						itemId,

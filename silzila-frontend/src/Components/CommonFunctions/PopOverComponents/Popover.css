@@ -1,0 +1,24 @@
+.datasetListPopover {
+	padding: 1rem 1rem 2rem 1rem;
+}
+
+.dataSetNameIndi {
+	border: 1px solid transparent;
+	margin: 0 1rem;
+	padding: 0.25rem 1rem;
+	cursor: pointer;
+}
+
+.datasetListPopoverHeading {
+	margin-bottom: 1rem;
+	font-weight: 600;
+	display: flex;
+}
+
+.dataSetNameIndi:nth-child(odd) {
+	background-color: rgb(245, 245, 245);
+}
+
+.dataSetNameIndi:hover {
+	border: 1px solid lightgray;
+}
