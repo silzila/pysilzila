@@ -98,6 +98,7 @@ const DataViewerBottom = ({
 			} else {
 				var dc_uid = selectedChartProp.selectedDs?.dc_uid;
 				var tableRecords = await getTableData(dc_uid, table.schema_name, table.table_name);
+				var recordsType = await getColumnTypes(dc_uid, table.schema_name, table.table_name);
 
 				// TODO: get table columns with datatype from another api
 				// /dc/columns/{dc}/{schema}/{tableName}
@@ -105,7 +106,7 @@ const DataViewerBottom = ({
 
 				var ds_uid = selectedChartProp.selectedDs?.ds_uid;
 
-				addRecords(ds_uid, table.id, tableRecords);
+				addRecords(ds_uid, table.id, tableRecords, recordsType);
 			}
 		}
 	};
@@ -122,6 +123,21 @@ const DataViewerBottom = ({
 			return res.data;
 		} else {
 			console.log("Get Table Data Error".res.data.detail);
+		}
+	};
+
+	const getColumnTypes = async (dc_uid, schema_name, table_name) => {
+		var res = await FetchData({
+			requestType: "noData",
+			method: "GET",
+			url: "dc/columns/" + dc_uid + "/" + schema_name + "/" + table_name,
+			headers: { Authorization: `Bearer ${token}` },
+		});
+
+		if (res.status) {
+			return res.data;
+		} else {
+			console.log("Get Table Columns Error".res.data.detail);
 		}
 	};
 
@@ -241,8 +257,9 @@ const mapDispatchToProps = (dispatch) => {
 		setSelectedDs: (propKey, selectedDs) => dispatch(setSelectedDsInTile(propKey, selectedDs)),
 		setSelectedTable: (propKey, selectedTable) =>
 			dispatch(setSelectedTableInTile(propKey, selectedTable)),
-		addRecords: (ds_uid, tableId, tableRecords) =>
-			dispatch(addTableRecords(ds_uid, tableId, tableRecords)),
+
+		addRecords: (ds_uid, tableId, tableRecords, columnType) =>
+			dispatch(addTableRecords(ds_uid, tableId, tableRecords, columnType)),
 	};
 };
 

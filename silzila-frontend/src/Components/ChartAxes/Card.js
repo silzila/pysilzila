@@ -51,7 +51,8 @@ const Card = ({
 				<CloseRoundedIcon style={{ fontSize: "13px", margin: "auto" }} />
 			</button>
 
-			<span className="buttonCommon columnName ">{fieldname}</span>
+			<span className="columnName ">{fieldname}</span>
+			<span className="columnPrefix "> {prefix ? `(${prefix})` : null}</span>
 			<button
 				type="button"
 				className="buttonCommon columnDown"

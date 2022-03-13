@@ -33,7 +33,7 @@ const chartPropLeft = {
 				ds_uid: "dspost",
 			},
 			selectedTable: {
-				dspost: "pos",
+				dspost: "s",
 			},
 		},
 	},

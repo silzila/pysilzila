@@ -19,7 +19,7 @@
 
 .buttonCommon {
 	font-size: 13px;
-	padding: 5px;
+	padding: 5px 3px;
 	margin: 0;
 	border: none;
 }
@@ -56,4 +56,12 @@
 
 .columnName {
 	flex: 1;
+	font-size: 13px;
+	padding: 5px 2px;
+	margin: 0;
+	border: none;
+}
+.columnPrefix {
+	font-size: 13px;
+	padding: 5px 2px;
 }
