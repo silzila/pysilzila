@@ -6,13 +6,22 @@
 	background-color: rgb(238, 238, 238);
 }
 
+.bottomHeader {
+	height: 33px;
+	background-color: rgb(211, 211, 211);
+}
+
 .dataSetAndTableList {
 	width: 14.5rem;
-	padding: 0.5rem 0.5rem 0 0.5rem;
+
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
 	font-size: 14px;
+}
+.dataSetSelect {
+	padding: 0.5rem;
+	background-color: rgb(211, 211, 211);
 }
 
 .tileTableView {
@@ -20,8 +29,8 @@
 	overflow: auto;
 }
 .tileTableList {
-	margin-top: 0.5rem;
-	background-color: white;
+	padding: 0.5rem;
+	background-color: rgb(238, 238, 238);
 	overflow: auto;
 }
 .dsIndiTableInTile {
@@ -29,6 +38,7 @@
 	padding: 1px 0 1px 0.5rem;
 	text-align: left;
 	cursor: pointer;
+	background-color: white;
 }
 .dsIndiTableInTile:hover {
 	background-color: rgb(238, 238, 238);
@@ -51,7 +61,6 @@
 }
 .tableHeadings {
 	padding: 10px 10px 10px 0;
-	border-radius: 2px;
 	position: sticky;
 	top: 0;
 	background-color: rgb(211, 211, 211);

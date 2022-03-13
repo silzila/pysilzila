@@ -99,6 +99,10 @@ const DataViewerBottom = ({
 				var dc_uid = selectedChartProp.selectedDs?.dc_uid;
 				var tableRecords = await getTableData(dc_uid, table.schema_name, table.table_name);
 
+				// TODO: get table columns with datatype from another api
+				// /dc/columns/{dc}/{schema}/{tableName}
+				// Merge this with tableData
+
 				var ds_uid = selectedChartProp.selectedDs?.ds_uid;
 
 				addRecords(ds_uid, table.id, tableRecords);
@@ -149,44 +153,49 @@ const DataViewerBottom = ({
 	return (
 		<div className="dataViewerBottom">
 			<div className="dataSetAndTableList">
-				<FormControl
-					fullWidth
-					size="small"
-					style={{ background: "white", fontSize: "12px" }}
-				>
-					<InputLabel id="selectDataSet" sx={{ fontSize: "12px", lineHeight: "1.5rem" }}>
-						DataSet
-					</InputLabel>
-					<Select
-						label="DataSet"
-						labelId="selectDataSet"
-						value={selectedChartProp.selectedDs?.ds_uid}
-						variant="outlined"
-						onChange={(e) => {
-							handleDataSetChange(e.target.value);
-						}}
-						sx={{ height: "1.5rem", fontSize: "14px" }}
+				<div className="dataSetSelect">
+					<FormControl
+						fullWidth
+						size="small"
+						style={{ background: "white", fontSize: "12px", borderRadius: "4px" }}
 					>
-						<MenuItem
-							sx={{
-								fontSize: "12px",
-								padding: "2px 1rem",
-								borderBottom: "1px solid lightgray",
-							}}
-							value="addNewDataset"
+						<InputLabel
+							id="selectDataSet"
+							sx={{ fontSize: "12px", lineHeight: "1.5rem" }}
 						>
-							Add Dataset
-						</MenuItem>
-						{/* <Divider sx={{ margin: "1px" }} /> */}
-						{tabTileProps.selectedDataSetList.map((ds) => {
-							return (
-								<MenuItem sx={selectInput} value={ds.ds_uid} key={ds.ds_uid}>
-									{ds.friendly_name}
-								</MenuItem>
-							);
-						})}
-					</Select>
-				</FormControl>
+							DataSet
+						</InputLabel>
+						<Select
+							label="DataSet"
+							labelId="selectDataSet"
+							value={selectedChartProp.selectedDs?.ds_uid}
+							variant="outlined"
+							onChange={(e) => {
+								handleDataSetChange(e.target.value);
+							}}
+							sx={{ height: "1.5rem", fontSize: "14px" }}
+						>
+							<MenuItem
+								sx={{
+									fontSize: "12px",
+									padding: "2px 1rem",
+									borderBottom: "1px solid lightgray",
+								}}
+								value="addNewDataset"
+							>
+								Add Dataset
+							</MenuItem>
+							{/* <Divider sx={{ margin: "1px" }} /> */}
+							{tabTileProps.selectedDataSetList.map((ds) => {
+								return (
+									<MenuItem sx={selectInput} value={ds.ds_uid} key={ds.ds_uid}>
+										{ds.friendly_name}
+									</MenuItem>
+								);
+							})}
+						</Select>
+					</FormControl>
+				</div>
 
 				<div className="tileTableList">
 					<TableListForDs />
@@ -208,6 +217,9 @@ const DataViewerBottom = ({
 					/>
 				) : null}
 			</div>
+			{/* <div style={{ backgroundColor: "rgb(238,238,238)", flex: 1 }}>
+				<div style={{ backgroundColor: "rgb(211,211,211)", height: "2.5rem" }}></div>
+			</div> */}
 		</div>
 	);
 };

@@ -8,7 +8,7 @@
 	background-color: #eee;
 	display: flex;
 	flex-direction: column;
-	text-align: left;
+	/* text-align: left; */
 }
 
 .axisTitle {
@@ -16,4 +16,9 @@
 	color: #404040;
 	font-weight: 600;
 	padding: 0 0.5rem;
+}
+
+.axisInfo {
+	font-size: 12px;
+	color: #606060;
 }

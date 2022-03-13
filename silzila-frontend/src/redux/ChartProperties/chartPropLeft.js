@@ -42,6 +42,13 @@ const chartPropLeft = {
 };
 
 const chartPropLeftReducer = (state = chartPropLeft, action) => {
+	const findCardIndex = (propKey, fromBIndex, fromUid) => {
+		var removeIndex = state.properties[propKey].chartAxes[fromBIndex].fields.findIndex(
+			(obj) => obj.uId === fromUid
+		);
+		return removeIndex;
+	};
+
 	switch (action.type) {
 		// ########################################################################################################################
 		// ########################################################################################################################
@@ -149,6 +156,106 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 					[action.payload.propKey]: {
 						selectedTable: { $merge: action.payload.selectedTable },
 					},
+				},
+			});
+
+		// ########################################################################################################################
+		// ########################################################################################################################
+		// Chart Axes Operations
+
+		case "UPDATE_PROP":
+			console.log("UPDATING PROPERTY");
+
+			if (
+				state.properties[action.payload.propKey].chartAxes[action.payload.bIndex].fields
+					.length < action.payload.allowedNumbers
+			) {
+				return update(state, {
+					properties: {
+						[action.payload.propKey]: {
+							chartAxes: {
+								[action.payload.bIndex]: {
+									fields: { $push: [action.payload.item] },
+								},
+							},
+						},
+					},
+				});
+			} else {
+				console.log("Exceeded allowed numbers");
+				return update(state, {
+					properties: {
+						[action.payload.propKey]: {
+							chartAxes: {
+								[action.payload.bIndex]: {
+									fields: { $splice: [[0, 1]], $push: [action.payload.item] },
+								},
+							},
+						},
+					},
+				});
+			}
+
+		case "MOVE_ITEM":
+			var removeIndex = findCardIndex(
+				action.payload.propKey,
+				action.payload.fromBIndex,
+				action.payload.fromUID
+			);
+
+			if (
+				state.properties[action.payload.propKey].chartAxes[action.payload.toBIndex].fields
+					.length < action.payload.allowedNumbers
+			) {
+				return update(state, {
+					properties: {
+						[action.payload.propKey]: {
+							chartAxes: {
+								[action.payload.toBIndex]: {
+									fields: { $push: [action.payload.item] },
+								},
+								[action.payload.fromBIndex]: {
+									fields: { $splice: [[removeIndex, 1]] },
+								},
+							},
+						},
+					},
+				});
+			} else {
+				return update(state, {
+					properties: {
+						[action.payload.propKey]: {
+							chartAxes: {
+								[action.payload.toBIndex]: {
+									fields: { $splice: [[0, 1]], $push: [action.payload.item] },
+								},
+								[action.payload.fromBIndex]: {
+									fields: { $splice: [[removeIndex, 1]] },
+								},
+							},
+						},
+					},
+				});
+			}
+
+		case "DELETE_ITEM_FROM_PROP":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						chartAxes: {
+							[action.payload.binIndex]: {
+								fields: { $splice: [[action.payload.itemIndex, 1]] },
+							},
+						},
+					},
+				},
+			});
+
+		case "TOGGLE_AXES_EDITED":
+			console.log("TOGGLE_AXES_EDITED", action.payload.propKey, action.payload.axesEdited);
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: { axesEdited: { $set: action.payload.axesEdited } },
 				},
 			});
 
