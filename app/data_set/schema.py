@@ -66,8 +66,8 @@ class Dim(BaseModel):
     display_name: str
     data_type: Literal['text', 'integer',
                        'decimal', 'boolean', 'date', 'timestamp']
-    time_grain: Optional[Literal['year',
-                                 'month', 'quarter', 'dayofweek', 'day']]
+    time_grain: Optional[Literal['year', 'quarter', 'month',
+                                 'yearquarter', 'yearmonth', 'date', 'dayofweek', 'dayofmonth']]
     expr: Optional[str]
 
 
@@ -79,8 +79,8 @@ class Measure(BaseModel):
                        'decimal', 'boolean', 'date', 'timestamp']
     aggr: Literal['sum', 'avg', 'min', 'max', 'count',
                   'countnonnull', 'countnull', 'countunique']
-    time_grain: Optional[Literal['year',
-                                 'month', 'quarter', 'dayofweek', 'day']]
+    time_grain: Optional[Literal['year', 'quarter',
+                                 'month', 'date', 'dayofweek', 'dayofmonth']]
     expr: Optional[str]
 
 
