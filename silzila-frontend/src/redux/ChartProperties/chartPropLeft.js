@@ -265,6 +265,28 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 				},
 			});
 
+		case "UPDATE_AXES_QUERY_PARAM":
+			console.log(
+				action.payload.propKey,
+				action.payload.binIndex,
+				action.payload.itemIndex,
+				action.payload.item
+			);
+
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						chartAxes: {
+							[action.payload.binIndex]: {
+								fields: {
+									$splice: [[action.payload.itemIndex, 1, action.payload.item]],
+								},
+							},
+						},
+					},
+				},
+			});
+
 		default:
 			return state;
 	}

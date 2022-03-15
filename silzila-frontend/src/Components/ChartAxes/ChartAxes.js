@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import ChartsInfo from "./ChartsInfo2";
 import "./ChartAxes.css";
 import Dustbin from "./Dustbin";
 import FetchData from "../../ServerCall/FetchData";
 import { updateChartData } from "../../redux/ChartProperties/actionsChartProps";
+import LoadingPopover from "../CommonFunctions/PopOverComponents/LoadingPopover";
 
 const ChartAxes = ({
 	// props
@@ -18,6 +19,8 @@ const ChartAxes = ({
 	// dispatch
 	updateChartData,
 }) => {
+	const [loading, setLoading] = useState(false);
+
 	var propKey = `${tabId}.${tileId}`;
 	var dropZones = [];
 	for (let i = 0; i < ChartsInfo[chartProp.properties[propKey].chartType].dropZones.length; i++) {
@@ -39,9 +42,11 @@ const ChartAxes = ({
 		}
 
 		if (serverCall) {
+			setLoading(true);
 			console.log("Time for API call");
 			var data = await getChartData(axesValues);
 			updateChartData(propKey, data);
+			setLoading(false);
 		}
 	}, [chartProp.properties[propKey].chartAxes]);
 
@@ -110,6 +115,10 @@ const ChartAxes = ({
 
 		formattedAxes.fields = [];
 
+		// TODO Priority 5 - Integrate Filters
+		// Right now no filter is passed to server. Discuss with balu and pass filters
+		formattedAxes.filters = [];
+
 		console.log(formattedAxes);
 		var url =
 			"ds/query/" +
@@ -142,6 +151,7 @@ const ChartAxes = ({
 			{dropZones.map((zone, zoneI) => (
 				<Dustbin bIndex={zoneI} name={zone} propKey={propKey} key={zoneI} />
 			))}
+			{loading ? <LoadingPopover /> : null}
 		</div>
 	);
 };

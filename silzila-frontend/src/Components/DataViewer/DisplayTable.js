@@ -26,7 +26,6 @@ const DisplayTable = ({
 					displayname: tableKeys[i],
 					schema: schema.filter((sc) => sc.column_name === tableKeys[i])[0].data_type,
 					tableId: table,
-					prefix: "",
 				});
 			}
 			return _fieldsData;
@@ -54,11 +53,7 @@ const DisplayTable = ({
 			var keys = getKeys(SampleRecords[0]);
 			return keys.map((key, index) => {
 				return (
-					<th
-						key={`${index}_${key}`}
-						className="tableHeadings"
-						// draggable="true" onDragStart={(e) => handleDragStart(e, columnsData[index]) }
-					>
+					<th key={`${index}_${key}`}>
 						<Box name={key} type="card" fieldData={columnsData[index]} />
 					</th>
 				);

@@ -61,6 +61,10 @@ export const deleteItemInChartProp = (propKey, binIndex, itemIndex) => {
 	};
 };
 
+export const updateAxesQueryParam = (propKey, binIndex, itemIndex, item) => {
+	return { type: "UPDATE_AXES_QUERY_PARAM", payload: { propKey, binIndex, itemIndex, item } };
+};
+
 export const toggleAxesEdited = (propKey, axesEdited) => {
 	return { type: "TOGGLE_AXES_EDITED", payload: { propKey, axesEdited } };
 };
@@ -97,6 +101,21 @@ export const editChartPropItem = ({ action, details }) => {
 				dispatch(
 					deleteItemInChartProp(details.propKey, details.binIndex, details.itemIndex)
 				);
+				break;
+
+			case "updateQuery":
+				console.log("Updating query param");
+				console.log(details);
+				console.log(details.propKey, details.binIndex, details.itemIndex, details.item);
+				dispatch(
+					updateAxesQueryParam(
+						details.propKey,
+						details.binIndex,
+						details.itemIndex,
+						details.item
+					)
+				);
+				break;
 
 			default:
 				break;

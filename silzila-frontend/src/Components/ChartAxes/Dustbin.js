@@ -82,22 +82,16 @@ const Dustbin = ({
 				) : null}
 			</i>
 
-			{chartProp.properties[propKey].chartAxes[bIndex].fields.map(
-				({ fieldname, displayname, datatype, prefix, uId }, index) => (
-					// <div> {fieldname} </div>
-					<Card
-						uId={uId}
-						fieldname={fieldname}
-						displayname={displayname}
-						datatype={datatype}
-						prefix={prefix}
-						bIndex={bIndex}
-						key={index}
-						itemIndex={index}
-						propKey={propKey}
-					/>
-				)
-			)}
+			{chartProp.properties[propKey].chartAxes[bIndex].fields.map((field, index) => (
+				<Card
+					field={field}
+					bIndex={bIndex}
+					axisTitle={name}
+					key={index}
+					itemIndex={index}
+					propKey={propKey}
+				/>
+			))}
 		</div>
 	);
 };

@@ -13,6 +13,7 @@ export const Box = ({ name, type, fieldData }) => {
 
 	return (
 		<div
+			className="tableHeadings"
 			ref={drag}
 			style={{
 				display: "flex",
