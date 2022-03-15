@@ -12,6 +12,7 @@ import {
 } from "../../redux/TabTile/actionsTabTile";
 import FetchData from "../../ServerCall/FetchData";
 import DatasetListPopover from "../CommonFunctions/PopOverComponents/DatasetListPopover";
+import LoadingPopover from "../CommonFunctions/PopOverComponents/LoadingPopover";
 import "./dataViewerBottom.css";
 import DisplayTable from "./DisplayTable";
 
@@ -35,6 +36,7 @@ const DataViewerBottom = ({
 
 	const [open, setOpen] = useState(false);
 	const [selectedDataset, setSelectedDataset] = useState("");
+	const [loading, setLoading] = useState(false);
 
 	// When a new dataset is added to the tile for work,
 	// set it in SelectedDataSet of tabTileProps
@@ -60,9 +62,10 @@ const DataViewerBottom = ({
 			tabTileProps?.tablesForSelectedDataSets?.[selectedChartProp?.selectedDs?.ds_uid] ===
 			undefined
 		) {
+			setLoading(true);
 			var tablesFromServer = await getTables(selectedChartProp.selectedDs?.ds_uid);
-
 			setTablesForDs({ [selectedDataset.ds_uid]: tablesFromServer });
+			setLoading(false);
 		}
 	}, [selectedChartProp.selectedDs]);
 
@@ -96,17 +99,14 @@ const DataViewerBottom = ({
 
 			if (sampleRecords?.[selectedChartProp.selectedDs?.ds_uid]?.[table.id]) {
 			} else {
+				setLoading(true);
 				var dc_uid = selectedChartProp.selectedDs?.dc_uid;
+				var ds_uid = selectedChartProp.selectedDs?.ds_uid;
 				var tableRecords = await getTableData(dc_uid, table.schema_name, table.table_name);
 				var recordsType = await getColumnTypes(dc_uid, table.schema_name, table.table_name);
 
-				// TODO: get table columns with datatype from another api
-				// /dc/columns/{dc}/{schema}/{tableName}
-				// Merge this with tableData
-
-				var ds_uid = selectedChartProp.selectedDs?.ds_uid;
-
 				addRecords(ds_uid, table.id, tableRecords, recordsType);
+				setLoading(false);
 			}
 		}
 	};
@@ -233,9 +233,7 @@ const DataViewerBottom = ({
 					/>
 				) : null}
 			</div>
-			{/* <div style={{ backgroundColor: "rgb(238,238,238)", flex: 1 }}>
-				<div style={{ backgroundColor: "rgb(211,211,211)", height: "2.5rem" }}></div>
-			</div> */}
+			{loading ? <LoadingPopover /> : null}
 		</div>
 	);
 };
