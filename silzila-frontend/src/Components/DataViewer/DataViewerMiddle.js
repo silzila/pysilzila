@@ -39,7 +39,11 @@ const DataViewerMiddle = ({
 		<div className="dataViewerMiddle">
 			<ChartAxes tabId={tabId} tileId={tileId} />
 
-			<div className="centerColumn"> Graph Area</div>
+			<div className="centerColumn">
+				{chartProp.properties[propKey].chartData
+					? JSON.stringify(chartProp.properties[propKey].chartData.result, null, "\t")
+					: "No Data"}
+			</div>
 			{/* <GraphArea /> */}
 
 			<div className="rightColumn ">

@@ -13,15 +13,15 @@ const chartPropLeft = {
 			axesEdited: false,
 			chartAxes: [
 				{
+					name: "Filter",
+					fields: [],
+				},
+				{
 					name: "Dimension",
 					fields: [],
 				},
 				{
 					name: "Measure",
-					fields: [],
-				},
-				{
-					name: "Filter",
 					fields: [],
 				},
 			],
@@ -71,15 +71,15 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 						axesEdited: false,
 						chartAxes: [
 							{
+								name: "Filter",
+								fields: [],
+							},
+							{
 								name: "Dimension",
 								fields: [],
 							},
 							{
 								name: "Measure",
-								fields: [],
-							},
-							{
-								name: "Filter",
 								fields: [],
 							},
 						],
@@ -111,15 +111,15 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 						axesEdited: false,
 						chartAxes: [
 							{
+								name: "Filter",
+								fields: [],
+							},
+							{
 								name: "Dimension",
 								fields: [],
 							},
 							{
 								name: "Measure",
-								fields: [],
-							},
-							{
-								name: "Filter",
 								fields: [],
 							},
 						],
@@ -164,8 +164,6 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 		// Chart Axes Operations
 
 		case "UPDATE_PROP":
-			console.log("UPDATING PROPERTY");
-
 			if (
 				state.properties[action.payload.propKey].chartAxes[action.payload.bIndex].fields
 					.length < action.payload.allowedNumbers
@@ -252,10 +250,18 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 			});
 
 		case "TOGGLE_AXES_EDITED":
-			console.log("TOGGLE_AXES_EDITED", action.payload.propKey, action.payload.axesEdited);
 			return update(state, {
 				properties: {
 					[action.payload.propKey]: { axesEdited: { $set: action.payload.axesEdited } },
+				},
+			});
+
+		case "UPDATE_CHART_DATA":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						chartData: { $set: action.payload.chartData },
+					},
 				},
 			});
 

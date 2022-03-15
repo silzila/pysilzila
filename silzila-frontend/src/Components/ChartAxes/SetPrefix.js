@@ -12,29 +12,47 @@ export const setPrefix = (fieldData, binName, chartType) => {
 			if (binName === "Measure") {
 				data.prefix = "SUM";
 				data.agg = "sum";
+				// sum, avg, min, max, count, countnonnull, countnull, countunique
+			} else if (binName === "Dimension") {
+				data.prefix = "";
+				// No Options will come here
 			} else {
 				data.prefix = "";
+				// Popover will come here
 			}
 			break;
 
 		case "text":
 			if (binName === "Measure") {
-				data.prefix = "COUNT - Non Null";
-				data.agg = "countnonnull";
+				data.prefix = "Count";
+				data.agg = "count";
+				// count, countnonnull, countnull, countunique
+			} else if (binName === "Dimension") {
+				data.prefix = "";
+				// No Options will come here
 			} else {
 				data.prefix = "";
+				// Popover will come here
 			}
 			break;
 
 		case "date":
 		case "timestamp":
 			if (binName === "Measure") {
-				data.prefix = "YEAR";
+				data.prefix = "Year, Max";
 				data.time_grain = "year";
+				// year, month, quarter, dayofweek, day
+
 				data.agg = "max";
-			} else {
-				data.prefix = "Date";
+				// min, max, count, countnonnull, countnull, countunique
+			} else if (binName === "Dimension") {
+				data.prefix = "";
 				data.time_grain = "year";
+				// year, month, quarter, dayofweek, day
+			} else {
+				data.prefix = "";
+				data.time_grain = "year";
+				// year, month, quarter, dayofweek, day
 			}
 			break;
 

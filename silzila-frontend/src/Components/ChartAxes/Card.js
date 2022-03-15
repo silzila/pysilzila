@@ -52,7 +52,7 @@ const Card = ({
 			</button>
 
 			<span className="columnName ">{fieldname}</span>
-			<span className="columnPrefix "> {prefix ? `(${prefix})` : null}</span>
+			<span className="columnPrefix "> {prefix ? `${prefix}` : null}</span>
 			<button
 				type="button"
 				className="buttonCommon columnDown"
@@ -60,7 +60,7 @@ const Card = ({
 				title="Remove field"
 				style={showOptions ? { visibility: "visible" } : { visibility: "hidden" }}
 			>
-				<KeyboardArrowDownRoundedIcon style={{ fontSize: "13px", margin: "auto" }} />
+				<KeyboardArrowDownRoundedIcon style={{ fontSize: "14px", margin: "auto" }} />
 			</button>
 		</div>
 	);

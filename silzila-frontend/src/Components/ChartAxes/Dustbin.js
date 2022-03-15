@@ -48,9 +48,7 @@ const Dustbin = ({
 
 			const uID = uIdGenerator();
 			var fieldData = item.fieldData;
-			console.log(fieldData);
 			fieldData.uId = uID;
-			console.log(fieldData);
 
 			var newFieldData = JSON.parse(JSON.stringify(setPrefix(fieldData, name, chartType)));
 			console.log(newFieldData);

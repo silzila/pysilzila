@@ -60,8 +60,10 @@
 	padding: 5px 2px;
 	margin: 0;
 	border: none;
+	font-weight: 600;
 }
 .columnPrefix {
-	font-size: 13px;
+	font-style: italic;
+	color: #cc6d00;
 	padding: 5px 2px;
 }

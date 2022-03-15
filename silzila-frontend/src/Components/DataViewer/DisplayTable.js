@@ -25,6 +25,7 @@ const DisplayTable = ({
 					fieldname: tableKeys[i],
 					displayname: tableKeys[i],
 					schema: schema.filter((sc) => sc.column_name === tableKeys[i])[0].data_type,
+					tableId: table,
 					prefix: "",
 				});
 			}
@@ -35,7 +36,6 @@ const DisplayTable = ({
 
 	const prepareInputs = () => {
 		let _fields = formatFieldsData();
-		console.log("Fields: \n", _fields);
 		setColumnsData(_fields);
 	};
 

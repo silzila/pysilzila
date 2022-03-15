@@ -40,12 +40,10 @@ export const setSelectedTableInTile = (propKey, selectedTable) => {
 // Actions From Chart Axes Dustbin
 
 export const updateChartPropLeft = (propKey, bIndex, item, allowedNumbers) => {
-	console.log("UPDATING_PROP_LEFT");
 	return { type: "UPDATE_PROP", payload: { propKey, bIndex, item, allowedNumbers } };
 };
 
 export const moveItemChartProp = (propKey, fromBIndex, fromUID, item, toBIndex, allowedNumbers) => {
-	console.log("MOVING ITEM");
 	return {
 		type: "MOVE_ITEM",
 		payload: { propKey, fromBIndex, fromUID, item, toBIndex, allowedNumbers },
@@ -53,7 +51,6 @@ export const moveItemChartProp = (propKey, fromBIndex, fromUID, item, toBIndex, 
 };
 
 export const deleteItemInChartProp = (propKey, binIndex, itemIndex) => {
-	console.log("DELETING_ITEM_FROM_PROP");
 	return {
 		type: "DELETE_ITEM_FROM_PROP",
 		payload: {
@@ -65,18 +62,14 @@ export const deleteItemInChartProp = (propKey, binIndex, itemIndex) => {
 };
 
 export const toggleAxesEdited = (propKey, axesEdited) => {
-	console.log("TOGGLE_AXES_EDITED");
 	return { type: "TOGGLE_AXES_EDITED", payload: { propKey, axesEdited } };
 };
 
 export const editChartPropItem = ({ action, details }) => {
-	console.log(action);
-
 	return (dispatch) => {
 		dispatch(toggleAxesEdited(details.propKey, true));
 		switch (action) {
 			case "update":
-				console.log("UpdateProp reducer to be called", details);
 				dispatch(
 					updateChartPropLeft(
 						details.propKey,
@@ -88,7 +81,6 @@ export const editChartPropItem = ({ action, details }) => {
 				break;
 
 			case "move":
-				console.log("MoveProp reducer to be called", details);
 				dispatch(
 					moveItemChartProp(
 						details.propKey,
@@ -102,7 +94,6 @@ export const editChartPropItem = ({ action, details }) => {
 				break;
 
 			case "delete":
-				console.log("MoveProp reducer to be called", details);
 				dispatch(
 					deleteItemInChartProp(details.propKey, details.binIndex, details.itemIndex)
 				);
@@ -110,5 +101,12 @@ export const editChartPropItem = ({ action, details }) => {
 			default:
 				break;
 		}
+	};
+};
+
+export const updateChartData = (propKey, chartData) => {
+	return {
+		type: "UPDATE_CHART_DATA",
+		payload: { propKey, chartData },
 	};
 };
