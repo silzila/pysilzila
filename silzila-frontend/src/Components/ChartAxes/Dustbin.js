@@ -6,6 +6,7 @@ import Card from "./Card";
 import ChartsInfo from "./ChartsInfo2";
 import { setPrefix } from "./SetPrefix";
 
+
 const Dustbin = ({
 	// props
 	bIndex,
@@ -57,6 +58,7 @@ const Dustbin = ({
 		}
 	};
 
+
 	return (
 		<div ref={drop} className="chartAxis mt-2">
 			<span className="axisTitle">{name}</span>
@@ -92,6 +94,7 @@ const Dustbin = ({
 					propKey={propKey}
 				/>
 			))}
+
 		</div>
 	);
 };
@@ -117,3 +120,4 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dustbin);
+

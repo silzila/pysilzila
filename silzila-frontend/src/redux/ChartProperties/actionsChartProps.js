@@ -129,3 +129,4 @@ export const updateChartData = (propKey, chartData) => {
 		payload: { propKey, chartData },
 	};
 };
+

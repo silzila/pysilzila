@@ -13,12 +13,12 @@
 
 .dataSetAndTableList {
 	width: 14.5rem;
-
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
 	font-size: 14px;
 }
+
 .dataSetSelect {
 	padding: 0.5rem;
 	background-color: rgb(211, 211, 211);

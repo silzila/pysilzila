@@ -12,7 +12,9 @@ import {
 } from "../../redux/TabTile/actionsTabTile";
 import FetchData from "../../ServerCall/FetchData";
 import DatasetListPopover from "../CommonFunctions/PopOverComponents/DatasetListPopover";
+
 import LoadingPopover from "../CommonFunctions/PopOverComponents/LoadingPopover";
+
 import "./dataViewerBottom.css";
 import DisplayTable from "./DisplayTable";
 
@@ -234,6 +236,7 @@ const DataViewerBottom = ({
 				) : null}
 			</div>
 			{loading ? <LoadingPopover /> : null}
+
 		</div>
 	);
 };

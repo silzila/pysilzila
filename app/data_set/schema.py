@@ -10,6 +10,11 @@ class Table(BaseModel):
     table_name: str
     schema_name: str
     id: str
+    alias: str
+
+
+class Tables(BaseModel):
+    __root__: List[Table]
 
 
 class Relationship(BaseModel):
@@ -61,8 +66,22 @@ class Dim(BaseModel):
     display_name: str
     data_type: Literal['text', 'integer',
                        'decimal', 'boolean', 'date', 'timestamp']
-    aggr: str
-    expr: str
+    time_grain: Optional[Literal['year',
+                                 'month', 'quarter', 'dayofweek', 'day']]
+    expr: Optional[str]
+
+
+class Measure(BaseModel):
+    table_id: str
+    field_name: str
+    display_name: str
+    data_type: Literal['text', 'integer',
+                       'decimal', 'boolean', 'date', 'timestamp']
+    aggr: Literal['sum', 'avg', 'min', 'max', 'count',
+                  'countnonnull', 'countnull', 'countunique']
+    time_grain: Optional[Literal['year',
+                                 'month', 'quarter', 'dayofweek', 'day']]
+    expr: Optional[str]
 
 
 class Field(BaseModel):
@@ -87,7 +106,7 @@ class Filter(BaseModel):
 
 class Query(BaseModel):
     dims: Optional[List[Dim]]
-    measures: Optional[List[Dim]]
+    measures: Optional[List[Measure]]
     fields: Optional[List[Field]]
     filters: Optional[List[Filter]]
 

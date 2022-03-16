@@ -1,4 +1,6 @@
+
 import React, { useEffect, useState } from "react";
+
 import { connect } from "react-redux";
 import ChartsInfo from "./ChartsInfo2";
 import "./ChartAxes.css";
@@ -6,6 +8,7 @@ import Dustbin from "./Dustbin";
 import FetchData from "../../ServerCall/FetchData";
 import { updateChartData } from "../../redux/ChartProperties/actionsChartProps";
 import LoadingPopover from "../CommonFunctions/PopOverComponents/LoadingPopover";
+
 
 const ChartAxes = ({
 	// props
@@ -20,6 +23,7 @@ const ChartAxes = ({
 	updateChartData,
 }) => {
 	const [loading, setLoading] = useState(false);
+
 
 	var propKey = `${tabId}.${tileId}`;
 	var dropZones = [];
@@ -164,6 +168,7 @@ const mapStateToProps = (state) => {
 		token: state.isLogged.access_token,
 	};
 };
+
 
 const mapDispatchToProps = (dispatch) => {
 	return {

@@ -31,6 +31,7 @@ const ChartsInfo = {
 			{
 				name: "Dimension",
 				allowedNumbers: 2,
+
 				min: 1,
 				dataType: ["text", "string", "timestamp"],
 			},
