@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Box } from "./Box";
 
@@ -12,6 +12,35 @@ const DisplayTable = ({
 	tabTileProps,
 }) => {
 	var SampleRecords = tableRecords?.[dsId]?.[table];
+	const [columnsData, setColumnsData] = useState([]);
+
+	const formatFieldsData = () => {
+		let _fieldsData = [];
+		if (SampleRecords) {
+			var tableKeys = Object.keys(SampleRecords[0]);
+			var schema = tableRecords.recordsColumnType[dsId][table];
+
+			for (let i = 0; i < tableKeys.length; i++) {
+				_fieldsData.push({
+					fieldname: tableKeys[i],
+					displayname: tableKeys[i],
+					schema: schema.filter((sc) => sc.column_name === tableKeys[i])[0].data_type,
+					tableId: table,
+				});
+			}
+			return _fieldsData;
+		}
+		return _fieldsData;
+	};
+
+	const prepareInputs = () => {
+		let _fields = formatFieldsData();
+		setColumnsData(_fields);
+	};
+
+	useEffect(() => {
+		prepareInputs();
+	}, [SampleRecords]);
 
 	// Get the column names from first row of table data
 	const getKeys = (record) => {
@@ -19,17 +48,16 @@ const DisplayTable = ({
 	};
 
 	// Get the column names from getKeys() and render the header for table
+
+	// TODO: Priority 5 - Table header row is not in position sticky!
+
 	const GetHeaders = () => {
 		if (SampleRecords) {
 			var keys = getKeys(SampleRecords[0]);
 			return keys.map((key, index) => {
 				return (
-					<th
-						key={`${index}_${key}`}
-						className="tableHeadings"
-						// draggable="true" onDragStart={(e) => handleDragStart(e, columnsData[index]) }
-					>
-						<Box name={key} type="card" fieldData={key} />
+					<th key={`${index}_${key}`}>
+						<Box name={key} type="card" fieldData={columnsData[index]} />
 					</th>
 				);
 			});
@@ -73,7 +101,7 @@ const DisplayTable = ({
 						draggable="true"
 						// onDragStart={(e) => handleDragStart(e, columnsData[index])}
 					>
-						<Box name={key} type="card" fieldData={key} />
+						<Box name={key} type="card" fieldData={columnsData[index]} />
 					</button>
 				);
 			});

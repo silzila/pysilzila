@@ -13,15 +13,15 @@ const chartPropLeft = {
 			axesEdited: false,
 			chartAxes: [
 				{
+					name: "Filter",
+					fields: [],
+				},
+				{
 					name: "Dimension",
 					fields: [],
 				},
 				{
 					name: "Measure",
-					fields: [],
-				},
-				{
-					name: "Filter",
 					fields: [],
 				},
 			],
@@ -33,7 +33,7 @@ const chartPropLeft = {
 				ds_uid: "dspost",
 			},
 			selectedTable: {
-				dspost: "pos",
+				dspost: "s",
 			},
 		},
 	},
@@ -42,6 +42,13 @@ const chartPropLeft = {
 };
 
 const chartPropLeftReducer = (state = chartPropLeft, action) => {
+	const findCardIndex = (propKey, fromBIndex, fromUid) => {
+		var removeIndex = state.properties[propKey].chartAxes[fromBIndex].fields.findIndex(
+			(obj) => obj.uId === fromUid
+		);
+		return removeIndex;
+	};
+
 	switch (action.type) {
 		// ########################################################################################################################
 		// ########################################################################################################################
@@ -64,15 +71,15 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 						axesEdited: false,
 						chartAxes: [
 							{
+								name: "Filter",
+								fields: [],
+							},
+							{
 								name: "Dimension",
 								fields: [],
 							},
 							{
 								name: "Measure",
-								fields: [],
-							},
-							{
-								name: "Filter",
 								fields: [],
 							},
 						],
@@ -104,15 +111,15 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 						axesEdited: false,
 						chartAxes: [
 							{
+								name: "Filter",
+								fields: [],
+							},
+							{
 								name: "Dimension",
 								fields: [],
 							},
 							{
 								name: "Measure",
-								fields: [],
-							},
-							{
-								name: "Filter",
 								fields: [],
 							},
 						],
@@ -148,6 +155,134 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 				properties: {
 					[action.payload.propKey]: {
 						selectedTable: { $merge: action.payload.selectedTable },
+					},
+				},
+			});
+
+		// ########################################################################################################################
+		// ########################################################################################################################
+		// Chart Axes Operations
+
+		case "UPDATE_PROP":
+			if (
+				state.properties[action.payload.propKey].chartAxes[action.payload.bIndex].fields
+					.length < action.payload.allowedNumbers
+			) {
+				return update(state, {
+					properties: {
+						[action.payload.propKey]: {
+							chartAxes: {
+								[action.payload.bIndex]: {
+									fields: { $push: [action.payload.item] },
+								},
+							},
+						},
+					},
+				});
+			} else {
+				console.log("Exceeded allowed numbers");
+				return update(state, {
+					properties: {
+						[action.payload.propKey]: {
+							chartAxes: {
+								[action.payload.bIndex]: {
+									fields: { $splice: [[0, 1]], $push: [action.payload.item] },
+								},
+							},
+						},
+					},
+				});
+			}
+
+		case "MOVE_ITEM":
+			var removeIndex = findCardIndex(
+				action.payload.propKey,
+				action.payload.fromBIndex,
+				action.payload.fromUID
+			);
+
+			if (
+				state.properties[action.payload.propKey].chartAxes[action.payload.toBIndex].fields
+					.length < action.payload.allowedNumbers
+			) {
+				return update(state, {
+					properties: {
+						[action.payload.propKey]: {
+							chartAxes: {
+								[action.payload.toBIndex]: {
+									fields: { $push: [action.payload.item] },
+								},
+								[action.payload.fromBIndex]: {
+									fields: { $splice: [[removeIndex, 1]] },
+								},
+							},
+						},
+					},
+				});
+			} else {
+				return update(state, {
+					properties: {
+						[action.payload.propKey]: {
+							chartAxes: {
+								[action.payload.toBIndex]: {
+									fields: { $splice: [[0, 1]], $push: [action.payload.item] },
+								},
+								[action.payload.fromBIndex]: {
+									fields: { $splice: [[removeIndex, 1]] },
+								},
+							},
+						},
+					},
+				});
+			}
+
+		case "DELETE_ITEM_FROM_PROP":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						chartAxes: {
+							[action.payload.binIndex]: {
+								fields: { $splice: [[action.payload.itemIndex, 1]] },
+							},
+						},
+					},
+				},
+			});
+
+		case "TOGGLE_AXES_EDITED":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: { axesEdited: { $set: action.payload.axesEdited } },
+				},
+			});
+
+		case "UPDATE_CHART_DATA":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						chartData: { $set: action.payload.chartData },
+					},
+				},
+			});
+
+		case "UPDATE_AXES_QUERY_PARAM":
+			console.log(
+				action.payload.propKey,
+				action.payload.binIndex,
+				action.payload.itemIndex,
+				action.payload.item
+			);
+
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						chartAxes: {
+							[action.payload.binIndex]: {
+								fields: {
+									$splice: [[action.payload.itemIndex, 1, action.payload.item]],
+								},
+							},
+						},
 					},
 				},
 			});

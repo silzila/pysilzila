@@ -118,7 +118,12 @@ const BottomBar = ({
 		if (fname !== "") {
 			const uid = new ShortUniqueId({ length: 8 });
 			const data_schema_tables = tempTable.map((el) => {
-				return { table_name: el.tableName, schema_name: schema, id: uid() };
+				return {
+					table_name: el.tableName,
+					schema_name: el.schema,
+					id: uid(),
+					alias: el.alias,
+				};
 			});
 			const temp1 = [];
 			const temp2 = [];

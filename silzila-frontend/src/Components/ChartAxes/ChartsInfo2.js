@@ -30,7 +30,8 @@ const ChartsInfo = {
 			{ name: "Filter", allowedNumbers: 64, min: 0 },
 			{
 				name: "Dimension",
-				allowedNumbers: 1,
+				allowedNumbers: 2,
+
 				min: 1,
 				dataType: ["text", "string", "timestamp"],
 			},

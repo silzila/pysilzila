@@ -36,3 +36,97 @@ export const setSelectedDsInTile = (propKey, selectedDs) => {
 export const setSelectedTableInTile = (propKey, selectedTable) => {
 	return { type: "SET_SELECTED_TABLE_IN_TILE", payload: { propKey, selectedTable } };
 };
+
+// Actions From Chart Axes Dustbin
+
+export const updateChartPropLeft = (propKey, bIndex, item, allowedNumbers) => {
+	return { type: "UPDATE_PROP", payload: { propKey, bIndex, item, allowedNumbers } };
+};
+
+export const moveItemChartProp = (propKey, fromBIndex, fromUID, item, toBIndex, allowedNumbers) => {
+	return {
+		type: "MOVE_ITEM",
+		payload: { propKey, fromBIndex, fromUID, item, toBIndex, allowedNumbers },
+	};
+};
+
+export const deleteItemInChartProp = (propKey, binIndex, itemIndex) => {
+	return {
+		type: "DELETE_ITEM_FROM_PROP",
+		payload: {
+			propKey,
+			binIndex,
+			itemIndex,
+		},
+	};
+};
+
+export const updateAxesQueryParam = (propKey, binIndex, itemIndex, item) => {
+	return { type: "UPDATE_AXES_QUERY_PARAM", payload: { propKey, binIndex, itemIndex, item } };
+};
+
+export const toggleAxesEdited = (propKey, axesEdited) => {
+	return { type: "TOGGLE_AXES_EDITED", payload: { propKey, axesEdited } };
+};
+
+export const editChartPropItem = ({ action, details }) => {
+	return (dispatch) => {
+		dispatch(toggleAxesEdited(details.propKey, true));
+		switch (action) {
+			case "update":
+				dispatch(
+					updateChartPropLeft(
+						details.propKey,
+						details.bIndex,
+						details.item,
+						details.allowedNumbers
+					)
+				);
+				break;
+
+			case "move":
+				dispatch(
+					moveItemChartProp(
+						details.propKey,
+						details.fromBIndex,
+						details.fromUID,
+						details.item,
+						details.toBIndex,
+						details.allowedNumbers
+					)
+				);
+				break;
+
+			case "delete":
+				dispatch(
+					deleteItemInChartProp(details.propKey, details.binIndex, details.itemIndex)
+				);
+				break;
+
+			case "updateQuery":
+				console.log("Updating query param");
+				console.log(details);
+				console.log(details.propKey, details.binIndex, details.itemIndex, details.item);
+				dispatch(
+					updateAxesQueryParam(
+						details.propKey,
+						details.binIndex,
+						details.itemIndex,
+						details.item
+					)
+				);
+				break;
+
+			default:
+				break;
+		}
+	};
+};
+
+export const updateChartData = (propKey, chartData) => {
+	return {
+		type: "UPDATE_CHART_DATA",
+		payload: { propKey, chartData },
+	};
+};
+
