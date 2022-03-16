@@ -168,11 +168,7 @@ const Card = ({
 			<span className="columnPrefix">
 				{field.agg ? AggregatorKeys[field.agg] : null}
 
-				{field.time_grain && field.agg ? (
-					<React.Fragment>
-						, <br />
-					</React.Fragment>
-				) : null}
+				{field.time_grain && field.agg ? <React.Fragment>, </React.Fragment> : null}
 				{field.time_grain ? AggregatorKeys[field.time_grain] : null}
 			</span>
 			<span className="columnPrefix"> {field.prefix ? `${field.prefix}` : null}</span>

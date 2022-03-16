@@ -100,7 +100,7 @@ export const AggregatorKeys = {
 	month: "Month",
 	quarter: "Quarter",
 	day: "Day",
-	dayofweek: "Day of Week",
+	dayofweek: "DoW",
 };
 
 export default Aggregators;

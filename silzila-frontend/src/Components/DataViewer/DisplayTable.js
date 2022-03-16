@@ -48,6 +48,9 @@ const DisplayTable = ({
 	};
 
 	// Get the column names from getKeys() and render the header for table
+
+	// TODO: Priority 5 - Table header row is not in position sticky!
+
 	const GetHeaders = () => {
 		if (SampleRecords) {
 			var keys = getKeys(SampleRecords[0]);
