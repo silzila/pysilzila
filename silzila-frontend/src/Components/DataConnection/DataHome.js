@@ -1,8 +1,8 @@
 import React from "react";
 import DataSetList from "../DataSet/DataSetList";
-import DashBoardList from "./DashBoardList";
 import DataConnection from "./DataConnection";
 import "./DataSetup.css";
+import PlayBookList from "./PlayBookList";
 
 const DataHome = () => {
 	return (
@@ -11,7 +11,7 @@ const DataHome = () => {
 				<DataConnection />
 				<DataSetList />
 			</div>
-			<DashBoardList />
+			<PlayBookList />
 		</div>
 	);
 };

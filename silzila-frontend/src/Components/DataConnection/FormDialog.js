@@ -149,7 +149,6 @@ function FormDialog({
 			url: "ds/get-all-ds",
 			headers: { Authorization: `Bearer ${token}` },
 		});
-		console.log(result);
 		if (result.status) {
 			result.data.map((ds) => {
 				if (ds.dc_uid === account.dc_uid) {
@@ -174,7 +173,6 @@ function FormDialog({
 		});
 		if (result.status) {
 			setDcDel(false);
-			console.log("Delete Dc", result.data);
 			setSeverity("success");
 			setOpenAlert(true);
 			setTestMessage("Deleted Successfully!");
@@ -210,7 +208,6 @@ function FormDialog({
 			account.friendly_name !== "" &&
 			account.password !== ""
 		) {
-			console.log(regOrUpdate);
 			if (regOrUpdate === "Update") {
 				handleonUpdate();
 			}
@@ -219,8 +216,6 @@ function FormDialog({
 			}
 		}
 	};
-
-	console.log(account.vendor, "vendor");
 
 	return (
 		<>
@@ -263,6 +258,7 @@ function FormDialog({
 							<Select
 								required
 								fullWidth
+								label="vendor"
 								labelId="selectVendor"
 								disabled={viewMode}
 								variant="outlined"

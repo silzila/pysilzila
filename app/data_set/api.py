@@ -79,6 +79,15 @@ async def read_ds(ds_uid: str, db: Session = Depends(get_db)):
     return db_ds
 
 
+@router.get("/get-ds-tables/{ds_uid}", response_model=schema.Tables)
+async def read_ds(ds_uid: str, db: Session = Depends(get_db)):
+    db_ds = await service.get_ds_by_id(db, ds_uid)
+    if db_ds is None:
+        raise HTTPException(
+            status_code=404, detail="Data Set not exists")
+    return dict(db_ds).get('data_schema').get('tables')
+
+
 @router.delete("/delete-ds/{ds_uid}")
 async def delete_ds(ds_uid: str, db: Session = Depends(get_db)):
     deleted = await service.delete_ds(db, ds_uid)

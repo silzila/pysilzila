@@ -98,7 +98,7 @@ export const RelationShipPopover = ({
 			}
 			return el;
 		});
-		console.log(newType);
+		// console.log(newType);
 
 		dispatch({ type: "SET_ARROW_TYPE", payload: newType });
 
@@ -114,7 +114,7 @@ export const RelationShipPopover = ({
 			return arr;
 		});
 
-		console.log(newArray);
+		// console.log(newArray);
 
 		dispatch({ type: "CLICK_ON_ARROW", payload: newArray });
 		onClose();
@@ -123,7 +123,7 @@ export const RelationShipPopover = ({
 			el.isSelected = false;
 			return el;
 		});
-		console.log(oldType);
+		// console.log(oldType);
 		dispatch({ type: "SET_ARROW_TYPE", payload: oldType });
 	};
 

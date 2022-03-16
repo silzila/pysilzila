@@ -3,10 +3,17 @@ import { Tooltip } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setDatasetList } from "../../redux/Dataset/datasetActions";
 import FetchData from "../../ServerCall/FetchData";
 import { SelectListItem } from "../CommonFunctions/SelectListItem";
 
-const DataSetList = (props) => {
+const DataSetList = ({
+	// state
+	token,
+
+	// dispatch
+	setDataSetListToStore,
+}) => {
 	var navigate = useNavigate();
 
 	const [dataSetList, setDataSetList] = useState([]);
@@ -21,12 +28,12 @@ const DataSetList = (props) => {
 			requestType: "noData",
 			method: "GET",
 			url: "ds/get-all-ds",
-			headers: { Authorization: `Bearer ${props.token}` },
+			headers: { Authorization: `Bearer ${token}` },
 		});
 
-		console.log(result);
 		if (result.status) {
 			setDataSetList(result.data);
+			setDataSetListToStore(result.data);
 		} else {
 			console.log(result.data.detail);
 		}
@@ -37,7 +44,7 @@ const DataSetList = (props) => {
 			<div className="containersHead">
 				<div className="containerTitle">Datasets</div>
 
-				{/* TODO: Priority 1:  Reset dataset values (Same from BottomBar.js) 
+				{/* TODO: Priority 1 - Reset dataset values (Same from BottomBar.js) 
 				Make sure the NewDataSet page doesn't have any old values in state */}
 				<input
 					className="containerButton"
@@ -70,7 +77,7 @@ const DataSetList = (props) => {
 												arrow
 												placement="right-start"
 											>
-												{/* TODO: This icon must be view / edit icon. */}
+												{/* TODO: Priority 10 - This icon must be view / edit icon. */}
 												<ModeEditOutlineTwoTone
 													style={{
 														width: "1rem",
@@ -96,4 +103,10 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, null)(DataSetList);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		setDataSetListToStore: (dataSetList) => dispatch(setDatasetList(dataSetList)),
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DataSetList);

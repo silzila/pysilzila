@@ -1,7 +1,20 @@
+from fastapi.exceptions import HTTPException
+
+# to get respective function parameter for time_grain api call
+period_dict = {
+    'year': 'YEAR',
+    'month': 'MONTH',
+    'quarter': 'QUARTER',
+    'dayofweek': 'DAYOFWEEK',
+    'day': 'DAY'
+}
+
+
 def build_select_clause(req: list, select_dim_list: list) -> str:
     SELECT = ""  # holds final select clause string
     _select = []  # holds individual select column as list
     select_meas_list = []
+
     # iterating List of Dimension Fields
     for val in req["dims"]:
         # for non Date fields, Keep column as is
@@ -10,74 +23,97 @@ def build_select_clause(req: list, select_dim_list: list) -> str:
             select_dim_list.append(field_string)
         # for date fields, need to Parse as year, month, etc.. to aggreate
         elif val['data_type'] in ('date', 'timestamp'):
-            if val['aggr'] in ('year', 'month', 'quarter', 'dayofweek', 'day'):
-                # four digit year -> 1998
-                if val['aggr'] == 'year':
-                    field_string = f"YEAR({val['table_id']}.{val['field_name']}) AS {val['field_name']}_year"
+            # time grain is needed for date/time formats
+            # even when data_type key is not sent, it comes as {data_type: None}
+            if val['time_grain'] is not None:
+                ## checking ('year', 'month', 'quarter', 'dayofweek', 'day')
+                # year -> 2015
+                if val['time_grain'] == 'year':
+                    field_string = f"YEAR({val['table_id']}.{val['field_name']}) AS {val['field_name']}__year"
                     select_dim_list.append(field_string)
                 # month name -> August
                 # for month, also give month number for column sorting
-                if val['aggr'] == 'month':
-                    field_string1 = f"MONTH({val['table_id']}.{val['field_name']}) AS {val['field_name']}_month_index"
-                    field_string2 = f"MONTHNAME({val['table_id']}.{val['field_name']}) AS {val['field_name']}_month"
+                elif val['time_grain'] == 'month':
+                    field_string1 = f"MONTH({val['table_id']}.{val['field_name']}) AS {val['field_name']}__month_index"
+                    field_string2 = f"MONTHNAME({val['table_id']}.{val['field_name']}) AS {val['field_name']}__month"
                     select_dim_list.append(field_string1)
                     select_dim_list.append(field_string2)
                 # quarter name -> Q3
                 # for quarter, also give quarter number for column sorting
-                elif val['aggr'] == 'quarter':
-                    field_string1 = f"QUARTER({val['table_id']}.{val['field_name']}) AS {val['field_name']}_quarter_index"
-                    field_string2 = f"CONCAT('Q', QUARTER({val['table_id']}.{val['field_name']})) AS {val['field_name']}_quarter"
+                elif val['time_grain'] == 'quarter':
+                    field_string1 = f"QUARTER({val['table_id']}.{val['field_name']}) AS {val['field_name']}__quarter_index"
+                    field_string2 = f"CONCAT('Q', QUARTER({val['table_id']}.{val['field_name']})) AS {val['field_name']}__quarter"
                     select_dim_list.append(field_string1)
                     select_dim_list.append(field_string2)
                 # day Name -> Wednesday
                 # for day of week, also give day of week number for column sorting
-                elif val['aggr'] == 'dayofweek':
-                    field_string1 = f"DAYOFWEEK({val['table_id']}.{val['field_name']}) AS {val['field_name']}_dayofweek_index"
-                    field_string2 = f"DAYNAME({val['table_id']}.{val['field_name']}) AS {val['field_name']}_dayofweek"
+                elif val['time_grain'] == 'dayofweek':
+                    field_string1 = f"DAYOFWEEK({val['table_id']}.{val['field_name']}) AS {val['field_name']}__dayofweek_index"
+                    field_string2 = f"DAYNAME({val['table_id']}.{val['field_name']}) AS {val['field_name']}__dayofweek"
                     select_dim_list.append(field_string1)
                     select_dim_list.append(field_string2)
                 # day of month -> 31
-                elif val['aggr'] == 'day':
-                    field_string = f"DAYOFMONTH({val['table_id']}.{val['field_name']}) AS {val['field_name']}_day"
+                elif val['time_grain'] == 'day':
+                    field_string = f"DAYOFMONTH({val['table_id']}.{val['field_name']}) AS {val['field_name']}__day"
                     select_dim_list.append(field_string)
-
+                else:
+                    raise HTTPException(
+                        status_code=422, detail=f"Time Grain key/value is missing for dimension {val['display_name']}")
     _select.extend(select_dim_list)
+
     # iterating List of Measure Fields
     for val in req["measures"]:
-        # if text or boolean field in measure then just count the field
+        # if text or boolean field in measure then use Text Aggregation Methods like COUNT
         if val['data_type'] in ('text', 'boolean'):
-            field_string = f"COUNT({val['table_id']}.{val['field_name']}) AS {val['field_name']}_count"
+            # checking ('count', 'countnonnull', 'countnull', 'countunique')
+            if val['aggr'] == 'count':
+                field_string = f"COUNT(*) AS {val['field_name']}__count"
+            elif val['aggr'] == 'countnonnull':
+                field_string = f"COUNT({val['table_id']}.{val['field_name']}) AS {val['field_name']}__countnonnull"
+            elif val['aggr'] == 'countunique':
+                field_string = f"COUNT(DISTINCT {val['table_id']}.{val['field_name']}) AS {val['field_name']}__countunique"
+            elif val['aggr'] == 'countnull':
+                field_string = f"SUM(CASE WHEN {val['table_id']}.{val['field_name']} IS NULL THEN 1 ELSE 0 END) AS {val['field_name']}__countnull"
+            else:
+                raise HTTPException(
+                    status_code=422, detail=f"Aggregation is not correct for measure {val['display_name']}")
             select_meas_list.append(field_string)
-        # for date fields, parse to year, month, etc.. and then COUNT the field
-        # FUTURE WORK, add min, max to date fields
+
+        # for date fields, parse to year, month, etc.. and then aggregate the field for Min & Max only
         elif val['data_type'] in ('date', 'timestamp'):
-            if val['aggr'] in ('year', 'month', 'quarter', 'dayofweek', 'day'):
-                # four digit year -> 1998
-                if val['aggr'] == 'year':
-                    field_string = f"YEAR({val['table_id']}.{val['field_name']}) AS {val['field_name']}_year_count"
-                    select_meas_list.append(field_string)
-                # month number -> 12
-                if val['aggr'] == 'month':
-                    field_string = f"MONTH({val['table_id']}.{val['field_name']}) AS {val['field_name']}_month_count"
-                    select_meas_list.append(field_string)
-                # quarter name -> 3
-                elif val['aggr'] == 'quarter':
-                    field_string = f"QUARTER({val['table_id']}.{val['field_name']}) AS {val['field_name']}_quarter_count"
-                    select_meas_list.append(field_string)
-                # day Name -> 7
-                elif val['aggr'] == 'dayofweek':
-                    field_string = f"DAYOFWEEK({val['table_id']}.{val['field_name']}) AS {val['field_name']}_dayofweek_count"
-                    select_meas_list.append(field_string)
-                # day of month -> 31
-                elif val['aggr'] == 'day':
-                    field_string = f"DAYOFMONTH({val['table_id']}.{val['field_name']}) AS {val['field_name']}_day_count"
-                    select_meas_list.append(field_string)
-        # for number fields, do aggregationd
+            # checking ('min', 'max', 'count', 'countnonnull', 'countnull', 'countunique')
+            # checking ('year', 'month', 'quarter', 'dayofweek', 'day')
+            if val['aggr'] in ('min', 'max') and val['time_grain'] in ('year', 'month', 'quarter', 'dayofweek', 'day'):
+                field_string = f"{val['aggr'].upper()}({period_dict[val['time_grain']]}({val['table_id']}.{val['field_name']})) AS {val['field_name']}__{val['time_grain']}_{val['aggr']}"
+            # no time grain for count & it's variants
+            elif val['aggr'] == 'count':
+                field_string = f"COUNT(*) AS {val['field_name']}__count"
+            elif val['aggr'] == 'countnonnull':
+                field_string = f"COUNT({val['table_id']}.{val['field_name']}) AS {val['field_name']}__countnonnull"
+            elif val['aggr'] == 'countunique':
+                field_string = f"COUNT(DISTINCT {val['table_id']}.{val['field_name']}) AS {val['field_name']}__countnonunique"
+            elif val['aggr'] == 'countnull':
+                field_string = f"SUM(CASE WHEN {val['table_id']}.{val['field_name']} IS NULL THEN 1 ELSE 0 END) AS {val['field_name']}__countnull"
+            else:
+                raise HTTPException(
+                    status_code=422, detail=f"Aggregation/Grain is not correct for date/time field {val['display_name']}")
+            select_meas_list.append(field_string)
+
+        # for number fields, do aggregation
         elif val['data_type'] in ('integer', 'decimal'):
-            aggrn = 'sum'
-            if val['aggr'] in ('min', 'max', 'avg'):
-                aggrn = val['aggr']
-            field_string = f"{aggrn.upper()}({val['table_id']}.{val['field_name']}) AS {val['field_name']}_{aggrn}"
+            if val['aggr'] in ('sum', 'avg', 'min', 'max'):
+                field_string = f"{val['aggr'].upper()}({val['table_id']}.{val['field_name']}) AS {val['field_name']}__{val['aggr']}"
+            elif val['aggr'] == 'count':
+                field_string = f"COUNT(*) AS {val['field_name']}__count"
+            elif val['aggr'] == 'countnonnull':
+                field_string = f"COUNT({val['table_id']}.{val['field_name']}) AS {val['field_name']}__countnonnull"
+            elif val['aggr'] == 'countunique':
+                field_string = f"COUNT(DISTINCT {val['table_id']}.{val['field_name']}) AS {val['field_name']}__countnonunique"
+            elif val['aggr'] == 'countnull':
+                field_string = f"SUM(CASE WHEN {val['table_id']}.{val['field_name']} IS NULL THEN 1 ELSE 0 END) AS {val['field_name']}__countnull"
+            else:
+                raise HTTPException(
+                    status_code=422, detail=f"Aggregation is not correct for number field {val['display_name']}")
             select_meas_list.append(field_string)
 
     _select.extend(select_meas_list)

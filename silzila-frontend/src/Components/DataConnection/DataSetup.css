@@ -8,7 +8,6 @@ Data Setup Page
 	height: 100vh;
 	display: flex;
 	padding: 2rem;
-	box-sizing: border-box;
 	overflow: hidden;
 }
 
@@ -25,7 +24,6 @@ Data Setup Page
 	padding: 1rem;
 	border-radius: 0.5rem;
 	background-color: #f0f0f0;
-	box-sizing: border-box;
 	margin-bottom: 2rem;
 	overflow: auto;
 }
@@ -53,7 +51,6 @@ Data Setup Page
 }
 
 .containersHead {
-	box-sizing: border-box;
 	width: 100%;
 	padding-bottom: 1rem;
 	font-weight: 600;
