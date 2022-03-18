@@ -1,10 +1,9 @@
-import { List, MenuItem, Select } from "@mui/material";
+import { MenuItem, Select } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import {
 	setConnectionValue,
 	setDataSchema,
-	setFriendlyName,
 	setUserTable,
 } from "../../redux/Dataset/datasetActions";
 import FetchData from "../../ServerCall/FetchData";
@@ -158,9 +157,6 @@ const Sidebar = ({
 					}}
 					value={selectedConnection}
 				>
-					{/* <option value="" disabled hidden>
-                        {"--Select Connection--"}
-                    </option> */}
 					{connectionList &&
 						connectionList.map((connection, i) => {
 							return (
@@ -175,9 +171,6 @@ const Sidebar = ({
 			<div className="sidebarHeading">Schema</div>
 			<div>
 				<Select className="selectBar" onChange={(e) => getTables(e)} value={selectedSchema}>
-					{/* <option value="" disabled hidden>
-						{"--Select Schema--"}
-					</option> */}
 					{schemaList &&
 						schemaList.map((schema) => {
 							return (
