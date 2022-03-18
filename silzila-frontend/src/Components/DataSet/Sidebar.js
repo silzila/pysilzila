@@ -135,9 +135,9 @@ const Sidebar = ({
 						tbl.dcId === connectionId && tbl.schema === schema && tbl.tableName === el
 				)[0];
 				if (tableAlreadyChecked) {
-					return { tableName: el, isSelected: true };
+					return { tableName: el, isSelected: true, table_uid: schema.concat(el) };
 				}
-				return { tableName: el, isSelected: false };
+				return { tableName: el, isSelected: false, table_uid: schema.concat(el) };
 			});
 
 			setUserTable(userTable);
@@ -182,38 +182,36 @@ const Sidebar = ({
 				</Select>
 			</div>
 
-			<React.Fragment>
-				<div className="sidebarHeading">Tables</div>
-				{tableList.length !== 0 ? (
-					tableList &&
-					tableList.map((tab) => {
-						return (
-							<SelectListItem
-								key={tab.tableName}
-								render={(xprops) => (
-									<div
-										className="tableListStyle"
-										onMouseOver={() => xprops.setOpen(true)}
-										onMouseLeave={() => xprops.setOpen(false)}
-									>
-										<TableList
-											key={tab.tableName}
-											className="tableListElement"
-											table={tab}
-											tableId={tab.tableName}
-											xprops={xprops}
-											connectionId={connectionId}
-											selectedSchema={selectedSchema}
-										/>
-									</div>
-								)}
-							/>
-						);
-					})
-				) : (
-					<div style={{ marginTop: "10px", fontStyle: "italic" }}>No Tables</div>
-				)}
-			</React.Fragment>
+			<div className="sidebarHeading">Tables</div>
+			{tableList.length !== 0 ? (
+				tableList &&
+				tableList.map((tab) => {
+					return (
+						<SelectListItem
+							key={tab.tableName}
+							render={(xprops) => (
+								<div
+									className="tableListStyle"
+									onMouseOver={() => xprops.setOpen(true)}
+									onMouseLeave={() => xprops.setOpen(false)}
+								>
+									<TableList
+										key={tab.tableName}
+										className="tableListElement"
+										table={tab}
+										tableId={tab.tableName}
+										xprops={xprops}
+										connectionId={connectionId}
+										selectedSchema={selectedSchema}
+									/>
+								</div>
+							)}
+						/>
+					);
+				})
+			) : (
+				<div style={{ marginTop: "10px", fontStyle: "italic" }}>No Tables</div>
+			)}
 
 			<ChangeConnection open={openDlg} setOpen={setOpenDlg} setReset={setResetDataset} />
 		</div>

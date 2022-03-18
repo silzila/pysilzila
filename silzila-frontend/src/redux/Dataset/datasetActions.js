@@ -8,6 +8,10 @@ export const setConnectionValue = (pl) => {
 	return { type: "SET_CONNECTION_VALUE", payload: pl };
 };
 
+export const setDsId = (pl) => {
+	return { type: "SET_DS_ID", payload: pl };
+};
+
 export const setDataSchema = (pl) => {
 	return { type: "SET_DATA_SCHEMA", payload: pl };
 };

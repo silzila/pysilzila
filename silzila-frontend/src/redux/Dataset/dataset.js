@@ -1,6 +1,7 @@
 import update from "immutability-helper";
 
 const initialState = {
+	dsId: "",
 	connection: "",
 	schema: "",
 	tables: [],
@@ -15,6 +16,10 @@ const DataSetReducer = (state = initialState, action) => {
 		// sets DC id to state
 		case "SET_CONNECTION_VALUE":
 			return update(state, { connection: { $set: action.payload } });
+
+		// sets DS id to state
+		case "SET_DS_ID":
+			return update(state, { dsId: { $set: action.payload } });
 
 		// sets Friendly name to state
 		case "SET_FRIENDLY_NAME":
@@ -31,13 +36,13 @@ const DataSetReducer = (state = initialState, action) => {
 		// When a table in sidebar is checked / unchecked, update state accordingly
 		case "ON_CHECKED":
 			const x = state.tables.map((tab) => {
-				if (tab.tableName === action.payload) {
+				if (tab.table_uid === action.payload) {
 					if (tab.isSelected === true) {
 						var yes = window.confirm("are you sure you want to remove this table");
 						if (yes) {
 							tab.isSelected = !tab.isSelected;
 							state.tempTable.map((el) => {
-								if (el.tableName === tab.tableName) {
+								if (el.table_uid === tab.table_uid) {
 									el.isSelected = false;
 								}
 							});
@@ -62,10 +67,10 @@ const DataSetReducer = (state = initialState, action) => {
 		// Remove all arrows belonging to a particular table (whether the arrow starts or ends in this table)
 		case "REMOVE_ARROWS":
 			const y = state.arrows.filter((arr) => {
-				return arr.startTableName !== action.payload;
+				return arr.table1_Uid !== action.payload;
 			});
 			const z = y.filter((arr) => {
-				return arr.endTableName !== action.payload;
+				return arr.table2_Uid !== action.payload;
 			});
 			return update(state, { arrows: { $set: [...z] } });
 
