@@ -115,11 +115,11 @@ def build_select_clause(req: list, select_dim_list: list, group_by_dim_list: lis
             if val['aggr'] == 'count':
                 field_string = f"COUNT(*) AS {val['field_name']}__count"
             elif val['aggr'] == 'countnn':
-                field_string = f"COUNT({val['table_id']}.{val['field_name']}) AS {val['field_name']}__countn"
+                field_string = f"COUNT({val['table_id']}.{val['field_name']}) AS {val['field_name']}__countnn"
             elif val['aggr'] == 'countu':
                 field_string = f"COUNT(DISTINCT {val['table_id']}.{val['field_name']}) AS {val['field_name']}__countu"
             elif val['aggr'] == 'countn':
-                field_string = f"SUM(CASE WHEN {val['table_id']}.{val['field_name']} IS NULL THEN 1 ELSE 0 END) AS {val['field_name']}__countnull"
+                field_string = f"SUM(CASE WHEN {val['table_id']}.{val['field_name']} IS NULL THEN 1 ELSE 0 END) AS {val['field_name']}__countn"
             else:
                 raise HTTPException(
                     status_code=422, detail=f"Aggregation is not correct for measure {val['display_name']}")
@@ -134,15 +134,19 @@ def build_select_clause(req: list, select_dim_list: list, group_by_dim_list: lis
             elif val['aggr'] in ('min', 'max') and val['time_grain'] == 'date':
                 field_string = f"{val['aggr'].upper()}(CONVERT(DATE, {val['table_id']}.{val['field_name']})) AS {val['field_name']}__{val['time_grain']}_{val['aggr']}"
 
+            # countu is a special case & we can use time grain
+            elif val['aggr'] == 'countu' and val['time_grain'] in ('year', 'quarter', 'month', 'dayofmonth', 'dayofweek'):
+                field_string = f"COUNT(DISTINCT(DATEPART({period_dict[val['time_grain']]}, {val['table_id']}.{val['field_name']}))) AS {val['field_name']}__{val['time_grain']}_{val['aggr']}"
+            elif val['aggr'] == 'countu' and val['time_grain'] == 'date':
+                field_string = f"COUNT(DISTINCT(CONVERT(DATE, {val['table_id']}.{val['field_name']}))) AS {val['field_name']}__{val['time_grain']}_{val['aggr']}"
+
             # no time grain for count & it's variants
             elif val['aggr'] == 'count':
-                field_string = f"COUNT(*) AS {val['field_name']}__count"
+                field_string = f"COUNT(*) AS {val['field_name']}__{val['time_grain']}_count"
             elif val['aggr'] == 'countnn':
-                field_string = f"COUNT({val['table_id']}.{val['field_name']}) AS {val['field_name']}__countn"
-            elif val['aggr'] == 'countu':
-                field_string = f"COUNT(DISTINCT {val['table_id']}.{val['field_name']}) AS {val['field_name']}__countnonunique"
+                field_string = f"COUNT({val['table_id']}.{val['field_name']}) AS {val['field_name']}__{val['time_grain']}_countnn"
             elif val['aggr'] == 'countn':
-                field_string = f"SUM(CASE WHEN {val['table_id']}.{val['field_name']} IS NULL THEN 1 ELSE 0 END) AS {val['field_name']}__countnull"
+                field_string = f"SUM(CASE WHEN {val['table_id']}.{val['field_name']} IS NULL THEN 1 ELSE 0 END) AS {val['field_name']}__{val['time_grain']}_countn"
             else:
                 raise HTTPException(
                     status_code=422, detail=f"Aggregation/Grain is not correct for date/time field {val['display_name']}")
@@ -155,11 +159,11 @@ def build_select_clause(req: list, select_dim_list: list, group_by_dim_list: lis
             elif val['aggr'] == 'count':
                 field_string = f"COUNT(*) AS {val['field_name']}__count"
             elif val['aggr'] == 'countnn':
-                field_string = f"COUNT({val['table_id']}.{val['field_name']}) AS {val['field_name']}__countn"
+                field_string = f"COUNT({val['table_id']}.{val['field_name']}) AS {val['field_name']}__countnn"
             elif val['aggr'] == 'countu':
-                field_string = f"COUNT(DISTINCT {val['table_id']}.{val['field_name']}) AS {val['field_name']}__countnonunique"
+                field_string = f"COUNT(DISTINCT {val['table_id']}.{val['field_name']}) AS {val['field_name']}__countu"
             elif val['aggr'] == 'countn':
-                field_string = f"SUM(CASE WHEN {val['table_id']}.{val['field_name']} IS NULL THEN 1 ELSE 0 END) AS {val['field_name']}__countnull"
+                field_string = f"SUM(CASE WHEN {val['table_id']}.{val['field_name']} IS NULL THEN 1 ELSE 0 END) AS {val['field_name']}__countn"
             else:
                 raise HTTPException(
                     status_code=422, detail=f"Aggregation is not correct for number field {val['display_name']}")
