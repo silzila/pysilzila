@@ -26,7 +26,8 @@ async def compose_query(req: schema.Query, dc_uid: str, ds_uid: str, vendor_name
         SELECT = select_postgres.build_select_clause(
             req, select_dim_list, group_by_dim_list, order_by_dim_list)
     elif vendor_name == 'mysql':
-        SELECT = select_mysql.build_select_clause(req, select_dim_list)
+        SELECT = select_mysql.build_select_clause(
+            req, select_dim_list, group_by_dim_list, order_by_dim_list)
     elif vendor_name == 'mssql':
         SELECT = select_mssql.build_select_clause(
             req, select_dim_list, group_by_dim_list)

@@ -18,8 +18,6 @@ def build_select_clause(req: list, select_dim_list: list, group_by_dim_list: lis
     ############## iterating List of Dimension Fields #########
     ###########################################################
     for val in req["dims"]:
-        # ======== first construct the column name or expression
-
         # for non Date fields, Keep column as is
         if val['data_type'] in ('text', 'boolean', 'integer', 'decimal'):
             field_string = f"{val['table_id']}.{val['field_name']}"
