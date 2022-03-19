@@ -1,0 +1,85 @@
+.axisField {
+	width: 90%;
+	margin: 4px 5%;
+	align-content: center;
+	font-size: 12px;
+	text-align: start;
+	display: flex;
+	cursor: move;
+	border-radius: 4px;
+	background-color: white;
+	border: 1px solid rgb(211, 211, 211);
+	color: rgb(51, 51, 51);
+}
+.axisField:hover {
+	border: 1px solid rgb(0, 123, 255);
+	color: rgb(0, 123, 255);
+	/* font-weight: 600; */
+}
+
+.buttonCommon {
+	font-size: 13px;
+	padding: 5px 3px;
+	margin: 0;
+	border: none;
+}
+
+.columnClose {
+	color: #999999;
+	background-color: #f4f4f4;
+	border-radius: 4px 0 0 4px;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+/* TODO: Priotity 10 - Remove Icons margin
+	When using MUI icons with onClick operations, a margin / padding from  its surrounding div 
+	makes onClick restricted to small area. Remove the padding of parent div and style the MUI
+	icon itself directly */
+
+.columnClose:hover {
+	color: red;
+	background-color: lightgray;
+}
+
+.columnDown {
+	color: #999999;
+	background-color: #f4f4f4;
+	border-radius: 0 4px 4px 0;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.columnDown:hover {
+	color: rgb(97, 97, 97);
+	background-color: lightgray;
+}
+
+.columnName {
+	flex: 1;
+	font-size: 13px;
+	padding: 5px 2px;
+	margin: 0;
+	margin-right: 5px;
+	border: none;
+	font-weight: 600;
+
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.columnPrefix {
+	font-style: italic;
+	color: #cc6d00;
+	padding: 5px 1px;
+	white-space: nowrap;
+
+	max-width: 30%;
+
+	overflow: hidden;
+	text-overflow: ellipsis;
+	text-align: right;
+}
