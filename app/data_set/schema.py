@@ -78,7 +78,7 @@ class Measure(BaseModel):
     data_type: Literal['text', 'integer',
                        'decimal', 'boolean', 'date', 'timestamp']
     aggr: Literal['sum', 'avg', 'min', 'max', 'count',
-                  'countnonnull', 'countnull', 'countunique']
+                  'countnn', 'countn', 'countu']
     time_grain: Optional[Literal['year', 'quarter',
                                  'month', 'date', 'dayofweek', 'dayofmonth']]
     expr: Optional[str]

@@ -110,14 +110,14 @@ def build_select_clause(req: list, select_dim_list: list, group_by_dim_list: lis
     for val in req["measures"]:
         # if text or boolean field in measure then use Text Aggregation Methods like COUNT
         if val['data_type'] in ('text', 'boolean'):
-            # checking ('count', 'countnonnull', 'countnull', 'countunique')
+            # checking ('count', 'countnn', 'countn', 'countu')
             if val['aggr'] == 'count':
                 field_string = f"COUNT(*) AS {val['field_name']}__count"
-            elif val['aggr'] == 'countnonnull':
-                field_string = f"COUNT({val['table_id']}.{val['field_name']}) AS {val['field_name']}__countnonnull"
-            elif val['aggr'] == 'countunique':
-                field_string = f"COUNT(DISTINCT {val['table_id']}.{val['field_name']}) AS {val['field_name']}__countunique"
-            elif val['aggr'] == 'countnull':
+            elif val['aggr'] == 'countnn':
+                field_string = f"COUNT({val['table_id']}.{val['field_name']}) AS {val['field_name']}__countn"
+            elif val['aggr'] == 'countu':
+                field_string = f"COUNT(DISTINCT {val['table_id']}.{val['field_name']}) AS {val['field_name']}__countu"
+            elif val['aggr'] == 'countn':
                 field_string = f"SUM(CASE WHEN {val['table_id']}.{val['field_name']} IS NULL THEN 1 ELSE 0 END) AS {val['field_name']}__countnull"
             else:
                 raise HTTPException(
@@ -126,7 +126,7 @@ def build_select_clause(req: list, select_dim_list: list, group_by_dim_list: lis
 
         # for date fields, parse to year, month, etc.. and then aggregate the field for Min & Max only
         elif val['data_type'] in ('date', 'timestamp'):
-            ## checking ('min', 'max', 'count', 'countnonnull', 'countnull', 'countunique')
+            ## checking ('min', 'max', 'count', 'countnn', 'countn', 'countu')
             # checking ('year', 'quarter', 'month', 'yearmonth', 'yearquarter', 'dayofmonth')
             if val['aggr'] in ('min', 'max') and val['time_grain'] in ('year', 'quarter', 'month', 'dayofmonth'):
                 field_string = f"{val['aggr'].upper()}(EXTRACT({period_dict[val['time_grain']]} FROM {val['table_id']}.{val['field_name']})::INTEGER) AS {val['field_name']}__{val['time_grain']}_{val['aggr']}"
@@ -141,11 +141,11 @@ def build_select_clause(req: list, select_dim_list: list, group_by_dim_list: lis
             # no time grain for count & it's variants
             elif val['aggr'] == 'count':
                 field_string = f"COUNT(*) AS {val['field_name']}__count"
-            elif val['aggr'] == 'countnonnull':
-                field_string = f"COUNT({val['table_id']}.{val['field_name']}) AS {val['field_name']}__countnonnull"
-            elif val['aggr'] == 'countunique':
+            elif val['aggr'] == 'countnn':
+                field_string = f"COUNT({val['table_id']}.{val['field_name']}) AS {val['field_name']}__countn"
+            elif val['aggr'] == 'countu':
                 field_string = f"COUNT(DISTINCT {val['table_id']}.{val['field_name']}) AS {val['field_name']}__countnonunique"
-            elif val['aggr'] == 'countnull':
+            elif val['aggr'] == 'countn':
                 field_string = f"SUM(CASE WHEN {val['table_id']}.{val['field_name']} IS NULL THEN 1 ELSE 0 END) AS {val['field_name']}__countnull"
             else:
                 raise HTTPException(
@@ -158,11 +158,11 @@ def build_select_clause(req: list, select_dim_list: list, group_by_dim_list: lis
                 field_string = f"{val['aggr'].upper()}({val['table_id']}.{val['field_name']}) AS {val['field_name']}__{val['aggr']}"
             elif val['aggr'] == 'count':
                 field_string = f"COUNT(*) AS {val['field_name']}__count"
-            elif val['aggr'] == 'countnonnull':
-                field_string = f"COUNT({val['table_id']}.{val['field_name']}) AS {val['field_name']}__countnonnull"
-            elif val['aggr'] == 'countunique':
+            elif val['aggr'] == 'countnn':
+                field_string = f"COUNT({val['table_id']}.{val['field_name']}) AS {val['field_name']}__countn"
+            elif val['aggr'] == 'countu':
                 field_string = f"COUNT(DISTINCT {val['table_id']}.{val['field_name']}) AS {val['field_name']}__countnonunique"
-            elif val['aggr'] == 'countnull':
+            elif val['aggr'] == 'countn':
                 field_string = f"SUM(CASE WHEN {val['table_id']}.{val['field_name']} IS NULL THEN 1 ELSE 0 END) AS {val['field_name']}__countnull"
             else:
                 raise HTTPException(
