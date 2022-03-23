@@ -130,3 +130,22 @@ export const updateChartData = (propKey, chartData) => {
 	};
 };
 
+///////////////////////////////////////////// functions added by kasthuri/////////////////////////////////////////////////
+
+export const changeChartType = (propKey, chartType) => {
+	console.log("CHANGE_CHART_TYPE");
+	return {
+		type: "CHANGE_CHART_TYPE",
+		payload: { propKey, chartType },
+	};
+};
+
+export const changeChartTypeAndAxes = ({ propKey, chartType, newAxes }) => {
+	return (dispatch) => {
+		// dispatch(toggleAxesEdited(propKey, true));
+		// set merged Yes
+		// dispatch(changeChartAxes(propKey, newAxes));
+		// set merged No
+		dispatch(changeChartType(propKey, chartType));
+	};
+};

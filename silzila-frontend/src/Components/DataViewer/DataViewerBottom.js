@@ -32,8 +32,10 @@ const DataViewerBottom = ({
 	setTablesForDs,
 	addRecords,
 }) => {
+	//--
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 	var selectedChartProp = chartProps.properties[propKey];
+	//--
 	var tables = tabTileProps?.tablesForSelectedDataSets?.[selectedChartProp?.selectedDs?.ds_uid];
 
 	const [open, setOpen] = useState(false);
@@ -236,7 +238,6 @@ const DataViewerBottom = ({
 				) : null}
 			</div>
 			{loading ? <LoadingPopover /> : null}
-
 		</div>
 	);
 };

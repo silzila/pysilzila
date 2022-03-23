@@ -252,7 +252,7 @@ const Tables = ({
 								tableId={tableId}
 								dragRef={dragRef}
 								onAddingArrow={onAddingArrow}
-								key={item.uid}
+								// key={item.uid}
 							/>
 						);
 					})}

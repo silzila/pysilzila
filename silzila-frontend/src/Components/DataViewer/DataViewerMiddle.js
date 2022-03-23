@@ -1,7 +1,11 @@
+// import BarChart from "../Charts/BarChart";
+// import RoseChart from "../Charts/RoseChart";
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import ChartAxes from "../ChartAxes/ChartAxes";
+import GraphArea from "../GraphArea/GraphArea";
 import "./dataViewerMiddle.css";
+import ChartControls from "../ChartOptions/ChartControls";
 
 const DataViewerMiddle = ({
 	// props
@@ -39,15 +43,32 @@ const DataViewerMiddle = ({
 		<div className="dataViewerMiddle">
 			<ChartAxes tabId={tabId} tileId={tileId} />
 
-			<div className="centerColumn">
-				{chartProp.properties[propKey].chartData
+			{/* <div className="centerColumn"> */}
+			{/* {chartProp.properties[propKey].chartData
 					? JSON.stringify(chartProp.properties[propKey].chartData.result, null, "\t")
-					: "No Data"}
-			</div>
-			{/* <GraphArea /> */}
+					: "No Data"} */}
+			{/* {chartProp.properties[propKey].chartData ? ( */}
+			{/* // <BarChart data={chartProp.properties[propKey].chartData.result} /> */}
+			{/* <RoseChart data={chartProp.properties[propKey].chartData.result} /> */}
+			{/* ) : ( */}
+			{/* "no data" */}
+			{/* )} */}
+			{/* </div> */}
+			<GraphArea tabId={tabId} tileId={tileId} />
 
 			<div className="rightColumn ">
 				<div className="radioButtonsUserMenu">{renderMenu()} </div>
+				{selectedMenu === "Chart Controls" ? (
+					<ChartControls propKey={propKey} />
+				) : (
+					"jknjkj"
+					// <ChartUserFilterContainer
+					// 	propKey={propKey}
+					// 	chartProp={chartProp}
+					// 	fileId={fileId}
+					// 	// userFilterGroup={userFilterGroup}
+					// />
+				)}
 			</div>
 		</div>
 	);

@@ -286,7 +286,13 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 					},
 				},
 			});
-
+		//////////////////////////////////////////////////////////////////////////////
+		case "CHANGE_CHART_TYPE":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: { chartType: { $set: action.payload.chartType } },
+				},
+			});
 		default:
 			return state;
 	}
