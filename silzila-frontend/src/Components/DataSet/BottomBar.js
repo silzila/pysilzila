@@ -197,17 +197,19 @@ const BottomBar = ({
 
 	return (
 		<div className="bottomBar">
-			<TextField
-				size="small"
-				label="Dataset Name"
-				value={fname}
-				onChange={(e) => setFname(e.target.value)}
-				variant="outlined"
-			/>
+			<Button variant="contained" onClick={onCancelOnDataset} id="cancelButton">
+				cancel
+			</Button>
+
 			<div>
-				<Button variant="contained" onClick={onCancelOnDataset} id="cancelButton">
-					cancel
-				</Button>
+				<TextField
+					size="small"
+					label="Dataset Name"
+					value={fname}
+					onChange={(e) => setFname(e.target.value)}
+					variant="outlined"
+					sx={{ marginRight: "3rem" }}
+				/>
 
 				<Button variant="contained" onClick={onSendData} id="setButton">
 					{sendOrUpdate}
