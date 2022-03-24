@@ -111,13 +111,13 @@ const DataSetReducer = (state = initialState, action) => {
 			return update(state, { relationships: { $set: rels } });
 
 		case "UPDATE_RELATIONSHIP":
-			var index = state.relationships.findIndex(
+			var index2 = state.relationships.findIndex(
 				(rel) => rel.relationId === action.payload.relationId
 			);
 
 			var oldRelationsArray = state.relationships.slice();
 			console.log(JSON.stringify(oldRelationsArray, null, 4));
-			var newRelation = oldRelationsArray.splice(index, 1);
+			oldRelationsArray.splice(index2, 1);
 			oldRelationsArray.push(action.payload.relation);
 			console.log(JSON.stringify(oldRelationsArray, null, 4));
 

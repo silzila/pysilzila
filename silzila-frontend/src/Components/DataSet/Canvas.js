@@ -2,12 +2,6 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import "./Dataset.css";
 import Xarrow, { Xwrapper } from "react-xarrows";
-import {
-	addArrows,
-	clickOnArrow,
-	resetState,
-	setArrowType,
-} from "../../redux/Dataset/datasetActions";
 import CanvasTables from "./CanvasTables";
 import RelationshipDefiningComponent from "./RelationshipDefiningComponent";
 import BottomBar from "./BottomBar";
