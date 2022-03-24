@@ -3,7 +3,12 @@ import { Checkbox, Tooltip } from "@mui/material";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import FetchData from "../../ServerCall/FetchData";
 import { connect } from "react-redux";
-import { addTable, removeArrows, toggleOnChecked } from "../../redux/Dataset/datasetActions";
+import {
+	addTable,
+	removeArrows,
+	removeRelationshipFromTableList,
+	toggleOnChecked,
+} from "../../redux/Dataset/datasetActions";
 import TableData from "./TableData";
 
 const TableList = (props) => {
@@ -25,7 +30,7 @@ const TableList = (props) => {
 				if (el.tableName === tableName && el.isSelected === true) {
 					const arrayWithUid = result.data.map((data) => {
 						return {
-							uid: tableName.concat(data.column_name).concat(props.schema),
+							uid: props.schema.concat(tableName).concat(data.column_name),
 							...data,
 						};
 					});
@@ -57,6 +62,7 @@ const TableList = (props) => {
 				props.tempTable.map((el) => {
 					if (el.table_uid === tableUid) {
 						props.removeArrows(tableUid);
+						props.removeRelationship(tableUid);
 					}
 				});
 			}
@@ -147,6 +153,7 @@ const mapDispatchToProps = (dispatch) => {
 		onChecked: (data) => dispatch(toggleOnChecked(data)),
 		addTable: (payload) => dispatch(addTable(payload)),
 		removeArrows: (pl) => dispatch(removeArrows(pl)),
+		removeRelationship: (pl) => dispatch(removeRelationshipFromTableList(pl)),
 	};
 };
 

@@ -67,23 +67,79 @@ const DataSetReducer = (state = initialState, action) => {
 		// Remove all arrows belonging to a particular table (whether the arrow starts or ends in this table)
 		case "REMOVE_ARROWS":
 			const y = state.arrows.filter((arr) => {
-				return arr.table1_Uid !== action.payload;
+				return arr.table1_uid !== action.payload;
 			});
 			const z = y.filter((arr) => {
-				return arr.table2_Uid !== action.payload;
+				return arr.table2_uid !== action.payload;
 			});
 			return update(state, { arrows: { $set: [...z] } });
+
+		case "REMOVE_ARROWS_FROM_DEL_REL":
+			const arr = state.arrows.filter((arr) => {
+				return arr.relationId !== action.payload;
+			});
+			return update(state, { arrows: { $set: arr } });
+
+		case "REMOVE_INDI_ARROW_FROM_REL_POPOVER":
+			var index = state.arrows.findIndex(
+				(arr) => arr.start === action.payload.start && arr.end === action.payload.end
+			);
+
+			return update(state, { arrows: { $splice: [[index, 1]] } });
 
 		// bring to Initial state. Used when dataconnection is changed from sidebar
 		case "RESET_STATE":
 			return initialState;
 
 		//
-		case "ADD_OBJ_IN_TABLE_COLUMN":
-			return update(state, { relationships: { $set: [...action.payload] } });
-
 		case "ADD_NEW_RELATIONSHIP":
 			return update(state, { relationships: { $push: [action.payload] } });
+
+		case "DELETE_RELATIONSHIP_FROM_TABLELIST":
+			const y1 = state.relationships.filter((rel) => {
+				return rel.table1_uid !== action.payload;
+			});
+			const z1 = y1.filter((rel) => {
+				return rel.table2_uid !== action.payload;
+			});
+			console.log(z1);
+			return update(state, { relationships: { $set: z1 } });
+
+		case "DELETE_RELATIONSHIP_FROM_CANVAS":
+			const rels = state.relationships.filter((rel) => rel.relationId !== action.payload);
+			console.log(rels);
+			return update(state, { relationships: { $set: rels } });
+
+		case "UPDATE_RELATIONSHIP":
+			var index = state.relationships.findIndex(
+				(rel) => rel.relationId === action.payload.relationId
+			);
+
+			var oldRelationsArray = state.relationships.slice();
+			console.log(JSON.stringify(oldRelationsArray, null, 4));
+			var newRelation = oldRelationsArray.splice(index, 1);
+			oldRelationsArray.push(action.payload.relation);
+			console.log(JSON.stringify(oldRelationsArray, null, 4));
+
+			var oldArrows = state.arrows.slice();
+			var relArrows = oldArrows.filter((arr) => arr.relationId === action.payload.relationId);
+			console.log(JSON.stringify(oldArrows, null, 4));
+			console.log(JSON.stringify(relArrows, null, 4));
+
+			relArrows.forEach((arr) => {
+				arr.integrity = action.payload.relation.integrity;
+				arr.cardinality = action.payload.relation.cardinality;
+				arr.showHead = action.payload.relation.showHead;
+				arr.showTail = action.payload.relation.showTail;
+			});
+			console.log(JSON.stringify(relArrows, null, 4));
+
+			oldArrows.push(relArrows);
+
+			return update(state, {
+				relationships: { $set: oldRelationsArray },
+				arrows: { $set: relArrows },
+			});
 
 		// Adding information required to draw an arrow
 		case "ADD_ARROWS":

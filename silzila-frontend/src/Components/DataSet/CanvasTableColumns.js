@@ -1,28 +1,22 @@
-import { Abc, AccessTime, CalendarToday, PriorityHigh, TagTwoTone } from "@mui/icons-material";
 import React, { useRef, useState } from "react";
-import { connect } from "react-redux";
-import { addArrows } from "../../redux/Dataset/datasetActions";
-import { NotificationDialog } from "../CommonFunctions/DialogComponents";
 import ConnectPointsWrapper from "./ConnectPointsWrapper";
+import { Abc, AccessTime, CalendarToday, PriorityHigh, TagTwoTone } from "@mui/icons-material";
+import { NotificationDialog } from "../CommonFunctions/DialogComponents";
 
 const CanvasTableColumns = ({
 	// props
-	itemId,
-	tableName,
-	index,
+	dragRef,
 	columnName,
 	itemType,
-	handler,
-	dragRef,
-	onAddingArrow,
-
-	// state
-	tempTable,
-
-	// dispatch
-	addArrows,
+	itemId,
+	tableName,
+	table_uid,
+	index,
+	schema,
+	checkRelationExists,
 }) => {
 	const boxRef = useRef();
+
 	const [openAlert, setOpenAlert] = useState(false);
 	const [severity, setseverity] = useState("success");
 	const [testMessage, setTestMessage] = useState("");
@@ -49,73 +43,80 @@ const CanvasTableColumns = ({
 		}
 	};
 
+	const arrowDropped = (e) => {
+		// TODO: Priority 5 - Check table arrow loop
+		// Make sure the tables in a new connection doesn't already have a link between them
+		// Eg., 			A -> B -> C
+		// 					A -> D
+		// A new connection between B & D  or C & D shouldn't happen
+
+		// Check if both column types (Arrow start and end column) are of same dataType
+
+		if (
+			e.dataTransfer.getData("connectItemId") === itemId ||
+			e.dataTransfer.getData("connectTableName") === tableName
+		) {
+			console.log("same table names");
+			if (e.dataTransfer.getData("schema") !== schema) {
+				console.log("same table Diff schema, new rel");
+				setupForRelation(e);
+			}
+		} else {
+			setupForRelation(e);
+		}
+	};
+
+	const setupForRelation = (e) => {
+		if (e.dataTransfer.getData("connectItemType") !== itemType) {
+			setOpenAlert(true);
+			setseverity("warning");
+			setTestMessage("Relationship can only build with same data types");
+			setTimeout(() => {
+				setOpenAlert(false);
+				setTestMessage("");
+			}, 4000);
+		} else {
+			// setShowCard(true);
+			const refs = {
+				isSelected: true,
+
+				startTableName: e.dataTransfer.getData("connectTableName"),
+				startColumnName: e.dataTransfer.getData("connectColumnName"),
+				start: e.dataTransfer.getData("connectItemId"),
+				table1_uid: e.dataTransfer.getData("connecttableUid"),
+				startSchema: e.dataTransfer.getData("schema"),
+
+				endTableName: tableName,
+				endColumnName: columnName,
+				end: itemId,
+				table2_uid: table_uid,
+				endSchema: schema,
+			};
+			checkRelationExists(refs);
+		}
+	};
+
 	return (
 		<div id={itemId} ref={boxRef}>
 			<div
 				className="columnBox"
 				id={itemId}
 				onDragOver={(e) => e.preventDefault()}
-				onDrop={(e) => {
-					// TODO: Priority 5 - Check table arrow loop
-					// Make sure the tables in a new connection doesn't already have a link between them
-					// Eg., 			A -> B -> C
-					// 					A -> D
-					// A new connection between B & D  or C & D shouldn't happen
-
-					// Check if both column types (Arrow start and end column) are of same dataType
-					if (
-						e.dataTransfer.getData("connectItemId") === itemId ||
-						e.dataTransfer.getData("connectTableName") === tableName
-					) {
-						// console.log(e.dataTransfer.getData("connectItemId"));
-					} else {
-						// Check if relationship popover should open
-						// Need to open only when there is no relationship defined between these tables
-
-						if (e.dataTransfer.getData("connectItemType") !== itemType) {
-							setOpenAlert(true);
-							setseverity("warning");
-							setTestMessage("Relationship can only build with same data types");
-							setTimeout(() => {
-								setOpenAlert(false);
-								setTestMessage("");
-							}, 4000);
-						} else {
-							// setShowCard(true);
-							const refs = {
-								isSelected: true,
-								startTableName: e.dataTransfer.getData("connectTableName"),
-								startColumnIndex: e.dataTransfer.getData("connectIndex"),
-								start: e.dataTransfer.getData("connectItemId"),
-								endTableName: tableName,
-								endColumnIndex: index,
-								end: itemId,
-								integrity: "full",
-								startColumnName: e.dataTransfer.getData("connectColumnName"),
-								endColumnName: columnName,
-								showHead: true,
-								showTail: false,
-								//newly added
-								cardinality: "one to many",
-							};
-							onAddingArrow(refs);
-						}
-					}
-				}}
+				onDrop={(e) => arrowDropped(e)}
 			>
 				<div className="columnItem">{itemTypeIcon(itemType)}</div>
-				{/* <div class="ellip">{columnName}</div> */}
 				<div style={{ padding: "0 5px" }}>{columnName}</div>
 				<ConnectPointsWrapper
 					{...{
 						itemId,
-						handler,
 						dragRef,
 						boxRef,
 						index,
 						itemType,
 						columnName,
 						tableName,
+						table_uid,
+						schema,
 					}}
 				/>
 			</div>
@@ -132,16 +133,4 @@ const CanvasTableColumns = ({
 	);
 };
 
-const mapStateToProps = (state) => {
-	return {
-		tempTable: state.dataSetState.tempTable,
-	};
-};
-
-const mapDispatchToProps = (dispatch) => {
-	return {
-		addArrows: (arrow) => dispatch(addArrows(arrow)),
-	};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(CanvasTableColumns);
+export default CanvasTableColumns;

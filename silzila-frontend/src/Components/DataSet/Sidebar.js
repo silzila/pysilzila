@@ -39,9 +39,9 @@ const Sidebar = ({
 			setOpenDlg(true);
 		} else {
 			setSelectedConnection(e.target.value);
+			setDataSchema("");
 			getSchemaList(e.target.value);
 			setSelectedSchema("");
-			setDataSchema("");
 		}
 	};
 
@@ -202,7 +202,6 @@ const Sidebar = ({
 										tableId={tab.tableName}
 										xprops={xprops}
 										connectionId={connectionId}
-										selectedSchema={selectedSchema}
 									/>
 								</div>
 							)}
