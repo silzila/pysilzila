@@ -50,9 +50,6 @@ const CanvasTableColumns = ({
 		// 					A -> D
 		// A new connection between B & D  or C & D shouldn't happen
 
-		// TODO: Priority 1 - Check for duplicate arrow
-		// If an arrow is dropped between same two tables and same two columns, It shouldn't add to redux state
-
 		// Check if both column types (Arrow start and end column) are of same dataType
 
 		if (

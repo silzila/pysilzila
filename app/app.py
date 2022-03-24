@@ -6,11 +6,13 @@ from .user.api import router as user_router
 from .data_connection.api import router as dc_router
 from .data_set.api import router as ds_router
 
+
 # ROUTERS
 app = FastAPI()
 app.include_router(user_router)
 app.include_router(dc_router)
 app.include_router(ds_router)
+
 
 origins = [
     "http://silzila.org",
@@ -20,6 +22,8 @@ origins = [
     "http://localhost:3001",
     "http://localhost:3002",
     "http://localhost:5000",
+    "http://localhost:5001",
+    "http://localhost:5002",
 ]
 
 app.add_middleware(

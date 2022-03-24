@@ -15,6 +15,7 @@ async def compose_query(req: schema.Query, dc_uid: str, ds_uid: str, vendor_name
 
     select_dim_list = []
     group_by_dim_list = []
+    order_by_dim_list = []
     print("===============WHERE =================")
     WHERE = common_where.build_where_clause(req['filters'], vendor_name)
     print(WHERE)
@@ -22,34 +23,47 @@ async def compose_query(req: schema.Query, dc_uid: str, ds_uid: str, vendor_name
     print("===============SELECT =================")
     SELECT = ""
     if vendor_name == 'postgresql':
-        SELECT = select_postgres.build_select_clause(req, select_dim_list)
+        SELECT = select_postgres.build_select_clause(
+            req, select_dim_list, group_by_dim_list, order_by_dim_list)
     elif vendor_name == 'mysql':
-        SELECT = select_mysql.build_select_clause(req, select_dim_list)
+        SELECT = select_mysql.build_select_clause(
+            req, select_dim_list, group_by_dim_list, order_by_dim_list)
     elif vendor_name == 'mssql':
         SELECT = select_mssql.build_select_clause(
-            req, select_dim_list, group_by_dim_list)
+            req, select_dim_list, group_by_dim_list, order_by_dim_list)
     else:
         print("--------------- vendor name is wrong!")
     # print("===============GROUP BY=================")
     '''
     GROUP BY SECTION
     '''
-    _group_by = []
-    for i in range(len(select_dim_list)):
-        if vendor_name == 'mssql':
-            _group_by.append(group_by_dim_list[i])
-            GROUP_BY = "\n\t" + ",\n\t".join(_group_by)
-        else:
-            _group_by.append(str(i+1))
-            GROUP_BY = "\n\t" + ",".join(_group_by)
+    # _group_by = []
+    # for i in range(len(group_by_dim_list)):
+    #     _group_by.append(group_by_dim_list[i])
+    GROUP_BY = "\n\t" + ",\n\t".join(group_by_dim_list)
+    # _group_by = []
+    # for i in range(len(select_dim_list)):
+    #     if vendor_name == 'mssql':
+    #         _group_by.append(group_by_dim_list[i])
+    #         GROUP_BY = "\n\t" + ",\n\t".join(_group_by)
+    #     else:
+    #         _group_by.append(str(i+1))
+    #         GROUP_BY = "\n\t" + ",".join(_group_by)
 
     '''
     ORDER BY SECTION
     '''
-    _order_by = []
-    for i in range(len(select_dim_list)):
-        _order_by.append(str(i+1))
-    ORDER_BY = "\n\t" + ",".join(_order_by)
+    # _order_by = []
+    # for i in range(len(group_by_dim_list)):
+    #     if i >= 1 and group_by_dim_list[i-1][:6] == '__sort':
+    #         pass
+    #     else:
+    #         _order_by.append(group_by_dim_list[i])
+    ORDER_BY = "\n\t" + ",\n\t".join(order_by_dim_list)
+    # _order_by = []
+    # for i in range(len(select_dim_list)):
+    #     _order_by.append(str(i+1))
+    # ORDER_BY = "\n\t" + ",".join(_order_by)
 
     print("\n===============QUERY=========================================")
     if req["dims"]:

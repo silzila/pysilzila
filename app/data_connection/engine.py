@@ -126,7 +126,8 @@ async def is_ds_active(dc_uid: str, ds_uid: str) -> bool:
     if not (db_pool and db_pool.get(dc_uid)):
         raise HTTPException(
             status_code=500, detail="DC is not connected")
-    if db_pool.get(dc_uid).get('data_schema') and db_pool[dc_uid]['data_schema'][ds_uid]:
+    if db_pool.get(dc_uid) and db_pool.get(dc_uid).get('data_schema') and \
+            db_pool.get(dc_uid).get('data_schema').get(ds_uid):
         return True
     else:
         return False

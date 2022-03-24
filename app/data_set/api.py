@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm.session import Session
 from starlette.requests import Request
 
+from app import logger
 from app.query_builder import query_composer_filter
-
 
 from ..database.service import get_db
 from . import model, schema, service
@@ -155,20 +155,20 @@ async def activate_dc_ds(dc_uid: str, ds_uid: str, db: Session) -> str:
 async def query(query: schema.Query, dc_uid: str, ds_uid: str, db: Session = Depends(get_db)):
     # at least one column should be sent in query, else raise error
     if not (query.dims or query.measures):
+        logger.exception("one Dim or one Mesure is needed")
         raise HTTPException(
             status_code=401, detail="At least one dim or measue should be provided")
     vendor_name = await activate_dc_ds(dc_uid, ds_uid, db)
     print("Vendor Name =====", vendor_name)
     qry_composed = await query_composer.compose_query(query, dc_uid, ds_uid, vendor_name)
     print("^^^^^^^^^^^^^^^^ final Query ^^^^^^^^^^\n", qry_composed)
-    # try:
-    qry_result = await engine.run_query(dc_uid, qry_composed)
-    # print("++++++++++++++++ qry result +++++++++++++++++", qry_result)
-    # if qry_result:
-    return {"query": qry_composed, "result": qry_result}
-    # except Exception as error:
-    #     raise HTTPException(
-    #         status_code=401, detail="error")
+    try:
+        qry_result = await engine.run_query(dc_uid, qry_composed)
+        return {"query": qry_composed, "result": qry_result}
+    except Exception as error:
+        logger.exception("Something Wrong in query execution")
+        raise HTTPException(
+            status_code=401, detail="error")
 
 
 @ router.post("/filter-options/{dc_uid}/{ds_uid}")
