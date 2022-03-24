@@ -8,6 +8,10 @@ export const setConnectionValue = (pl) => {
 	return { type: "SET_CONNECTION_VALUE", payload: pl };
 };
 
+export const setDsId = (pl) => {
+	return { type: "SET_DS_ID", payload: pl };
+};
+
 export const setDataSchema = (pl) => {
 	return { type: "SET_DATA_SCHEMA", payload: pl };
 };
@@ -50,24 +54,32 @@ export const resetArrows = () => {
 	return { type: "RESET_ARROWS_ARRAY" };
 };
 
+export const removeArrowsFromcanvas = (payload) => {
+	return { type: "REMOVE_ARROWS_FROM_DEL_REL", payload: payload };
+};
+
+export const removeIndiArrowFromRelPopover = (start, end) => {
+	return { type: "REMOVE_INDI_ARROW_FROM_REL_POPOVER", payload: { start, end } };
+};
+
+export const updateRelationship = (relationId, relation) => {
+	return { type: "UPDATE_RELATIONSHIP", payload: { relationId, relation } };
+};
+
 // ===============================================================
 // Actions from Tables
 // ===============================================================
 
-export const AddItemInTableColumn = (pl) => {
-	const state = useSelector((state) => state);
-	const pld = state.relationships.map((el) => {
-		if (el.table1 === pl.table1 && el.table2 === pl.table2) {
-			el.table1_columns = [...el.table1_columns, ...pl.table1_columns];
-			el.table2_columns = [...el.table2_columns, ...pl.table2_columns];
-			return el;
-		}
-	});
-	return { type: "ADD_OBJ_IN_TABLE_COLUMN", payload: pld };
-};
-
 export const addNewRelationship = (payload) => {
 	return { type: "ADD_NEW_RELATIONSHIP", payload: payload };
+};
+
+export const removeRelationshipFromTableList = (payload) => {
+	return { type: "DELETE_RELATIONSHIP_FROM_TABLELIST", payload: payload };
+};
+
+export const removeRelationshipFromCanvas = (payload) => {
+	return { type: "DELETE_RELATIONSHIP_FROM_CANVAS", payload: payload };
 };
 
 // ===============================================================

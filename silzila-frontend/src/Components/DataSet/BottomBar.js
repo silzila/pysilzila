@@ -1,47 +1,55 @@
-import { Button, TextField } from "@mui/material";
+import { Close } from "@mui/icons-material";
+import { Button, Dialog, TextField } from "@mui/material";
 import React, { useState } from "react";
-import { NotificationDialog } from "../CommonFunctions/DialogComponents";
-import ShortUniqueId from "short-unique-id";
 import { connect } from "react-redux";
+import ShortUniqueId from "short-unique-id";
+import { resetState } from "../../redux/Dataset/datasetActions";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-// TODO: Priority 1 - Reset dataset values
-// Cleanup redux after new dataset is created, or when going back to data home and coming here again
+import { NotificationDialog } from "../CommonFunctions/DialogComponents";
 
 const BottomBar = ({
-	//state
-	schema,
+	// state
 	tempTable,
 	arrows,
-	connection,
-	token,
 	relationships,
+	token,
+	connection,
+	dsId,
+
+	// dispatch
+	resetState,
 }) => {
 	const [fname, setFname] = useState("");
+	const [sendOrUpdate, setSendOrUpdate] = useState("send");
+	const [open, setOpen] = useState(false);
+
 	const [openAlert, setOpenAlert] = useState(false);
 	const [testMessage, setTestMessage] = useState("");
 	const [severity, setSeverity] = useState("success");
+
+	const [editMode, setEditMode] = useState(false);
 	const navigate = useNavigate();
 
-	const tbs = [];
+	const tablesWithoutRelation = [];
 
-	const checkTableRelationShip = (data_schema_tables, tableWithRelation) => {
-		if (data_schema_tables.length > 1) {
-			data_schema_tables.map((el) => {
-				if (tableWithRelation.includes(el.table_name)) {
+	const checkTableRelationShip = (tablesSelectedInSidebar, tablesWithRelation) => {
+		if (tablesSelectedInSidebar.length > 1) {
+			tablesSelectedInSidebar.map((el) => {
+				if (tablesWithRelation.includes(el.table_name)) {
+					console.log("----");
 				} else {
-					tbs.push(el.table_name);
+					tablesWithoutRelation.push(el.table_name);
 				}
 			});
 		}
-		if (tbs.length !== 0) {
+		if (tablesWithoutRelation.length !== 0) {
 			setSeverity("error");
 			setOpenAlert(true);
 			setTestMessage(
 				"Error: Every table should have atleast one relationship.\n" +
-					"tables with no Relationship\t" +
-					tbs.map((el) => el)
+					"tables with no Relationship\n" +
+					tablesWithoutRelation.map((el) => el)
 			);
 			setTimeout(() => {
 				setOpenAlert(false);
@@ -49,20 +57,53 @@ const BottomBar = ({
 			}, 4000);
 		}
 
-		// TODO: Priority 2 - Tables array should also include friendlyTableName / alias
-		//
-		// 	Eg.,	{
-		// 				table_name: "category",
-		// 				schema_name: "pos",
-		// 				id: "sLBuiJCY",
-		// 				alias: "My Category",
-		// 			};
+		var relationshipServerObj = [];
+		if (
+			tablesWithoutRelation.length === 0 ||
+			(tablesSelectedInSidebar.length === 1 && relationships.length === 0)
+		) {
+			relationships.forEach((relation) => {
+				var relationObj = {
+					table1: relation.startTableName,
+					table2: relation.endTableName,
+					cardinality: relation.cardinality,
+					ref_integrity: relation.integrity,
+					table1_columns: [],
+					table2_columns: [],
+				};
 
-		if (tbs.length === 0 || (data_schema_tables.length === 1 && relationships.length === 0)) {
-			// TODO: Priority 5 - Change the below method to use FetchData function like other API calls
+				var arrowsForRelation = [];
+				arrowsForRelation = arrows.filter((arr) => arr.relationId === relation.relationId);
+				console.log(arrowsForRelation);
+				var tbl1 = [];
+				var tbl2 = [];
+				arrowsForRelation.forEach((arr) => {
+					tbl1.push(arr.startColumnName);
+					tbl2.push(arr.endColumnName);
+				});
+
+				console.log(tbl1, tbl2);
+				relationObj.table1_columns = tbl1;
+				relationObj.table2_columns = tbl2;
+
+				console.log(relationObj);
+				relationshipServerObj.push(relationObj);
+			});
+
+			console.log(relationshipServerObj);
+
+			var meth;
+			var apiurl;
+			if (editMode) {
+				meth = "PUT";
+				apiurl = "https://silzila.org/api/ds/update-ds/" + dsId;
+			} else {
+				meth = "POST";
+				apiurl = "https://silzila.org/api/ds/create-ds";
+			}
 			const options = {
-				method: "POST",
-				url: "https://silzila.org/api/ds/create-ds",
+				method: meth,
+				url: apiurl,
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
@@ -71,14 +112,16 @@ const BottomBar = ({
 					dc_uid: connection,
 					friendly_name: fname,
 					data_schema: {
-						tables: [...data_schema_tables],
-						relationships: [...relationships],
+						tables: [...tablesSelectedInSidebar],
+						relationships: relationshipServerObj,
 					},
 				},
 			};
+			console.log(options.data);
 			axios
 				.request(options)
 				.then(function (response) {
+					console.log(response.data);
 					setSeverity("success");
 					setOpenAlert(true);
 					setTestMessage("Saved Successfully!");
@@ -99,13 +142,14 @@ const BottomBar = ({
 					}, 4000);
 				});
 		}
-		if (data_schema_tables.length > 1 && relationships.length === 0) {
+
+		if (tablesSelectedInSidebar.length > 1 && relationships.length === 0) {
 			setSeverity("error");
 			setOpenAlert(true);
 			setTestMessage(
 				"Error: Every table should have atleast one relationship.\n" +
 					"tables with no Relationship\t" +
-					tbs.map((el) => el)
+					tablesWithoutRelation.map((el) => el)
 			);
 			setTimeout(() => {
 				setOpenAlert(false);
@@ -117,7 +161,7 @@ const BottomBar = ({
 	const onSendData = () => {
 		if (fname !== "") {
 			const uid = new ShortUniqueId({ length: 8 });
-			const data_schema_tables = tempTable.map((el) => {
+			const tablesSelectedInSidebar = tempTable.map((el) => {
 				return {
 					table_name: el.tableName,
 					schema_name: el.schema,
@@ -125,18 +169,21 @@ const BottomBar = ({
 					alias: el.alias,
 				};
 			});
+			console.log(tablesSelectedInSidebar);
 			const temp1 = [];
 			const temp2 = [];
 			arrows.forEach((el) => {
 				temp1.push(el.startTableName);
 				temp2.push(el.endTableName);
 			});
-			const tableWithRelation = [...temp1, ...temp2];
-			checkTableRelationShip(data_schema_tables, tableWithRelation);
+			const tablesWithRelation = [...temp1, ...temp2];
+
+			console.log(tablesSelectedInSidebar, tablesWithRelation);
+			checkTableRelationShip(tablesSelectedInSidebar, tablesWithRelation);
 		} else {
 			setSeverity("error");
 			setOpenAlert(true);
-			setTestMessage("Please Enter Friendly Name");
+			setTestMessage("Please Enter A Dataset Name");
 			setTimeout(() => {
 				setOpenAlert(false);
 				setTestMessage("");
@@ -144,13 +191,31 @@ const BottomBar = ({
 		}
 	};
 
+	const onCancelOnDataset = () => {
+		setOpen(true);
+	};
+
 	return (
 		<div className="bottomBar">
-			<label>Friendly name</label>
-			<TextField onChange={(e) => setFname(e.target.value)} variant="outlined" />
-			<Button variant="contained" onClick={onSendData}>
-				Send
+			<Button variant="contained" onClick={onCancelOnDataset} id="cancelButton">
+				cancel
 			</Button>
+
+			<div>
+				<TextField
+					size="small"
+					label="Dataset Name"
+					value={fname}
+					onChange={(e) => setFname(e.target.value)}
+					variant="outlined"
+					sx={{ marginRight: "3rem" }}
+				/>
+
+				<Button variant="contained" onClick={onSendData} id="setButton">
+					{sendOrUpdate}
+				</Button>
+			</div>
+
 			<NotificationDialog
 				onCloseAlert={() => {
 					setOpenAlert(false);
@@ -160,26 +225,65 @@ const BottomBar = ({
 				testMessage={testMessage}
 				openAlert={openAlert}
 			/>
+
+			<Dialog open={open}>
+				<div
+					style={{
+						display: "flex",
+						flexDirection: "column",
+						padding: "5px",
+						width: "350px",
+						height: "auto",
+						justifyContent: "center",
+					}}
+				>
+					<div style={{ fontWeight: "bold", textAlign: "center" }}>
+						CANCEL DATASET CREATION
+						<Close style={{ float: "right" }} onClick={() => setOpen(false)} />
+						<br />
+						<br />
+						<p style={{ fontWeight: "normal" }}>
+							Cancel will reset this dataset creation. Do you want to discard the
+							progress?
+						</p>
+					</div>
+					<div
+						style={{ padding: "15px", justifyContent: "space-around", display: "flex" }}
+					>
+						<Button
+							style={{ backgroundColor: "red" }}
+							variant="contained"
+							onClick={() => {
+								resetState();
+								setOpen(false);
+							}}
+						>
+							Ok
+						</Button>
+					</div>
+				</div>
+			</Dialog>
 		</div>
 	);
 };
+
 const mapStateToProps = (state) => {
 	return {
-		schema: state.dataSetState.schema,
+		token: state.isLogged.accessToken,
+		// schema: state.dataSetState.schema,
 		tempTable: state.dataSetState.tempTable,
 		arrows: state.dataSetState.arrows,
-		connection: state.dataSetState.connection,
-		token: state.isLogged.accessToken,
 		relationships: state.dataSetState.relationships,
+		connection: state.dataSetState.connection,
+		// friendly_name: state.dataSetState.friendly_name,
+		dsId: state.dataSetState.dsId,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		// addArrows: (arrow) => dispatch(addArrows(arrow)),
-		// clickOnArrow: (payload) => dispatch(clickOnArrow(payload)),
-		// setArrowType: (payload) => dispatch(setArrowType(payload)),
-		// resetState: () => dispatch(resetState()),
+		resetState: () => dispatch(resetState()),
 	};
 };
+
 export default connect(mapStateToProps, mapDispatchToProps)(BottomBar);

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 
 import { connect } from "react-redux";
@@ -8,7 +7,6 @@ import Dustbin from "./Dustbin";
 import FetchData from "../../ServerCall/FetchData";
 import { updateChartData } from "../../redux/ChartProperties/actionsChartProps";
 import LoadingPopover from "../CommonFunctions/PopOverComponents/LoadingPopover";
-
 
 const ChartAxes = ({
 	// props
@@ -23,7 +21,6 @@ const ChartAxes = ({
 	updateChartData,
 }) => {
 	const [loading, setLoading] = useState(false);
-
 
 	var propKey = `${tabId}.${tileId}`;
 	var dropZones = [];
@@ -119,7 +116,7 @@ const ChartAxes = ({
 
 		formattedAxes.fields = [];
 
-		// TODO Priority 5 - Integrate Filters
+		// TODO: Priority 5 - Integrate Filters
 		// Right now no filter is passed to server. Discuss with balu and pass filters
 		formattedAxes.filters = [];
 
@@ -168,7 +165,6 @@ const mapStateToProps = (state) => {
 		token: state.isLogged.access_token,
 	};
 };
-
 
 const mapDispatchToProps = (dispatch) => {
 	return {
