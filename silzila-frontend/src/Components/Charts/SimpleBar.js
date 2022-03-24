@@ -38,10 +38,12 @@ const BarChart = ({
 		// 	// }
 	}
 
-	for (let i = measuresCount; (i = measuresCount); i++) {
-		ser.push({ type: "bar" });
-	}
-	console.log(ser);
+	// for (let i = measuresCount; (i = measuresCount); i++) {
+	// 	ser.push({ type: "bar" });
+	// }
+	// console.log(ser);
+
+
 	// const dimension = Object.keys(data.result[0]);
 	// // let len = dimension.length - 1;
 	// // console.log(data);

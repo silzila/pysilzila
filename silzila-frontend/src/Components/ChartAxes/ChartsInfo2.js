@@ -122,6 +122,7 @@ const ChartsInfo = {
 		],
 		showSwap: false,
 	},
+	////////////////////////////////////////////////////////
 	scatterPlot: {
 		dropZones: [
 			{ name: "Filter", allowedNumbers: 64, min: 0 },
@@ -137,6 +138,39 @@ const ChartsInfo = {
 		showSwap: false,
 	},
 	bullet: {
+		dropZones: [
+			{ name: "Filter", allowedNumbers: 64 },
+			{ name: "Dimension", allowedNumbers: 1 },
+			{ name: "Measure", allowedNumbers: 4 },
+		],
+		showSwap: false,
+	},
+	////////////////////////////////////////////////////////////////
+	rose: {
+		dropZones: [
+			{ name: "Filter", allowedNumbers: 64 },
+			{ name: "Dimension", allowedNumbers: 1 },
+			{ name: "Measure", allowedNumbers: 4 },
+		],
+		showSwap: false,
+	},
+	funnel: {
+		dropZones: [
+			{ name: "Filter", allowedNumbers: 64 },
+			{ name: "Dimension", allowedNumbers: 1 },
+			{ name: "Measure", allowedNumbers: 4 },
+		],
+		showSwap: false,
+	},
+	"step line": {
+		dropZones: [
+			{ name: "Filter", allowedNumbers: 64 },
+			{ name: "Dimension", allowedNumbers: 1 },
+			{ name: "Measure", allowedNumbers: 4 },
+		],
+		showSwap: false,
+	},
+	scatterPlot: {
 		dropZones: [
 			{ name: "Filter", allowedNumbers: 64 },
 			{ name: "Dimension", allowedNumbers: 1 },

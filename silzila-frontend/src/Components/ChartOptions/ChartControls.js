@@ -27,7 +27,7 @@ const ChartControls = ({
 		{ name: "donut", icon: "donut_chart.svg" },
 		{ name: "funnel", icon: "funnel.png" },
 		{ name: "rose", icon: "rose_chart.svg" },
-		// { name: "scatterPlot", icon: "scatter.svg" },
+		{ name: "scatterPlot", icon: "scatter.svg" },
 	];
 
 	// const switchAxesForCharts = (oldChart, newChart) => {};
@@ -57,7 +57,9 @@ const ChartControls = ({
 							"funnel",
 							"treeMap",
 							"stacked bar",
+							"step line",
 							"donut",
+							"rose",
 						].includes(chart.name)
 					) {
 						// const newChartAxes = switchAxesForCharts(
