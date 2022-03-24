@@ -1,10 +1,9 @@
-import { List, MenuItem, Select } from "@mui/material";
+import { MenuItem, Select } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import {
 	setConnectionValue,
 	setDataSchema,
-	setFriendlyName,
 	setUserTable,
 } from "../../redux/Dataset/datasetActions";
 import FetchData from "../../ServerCall/FetchData";
@@ -40,9 +39,9 @@ const Sidebar = ({
 			setOpenDlg(true);
 		} else {
 			setSelectedConnection(e.target.value);
+			setDataSchema("");
 			getSchemaList(e.target.value);
 			setSelectedSchema("");
-			setDataSchema("");
 		}
 	};
 
@@ -136,9 +135,9 @@ const Sidebar = ({
 						tbl.dcId === connectionId && tbl.schema === schema && tbl.tableName === el
 				)[0];
 				if (tableAlreadyChecked) {
-					return { tableName: el, isSelected: true };
+					return { tableName: el, isSelected: true, table_uid: schema.concat(el) };
 				}
-				return { tableName: el, isSelected: false };
+				return { tableName: el, isSelected: false, table_uid: schema.concat(el) };
 			});
 
 			setUserTable(userTable);
@@ -158,9 +157,6 @@ const Sidebar = ({
 					}}
 					value={selectedConnection}
 				>
-					{/* <option value="" disabled hidden>
-                        {"--Select Connection--"}
-                    </option> */}
 					{connectionList &&
 						connectionList.map((connection, i) => {
 							return (
@@ -175,9 +171,6 @@ const Sidebar = ({
 			<div className="sidebarHeading">Schema</div>
 			<div>
 				<Select className="selectBar" onChange={(e) => getTables(e)} value={selectedSchema}>
-					{/* <option value="" disabled hidden>
-						{"--Select Schema--"}
-					</option> */}
 					{schemaList &&
 						schemaList.map((schema) => {
 							return (
@@ -189,38 +182,35 @@ const Sidebar = ({
 				</Select>
 			</div>
 
-			<React.Fragment>
-				<div className="sidebarHeading">Tables</div>
-				{tableList.length !== 0 ? (
-					tableList &&
-					tableList.map((tab) => {
-						return (
-							<SelectListItem
-								key={tab.tableName}
-								render={(xprops) => (
-									<div
-										className="tableListStyle"
-										onMouseOver={() => xprops.setOpen(true)}
-										onMouseLeave={() => xprops.setOpen(false)}
-									>
-										<TableList
-											key={tab.tableName}
-											className="tableListElement"
-											table={tab}
-											tableId={tab.tableName}
-											xprops={xprops}
-											connectionId={connectionId}
-											selectedSchema={selectedSchema}
-										/>
-									</div>
-								)}
-							/>
-						);
-					})
-				) : (
-					<div style={{ marginTop: "10px", fontStyle: "italic" }}>No Tables</div>
-				)}
-			</React.Fragment>
+			<div className="sidebarHeading">Tables</div>
+			{tableList.length !== 0 ? (
+				tableList &&
+				tableList.map((tab) => {
+					return (
+						<SelectListItem
+							key={tab.tableName}
+							render={(xprops) => (
+								<div
+									className="tableListStyle"
+									onMouseOver={() => xprops.setOpen(true)}
+									onMouseLeave={() => xprops.setOpen(false)}
+								>
+									<TableList
+										key={tab.tableName}
+										className="tableListElement"
+										table={tab}
+										tableId={tab.tableName}
+										xprops={xprops}
+										connectionId={connectionId}
+									/>
+								</div>
+							)}
+						/>
+					);
+				})
+			) : (
+				<div style={{ marginTop: "10px", fontStyle: "italic" }}>No Tables</div>
+			)}
 
 			<ChangeConnection open={openDlg} setOpen={setOpenDlg} setReset={setResetDataset} />
 		</div>

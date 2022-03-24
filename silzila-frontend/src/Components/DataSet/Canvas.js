@@ -1,18 +1,16 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import BottomBar from "./BottomBar";
 import "./Dataset.css";
-import Tables from "./Tables";
 import Xarrow, { Xwrapper } from "react-xarrows";
 import {
 	addArrows,
 	clickOnArrow,
-	resetArrows,
 	resetState,
-	setArrows,
 	setArrowType,
 } from "../../redux/Dataset/datasetActions";
+import CanvasTables from "./CanvasTables";
 import RelationshipDefiningComponent from "./RelationshipDefiningComponent";
+import BottomBar from "./BottomBar";
 
 // TODO: Priority 10 - Canvas overflow fixing
 // Add table to the canvas where it doesn't overflow the current space.
@@ -21,36 +19,34 @@ const Canvas = ({
 	// state
 	tempTable,
 	arrows,
-	arrowType,
-	token,
-
-	// dispatch
-	addArrows,
-	clickOnArrow,
-	// setArrowType,
-	// setArrows,
-	// resetArrows,
-	resetState,
 }) => {
-	const [showCard, setShowCard] = useState(false);
-	const [arrowPropexisting, setArrowPropexisting] = useState({});
+	const [showRelationCard, setShowRelationCard] = useState(false);
+	const [existingArrowProp, setExistingArrowProp] = useState({});
 	const [existingArrow, setExistingArrow] = useState(false);
 
 	const clickOnArrowfunc = (index) => {
 		setExistingArrow(true);
+		console.log(index);
 		const temp = arrows.filter((el, i) => {
 			return i === index;
-		});
-		setArrowPropexisting(...temp);
-		setShowCard(true);
+		})[0];
+		console.log(temp);
+		setExistingArrowProp(temp);
+		setShowRelationCard(true);
 	};
 
 	const RenderArrows = () => {
 		return (
 			arrows &&
 			arrows.map((ar, index) => {
+				// console.log(ar);
 				return (
-					<div className="arrowIcon" id="arr" onClick={() => clickOnArrowfunc(index)}>
+					<div
+						className="arrowIcon"
+						id="arr"
+						onClick={() => clickOnArrowfunc(index)}
+						key={index}
+					>
 						<Xarrow
 							start={ar.start}
 							end={ar.end}
@@ -72,19 +68,21 @@ const Canvas = ({
 				<Xwrapper>
 					{tempTable &&
 						tempTable.map((table) => {
-							return <Tables tableData={table} key={table.tableName} />;
+							return <CanvasTables tableData={table} key={table.table_uid} />;
 						})}
 					<RenderArrows />
 				</Xwrapper>
 			</div>
 			<BottomBar />
+
 			<RelationshipDefiningComponent
-				setShowCard={setShowCard}
 				id="idarrow"
-				showCard={showCard}
-				arrowPropexisting={arrowPropexisting}
+				showRelationCard={showRelationCard}
+				setShowRelationCard={setShowRelationCard}
+				existingArrowProp={existingArrowProp}
 				existingArrow={existingArrow}
 				setExistingArrow={setExistingArrow}
+				setExistingArrowProp={setExistingArrowProp}
 			/>
 		</div>
 	);
@@ -94,20 +92,7 @@ const mapStateToProps = (state) => {
 	return {
 		tempTable: state.dataSetState.tempTable,
 		arrows: state.dataSetState.arrows,
-		arrowType: state.dataSetState.arrowType,
-		token: state.isLogged.accessToken,
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-		addArrows: (arrow) => dispatch(addArrows(arrow)),
-		clickOnArrow: (payload) => dispatch(clickOnArrow(payload)),
-		setArrowType: (payload) => dispatch(setArrowType(payload)),
-		// setArrows: (pl) => dispatch(setArrows(pl)),
-		// resetArrows: () => dispatch(resetArrows()),
-		resetState: () => dispatch(resetState()),
-	};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Canvas);
+export default connect(mapStateToProps, null)(Canvas);
