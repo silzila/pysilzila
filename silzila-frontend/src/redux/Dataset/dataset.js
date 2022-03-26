@@ -9,6 +9,7 @@ const initialState = {
 	tempTable: [],
 	relationships: [],
 	dataSetList: [],
+	friendly_name: "",
 };
 
 const DataSetReducer = (state = initialState, action) => {
@@ -32,6 +33,10 @@ const DataSetReducer = (state = initialState, action) => {
 		// sets list of tables for a selected schema to state
 		case "SET_TABLES":
 			return update(state, { tables: { $set: action.payload } });
+
+		case "SET_TEMP_TABLES":
+			return update(state, { tempTable: { $set: action.payload } });
+		// return update(state, { tempTable: { $set: [...action.payload] } });
 
 		// When a table in sidebar is checked / unchecked, update state accordingly
 		case "ON_CHECKED":

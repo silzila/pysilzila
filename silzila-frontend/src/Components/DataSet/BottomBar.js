@@ -16,11 +16,12 @@ const BottomBar = ({
 	token,
 	connection,
 	dsId,
+	friendly_name,
 
 	// dispatch
 	resetState,
 }) => {
-	const [fname, setFname] = useState("");
+	const [fname, setFname] = useState(friendly_name);
 	const [sendOrUpdate, setSendOrUpdate] = useState("send");
 	const [open, setOpen] = useState(false);
 
@@ -275,7 +276,7 @@ const mapStateToProps = (state) => {
 		arrows: state.dataSetState.arrows,
 		relationships: state.dataSetState.relationships,
 		connection: state.dataSetState.connection,
-		// friendly_name: state.dataSetState.friendly_name,
+		friendly_name: state.dataSetState.friendly_name,
 		dsId: state.dataSetState.dsId,
 	};
 };

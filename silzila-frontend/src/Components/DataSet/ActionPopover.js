@@ -4,12 +4,17 @@ import data from "../DataSet/Data.json";
 // TODO: Priority 2 - Action button functions
 // Functions like remove & rename are to be implemented
 const ActionPopover = (props) => {
-	const { open, setOpen, anchorEl } = props;
+	const {
+		open,
+		setOpen,
+		// anchorEl,
+		selectAction,
+	} = props;
 	return (
 		<>
 			<Popover
 				open={open}
-				anchorEl={anchorEl}
+				// anchorEl={anchorEl}
 				anchorOrigin={{
 					vertical: "bottom",
 					horizontal: "left",
@@ -21,7 +26,7 @@ const ActionPopover = (props) => {
 							<Button
 								style={{ backgroundColor: "grey" }}
 								variant="contained"
-								// onClick={selectAction}
+								onClick={selectAction}
 								id={act.id}
 							>
 								{act.actionName}

@@ -5,8 +5,14 @@ import { useXarrow } from "react-xarrows";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CanvasTableColumns from "./CanvasTableColumns";
 import RelationshipDefiningComponent from "./RelationshipDefiningComponent";
-import { addArrows, addNewRelationship } from "../../redux/Dataset/datasetActions";
+import {
+	actionsOnRemoveTable,
+	addArrows,
+	addNewRelationship,
+} from "../../redux/Dataset/datasetActions";
 import ShortUniqueId from "short-unique-id";
+import { SettingsInputComponent } from "@mui/icons-material";
+import ActionPopover from "./ActionPopover";
 
 const CanvasTables = ({
 	// props
@@ -18,12 +24,15 @@ const CanvasTables = ({
 	// dispatch
 	addNewRelationship,
 	addArrows,
+	actionsOnRemoveTable,
 }) => {
 	const dragRef = useRef();
 	const updateXarrow = useXarrow();
 
 	const [showRelationCard, setShowRelationCard] = useState(false);
 	const [arrowProp, setArrowProp] = useState([]);
+	const [open, setOpen] = useState(false);
+	const [tableId, setTableId] = useState("");
 
 	var uid = new ShortUniqueId({ length: 8 });
 
@@ -116,6 +125,35 @@ const CanvasTables = ({
 		addNewRelationship(relObj);
 	};
 
+	const selectAction = (e) => {
+		console.log(tableId);
+		if (open === true) {
+			if (parseInt(e.target.id) === 1) {
+				alert("are you sure you want to remove this table?");
+				const tempTables = [...dataSetState.tempTable].filter((tab) => {
+					return tab.table_uid !== tableId;
+				});
+				const tables = [...dataSetState.tables].map((tab) => {
+					if (tab.table_uid === tableId) {
+						tab.isSelected = false;
+					}
+					return tab;
+				});
+				actionsOnRemoveTable(tempTables, tables, tableId);
+			} else if (parseInt(e.target.id) === 2) {
+				alert("do you want to change the table name?");
+				// setInputField(true)
+			}
+		} else {
+			alert("Actions not Set");
+		}
+		setOpen(false);
+	};
+	// const selectText = () => {
+	// 	var input = document.getElementById("name");
+	// 	input.select()
+	// }
+
 	return (
 		<div>
 			<Draggable
@@ -133,7 +171,13 @@ const CanvasTables = ({
 					>
 						<div style={{ flex: 1 }}>{tableData.alias}</div>
 						<div style={{ cursor: "pointer" }}>
-							<MoreVertIcon style={{ float: "right" }} />
+							<MoreVertIcon
+								style={{ float: "right" }}
+								onClick={() => {
+									setTableId(tableData.table_uid);
+									setOpen(true);
+								}}
+							/>
 						</div>
 					</div>
 
@@ -162,6 +206,7 @@ const CanvasTables = ({
 				arrowProp={arrowProp}
 				addRelationship={addRelationship}
 			/>
+			<ActionPopover open={open} setOpen={setOpen} selectAction={selectAction} />
 		</div>
 	);
 };
@@ -176,6 +221,8 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		addNewRelationship: (payload) => dispatch(addNewRelationship(payload)),
 		addArrows: (payload) => dispatch(addArrows(payload)),
+		actionsOnRemoveTable: (tempTables, tables, tableId) =>
+			dispatch(actionsOnRemoveTable({ tempTables, tables, tableId })),
 	};
 };
 

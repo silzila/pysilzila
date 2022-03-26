@@ -12,10 +12,15 @@ import { SelectListItem } from "../CommonFunctions/SelectListItem";
 import TableList from "./TableList";
 
 const Sidebar = ({
+	//props
+	editMode,
+
 	// state
 	token,
 	tableList,
 	tempTable,
+	connectionValue,
+	schemaValue,
 
 	// dispatch
 	setConnection,
@@ -46,7 +51,16 @@ const Sidebar = ({
 	};
 
 	useEffect(() => {
-		getAllDc();
+		console.log(editMode);
+		if (editMode) {
+			getAllDc();
+			setSelectedConnection(connectionValue);
+			setConnectionId(connectionValue);
+			getSchemaList(connectionValue);
+			setSelectedSchema(schemaValue);
+		} else {
+			getAllDc();
+		}
 	}, []);
 
 	useEffect(() => {
@@ -76,15 +90,11 @@ const Sidebar = ({
 
 	const getSchemaList = async (uid) => {
 		const dc_uid = uid;
-		let fname;
-		connectionList.map((con) => {
-			if (con.dc_uid === dc_uid) {
-				fname = con.friendly_name;
-			}
-		});
-		setConnectionId(dc_uid);
-		setConnection(dc_uid);
-		setUserTable([]);
+		if (!editMode) {
+			setConnectionId(dc_uid);
+			setConnection(dc_uid);
+			setUserTable([]);
+		}
 
 		var res = await FetchData({
 			requestType: "noData",
@@ -155,6 +165,7 @@ const Sidebar = ({
 					onChange={(e) => {
 						onConnectionChange(e);
 					}}
+					// TODO (WARNING)You have provided an out-of-range value `post` for the select component.Consider providing a value that matches one of the available options or ''.The available values are "".
 					value={selectedConnection}
 				>
 					{connectionList &&
@@ -222,6 +233,8 @@ const mapStateToProps = (state) => {
 		token: state.isLogged.accessToken,
 		tableList: state.dataSetState.tables,
 		tempTable: state.dataSetState.tempTable,
+		connectionValue: state.dataSetState.connection,
+		schemaValue: state.dataSetState.schema,
 	};
 };
 
