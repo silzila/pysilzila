@@ -1,0 +1,31 @@
+.chartIconsContainer {
+	width: 100%;
+	background-color: #eee;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #d3d3d3;
+	padding: 0 4px 8px 4px;
+}
+
+.chartIcon {
+	padding: 8px;
+	width: 40px;
+	height: 40px;
+	margin: auto;
+	margin-top: 8px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	transition: 0.5s;
+	text-transform: capitalize;
+}
+.chartIcon:hover {
+	border: 1px solid #007bff;
+	transition: 0.1s;
+}
+
+.selected {
+	border: 1px solid #007bff;
+	border-radius: 4px;
+	background-color: #fff;
+}

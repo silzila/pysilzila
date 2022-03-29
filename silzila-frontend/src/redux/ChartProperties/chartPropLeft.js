@@ -7,7 +7,7 @@ const chartPropLeft = {
 			tabId: 1,
 			tileId: 1,
 			fileId: "",
-			chartType: "bar",
+			chartType: "multibar",
 
 			// Left Column
 			axesEdited: false,
@@ -34,6 +34,12 @@ const chartPropLeft = {
 			},
 			selectedTable: {
 				dspost: "s",
+			},
+
+			titleOptions: {
+				fontSize: 28,
+				chartTitle: "",
+				generateTitle: "Auto",
 			},
 		},
 	},
@@ -65,7 +71,7 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 						tabId: action.payload.tabId,
 						tileId: action.payload.tileId,
 						fileId: action.payload.table,
-						chartType: "bar",
+						chartType: "multibar",
 
 						// Left Column
 						axesEdited: false,
@@ -86,6 +92,12 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 
 						selectedDs: action.payload.selectedDs,
 						selectedTable: action.payload.selectedTablesInDs,
+
+						titleOptions: {
+							fontSize: 28,
+							chartTitle: "",
+							generateTitle: "Auto",
+						},
 					},
 				},
 				propList: {
@@ -105,7 +117,7 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 						tabId: action.payload.tabId,
 						tileId: action.payload.tileId,
 						fileId: action.payload.table,
-						chartType: "bar",
+						chartType: "multibar",
 
 						// Left Column
 						axesEdited: false,
@@ -125,6 +137,12 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 						],
 						selectedDs: action.payload.selectedDs,
 						selectedTable: action.payload.selectedTablesInDs,
+
+						titleOptions: {
+							fontSize: 28,
+							chartTitle: "",
+							generateTitle: "Auto",
+						},
 					},
 				},
 				propList: { ...state.propList, [action.payload.tabId]: [tileKey2] },
@@ -283,6 +301,51 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 								},
 							},
 						},
+					},
+				},
+			});
+
+		case "CHANGE_CHART_TYPE":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: { chartType: { $set: action.payload.chartType } },
+				},
+			});
+
+		case "CHANGE_CHART_AXES":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: { chartAxes: { $set: action.payload.newAxes } },
+				},
+			});
+
+		case "REUSE_DATA":
+			console.log("REUSE_DATA", action.payload.propKey, action.payload.reUseData);
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: { reUseData: { $set: action.payload.reUseData } },
+				},
+			});
+
+		// ########################################
+		// Title
+
+		case "SET_CHART_TITLE":
+			console.log(action.payload.propKey, action.payload.title);
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						titleOptions: { chartTitle: { $set: action.payload.title } },
+					},
+				},
+			});
+
+		case "SET_GENERATE_TITLE":
+			console.log(action.payload.propKey, action.payload.generateTitle);
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						titleOptions: { generateTitle: { $set: action.payload.generateTitle } },
 					},
 				},
 			});

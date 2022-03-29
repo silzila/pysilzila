@@ -19,19 +19,19 @@
 	width: 100%;
 	margin: 0;
 	padding: 0;
-	height: 4rem;
+	height: 3rem;
 	display: flex;
 	border-bottom: 1px solid #d3d3d3;
-	line-height: 4rem;
+	line-height: 3rem;
 	background-color: #fff;
 }
 .graphTitle {
 	width: 100%;
 	margin: 0;
 	padding: 0;
-	height: 4rem;
+	height: 3rem;
 	color: #d3d3d3;
-	text-transform: capitalize;
+	/* text-transform: capitalize; */
 	text-align: center;
 	font-weight: 600;
 }
@@ -40,9 +40,14 @@
 	width: 100%;
 	margin: 0;
 	padding: 0;
-	height: 4rem;
-	padding: 0 20px;
-	background-color: #ffff91;
+	height: 3rem;
+	background-color: white;
+	/* text-transform: capitalize; */
+	text-align: center;
+	border: none;
+	font-weight: 600;
+	border-bottom: 1px solid #d3d3d3;
+	font-family: "Segoe UI";
 }
 .graphContainer {
 	/* box-sizing: border-box; */

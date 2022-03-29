@@ -6,8 +6,7 @@ import Card from "./Card";
 import ChartsInfo from "./ChartsInfo2";
 import { setPrefix } from "./SetPrefix";
 
-
-const Dustbin = ({
+const DropZone = ({
 	// props
 	bIndex,
 	name,
@@ -58,28 +57,27 @@ const Dustbin = ({
 		}
 	};
 
-
 	return (
 		<div ref={drop} className="chartAxis mt-2">
 			<span className="axisTitle">{name}</span>
 
 			<i>
-				{bIndex === 0 ? <span className="axisInfo"> Drop (1) field(s) here</span> : null}
-				{bIndex === 1 && ChartsInfo[chartType].dropZones[bIndex].allowedNumbers === 1 ? (
-					<span className="axisInfo"> Drop (1) field(s) here</span>
-				) : null}
-				{bIndex === 1 && ChartsInfo[chartType].dropZones[bIndex].allowedNumbers > 1 ? (
-					<span className="axisInfo">
-						{" "}
-						Drop (atleast 1 - max{" "}
-						{ChartsInfo[chartType].dropZones[bIndex].allowedNumbers}) field(s) here
-					</span>
-				) : null}
-				{bIndex === 2 ? (
+				{bIndex === 0 ? (
 					<span className="axisInfo">
 						{" "}
 						Drop (0 - max {ChartsInfo[chartType].dropZones[bIndex].allowedNumbers})
 						field(s) here
+					</span>
+				) : null}
+				{bIndex === 1 ? <span className="axisInfo"> Drop (1) field(s) here</span> : null}
+				{bIndex === 2 && ChartsInfo[chartType].dropZones[bIndex].allowedNumbers === 1 ? (
+					<span className="axisInfo"> Drop (1) field(s) here</span>
+				) : null}
+				{bIndex === 2 && ChartsInfo[chartType].dropZones[bIndex].allowedNumbers > 1 ? (
+					<span className="axisInfo">
+						{" "}
+						Drop (atleast 1 - max{" "}
+						{ChartsInfo[chartType].dropZones[bIndex].allowedNumbers}) field(s) here
 					</span>
 				) : null}
 			</i>
@@ -94,7 +92,6 @@ const Dustbin = ({
 					propKey={propKey}
 				/>
 			))}
-
 		</div>
 	);
 };
@@ -119,5 +116,4 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dustbin);
-
+export default connect(mapStateToProps, mapDispatchToProps)(DropZone);

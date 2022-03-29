@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import ChartsInfo from "./ChartsInfo2";
 import "./ChartAxes.css";
-import Dustbin from "./Dustbin";
+import DropZone from "./DropZone";
 import FetchData from "../../ServerCall/FetchData";
 import { updateChartData } from "../../redux/ChartProperties/actionsChartProps";
 import LoadingPopover from "../CommonFunctions/PopOverComponents/LoadingPopover";
@@ -63,13 +63,13 @@ const ChartAxes = ({
 
 		console.log(minReqMet);
 
-		if (chartProp.properties[propKey].chartType === "bar") {
-			if (minReqMet[1] === true || minReqMet[2] === true) {
-				return true;
-			} else {
-				return false;
-			}
+		// if (chartProp.properties[propKey].chartType === "bar") {
+		if (minReqMet[1] === true && minReqMet[2] === true) {
+			return true;
+		} else {
+			return false;
 		}
+		// }
 	};
 
 	const getChartData = async (axesValues) => {
@@ -150,7 +150,7 @@ const ChartAxes = ({
 	return (
 		<div className="charAxesArea">
 			{dropZones.map((zone, zoneI) => (
-				<Dustbin bIndex={zoneI} name={zone} propKey={propKey} key={zoneI} />
+				<DropZone bIndex={zoneI} name={zone} propKey={propKey} key={zoneI} />
 			))}
 			{loading ? <LoadingPopover /> : null}
 		</div>

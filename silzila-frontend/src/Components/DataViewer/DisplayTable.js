@@ -113,16 +113,16 @@ const DisplayTable = ({
 			<RenderButtons />
 		</div>
 	) : (
-		<div className="tableViewAndControls">
+		<>
 			<table className="displayTable">
-				<thead>
+				<thead style={{ position: "sticky" }}>
 					<tr>
 						<GetHeaders />
 					</tr>
 				</thead>
 				<tbody>{getRowsData()}</tbody>
 			</table>
-		</div>
+		</>
 	);
 };
 

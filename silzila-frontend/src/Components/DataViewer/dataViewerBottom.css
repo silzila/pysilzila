@@ -52,10 +52,11 @@
 	text-align: left;
 	cursor: pointer;
 }
+
 .displayTable {
 	font-size: 12px;
 	text-align: left;
-	background-color: rgb(211, 211, 211);
+	background-color: rgb(238, 238, 238);
 	border-collapse: collapse;
 	color: rgb(51, 51, 51);
 }
@@ -63,7 +64,7 @@
 	padding: 9px 9px 9px 0;
 	position: sticky;
 	top: 0;
-	background-color: rgb(211, 211, 211);
+	background-color: rgb(238, 238, 238);
 	font-weight: normal;
 	cursor: move;
 	font-weight: 600;

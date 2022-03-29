@@ -130,3 +130,41 @@ export const updateChartData = (propKey, chartData) => {
 	};
 };
 
+export const changeChartType = (propKey, chartType) => {
+	console.log("CHANGE_CHART_TYPE", propKey, chartType);
+	return {
+		type: "CHANGE_CHART_TYPE",
+		payload: { propKey, chartType },
+	};
+};
+
+export const changeChartAxes = (propKey, newAxes) => {
+	console.log("CHANGE_CHART_AXES", propKey, newAxes);
+	return { type: "CHANGE_CHART_AXES", payload: { propKey, newAxes } };
+};
+
+export const changeChartTypeAndAxes = ({ propKey, chartType, newAxes }) => {
+	return (dispatch) => {
+		dispatch(toggleAxesEdited(propKey, true));
+		dispatch(changeChartType(propKey, chartType));
+		dispatch(changeChartAxes(propKey, newAxes));
+	};
+};
+
+export const canReUseData = (propKey, reUseData) => {
+	console.log("REUSE_DATA", propKey, reUseData);
+	return { type: "REUSE_DATA", payload: { propKey, reUseData } };
+};
+
+export const setChartTitle = (propKey, title) => {
+	console.log("SET_CHART_TITLE");
+	return { type: "SET_CHART_TITLE", payload: { propKey, title } };
+};
+
+export const setGenerateTitle = (propKey, generateTitle) => {
+	console.log("SET_GENERATE_TITLE");
+	return {
+		type: "SET_GENERATE_TITLE",
+		payload: { propKey, generateTitle },
+	};
+};
