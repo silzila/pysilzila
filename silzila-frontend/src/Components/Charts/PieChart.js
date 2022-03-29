@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 const PieChart = ({
 	//props
 	propKey,
+	graphDimension,
 
 	//state
 	chartProp,
@@ -18,6 +19,12 @@ const PieChart = ({
 		<>
 			{chartData ? (
 				<ReactEcharts
+					style={{
+						padding: "1rem",
+						width: graphDimension.width,
+						height: graphDimension.height,
+						overflow: "hidden",
+					}}
 					option={{
 						legend: {},
 						tooltip: {},

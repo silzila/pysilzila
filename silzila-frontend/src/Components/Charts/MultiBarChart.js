@@ -11,10 +11,9 @@ const MultiBar = ({
 	chartProp,
 }) => {
 	var property = chartProp.properties[propKey];
-	console.log(property, "+++++ PROPERTY +++++");
+
 	let chartData = property.chartData ? property.chartData.result : "";
 	console.log(chartData, "+++++ chartData +++++");
-	// const dimension = Object.keys(chartData[0])
 
 	console.log(chartData[0]);
 
@@ -32,7 +31,6 @@ const MultiBar = ({
 		var seriesDataTemp = [];
 		if (chartData) {
 			for (let i = 0; i < Object.keys(chartData[0]).length - 1; i++) {
-				console.log("-=-=-=-=-=-=");
 				seriesDataTemp.push(seriesObj);
 			}
 			setSeriesData(seriesDataTemp);
@@ -40,8 +38,6 @@ const MultiBar = ({
 	}, [chartData]);
 
 	console.log(seriesData);
-
-	useEffect(() => {}, [seriesData]);
 
 	const RenderChart = () => {
 		return (

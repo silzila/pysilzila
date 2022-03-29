@@ -4,7 +4,7 @@ const ChartsInfo = {
 			{ name: "Filter", allowedNumbers: 64, min: 0 },
 			{
 				name: "Dimension",
-				allowedNumbers: 2,
+				allowedNumbers: 1,
 				min: 1,
 				dataType: ["text", "string", "timestamp"],
 			},
