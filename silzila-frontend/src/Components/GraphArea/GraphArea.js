@@ -12,6 +12,7 @@ import StackedBar from "../Charts/StackedBar";
 import MultiBar from "../Charts/MultiBarChart";
 import StepLine from "../Charts/StepLine";
 import { setChartTitle, setGenerateTitle } from "../../redux/ChartProperties/actionsChartProps";
+import ChartThemes from "../ChartThemes/ChartThemes";
 
 const GraphArea = ({
 	// state
@@ -189,6 +190,7 @@ const GraphArea = ({
 			<div id="graphContainer" className="graphContainer">
 				{chartDisplayed()}
 			</div>
+			<ChartThemes />
 		</div>
 	);
 };

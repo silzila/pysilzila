@@ -13,6 +13,7 @@
 
 .dataSetAndTableList {
 	width: 14.5rem;
+	min-width: 14.5rem;
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
@@ -51,9 +52,7 @@
 }
 
 .tileTableView {
-	/* flex: 1; */
 	overflow: auto;
-	display: flex;
 }
 .displayTable {
 	flex: 1;
