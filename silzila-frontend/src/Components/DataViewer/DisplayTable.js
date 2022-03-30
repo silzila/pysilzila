@@ -57,7 +57,12 @@ const DisplayTable = ({
 			return keys.map((key, index) => {
 				return (
 					<th key={`${index}_${key}`}>
-						<Box name={key} type="card" fieldData={columnsData[index]} />
+						<Box
+							name={key}
+							type="card"
+							fieldData={columnsData[index]}
+							colsOnly={false}
+						/>
 					</th>
 				);
 			});
@@ -101,7 +106,12 @@ const DisplayTable = ({
 						draggable="true"
 						// onDragStart={(e) => handleDragStart(e, columnsData[index])}
 					>
-						<Box name={key} type="card" fieldData={columnsData[index]} />
+						<Box
+							name={key}
+							type="card"
+							fieldData={columnsData[index]}
+							colsOnly={true}
+						/>
 					</button>
 				);
 			});

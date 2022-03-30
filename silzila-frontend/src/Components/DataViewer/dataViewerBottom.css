@@ -69,6 +69,14 @@
 	cursor: move;
 	font-weight: 600;
 }
+
+.tableHeadingsSmall {
+	top: 0;
+	font-size: 12px;
+	font-weight: normal;
+	cursor: move;
+	/* font-weight: 600; */
+}
 .tableHeadings:hover {
 	background-color: rgb(238, 238, 238);
 }
@@ -118,5 +126,4 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	/* font-size: 14px; */
 }

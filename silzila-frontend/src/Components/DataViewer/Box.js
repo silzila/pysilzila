@@ -2,7 +2,7 @@ import React from "react";
 import { useDrag } from "react-dnd";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 
-export const Box = ({ name, type, fieldData }) => {
+export const Box = ({ name, type, fieldData, colsOnly }) => {
 	const [opacity, drag] = useDrag({
 		type: "card",
 		item: { name, type, fieldData, bIndex: 99 },
@@ -13,7 +13,7 @@ export const Box = ({ name, type, fieldData }) => {
 
 	return (
 		<div
-			className="tableHeadings"
+			className={colsOnly ? "tableHeadingsSmall" : "tableHeadings"}
 			ref={drag}
 			style={{
 				display: "flex",
