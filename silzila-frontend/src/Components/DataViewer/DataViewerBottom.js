@@ -216,7 +216,9 @@ const DataViewerBottom = ({
 				</div>
 
 				<div className="tileTableList">
-					<TableListForDs />
+					<div style={{ flex: 1, overflow: "auto", padding: "0 0.5rem" }}>
+						<TableListForDs />
+					</div>
 				</div>
 				<DatasetListPopover
 					showCard={open}

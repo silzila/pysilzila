@@ -56,7 +56,7 @@ const DisplayTable = ({
 			var keys = getKeys(SampleRecords[0]);
 			return keys.map((key, index) => {
 				return (
-					<th key={`${index}_${key}`}>
+					<th key={`${index}_${key}`} className="tableHeadings">
 						<Box
 							name={key}
 							type="card"
@@ -125,7 +125,7 @@ const DisplayTable = ({
 	) : (
 		<>
 			<table className="displayTable">
-				<thead style={{ position: "sticky" }}>
+				<thead>
 					<tr>
 						<GetHeaders />
 					</tr>

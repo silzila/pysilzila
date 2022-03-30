@@ -13,14 +13,12 @@ export const Box = ({ name, type, fieldData, colsOnly }) => {
 
 	return (
 		<div
-			className={colsOnly ? "tableHeadingsSmall" : "tableHeadings"}
 			ref={drag}
 			style={{
 				display: "flex",
 			}}
 		>
 			<DragIndicatorIcon fontSize="small" />
-			{/* <img className="dragImage" src="drag_icon.svg" alt="" draggable />  */}
 			<span className="boxText">{name}</span>
 		</div>
 	);
