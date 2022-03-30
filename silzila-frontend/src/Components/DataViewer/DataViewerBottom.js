@@ -236,7 +236,6 @@ const DataViewerBottom = ({
 				) : null}
 			</div>
 			{loading ? <LoadingPopover /> : null}
-
 		</div>
 	);
 };

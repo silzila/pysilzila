@@ -95,13 +95,14 @@ const ChartAxes = ({
 			var formattedFields = [];
 
 			axis.fields.forEach((field) => {
+				console.log(field);
 				var formattedField = {
 					table_id: field.tableId,
 					display_name: field.displayname,
 					field_name: field.fieldname,
-					data_type: field.schema,
+					data_type: field.dataType,
 				};
-				if (field.schema === "date" || field.schema === "timestamp") {
+				if (field.dataType === "date" || field.dataType === "timestamp") {
 					formattedField.time_grain = field.time_grain;
 				}
 

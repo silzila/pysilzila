@@ -3,29 +3,40 @@ import "./Card.css";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 import { connect } from "react-redux";
-import { editChartPropItem } from "../../redux/ChartProperties/actionsChartProps";
+import {
+	editChartPropItem,
+	revertAxes,
+	sortAxes,
+} from "../../redux/ChartProperties/actionsChartProps";
 import { Divider, Menu, MenuItem } from "@mui/material";
 import Aggregators, { AggregatorKeys } from "./Aggregators";
+import { useDrag, useDrop } from "react-dnd";
 
 const Card = ({
 	// props
 	field,
-
 	bIndex,
 	itemIndex,
 	propKey,
 	axisTitle,
 
+	// state
+	tabTileProps,
+	chartProp,
+
 	// dispatch
 	deleteDropZoneItems,
 	updateQueryParam,
+	sortAxes,
+	revertAxes,
 	// chartPropUpdated,
 }) => {
-	console.log(axisTitle);
-	const deleteItem = () => {
-		// console.log("=============== DELETING CARD ===============");
+	console.log(axisTitle, field);
+	const originalIndex = chartProp.properties[propKey].chartAxes[bIndex].fields.findIndex(
+		(item) => item.uId === field.uId
+	);
 
-		// let propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
+	const deleteItem = () => {
 		deleteDropZoneItems(propKey, bIndex, itemIndex);
 		// chartPropUpdated(true);
 	};
@@ -38,6 +49,7 @@ const Card = ({
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
 	};
+
 	const handleClose = (closeFrom, queryParam) => {
 		// console.log(closeFrom);
 		setAnchorEl(null);
@@ -65,34 +77,92 @@ const Card = ({
 		backgroundColor: "rgba(25, 118, 210, 0.08)",
 	};
 
+	const [, drag] = useDrag({
+		item: {
+			uId: field.uId,
+			fieldname: field.fieldname,
+			displayname: field.fieldname,
+			dataType: field.dataType,
+			prefix: field.prefix,
+			tableId: field.tableId,
+			type: "card",
+			bIndex,
+			originalIndex,
+		},
+
+		end: (dropResult, monitor) => {
+			console.log("***************on DRAG END**************");
+			const { uId, bIndex, originalIndex } = monitor.getItem();
+			console.log("uId = ", uId);
+
+			const didDrop = monitor.didDrop();
+			console.log("didDrop = ", didDrop);
+
+			if (!didDrop) {
+				console.log("..............no drop..............");
+				console.log(
+					"originalIndex = ",
+					originalIndex,
+					"Bin index = ",
+					bIndex,
+					"revert uId = ",
+					uId
+				);
+				revertAxes(propKey, bIndex, uId, originalIndex);
+			}
+		},
+	});
+
+	const [, drop] = useDrop({
+		accept: "card",
+		canDrop: () => false,
+		collect: (monitor) => ({
+			backgroundColor1: monitor.isOver({ shallow: true }) ? 1 : 0,
+		}),
+		hover({ uId: dragUId, bIndex: fromBIndex }) {
+			if (fromBIndex === bIndex && dragUId !== field.uId) {
+				console.log("============HOVER BLOCK START ===============");
+				console.log(
+					"dragUId = ",
+					dragUId,
+					"\ndrop uId = ",
+					field.uId,
+					"drag Bin = ",
+					fromBIndex,
+					"drop Bin = ",
+					bIndex
+				);
+				sortAxes(propKey, bIndex, dragUId, field.uId);
+				console.log("============HOVER BLOCK END ==============");
+			}
+		},
+	});
+
 	const RenderMenu = useCallback(() => {
 		var options = [];
 		var options2 = [];
-		if (axisTitle === "Measure") {
-			if (field.schema === "date" || field.schema === "timestamp") {
-				// console.log(Aggregators[axisTitle][field.schema].aggr);
-				options = options.concat(Aggregators[axisTitle][field.schema].aggr);
 
-				// console.log(Aggregators[axisTitle][field.schema].time_grain);
-				options2 = options2.concat(Aggregators[axisTitle][field.schema].time_grain);
+		console.log(field.dataType, axisTitle);
+		if (axisTitle === "Measure") {
+			if (field.dataType === "date" || field.dataType === "timestamp") {
+				options = options.concat(Aggregators[axisTitle][field.dataType].aggr);
+				options2 = options2.concat(Aggregators[axisTitle][field.dataType].time_grain);
 			} else {
-				// console.log(Aggregators[axisTitle][field.schema]);
-				options = options.concat(Aggregators[axisTitle][field.schema]);
+				options = options.concat(Aggregators[axisTitle][field.dataType]);
 			}
 		}
 
 		if (axisTitle === "Dimension") {
-			if (field.schema === "date" || field.schema === "timestamp") {
-				// console.log(Aggregators[axisTitle][field.schema].time_grain);
-				options2 = options2.concat(Aggregators[axisTitle][field.schema].time_grain);
+			if (field.dataType === "date" || field.dataType === "timestamp") {
+				options2 = options2.concat(Aggregators[axisTitle][field.dataType].time_grain);
 			} else {
-				// console.log(Aggregators[axisTitle][field.schema]);
-				options = options.concat(Aggregators[axisTitle][field.schema]);
+				options = options.concat(Aggregators[axisTitle][field.dataType]);
 			}
 		}
 
-		// console.log(options);
-		// console.log(options2);
+		console.log(JSON.stringify(options, null, 4));
+		console.log(JSON.stringify(options2, null, 4));
+
 		return (
 			<Menu
 				id="basic-menu"
@@ -144,8 +214,9 @@ const Card = ({
 		);
 	});
 
-	return (
+	return field ? (
 		<div
+			ref={(node) => drag(drop(node))}
 			className="axisField"
 			onMouseOver={() => setShowOptions(true)}
 			onMouseLeave={() => {
@@ -187,7 +258,15 @@ const Card = ({
 				<RenderMenu />
 			</button>
 		</div>
-	);
+	) : null;
+};
+
+const mapStateToProps = (state) => {
+	return {
+		tabTileProps: state.tabTileProps,
+		chartProp: state.chartPropsLeft,
+		// token: state.isLogged.access_token,
+	};
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -204,8 +283,14 @@ const mapDispatchToProps = (dispatch) => {
 					details: { propKey, binIndex, itemIndex, item },
 				})
 			),
+
+		sortAxes: (propKey, bIndex, dragUId, uId) =>
+			dispatch(sortAxes(propKey, bIndex, dragUId, uId)),
+		revertAxes: (propKey, bIndex, uId, originalIndex) =>
+			dispatch(revertAxes(propKey, bIndex, uId, originalIndex)),
+
 		// chartPropUpdated: (updated) => dispatch(chartPropsLeftUpdated(updated)),
 	};
 };
 
-export default connect(null, mapDispatchToProps)(Card);
+export default connect(mapStateToProps, mapDispatchToProps)(Card);

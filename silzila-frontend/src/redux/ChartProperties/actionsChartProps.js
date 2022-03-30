@@ -168,3 +168,19 @@ export const setGenerateTitle = (propKey, generateTitle) => {
 		payload: { propKey, generateTitle },
 	};
 };
+
+export const sortAxes = (propKey, bIndex, dragUId, dropUId) => {
+	console.log("SORTING ITEM", propKey, bIndex, dragUId, dropUId);
+	return {
+		type: "SORT_ITEM",
+		payload: { propKey, bIndex, dragUId, dropUId },
+	};
+};
+
+export const revertAxes = (propKey, bIndex, uId, originalIndex) => {
+	console.log("REVERTING_ITEM", propKey, bIndex, uId, originalIndex);
+	return {
+		type: "REVERT_ITEM",
+		payload: { propKey, bIndex, uId, originalIndex },
+	};
+};

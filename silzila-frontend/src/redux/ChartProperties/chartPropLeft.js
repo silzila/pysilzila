@@ -55,6 +55,18 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 		return removeIndex;
 	};
 
+	const findCardObject = (propKey, bIndex, uId) => {
+		var cardIndex = state.properties[propKey].chartAxes[bIndex].fields.findIndex(
+			(obj) => obj.uId === uId
+		);
+		var card = state.properties[propKey].chartAxes[bIndex].fields[cardIndex];
+		console.log(cardIndex, card);
+		return {
+			cardIndex,
+			card,
+		};
+	};
+
 	switch (action.type) {
 		// ########################################################################################################################
 		// ########################################################################################################################
@@ -346,6 +358,63 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 				properties: {
 					[action.payload.propKey]: {
 						titleOptions: { generateTitle: { $set: action.payload.generateTitle } },
+					},
+				},
+			});
+
+		// ########################################
+		// Drag and Drop cards between dropzones
+
+		case "SORT_ITEM":
+			var dropIndex = findCardIndex(
+				action.payload.propKey,
+				action.payload.bIndex,
+				action.payload.dropUId
+			);
+			var dragObj = findCardObject(
+				action.payload.propKey,
+				action.payload.bIndex,
+				action.payload.dragUId
+			);
+
+			console.log(dragObj);
+
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						chartAxes: {
+							[action.payload.bIndex]: {
+								fields: {
+									$splice: [
+										[dragObj.cardIndex, 1],
+										[dropIndex, 0, dragObj.card],
+									],
+								},
+							},
+						},
+					},
+				},
+			});
+
+		case "REVERT_ITEM":
+			var dragObj = findCardObject(
+				action.payload.propKey,
+				action.payload.bIndex,
+				action.payload.uId
+			);
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						chartAxes: {
+							[action.payload.bIndex]: {
+								fields: {
+									$splice: [
+										[dragObj.cardIndex, 1],
+										[action.payload.originalIndex, 0, dragObj.card],
+									],
+								},
+							},
+						},
 					},
 				},
 			});

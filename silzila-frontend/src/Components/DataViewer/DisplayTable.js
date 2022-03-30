@@ -18,13 +18,13 @@ const DisplayTable = ({
 		let _fieldsData = [];
 		if (SampleRecords) {
 			var tableKeys = Object.keys(SampleRecords[0]);
-			var schema = tableRecords.recordsColumnType[dsId][table];
+			var dataType = tableRecords.recordsColumnType[dsId][table];
 
 			for (let i = 0; i < tableKeys.length; i++) {
 				_fieldsData.push({
 					fieldname: tableKeys[i],
 					displayname: tableKeys[i],
-					schema: schema.filter((sc) => sc.column_name === tableKeys[i])[0].data_type,
+					dataType: dataType.filter((sc) => sc.column_name === tableKeys[i])[0].data_type,
 					tableId: table,
 				});
 			}

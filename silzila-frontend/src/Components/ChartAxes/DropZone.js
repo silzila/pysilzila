@@ -19,6 +19,7 @@ const DropZone = ({
 
 	// dispatch
 	updateDropZoneItems,
+	moveItemChartProp,
 }) => {
 	const [, drop] = useDrop({
 		accept: "card",
@@ -54,6 +55,18 @@ const DropZone = ({
 			console.log(newFieldData);
 
 			updateDropZoneItems(propKey, bIndex, newFieldData, allowedNumbers);
+		} else if (item.bIndex !== bIndex) {
+			console.log("-------moving item from within------");
+
+			var newFieldData = JSON.parse(JSON.stringify(setPrefix(item, name, chartType)));
+			["type", "bIndex"].forEach((e) => delete newFieldData[e]);
+
+			// if (name == "Filter") {
+			//     setModalData(newFieldData);
+			//     setParams({ type: "moveItemChartProp", propKey, item_bIndex: item.bIndex, uId: item.uId, newFieldData, bIndex, allowedNumbers });
+			// } else {
+			// }
+			moveItemChartProp(propKey, item.bIndex, item.uId, newFieldData, bIndex, allowedNumbers);
 		}
 	};
 
@@ -120,6 +133,14 @@ const mapDispatchToProps = (dispatch) => {
 				editChartPropItem({
 					action: "update",
 					details: { propKey, bIndex, item, allowedNumbers },
+				})
+			),
+
+		moveItemChartProp: (propKey, fromBIndex, fromUID, item, toBIndex, allowedNumbers) =>
+			dispatch(
+				editChartPropItem({
+					action: "move",
+					details: { propKey, fromBIndex, fromUID, item, toBIndex, allowedNumbers },
 				})
 			),
 	};
