@@ -46,9 +46,6 @@ const BarChart = ({
 						overflow: "hidden",
 					}}
 					option={{
-						// TODO: Priority 5 - Add Legends
-						// Ask Prakash for any format in which legend should be added
-
 						legend: {},
 						tooltip: {},
 						dataset: {

@@ -251,7 +251,6 @@ const RelationshipDefiningComponent = ({
 				<div className="relationSelectSection">
 					<div className="relationPopoverSideHeading">Arrows</div>
 					<div className="relationArrowList">
-						{/* TODO: priority 1 - Filter arrows belonging to this relationship */}
 						{arrowsSubset.map((arrow, index) => {
 							return (
 								<div className="relationArrow" key={index}>
