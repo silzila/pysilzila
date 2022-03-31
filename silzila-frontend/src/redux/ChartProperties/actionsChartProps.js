@@ -1,5 +1,6 @@
 // ==============================================================
 // Chart Axes (left Column) CRUD Operations
+// ==============================================================
 
 export const addProp = (tabId, nextTileId, table, newTab, selectedDs, selectedTablesInDs) => {
 	if (newTab) {
@@ -183,4 +184,21 @@ export const revertAxes = (propKey, bIndex, uId, originalIndex) => {
 		type: "REVERT_ITEM",
 		payload: { propKey, bIndex, uId, originalIndex },
 	};
+};
+
+// ==============================================================
+// Chart Options (rightColumn)
+// ==============================================================
+
+export const changeChartOptionSelected = (propKey, chartOption) => {
+	console.log("CHANGE_CHART_OPTION");
+	return {
+		type: "CHANGE_CHART_OPTION",
+		payload: { propKey, chartOption },
+	};
+};
+
+export const setColorScheme = (propKey, color) => {
+	console.log("CHANGE_COLOR_SCHEME", propKey, color);
+	return { type: "CHANGE_COLOR_SCHEME", payload: { propKey, color } };
 };

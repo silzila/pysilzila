@@ -17,6 +17,9 @@ import funnelChartIcon from "../../assets/funnel.png";
 import roseChartIcon from "../../assets/rose_chart.svg";
 import scatterPlotIcon from "../../assets/scatter.svg";
 import ChartsInfo from "../ChartAxes/ChartsInfo2";
+import ChartControlObjects from "./ChartControlObjects";
+import ControlDetail from "./ControlDetail";
+import "./ChartOptions.css";
 
 const ChartControls = ({
 	//props
@@ -115,8 +118,8 @@ const ChartControls = ({
 	return (
 		<React.Fragment>
 			<div className="chartIconsContainer">{renderChartTypes}</div>
-			{/* <ControlList /> */}
-			{/* <ControlDetail /> */}
+			<ChartControlObjects />
+			<ControlDetail />
 		</React.Fragment>
 	);
 };

@@ -42,7 +42,7 @@ const MultiBar = ({
 	const RenderChart = () => {
 		return (
 			<ReactEcharts
-				theme="vintage"
+				theme={property.colorScheme}
 				style={{
 					padding: "1rem",
 					width: graphDimension.width,
@@ -50,7 +50,6 @@ const MultiBar = ({
 					overflow: "hidden",
 				}}
 				option={{
-					// Option
 					legend: {
 						orient: "vertical",
 						right: 10,
@@ -64,24 +63,6 @@ const MultiBar = ({
 					title: {
 						text: "Sample Title\nTesting",
 					},
-
-					// Option
-					// color: [
-					// 	"#c23531",
-					// 	"#2f4554",
-					// 	"#61a0a8",
-					// 	"#d48265",
-					// 	"#91c7ae",
-					// 	"#749f83",
-					// 	"#ca8622",
-					// 	"#bda29a",
-					// 	"#6e7074",
-					// 	"#546570",
-					// 	"#c4ccd3",
-					// ],
-
-					// Option
-					// backgroundColor: "#c23531",
 
 					tooltip: {},
 					dataset: {

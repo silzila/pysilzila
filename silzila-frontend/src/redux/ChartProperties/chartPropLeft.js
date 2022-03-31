@@ -36,11 +36,15 @@ const chartPropLeft = {
 				dspost: "s",
 			},
 
+			chartOptionSelected: "Colors",
+
 			titleOptions: {
 				fontSize: 28,
 				chartTitle: "",
 				generateTitle: "Auto",
 			},
+
+			colorScheme: "walden",
 		},
 	},
 
@@ -416,6 +420,23 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 							},
 						},
 					},
+				},
+			});
+
+		case "CHANGE_CHART_OPTION":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						chartOptionSelected: { $set: action.payload.chartOption },
+					},
+				},
+			});
+
+		case "CHANGE_COLOR_SCHEME":
+			console.log("color scheme changed", action.payload.propKey, action.payload.color);
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: { colorScheme: { $set: action.payload.color } },
 				},
 			});
 
