@@ -93,7 +93,7 @@ export const ColorSchemes = [
 	},
 	{
 		name: "vintage",
-		background: "rgba(255,255,255,1)",
+		background: "rgba(254,248,239,1)",
 		colors: [
 			"#d87c7c",
 			"#919e8b",

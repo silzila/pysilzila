@@ -42,6 +42,7 @@ const MultiBar = ({
 	const RenderChart = () => {
 		return (
 			<ReactEcharts
+				opts={{ renderer: "svg" }}
 				theme={property.colorScheme}
 				style={{
 					padding: "1rem",
@@ -50,20 +51,7 @@ const MultiBar = ({
 					overflow: "hidden",
 				}}
 				option={{
-					legend: {
-						orient: "vertical",
-						right: 10,
-						top: "center",
-						textStyle: {
-							color: "#ccc",
-							fontSize: "20px",
-						},
-					},
-
-					title: {
-						text: "Sample Title\nTesting",
-					},
-
+					legend: {},
 					tooltip: {},
 					dataset: {
 						dimensions: Object.keys(chartData[0]),

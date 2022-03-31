@@ -3,7 +3,7 @@ export const halloween = {
 	themeName: "halloween",
 	theme: {
 		seriesCnt: "4",
-		backgroundColor: "rgba(64,64,64,0.75)",
+		backgroundColor: "rgba(64,64,64,0.5)",
 		titleColor: "#ffaf51",
 		subtitleColor: "#eeeeee",
 		textColorShow: false,
