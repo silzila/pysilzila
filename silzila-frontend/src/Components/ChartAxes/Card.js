@@ -31,7 +31,6 @@ const Card = ({
 	revertAxes,
 	// chartPropUpdated,
 }) => {
-	console.log(axisTitle, field);
 	const originalIndex = chartProp.properties[propKey].chartAxes[bIndex].fields.findIndex(
 		(item) => item.uId === field.uId
 	);
@@ -142,7 +141,6 @@ const Card = ({
 		var options = [];
 		var options2 = [];
 
-		console.log(field.dataType, axisTitle);
 		if (axisTitle === "Measure") {
 			if (field.dataType === "date" || field.dataType === "timestamp") {
 				options = options.concat(Aggregators[axisTitle][field.dataType].aggr);
@@ -159,9 +157,6 @@ const Card = ({
 				options = options.concat(Aggregators[axisTitle][field.dataType]);
 			}
 		}
-
-		console.log(JSON.stringify(options, null, 4));
-		console.log(JSON.stringify(options2, null, 4));
 
 		return (
 			<Menu

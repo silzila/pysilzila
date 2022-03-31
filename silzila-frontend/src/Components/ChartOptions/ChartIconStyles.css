@@ -47,7 +47,7 @@
 	margin-top: 10px;
 	margin-bottom: 10px;
 	margin: auto;
-	line-height: 30px;
+	padding: 4px 0;
 	background-color: rgb(211, 211, 211);
 	border: 1px solid rgb(199, 199, 199);
 	border-radius: 4px;
@@ -60,7 +60,7 @@
 	margin-top: 10px;
 	margin-bottom: 10px;
 	margin: auto;
-	line-height: 30px;
+	padding: 4px 0;
 	border-radius: 4px;
 	cursor: pointer;
 

@@ -90,16 +90,14 @@
 .custom-option {
 	position: relative;
 	display: block;
-	padding: 8px 15px 8px 15px;
+	padding: 8px 5px 8px 5px;
 	font-size: 12px;
 	color: #3b3b3b;
-	/* line-height: 2rem; */
 	cursor: pointer;
 	transition: all 0.5s;
-	border-bottom: 1px solid lightgray;
+	border: 1px solid lightgray;
 	flex: 1;
 	background-color: rgb(238, 238, 238);
-	margin: 0 8px;
 }
 .custom-option:hover {
 	cursor: pointer;
@@ -109,8 +107,7 @@
 .custom-option.selectedColor {
 	margin: 0 8px 0 0;
 	border-left: 8px solid rgb(0, 123, 255);
-	padding: 8px 15px 8px 15px;
-	/* border-right: 5px solid #008080; */
+	padding: 8px 5px 8px 5px;
 }
 
 .color-name {

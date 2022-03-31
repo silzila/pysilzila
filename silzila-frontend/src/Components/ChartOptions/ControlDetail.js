@@ -10,6 +10,14 @@ const ControlDetail = ({ chartProp, tabTileProps }) => {
 		switch (chartProp.properties[propKey].chartOptionSelected) {
 			case "Colors":
 				return <ChartColors />;
+
+			default:
+				return (
+					<span>
+						{chartProp.properties[propKey].chartOptionSelected} properties Under
+						Construction
+					</span>
+				);
 		}
 	};
 	return (

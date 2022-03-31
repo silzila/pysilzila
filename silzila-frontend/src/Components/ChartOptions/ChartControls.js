@@ -55,6 +55,9 @@ const ChartControls = ({
 					keepOldData(propKey, true);
 					return oldChartAxes;
 				}
+
+			default:
+				return oldChartAxes;
 		}
 	};
 

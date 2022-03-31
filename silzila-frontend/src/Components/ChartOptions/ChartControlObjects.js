@@ -44,6 +44,9 @@ const ChartControlObjects = ({
 						</div>
 					);
 				});
+
+			default:
+				return <span> under construction</span>;
 		}
 	};
 

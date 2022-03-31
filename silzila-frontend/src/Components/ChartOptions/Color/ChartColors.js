@@ -1,3 +1,4 @@
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { setColorScheme } from "../../../redux/ChartProperties/actionsChartProps";
@@ -16,43 +17,39 @@ const ChartColors = ({
 	const [selectedMenu, setSelectedMenu] = useState(chartProp.properties[propKey].colorScheme);
 	console.log(selectedMenu);
 
-	const resetSelection = (e, data_value) => {
-		if (!e.target.classList.contains("selectedColor")) {
-			document
-				.querySelector(".custom-option.selectedColor")
-				.classList.remove("selectedColor");
-			e.target.classList.add("selectedColor");
-
-			setSelectedMenu(data_value);
-			setColorScheme(propKey, data_value);
-		}
+	const resetSelection = (data_value) => {
+		console.log(data_value);
+		setSelectedMenu(data_value);
+		setColorScheme(propKey, data_value);
 	};
 
 	return (
 		<div className="optionsInfo">
 			<div className="optionDescription">COLOR SCHEME:</div>
 
-			<div
-				className="custom-select-wrapper"
-				onClick={() => {
-					document.querySelector(".custom-select-dd").classList.toggle("open");
-				}}
-			>
-				<div className="custom-select-dd">
-					<div className="custom-select__trigger">
-						{selectedMenu}
-						<div className="arrow"></div>
-					</div>
-					<div className="custom-options">
-						{ColorSchemes.map((item) => {
-							return (
+			<FormControl fullWidth size="small" style={{ fontSize: "12px", borderRadius: "4px" }}>
+				<Select
+					// label="Color Theme"
+					labelId="selectColorTheme"
+					value={selectedMenu}
+					variant="outlined"
+					onChange={(e) => {
+						console.log(e.target.value);
+						resetSelection(e.target.value);
+					}}
+					sx={{ fontSize: "14px", margin: "0 1rem" }}
+				>
+					{ColorSchemes.map((item) => {
+						return (
+							<MenuItem
+								value={item.name}
+								key={item.name}
+								sx={{
+									padding: "2px 10px",
+								}}
+							>
 								<div
-									className={
-										item.name === selectedMenu
-											? "custom-option selectedColor"
-											: "custom-option"
-									}
-									onClick={(e) => resetSelection(e, item.name)}
+									className="custom-option"
 									style={{
 										backgroundColor: item.background,
 										color: item.dark ? "white" : "#3b3b3b",
@@ -68,16 +65,17 @@ const ChartColors = ({
 														height: "8px",
 														background: color,
 													}}
+													key={`${item.name}_${color}`}
 												></div>
 											);
 										})}
 									</div>
 								</div>
-							);
-						})}
-					</div>
-				</div>
-			</div>
+							</MenuItem>
+						);
+					})}
+				</Select>
+			</FormControl>
 		</div>
 	);
 };
