@@ -39,6 +39,8 @@ const ChartAxes = ({
 			console.log(minReq);
 			if (minReq) {
 				serverCall = true;
+			} else {
+				updateChartData(propKey, "");
 			}
 		}
 
@@ -63,13 +65,11 @@ const ChartAxes = ({
 
 		console.log(minReqMet);
 
-		// if (chartProp.properties[propKey].chartType === "bar") {
 		if (minReqMet[1] === true && minReqMet[2] === true) {
 			return true;
 		} else {
 			return false;
 		}
-		// }
 	};
 
 	const getChartData = async (axesValues) => {

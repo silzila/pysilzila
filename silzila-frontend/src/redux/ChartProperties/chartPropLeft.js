@@ -35,6 +35,7 @@ const chartPropLeft = {
 			selectedTable: {
 				dspost: "s",
 			},
+			chartData: "",
 
 			chartOptionSelected: "Colors",
 

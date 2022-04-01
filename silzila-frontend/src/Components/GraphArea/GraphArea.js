@@ -13,6 +13,10 @@ import MultiBar from "../Charts/MultiBarChart";
 import StepLine from "../Charts/StepLine";
 import { setChartTitle, setGenerateTitle } from "../../redux/ChartProperties/actionsChartProps";
 import ChartThemes from "../ChartThemes/ChartThemes";
+import CodeIcon from "@mui/icons-material/Code";
+import TimelineIcon from "@mui/icons-material/Timeline";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import { github, googlecode, docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 const GraphArea = ({
 	// state
@@ -27,6 +31,8 @@ const GraphArea = ({
 
 	const [graphDimension, setGraphDimension] = useState({});
 	const [editTitle, setEditTitle] = useState(false);
+
+	const [showSqlCode, setShowSqlCode] = useState(false);
 
 	const graphDimensionCompute = () => {
 		const height = document.getElementById("graphContainer").clientHeight;
@@ -152,6 +158,23 @@ const GraphArea = ({
 		setEditTitle(false);
 	};
 
+	const ShowFormattedQuery = () => {
+		var query = chartProp.properties[propKey].chartData?.query;
+
+		return (
+			<span>
+				<SyntaxHighlighter
+					className="syntaxHighlight"
+					language="sql"
+					style={github}
+					showLineNumbers={true}
+				>
+					{query}
+				</SyntaxHighlighter>
+			</span>
+		);
+	};
+
 	return (
 		<div className="centerColumn">
 			<div className="graphTitleAndEdit">
@@ -176,19 +199,48 @@ const GraphArea = ({
 						/>
 					</form>
 				) : (
+					<>
+						<div
+							className="graphTitle"
+							style={{
+								fontSize: chartProp.properties[propKey].titleOptions.fontSize,
+							}}
+							onDoubleClick={() => editTitleText()}
+							title="Double click to set title manually"
+						>
+							{chartProp.properties[propKey].titleOptions.chartTitle}
+						</div>
+					</>
+				)}
+				{showSqlCode ? (
 					<div
-						className="graphTitle"
-						style={{ fontSize: chartProp.properties[propKey].titleOptions.fontSize }}
-						onDoubleClick={() => editTitleText()}
-						title="Double click to set title manually"
+						style={{
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "center",
+							hover: { cursor: "pointer" },
+						}}
+						onClick={() => setShowSqlCode(false)}
 					>
-						{chartProp.properties[propKey].titleOptions.chartTitle}
+						<TimelineIcon />
+					</div>
+				) : (
+					<div
+						style={{
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "center",
+							hover: { cursor: "pointer" },
+						}}
+						onClick={() => setShowSqlCode(true)}
+					>
+						<CodeIcon />
 					</div>
 				)}
 			</div>
 
 			<div id="graphContainer" className="graphContainer">
-				{chartDisplayed()}
+				{showSqlCode ? <ShowFormattedQuery /> : chartDisplayed()}
 			</div>
 			<ChartThemes />
 		</div>

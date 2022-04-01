@@ -55,6 +55,9 @@
 	overflow: hidden;
 	background-color: #fff;
 }
+.syntaxHighlight {
+	text-align: left;
+}
 .rightColumn {
 	width: 16rem;
 	background-color: #eee;
