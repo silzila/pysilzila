@@ -71,6 +71,7 @@
 	font-weight: normal;
 	cursor: move;
 	font-weight: 600;
+	z-index: 2;
 }
 
 .tableHeadingsSmall {

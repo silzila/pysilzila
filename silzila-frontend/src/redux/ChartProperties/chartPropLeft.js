@@ -45,7 +45,7 @@ const chartPropLeft = {
 				generateTitle: "Auto",
 			},
 
-			colorScheme: "walden",
+			colorScheme: "essos",
 		},
 	},
 

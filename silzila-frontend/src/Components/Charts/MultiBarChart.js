@@ -15,8 +15,6 @@ const MultiBar = ({
 	let chartData = property.chartData ? property.chartData.result : "";
 	console.log(chartData, "+++++ chartData +++++");
 
-	console.log(chartData[0]);
-
 	var seriesObj = {
 		type: "bar",
 		stack: "",
@@ -36,8 +34,6 @@ const MultiBar = ({
 			setSeriesData(seriesDataTemp);
 		}
 	}, [chartData]);
-
-	console.log(seriesData);
 
 	const RenderChart = () => {
 		return (

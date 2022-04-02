@@ -14,9 +14,11 @@ import StepLine from "../Charts/StepLine";
 import { setChartTitle, setGenerateTitle } from "../../redux/ChartProperties/actionsChartProps";
 import ChartThemes from "../ChartThemes/ChartThemes";
 import CodeIcon from "@mui/icons-material/Code";
-import TimelineIcon from "@mui/icons-material/Timeline";
+import BarChartIcon from "@mui/icons-material/BarChart";
+import OpenInFullIcon from "@mui/icons-material/OpenInFull";
 import SyntaxHighlighter from "react-syntax-highlighter";
-import { github, googlecode, docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { a11yLight } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import CloseRounded from "@mui/icons-material/CloseRounded";
 
 const GraphArea = ({
 	// state
@@ -30,9 +32,11 @@ const GraphArea = ({
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 
 	const [graphDimension, setGraphDimension] = useState({});
+	const [graphDimension2, setGraphDimension2] = useState({});
 	const [editTitle, setEditTitle] = useState(false);
 
 	const [showSqlCode, setShowSqlCode] = useState(false);
+	const [fullScreen, setFullScreen] = useState(false);
 
 	const graphDimensionCompute = () => {
 		const height = document.getElementById("graphContainer").clientHeight;
@@ -44,40 +48,113 @@ const GraphArea = ({
 		});
 	};
 
+	const graphDimensionCompute2 = () => {
+		const height = document.getElementById("graphFullScreen").clientHeight;
+		const width = document.getElementById("graphFullScreen").clientWidth;
+		setGraphDimension2({
+			height,
+			width,
+		});
+	};
+
 	useLayoutEffect(() => {
 		function updateSize() {
 			graphDimensionCompute();
+			if (fullScreen) graphDimensionCompute2();
 		}
 		window.addEventListener("resize", updateSize);
 		updateSize();
 		return () => window.removeEventListener("resize", updateSize);
-	}, []);
+	}, [fullScreen]);
+
+	const removeFullScreen = (e) => {
+		console.log(e.keyCode);
+		if (e.keyCode === 27) {
+			setFullScreen(false);
+		}
+	};
 
 	const chartDisplayed = () => {
+		console.log("ChartDisplayed", graphDimension2, graphDimension);
 		switch (chartProp.properties[propKey].chartType) {
 			case "bar":
-				return <SimpleBar propKey={propKey} graphDimension={graphDimension} />;
+				return (
+					<SimpleBar
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+					/>
+				);
 
 			case "multibar":
-				return <MultiBar propKey={propKey} graphDimension={graphDimension} />;
+				return (
+					<MultiBar
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+					/>
+				);
 			case "scatterPlot":
-				return <ScatterChart propKey={propKey} graphDimension={graphDimension} />;
+				return (
+					<ScatterChart
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+					/>
+				);
 			case "area":
-				return <AreaChart propKey={propKey} graphDimension={graphDimension} />;
+				return (
+					<AreaChart
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+					/>
+				);
 			case "funnel":
-				return <FunnelChart propKey={propKey} graphDimension={graphDimension} />;
+				return (
+					<FunnelChart
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+					/>
+				);
 			case "stacked bar":
-				return <StackedBar propKey={propKey} graphDimension={graphDimension} />;
+				return (
+					<StackedBar
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+					/>
+				);
 			case "pie":
-				return <PieChart propKey={propKey} graphDimension={graphDimension} />;
+				return (
+					<PieChart
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+					/>
+				);
 			case "donut":
-				return <DoughnutChart propKey={propKey} graphDimension={graphDimension} />;
+				return (
+					<DoughnutChart
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+					/>
+				);
 			case "line":
-				return <LineChart propKey={propKey} graphDimension={graphDimension} />;
+				return (
+					<LineChart
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+					/>
+				);
 			case "rose":
-				return <RoseChart propKey={propKey} graphDimension={graphDimension} />;
+				return (
+					<RoseChart
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+					/>
+				);
 			case "step line":
-				return <StepLine propKey={propKey} graphDimension={graphDimension} />;
+				return (
+					<StepLine
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+					/>
+				);
 
 			default:
 				return <h2>Work in progress</h2>;
@@ -162,16 +239,14 @@ const GraphArea = ({
 		var query = chartProp.properties[propKey].chartData?.query;
 
 		return (
-			<span>
-				<SyntaxHighlighter
-					className="syntaxHighlight"
-					language="sql"
-					style={github}
-					showLineNumbers={true}
-				>
-					{query}
-				</SyntaxHighlighter>
-			</span>
+			<SyntaxHighlighter
+				className="syntaxHighlight"
+				language="sql"
+				style={a11yLight}
+				showLineNumbers={true}
+			>
+				{query ? query : null}
+			</SyntaxHighlighter>
 		);
 	};
 
@@ -212,37 +287,51 @@ const GraphArea = ({
 						</div>
 					</>
 				)}
+
+				{/* TODO: Priority 5 - Add Tooltip
+				When mouseover, show description of MUI images */}
 				{showSqlCode ? (
-					<div
-						style={{
-							display: "flex",
-							alignItems: "center",
-							justifyContent: "center",
-							hover: { cursor: "pointer" },
-						}}
-						onClick={() => setShowSqlCode(false)}
-					>
-						<TimelineIcon />
+					<div className="graphAreaIcons" onClick={() => setShowSqlCode(false)}>
+						{/* Tooltip: view graph */}
+						<BarChartIcon />
 					</div>
 				) : (
-					<div
-						style={{
-							display: "flex",
-							alignItems: "center",
-							justifyContent: "center",
-							hover: { cursor: "pointer" },
-						}}
-						onClick={() => setShowSqlCode(true)}
-					>
+					<div className="graphAreaIcons" onClick={() => setShowSqlCode(true)}>
+						{/* Tooltip: SQL Code */}
 						<CodeIcon />
 					</div>
 				)}
+
+				<div className="graphAreaIcons" onClick={() => setFullScreen(true)}>
+					{/* Tooltip: Show full screen */}
+					<OpenInFullIcon />
+				</div>
 			</div>
 
 			<div id="graphContainer" className="graphContainer">
 				{showSqlCode ? <ShowFormattedQuery /> : chartDisplayed()}
 			</div>
 			<ChartThemes />
+			{fullScreen ? (
+				<div
+					tabIndex="0"
+					id="graphFullScreen"
+					className="graphFullScreen"
+					onKeyDown={(e) => {
+						// TODO: Priority 5 - Escape key recognition
+						// Happens only after user clicks anywhere inside this div.
+						// Must happen as soon as this is open. Bring focus here
+						console.log("Key pressed");
+						removeFullScreen(e);
+					}}
+				>
+					{chartDisplayed()}
+					<CloseRounded
+						style={{ margin: "0.25rem", display: "inline" }}
+						onClick={() => setFullScreen(false)}
+					/>
+				</div>
+			) : null}
 		</div>
 	);
 };
