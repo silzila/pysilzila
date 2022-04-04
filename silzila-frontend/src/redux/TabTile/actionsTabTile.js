@@ -7,9 +7,14 @@
 //  ***************************************************************************************************************************
 
 import {
-	removeMultiplePropLeft,
+	addControl,
+	removeChartControls,
+	removeMultipleChartControls,
+} from "../ChartProperties/actionsChartControls";
+import {
+	removeMultipleChartProperties,
 	addProp,
-	removeChartPropLeft,
+	removeChartProperties,
 } from "../ChartProperties/actionsChartProperties";
 
 //  *************************************************************
@@ -232,7 +237,8 @@ export const actionsToRemoveTab = ({ tabName, tabId, tabToRemoveIndex, newObj })
 	return (dispatch) => {
 		dispatch(removeTab(tabName, tabId, tabToRemoveIndex));
 		dispatch(removeTilesOfTab(tabName, tabId));
-		dispatch(removeMultiplePropLeft(tabId));
+		dispatch(removeMultipleChartProperties(tabId));
+		dispatch(removeMultipleChartControls(tabId));
 		if (newObj) {
 			dispatch(updateSelectedTab(newObj.tabName, newObj.tabId));
 			dispatch(
@@ -275,11 +281,12 @@ export const actionsToAddTile = ({
 }) => {
 	let tileName = `Tile - ${nextTileId}`;
 	return (dispatch) => {
+		dispatch(addProp(tabId, nextTileId, table, newTab, selectedDs, selectedTablesInDs));
+		dispatch(addControl(tabId, nextTileId, newTab));
 		dispatch(addTile(tabId, nextTileId, newTab));
 		dispatch(updateNextTileId(nextTileId, tabId));
 		dispatch(updateSelectedTile(tileName, nextTileId, nextTileId + 1));
 		dispatch(updateSelectedTileToTab(tabId, tileName, nextTileId));
-		dispatch(addProp(tabId, nextTileId, table, newTab, selectedDs, selectedTablesInDs));
 		dispatch(showDashBoard(false));
 	};
 };
@@ -321,7 +328,8 @@ export const actionsToRemoveTile = ({ tabId, tileId, tileIndex }) => {
 	var propKey = `${tabId}.${tileId}`;
 	return (dispatch) => {
 		dispatch(removeTile(tabId, tileId, tileIndex));
-		dispatch(removeChartPropLeft(tabId, tileId, propKey, tileIndex));
+		dispatch(removeChartProperties(tabId, tileId, propKey, tileIndex));
+		dispatch(removeChartControls(tabId, tileId, propKey, tileIndex));
 	};
 };
 
