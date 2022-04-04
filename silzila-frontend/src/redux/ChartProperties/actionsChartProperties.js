@@ -124,13 +124,6 @@ export const editChartPropItem = ({ action, details }) => {
 	};
 };
 
-export const updateChartData = (propKey, chartData) => {
-	return {
-		type: "UPDATE_CHART_DATA",
-		payload: { propKey, chartData },
-	};
-};
-
 export const changeChartType = (propKey, chartType) => {
 	console.log("CHANGE_CHART_TYPE", propKey, chartType);
 	return {
@@ -196,9 +189,4 @@ export const changeChartOptionSelected = (propKey, chartOption) => {
 		type: "CHANGE_CHART_OPTION",
 		payload: { propKey, chartOption },
 	};
-};
-
-export const setColorScheme = (propKey, color) => {
-	console.log("CHANGE_COLOR_SCHEME", propKey, color);
-	return { type: "CHANGE_COLOR_SCHEME", payload: { propKey, color } };
 };

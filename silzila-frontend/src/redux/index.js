@@ -6,8 +6,9 @@ import DataSetReducer from "./Dataset/dataset";
 import tabStateReducer from "./TabTile/tabState";
 import tileStateReducer from "./TabTile/tileState";
 import tabTilePropsReducer from "./TabTile/tabTileProps";
-import chartPropLeftReducer from "./ChartProperties/chartPropLeft";
 import SampleRecordsReducer from "./SampleTableRecords/sampleTableRecords";
+import chartPropertiesState from "./ChartProperties/chartProperties";
+import chartControlsReducer from "./ChartProperties/chartControls";
 
 const allReducers = combineReducers({
 	isLogged: loggedReducer,
@@ -17,7 +18,8 @@ const allReducers = combineReducers({
 	tileState: tileStateReducer,
 	tabTileProps: tabTilePropsReducer,
 
-	chartPropsLeft: chartPropLeftReducer,
+	chartProperties: chartPropertiesState,
+	chartControls: chartControlsReducer,
 	sampleRecords: SampleRecordsReducer,
 });
 

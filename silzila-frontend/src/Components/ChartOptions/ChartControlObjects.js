@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { changeChartOptionSelected } from "../../redux/ChartProperties/actionsChartProps";
+import { changeChartOptionSelected } from "../../redux/ChartProperties/actionsChartProperties";
 
 const ChartControlObjects = ({
 	// state
@@ -58,7 +58,7 @@ const ChartControlObjects = ({
 };
 
 const mapStateToProps = (state) => {
-	return { chartProp: state.chartPropsLeft, tabTileProps: state.tabTileProps };
+	return { chartProp: state.chartProperties, tabTileProps: state.tabTileProps };
 };
 
 const mapDispatchToProps = (dispatch) => {

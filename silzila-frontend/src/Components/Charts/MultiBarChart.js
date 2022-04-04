@@ -8,9 +8,10 @@ const MultiBar = ({
 	graphDimension,
 
 	//state
-	chartProp,
+	chartControlState,
+	chartProperties,
 }) => {
-	var property = chartProp.properties[propKey];
+	var property = chartControlState.properties[propKey];
 
 	let chartData = property.chartData ? property.chartData.result : "";
 	console.log(chartData, "+++++ chartData +++++");
@@ -47,6 +48,7 @@ const MultiBar = ({
 					overflow: "hidden",
 				}}
 				option={{
+					// animation: false,
 					legend: {},
 					tooltip: {},
 					dataset: {
@@ -65,7 +67,8 @@ const MultiBar = ({
 };
 const mapStateToProps = (state) => {
 	return {
-		chartProp: state.chartPropsLeft,
+		chartProperties: state.chartProperties,
+		chartControlState: state.chartControls,
 	};
 };
 

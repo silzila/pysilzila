@@ -54,7 +54,7 @@ const StepLine = ({
 };
 const mapStateToProps = (state) => {
 	return {
-		chartProp: state.chartPropsLeft,
+		chartProp: state.chartProperties,
 	};
 };
 

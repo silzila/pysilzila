@@ -5,7 +5,7 @@ import ChartsInfo from "./ChartsInfo2";
 import "./ChartAxes.css";
 import DropZone from "./DropZone";
 import FetchData from "../../ServerCall/FetchData";
-import { updateChartData } from "../../redux/ChartProperties/actionsChartProps";
+import { updateChartData } from "../../redux/ChartProperties/actionsChartControls";
 import LoadingPopover from "../CommonFunctions/PopOverComponents/LoadingPopover";
 
 const ChartAxes = ({
@@ -162,7 +162,7 @@ const mapStateToProps = (state) => {
 	return {
 		tabTileProps: state.tabTileProps,
 		userFilterGroup: state.userFilterGroup,
-		chartProp: state.chartPropsLeft,
+		chartProp: state.chartProperties,
 		token: state.isLogged.access_token,
 	};
 };

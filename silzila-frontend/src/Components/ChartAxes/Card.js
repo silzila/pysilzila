@@ -7,7 +7,7 @@ import {
 	editChartPropItem,
 	revertAxes,
 	sortAxes,
-} from "../../redux/ChartProperties/actionsChartProps";
+} from "../../redux/ChartProperties/actionsChartProperties";
 import { Divider, Menu, MenuItem } from "@mui/material";
 import Aggregators, { AggregatorKeys } from "./Aggregators";
 import { useDrag, useDrop } from "react-dnd";
@@ -259,7 +259,7 @@ const Card = ({
 const mapStateToProps = (state) => {
 	return {
 		tabTileProps: state.tabTileProps,
-		chartProp: state.chartPropsLeft,
+		chartProp: state.chartProperties,
 		// token: state.isLogged.access_token,
 	};
 };

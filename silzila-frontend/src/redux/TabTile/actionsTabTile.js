@@ -10,7 +10,7 @@ import {
 	removeMultiplePropLeft,
 	addProp,
 	removeChartPropLeft,
-} from "../ChartProperties/actionsChartProps";
+} from "../ChartProperties/actionsChartProperties";
 
 //  *************************************************************
 //  to tab state reducer

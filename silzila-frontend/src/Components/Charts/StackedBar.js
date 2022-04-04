@@ -7,16 +7,17 @@ const StackedBar = ({
 	propKey,
 	graphDimension,
 	//state
-	chartProp,
+	chartControlState,
+	chartProperties,
 }) => {
-	var property = chartProp.properties[propKey];
+	var property = chartControlState.properties[propKey];
 
 	let chartData = property.chartData ? property.chartData.result : "";
 	console.log(chartData, "+++++ chartData +++++");
 
 	var seriesObj = {
 		type: "bar",
-		stack: property?.chartAxes[1]?.fields[0]?.fieldname,
+		stack: chartProperties.properties[propKey]?.chartAxes[1]?.fields[0]?.fieldname,
 		emphasis: {
 			focus: "series",
 		},
@@ -39,6 +40,7 @@ const StackedBar = ({
 	const RenderChart = () => {
 		return (
 			<ReactEcharts
+				theme={property.colorScheme}
 				style={{
 					padding: "1rem",
 					width: graphDimension.width,
@@ -64,7 +66,8 @@ const StackedBar = ({
 };
 const mapStateToProps = (state) => {
 	return {
-		chartProp: state.chartPropsLeft,
+		chartProperties: state.chartProperties,
+		chartControlState: state.chartControls,
 	};
 };
 

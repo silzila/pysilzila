@@ -37,7 +37,7 @@ const RoseChart = ({
 };
 const mapStateToProps = (state) => {
 	return {
-		chartProp: state.chartPropsLeft,
+		chartProp: state.chartProperties,
 	};
 };
 

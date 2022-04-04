@@ -11,7 +11,10 @@ import ScatterChart from "../Charts/ScatterChart";
 import StackedBar from "../Charts/StackedBar";
 import MultiBar from "../Charts/MultiBarChart";
 import StepLine from "../Charts/StepLine";
-import { setChartTitle, setGenerateTitle } from "../../redux/ChartProperties/actionsChartProps";
+import {
+	setChartTitle,
+	setGenerateTitle,
+} from "../../redux/ChartProperties/actionsChartProperties";
 import ChartThemes from "../ChartThemes/ChartThemes";
 import CodeIcon from "@mui/icons-material/Code";
 import BarChartIcon from "@mui/icons-material/BarChart";
@@ -23,7 +26,8 @@ import CloseRounded from "@mui/icons-material/CloseRounded";
 const GraphArea = ({
 	// state
 	tabTileProps,
-	chartProp,
+	chartProperties,
+	chartControlState,
 
 	// dispatch
 	setChartTitle,
@@ -75,16 +79,7 @@ const GraphArea = ({
 	};
 
 	const chartDisplayed = () => {
-		console.log("ChartDisplayed", graphDimension2, graphDimension);
-		switch (chartProp.properties[propKey].chartType) {
-			case "bar":
-				return (
-					<SimpleBar
-						propKey={propKey}
-						graphDimension={fullScreen ? graphDimension2 : graphDimension}
-					/>
-				);
-
+		switch (chartProperties.properties[propKey].chartType) {
 			case "multibar":
 				return (
 					<MultiBar
@@ -92,27 +87,7 @@ const GraphArea = ({
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
 					/>
 				);
-			case "scatterPlot":
-				return (
-					<ScatterChart
-						propKey={propKey}
-						graphDimension={fullScreen ? graphDimension2 : graphDimension}
-					/>
-				);
-			case "area":
-				return (
-					<AreaChart
-						propKey={propKey}
-						graphDimension={fullScreen ? graphDimension2 : graphDimension}
-					/>
-				);
-			case "funnel":
-				return (
-					<FunnelChart
-						propKey={propKey}
-						graphDimension={fullScreen ? graphDimension2 : graphDimension}
-					/>
-				);
+
 			case "stacked bar":
 				return (
 					<StackedBar
@@ -120,41 +95,63 @@ const GraphArea = ({
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
 					/>
 				);
-			case "pie":
-				return (
-					<PieChart
-						propKey={propKey}
-						graphDimension={fullScreen ? graphDimension2 : graphDimension}
-					/>
-				);
-			case "donut":
-				return (
-					<DoughnutChart
-						propKey={propKey}
-						graphDimension={fullScreen ? graphDimension2 : graphDimension}
-					/>
-				);
-			case "line":
-				return (
-					<LineChart
-						propKey={propKey}
-						graphDimension={fullScreen ? graphDimension2 : graphDimension}
-					/>
-				);
-			case "rose":
-				return (
-					<RoseChart
-						propKey={propKey}
-						graphDimension={fullScreen ? graphDimension2 : graphDimension}
-					/>
-				);
-			case "step line":
-				return (
-					<StepLine
-						propKey={propKey}
-						graphDimension={fullScreen ? graphDimension2 : graphDimension}
-					/>
-				);
+
+			// case "scatterPlot":
+			// 	return (
+			// 		<ScatterChart
+			// 			propKey={propKey}
+			// 			graphDimension={fullScreen ? graphDimension2 : graphDimension}
+			// 		/>
+			// 	);
+			// case "area":
+			// 	return (
+			// 		<AreaChart
+			// 			propKey={propKey}
+			// 			graphDimension={fullScreen ? graphDimension2 : graphDimension}
+			// 		/>
+			// 	);
+			// case "funnel":
+			// 	return (
+			// 		<FunnelChart
+			// 			propKey={propKey}
+			// 			graphDimension={fullScreen ? graphDimension2 : graphDimension}
+			// 		/>
+			// 	);
+			// case "pie":
+			// 	return (
+			// 		<PieChart
+			// 			propKey={propKey}
+			// 			graphDimension={fullScreen ? graphDimension2 : graphDimension}
+			// 		/>
+			// 	);
+			// case "donut":
+			// 	return (
+			// 		<DoughnutChart
+			// 			propKey={propKey}
+			// 			graphDimension={fullScreen ? graphDimension2 : graphDimension}
+			// 		/>
+			// 	);
+			// case "line":
+			// 	return (
+			// 		<LineChart
+			// 			propKey={propKey}
+			// 			graphDimension={fullScreen ? graphDimension2 : graphDimension}
+			// 		/>
+			// 	);
+			// case "rose":
+			// 	return (
+			// 		<RoseChart
+			// 			propKey={propKey}
+			// 			graphDimension={fullScreen ? graphDimension2 : graphDimension}
+			// 		/>
+			// 	);
+			// case "step line":
+			// 	return (
+			// 		<StepLine
+			// 			propKey={propKey}
+			// 			graphDimension={fullScreen ? graphDimension2 : graphDimension}
+			// 		/>
+			// 	);
 
 			default:
 				return <h2>Work in progress</h2>;
@@ -166,8 +163,8 @@ const GraphArea = ({
 	// ############################################
 
 	const graphTitle = () => {
-		if (chartProp.properties[propKey].titleOptions.generateTitle === "Auto") {
-			const chartAxes = chartProp.properties[propKey].chartAxes;
+		if (chartProperties.properties[propKey].titleOptions.generateTitle === "Auto") {
+			const chartAxes = chartProperties.properties[propKey].chartAxes;
 
 			var title = "";
 			if (chartAxes[2].fields.length > 0) {
@@ -206,8 +203,8 @@ const GraphArea = ({
 	useEffect(() => {
 		graphTitle();
 	}, [
-		chartProp.properties[propKey].chartAxes,
-		chartProp.properties[propKey].titleOptions.generateTitle,
+		chartProperties.properties[propKey].chartAxes,
+		chartProperties.properties[propKey].titleOptions.generateTitle,
 	]);
 
 	// ############################################
@@ -215,15 +212,15 @@ const GraphArea = ({
 	// ############################################
 
 	const editTitleText = () => {
-		// if (chartProp.properties[propKey].generateTitle === "Manual") {
+		// if (chartProperties.properties[propKey].generateTitle === "Manual") {
 		setEditTitle(true);
 		setGenerateTitleToStore(propKey, "Manual");
 		// }
 	};
 
 	useEffect(() => {
-		setTitleText(chartProp.properties[propKey].titleOptions.chartTitle);
-	}, [chartProp.properties[propKey].titleOptions.chartTitle]);
+		setTitleText(chartProperties.properties[propKey].titleOptions.chartTitle);
+	}, [chartProperties.properties[propKey].titleOptions.chartTitle]);
 
 	const [inputTitleText, setTitleText] = useState("");
 	const handleTitleChange = (e) => {
@@ -236,7 +233,7 @@ const GraphArea = ({
 	};
 
 	const ShowFormattedQuery = () => {
-		var query = chartProp.properties[propKey].chartData?.query;
+		var query = chartControlState.properties[propKey].chartData?.query;
 
 		return (
 			<SyntaxHighlighter
@@ -264,7 +261,7 @@ const GraphArea = ({
 						<input
 							autoFocus
 							style={{
-								fontSize: chartProp.properties[propKey].titleOptions.fontSize,
+								fontSize: chartProperties.properties[propKey].titleOptions.fontSize,
 							}}
 							type="text"
 							className="editTitle"
@@ -278,12 +275,12 @@ const GraphArea = ({
 						<div
 							className="graphTitle"
 							style={{
-								fontSize: chartProp.properties[propKey].titleOptions.fontSize,
+								fontSize: chartProperties.properties[propKey].titleOptions.fontSize,
 							}}
 							onDoubleClick={() => editTitleText()}
 							title="Double click to set title manually"
 						>
-							{chartProp.properties[propKey].titleOptions.chartTitle}
+							{chartProperties.properties[propKey].titleOptions.chartTitle}
 						</div>
 					</>
 				)}
@@ -339,7 +336,8 @@ const GraphArea = ({
 const mapStateToProps = (state) => {
 	return {
 		tabTileProps: state.tabTileProps,
-		chartProp: state.chartPropsLeft,
+		chartControlState: state.chartControls,
+		chartProperties: state.chartProperties,
 	};
 };
 

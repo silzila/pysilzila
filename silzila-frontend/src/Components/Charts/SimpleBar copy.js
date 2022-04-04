@@ -43,7 +43,6 @@ const BarChart = ({
 	// }
 	// console.log(ser);
 
-
 	// const dimension = Object.keys(data.result[0]);
 	// // let len = dimension.length - 1;
 	// // console.log(data);
@@ -125,7 +124,7 @@ const BarChart = ({
 };
 const mapStateToProps = (state) => {
 	return {
-		chartProp: state.chartPropsLeft,
+		chartProp: state.chartProperties,
 	};
 };
 

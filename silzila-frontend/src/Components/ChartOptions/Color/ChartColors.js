@@ -1,7 +1,7 @@
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { setColorScheme } from "../../../redux/ChartProperties/actionsChartProps";
+import { setColorScheme } from "../../../redux/ChartProperties/actionsChartControls";
 import { ColorSchemes } from "./ColorScheme";
 
 const ChartColors = ({
@@ -82,7 +82,7 @@ const ChartColors = ({
 
 const mapStateToProps = (state) => {
 	return {
-		chartProp: state.chartPropsLeft,
+		chartProp: state.chartControls,
 		tabTileProps: state.tabTileProps,
 	};
 };

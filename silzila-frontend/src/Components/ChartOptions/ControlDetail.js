@@ -28,7 +28,7 @@ const ControlDetail = ({ chartProp, tabTileProps }) => {
 };
 const mapStateToProps = (state) => {
 	return {
-		chartProp: state.chartPropsLeft,
+		chartProp: state.chartProperties,
 		tabTileProps: state.tabTileProps,
 	};
 };

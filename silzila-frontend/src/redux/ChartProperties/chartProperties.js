@@ -1,6 +1,9 @@
+// This file is used for storing all data related to properties of charts that
+// need not result in rerender of the chart immediately
+
 import update from "immutability-helper";
 
-const chartPropLeft = {
+const chartProperties = {
 	properties: {
 		1.1: {
 			// General Tab Info
@@ -35,24 +38,20 @@ const chartPropLeft = {
 			selectedTable: {
 				dspost: "s",
 			},
-			chartData: "",
-
-			chartOptionSelected: "Colors",
 
 			titleOptions: {
 				fontSize: 28,
 				chartTitle: "",
 				generateTitle: "Auto",
 			},
-
-			colorScheme: "essos",
+			chartOptionSelected: "Colors",
 		},
 	},
 
 	propList: { 1: ["1.1"] },
 };
 
-const chartPropLeftReducer = (state = chartPropLeft, action) => {
+const chartPropertiesState = (state = chartProperties, action) => {
 	const findCardIndex = (propKey, fromBIndex, fromUid) => {
 		var removeIndex = state.properties[propKey].chartAxes[fromBIndex].fields.findIndex(
 			(obj) => obj.uId === fromUid
@@ -115,6 +114,8 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 							chartTitle: "",
 							generateTitle: "Auto",
 						},
+
+						chartOptionSelected: "Colors",
 					},
 				},
 				propList: {
@@ -160,6 +161,8 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 							chartTitle: "",
 							generateTitle: "Auto",
 						},
+
+						chartOptionSelected: "Colors",
 					},
 				},
 				propList: { ...state.propList, [action.payload.tabId]: [tileKey2] },
@@ -291,15 +294,6 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 				},
 			});
 
-		case "UPDATE_CHART_DATA":
-			return update(state, {
-				properties: {
-					[action.payload.propKey]: {
-						chartData: { $set: action.payload.chartData },
-					},
-				},
-			});
-
 		case "UPDATE_AXES_QUERY_PARAM":
 			console.log(
 				action.payload.propKey,
@@ -402,7 +396,7 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 			});
 
 		case "REVERT_ITEM":
-			var dragObj = findCardObject(
+			var dragObj2 = findCardObject(
 				action.payload.propKey,
 				action.payload.bIndex,
 				action.payload.uId
@@ -414,8 +408,8 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 							[action.payload.bIndex]: {
 								fields: {
 									$splice: [
-										[dragObj.cardIndex, 1],
-										[action.payload.originalIndex, 0, dragObj.card],
+										[dragObj2.cardIndex, 1],
+										[action.payload.originalIndex, 0, dragObj2.card],
 									],
 								},
 							},
@@ -433,17 +427,9 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 				},
 			});
 
-		case "CHANGE_COLOR_SCHEME":
-			console.log("color scheme changed", action.payload.propKey, action.payload.color);
-			return update(state, {
-				properties: {
-					[action.payload.propKey]: { colorScheme: { $set: action.payload.color } },
-				},
-			});
-
 		default:
 			return state;
 	}
 };
 
-export default chartPropLeftReducer;
+export default chartPropertiesState;

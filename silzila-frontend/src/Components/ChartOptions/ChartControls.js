@@ -3,19 +3,11 @@ import { connect } from "react-redux";
 import {
 	canReUseData,
 	changeChartTypeAndAxes,
-} from "../../redux/ChartProperties/actionsChartProps";
+} from "../../redux/ChartProperties/actionsChartProperties";
 import "./ChartIconStyles.css";
-import areaChartIcon from "../../assets/area-chart.svg";
-import simpleBarChartIcon from "../../assets/simple_bar_chart.svg";
 import multiBarIcon from "../../assets/bar_chart_grouped.svg";
 import stackedBarIcon from "../../assets/bar_chart_stacked.svg";
 import lineChartIcon from "../../assets/line_chart.svg";
-import stepLineIcon from "../../assets/step_line.svg";
-import pieChartIcon from "../../assets/pie_chart.svg";
-import donutChartIcon from "../../assets/donut_chart.svg";
-import funnelChartIcon from "../../assets/funnel.png";
-import roseChartIcon from "../../assets/rose_chart.svg";
-import scatterPlotIcon from "../../assets/scatter.svg";
 import ChartsInfo from "../ChartAxes/ChartsInfo2";
 import ChartControlObjects from "./ChartControlObjects";
 import ControlDetail from "./ControlDetail";
@@ -32,7 +24,6 @@ const ChartControls = ({
 	updateChartTypeAndAxes,
 	keepOldData,
 }) => {
-	console.log(propKey, chartProp);
 	var selectedChart = chartProp.properties[propKey].chartType;
 
 	const switchAxesForCharts = (oldChart, newChart) => {
@@ -128,7 +119,7 @@ const ChartControls = ({
 };
 const mapStateToProps = (state) => {
 	return {
-		chartProp: state.chartPropsLeft,
+		chartProp: state.chartProperties,
 	};
 };
 const mapDispatchToProps = (dispatch) => {

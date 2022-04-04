@@ -1,7 +1,7 @@
 import React from "react";
 import { useDrop } from "react-dnd";
 import { connect } from "react-redux";
-import { editChartPropItem } from "../../redux/ChartProperties/actionsChartProps";
+import { editChartPropItem } from "../../redux/ChartProperties/actionsChartProperties";
 import Card from "./Card";
 import ChartsInfo from "./ChartsInfo2";
 import { setPrefix } from "./SetPrefix";
@@ -121,7 +121,7 @@ const DropZone = ({
 const mapStateToProps = (state) => {
 	return {
 		tabTileProps: state.tabTileProps,
-		chartProp: state.chartPropsLeft,
+		chartProp: state.chartProperties,
 		token: state.isLogged.access_token,
 	};
 };

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import {
 	setSelectedDsInTile,
 	setSelectedTableInTile,
-} from "../../redux/ChartProperties/actionsChartProps";
+} from "../../redux/ChartProperties/actionsChartProperties";
 import { addTableRecords } from "../../redux/SampleTableRecords/sampleTableRecordsActions";
 import {
 	setSelectedDataSetList,
@@ -246,7 +246,7 @@ const mapStateToProps = (state) => {
 	return {
 		token: state.isLogged.accessToken,
 		tabTileProps: state.tabTileProps,
-		chartProps: state.chartPropsLeft,
+		chartProps: state.chartProperties,
 		sampleRecords: state.sampleRecords,
 	};
 };
