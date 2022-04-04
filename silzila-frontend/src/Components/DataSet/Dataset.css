@@ -10,6 +10,9 @@
 	position: relative;
 	overflow: auto;
 	display: flex;
+	height: 100%;
+	flex-wrap: wrap;
+    
 }
 
 .draggableBox {
@@ -75,4 +78,8 @@
 .connectPoint:hover {
 	background-color: rgb(95, 95, 95);
 	opacity: 1;
+}
+
+.css-1t1j96h-MuiPaper-root-MuiDialog-paper{
+	max-width: 80%;
 }

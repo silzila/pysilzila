@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import ShortUniqueId from "short-unique-id";
 import { setUserTable, setValuesToState } from "../../redux/Dataset/datasetActions";
 import FetchData from "../../ServerCall/FetchData";
+import { FindShowHeadAndShowTail } from "../CommonFunctions/FindIntegrityAndCordinality";
 import Canvas from "./Canvas";
 import Sidebar from "./Sidebar";
 
@@ -29,7 +31,8 @@ const EditDataSet = ({
 		});
 
 		if (res.status) {
-			console.log(res.data);
+			// console.log(res.data);
+			// const uid = new ShortUniqueId({ length: 8 });
 
 			const canvasTables = await Promise.all(
 				res.data.data_schema.tables.map(async (tbl) => {
@@ -41,11 +44,12 @@ const EditDataSet = ({
 						schema: tbl.schema_name,
 						columns: await getColumns(res.data.dc_uid, tbl.schema_name, tbl.table_name),
 						isSelected: true,
+						id: tbl.id,
 					};
 				})
 			);
 
-			console.log(canvasTables);
+			// console.log(canvasTables);
 
 			// ======================== set tables & schema ====================================================
 
@@ -54,7 +58,7 @@ const EditDataSet = ({
 			});
 
 			var uniqueSchema = Array.from(new Set(schema_list));
-			console.log(uniqueSchema);
+			// console.log(uniqueSchema);
 
 			let userTable = [];
 
@@ -68,24 +72,38 @@ const EditDataSet = ({
 				});
 
 				if (res1.status) {
+					const uid = new ShortUniqueId({ length: 8 });
+
 					userTable = res1.data.map((el) => {
+						var id = "";
 						var tableAlreadyChecked = canvasTables.filter(
 							(tbl) =>
 								tbl.dcId === res.data.dc_uid &&
 								tbl.schema === uniqueSchema[0] &&
 								tbl.tableName === el
 						)[0];
+						canvasTables.forEach((tbl) => {
+							if (
+								tbl.dcId === res.data.dc_uid &&
+								tbl.schema === uniqueSchema[0] &&
+								tbl.tableName === el
+							) {
+								id = tbl.id;
+							}
+						});
 						if (tableAlreadyChecked) {
 							return {
 								tableName: el,
 								isSelected: true,
 								table_uid: uniqueSchema[0].concat(el),
+								id: id,
 							};
 						}
 						return {
 							tableName: el,
 							isSelected: false,
 							table_uid: uniqueSchema[0].concat(el),
+							id: uid(),
 						};
 					});
 					console.log(userTable, "$$$$$$$$$$$$$ user Table $$$$$$$$$$$$$$$");
@@ -99,50 +117,96 @@ const EditDataSet = ({
 
 			// ====================================================================================
 
-			// ============================= set relationships and arrows==========================
+			// ============================= set relationships and arrows ==========================
+			let arrowsArray = [];
+			let relationshipsArray = [];
+			let arrowObj = [];
+			let relObject = [];
 
-			let data = {
-				isSelected: false,
-				startTableName: "table1",
-				endTableName: "table2",
-				start: "schema+table1+table1_columns",
-				end: "schema+table2+table2_columns",
-				table1_uid: "schema+table1",
-				table2_uid: "schema+table2",
-				startSchema: "schema of table1",
-				endSchema: "schema of table2",
-				integrity: "integrity",
-				cardinality: "cardinality",
-				showHead: "find showHead",
-				showTail: "find showTail",
-				relation_id: "generate uid",
-			};
+			res.data.data_schema.relationships.map((obj) => {
+				const uid = new ShortUniqueId({ length: 8 });
 
-			const rel = res.data.data_schema.relationships.map((r) => {
-				return {
-					isSelected: false,
-					startTableName: r.table1,
-					endTableName: r.table2,
-					start: "schema+table1+table1_columns",
-					end: "schema+table2+table2_columns",
-					table1_uid: "schema+table1",
-					table2_uid: "schema+table2",
-					startSchema: "schema of table1",
-					endSchema: "schema of table2",
-					integrity: r.integrity,
-					cardinality: r.cardinality,
-					showHead: "find showHead",
-					showTail: "find showTail",
-					relation_id: "generate uid",
+				const valuesForshowHeadAndshowTail = FindShowHeadAndShowTail(obj.cardinality);
+
+				// x  - array of start tables
+				const x = res.data.data_schema.tables.filter((el) => {
+					return el.id === obj.table1;
+				});
+
+				// y - array of endTables
+				const y = res.data.data_schema.tables.filter((el) => {
+					return el.id === obj.table2;
+				});
+
+				let columns_in_relationships = [];
+				let relationUniqueId = "";
+
+				obj.table1_columns.map((el, index) => {
+					var table2_col = obj.table2_columns[index];
+					let rel = { tab1: el, tab2: table2_col };
+					columns_in_relationships.push(rel);
+					relationUniqueId = uid();
+				});
+
+				// console.log(columns_in_relationships);
+
+				arrowObj = columns_in_relationships.map((el) => {
+					return {
+						isSelected: false,
+
+						start: x[0].schema_name.concat(x[0].table_name).concat(el.tab1),
+						table1_uid: x[0].schema_name.concat(x[0].table_name),
+						startTableName: x[0].table_name,
+						startColumnName: el.tab1,
+						startSchema: x[0].schema_name,
+						startId: x[0].id,
+
+						end: y[0].schema_name.concat(y[0].table_name).concat(el.tab2),
+						table2_uid: y[0].schema_name.concat(y[0].table_name),
+						endTableName: y[0].table_name,
+						endColumnName: el.tab2,
+						endSchema: y[0].schema_name,
+						endId: y[0].id,
+
+						integrity: obj.ref_integrity,
+						cardinality: obj.cardinality,
+						showHead: valuesForshowHeadAndshowTail.showHead,
+						showTail: valuesForshowHeadAndshowTail.showTail,
+						relationId: relationUniqueId,
+					};
+				});
+
+				// console.log(arrowObj);
+				console.log(arrowsArray);
+				arrowsArray.push(...arrowObj);
+
+				relObject = {
+					startId: x[0].id,
+					endId: y[0].id,
+					integrity: obj.ref_integrity,
+					cardinality: obj.cardinality,
+					showHead: valuesForshowHeadAndshowTail.showHead,
+					showTail: valuesForshowHeadAndshowTail.showTail,
+					relationId: relationUniqueId,
 				};
+				relationshipsArray.push(relObject);
 			});
+
+			console.log(
+				"$$$$$$$$$$$$$$$$$$$$$$ RELATIONSHIPS AND ARROWS $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
+			);
+			console.log(arrowsArray);
+			console.log(relationshipsArray);
+
 			// ====================================================================================
 
 			setValuesToState(
 				res.data.dc_uid,
 				res.data.friendly_name,
 				canvasTables,
-				uniqueSchema[0]
+				uniqueSchema[0],
+				relationshipsArray,
+				arrowsArray
 			);
 			setloadPage(true);
 		} else {
@@ -173,7 +237,7 @@ const EditDataSet = ({
 			{loadPage ? (
 				<>
 					<Sidebar editMode={editMode} />
-					<Canvas />
+					<Canvas editMode={editMode} />
 				</>
 			) : null}
 		</div>
@@ -188,8 +252,17 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		setValuesToState: (conId, fname, canvasTables, schema) =>
-			dispatch(setValuesToState({ conId, fname, canvasTables, schema })),
+		setValuesToState: (conId, fname, canvasTables, schema, relationshipsArray, arrowsArray) =>
+			dispatch(
+				setValuesToState({
+					conId,
+					fname,
+					canvasTables,
+					schema,
+					relationshipsArray,
+					arrowsArray,
+				})
+			),
 		setUserTable: (pl) => dispatch(setUserTable(pl)),
 	};
 };

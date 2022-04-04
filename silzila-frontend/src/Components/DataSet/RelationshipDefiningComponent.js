@@ -168,9 +168,21 @@ const RelationshipDefiningComponent = ({
 				showHead: FindShowHead(),
 				showTail: FindShowTail(),
 			};
+			const newRelObj = {
+				integrity: FindIntegrity(rowMatchId1, rowMatchId2),
+				cardinality: FindCardinality(rowUniqueId1, rowUniqueId2),
+				startId: newArrowObj.startId,
+				endId: newArrowObj.endId,
+				relationId: newArrowObj.relationId,
+				startTableName: newArrowObj.startTableName,
+				endTableName: newArrowObj.endTableName,
+				showHead: FindShowHead(),
+				showTail: FindShowTail(),
+			};
 			console.log(newArrowObj);
 			addArrows(newArrowObj);
-			addRelationship(newArrowObj);
+			addRelationship(newRelObj);
+			// addRelationship(newArrowObj);
 			onClose();
 		} else {
 			setSeverity("error");
@@ -251,7 +263,7 @@ const RelationshipDefiningComponent = ({
 				<div className="relationSelectSection">
 					<div className="relationPopoverSideHeading">Arrows</div>
 					<div className="relationArrowList">
-						{/* TODO: priority 1 - Filter arrows belonging to this relationship */}
+						{/* TODO: (c)  priority 1 - Filter arrows belonging to this relationship */}
 						{arrowsSubset.map((arrow, index) => {
 							return (
 								<div className="relationArrow" key={index}>

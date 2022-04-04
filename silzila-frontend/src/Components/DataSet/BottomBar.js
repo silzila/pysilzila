@@ -1,6 +1,6 @@
 import { Close } from "@mui/icons-material";
 import { Button, Dialog, TextField } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import ShortUniqueId from "short-unique-id";
 import { resetState } from "../../redux/Dataset/datasetActions";
@@ -9,6 +9,9 @@ import { useNavigate } from "react-router-dom";
 import { NotificationDialog } from "../CommonFunctions/DialogComponents";
 
 const BottomBar = ({
+	//props
+	editMode,
+
 	// state
 	tempTable,
 	arrows,
@@ -22,17 +25,22 @@ const BottomBar = ({
 	resetState,
 }) => {
 	const [fname, setFname] = useState(friendly_name);
-	const [sendOrUpdate, setSendOrUpdate] = useState("send");
+	const [sendOrUpdate, setSendOrUpdate] = useState("Send");
 	const [open, setOpen] = useState(false);
 
 	const [openAlert, setOpenAlert] = useState(false);
 	const [testMessage, setTestMessage] = useState("");
 	const [severity, setSeverity] = useState("success");
 
-	const [editMode, setEditMode] = useState(false);
 	const navigate = useNavigate();
 
 	const tablesWithoutRelation = [];
+
+	useEffect(() => {
+		if (editMode) {
+			setSendOrUpdate("Update");
+		}
+	}, []);
 
 	const checkTableRelationShip = (tablesSelectedInSidebar, tablesWithRelation) => {
 		if (tablesSelectedInSidebar.length > 1) {
@@ -65,8 +73,8 @@ const BottomBar = ({
 		) {
 			relationships.forEach((relation) => {
 				var relationObj = {
-					table1: relation.startTableName,
-					table2: relation.endTableName,
+					table1: relation.startId,
+					table2: relation.endId,
 					cardinality: relation.cardinality,
 					ref_integrity: relation.integrity,
 					table1_columns: [],
@@ -166,7 +174,8 @@ const BottomBar = ({
 				return {
 					table_name: el.tableName,
 					schema_name: el.schema,
-					id: uid(),
+					id: el.id,
+					// id: uid(),
 					alias: el.alias,
 				};
 			});
@@ -198,19 +207,23 @@ const BottomBar = ({
 
 	return (
 		<div className="bottomBar">
-			<Button variant="contained" onClick={onCancelOnDataset} id="cancelButton">
-				cancel
-			</Button>
-
+			<TextField
+				size="small"
+				label="Dataset Name"
+				value={fname}
+				onChange={(e) => setFname(e.target.value)}
+				variant="outlined"
+				sx={{ marginRight: "3rem" }}
+			/>
 			<div>
-				<TextField
-					size="small"
-					label="Dataset Name"
-					value={fname}
-					onChange={(e) => setFname(e.target.value)}
-					variant="outlined"
-					sx={{ marginRight: "3rem" }}
-				/>
+				<Button
+					variant="contained"
+					onClick={onCancelOnDataset}
+					sx={{ textTransform: "none", marginRight: "3rem" }}
+					id="cancelButton"
+				>
+					Cancel
+				</Button>
 
 				<Button variant="contained" onClick={onSendData} id="setButton">
 					{sendOrUpdate}

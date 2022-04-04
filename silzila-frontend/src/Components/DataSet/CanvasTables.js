@@ -9,10 +9,11 @@ import {
 	actionsOnRemoveTable,
 	addArrows,
 	addNewRelationship,
+	setTempTables,
 } from "../../redux/Dataset/datasetActions";
 import ShortUniqueId from "short-unique-id";
-import { SettingsInputComponent } from "@mui/icons-material";
 import ActionPopover from "./ActionPopover";
+import { Button, TextField } from "@mui/material";
 
 const CanvasTables = ({
 	// props
@@ -25,6 +26,7 @@ const CanvasTables = ({
 	addNewRelationship,
 	addArrows,
 	actionsOnRemoveTable,
+	setTempTables,
 }) => {
 	const dragRef = useRef();
 	const updateXarrow = useXarrow();
@@ -33,6 +35,9 @@ const CanvasTables = ({
 	const [arrowProp, setArrowProp] = useState([]);
 	const [open, setOpen] = useState(false);
 	const [tableId, setTableId] = useState("");
+	const [anchorEl, setAnchorEl] = useState("");
+	const [inputField, setInputField] = useState(false);
+	const [newName, setNewName] = useState("");
 
 	var uid = new ShortUniqueId({ length: 8 });
 
@@ -53,10 +58,12 @@ const CanvasTables = ({
 				console.log(rel);
 				console.log("Relation Loop ", i);
 				if (
-					rel.startSchema === newArrowObj.startSchema &&
-					rel.endSchema === newArrowObj.endSchema &&
-					rel.startTableName === newArrowObj.startTableName &&
-					rel.endTableName === newArrowObj.endTableName
+					rel.startId === newArrowObj.startId &&
+					rel.endId === newArrowObj.endId
+					// rel.startSchema === newArrowObj.startSchema &&
+					// rel.endSchema === newArrowObj.endSchema &&
+					// rel.startTableName === newArrowObj.startTableName &&
+					// rel.endTableName === newArrowObj.endTableName
 				) {
 					console.log("Another arrow from same relationship");
 
@@ -65,14 +72,16 @@ const CanvasTables = ({
 					newArrowObj.integrity = rel.integrity;
 					newArrowObj.showHead = rel.showHead;
 					newArrowObj.showTail = rel.showTail;
-
+					console.log(JSON.stringify(newArrowObj, null, 4));
 					sameRel = true;
 					sameRelObj = newArrowObj;
 				} else if (
-					rel.startSchema === newArrowObj.endSchema &&
-					rel.endSchema === newArrowObj.startSchema &&
-					rel.startTableName === newArrowObj.endTableName &&
-					rel.endTableName === newArrowObj.startTableName
+					rel.startId === newArrowObj.endId &&
+					rel.endId === newArrowObj.startId
+					// rel.startSchema === newArrowObj.endSchema &&
+					// rel.endSchema === newArrowObj.startSchema &&
+					// rel.startTableName === newArrowObj.endTableName &&
+					// rel.endTableName === newArrowObj.startTableName
 				) {
 					console.log("Another arrow from same relationship - but INVERTED");
 
@@ -126,33 +135,81 @@ const CanvasTables = ({
 	};
 
 	const selectAction = (e) => {
+		// console.log(tableId);
+		// if (open === true) {
+		// 	if (parseInt(e.target.id) === 1) {
+		// 		alert("are you sure you want to remove this table?");
+		// 		const tempTables = [...dataSetState.tempTable].filter((tab) => {
+		// 			return tab.table_uid !== tableId;
+		// 		});
+		// 		const tables = [...dataSetState.tables].map((tab) => {
+		// 			if (tab.table_uid === tableId) {
+		// 				tab.isSelected = false;
+		// 			}
+		// 			return tab;
+		// 		});
+		// 		actionsOnRemoveTable(tempTables, tables, tableId);
+		// 	} else if (parseInt(e.target.id) === 2) {
+		// 		alert("do you want to change the table name?");
+		// 		setInputField(true);
+		// 		// se
+		// 	}
+		// } else {
+		// 	alert("Actions not Set");
+		// }
+		// setOpen(false);
 		console.log(tableId);
 		if (open === true) {
 			if (parseInt(e.target.id) === 1) {
-				alert("are you sure you want to remove this table?");
 				const tempTables = [...dataSetState.tempTable].filter((tab) => {
-					return tab.table_uid !== tableId;
+					return tab.id !== tableId;
 				});
 				const tables = [...dataSetState.tables].map((tab) => {
-					if (tab.table_uid === tableId) {
+					if (tab.id === tableId) {
 						tab.isSelected = false;
 					}
 					return tab;
 				});
-				actionsOnRemoveTable(tempTables, tables, tableId);
+				var is_in_relationship = dataSetState.relationships.filter(
+					(obj) => obj.startId === tableId || obj.endId === tableId
+				)[0];
+				if (is_in_relationship) {
+					var yes = window.confirm("are you sure you want to remove this table?");
+					if (yes) {
+						actionsOnRemoveTable(tempTables, tables, tableId);
+					}
+				} else {
+					console.log(tables);
+					console.log(tempTables);
+					actionsOnRemoveTable(tempTables, tables, tableId);
+				}
 			} else if (parseInt(e.target.id) === 2) {
 				alert("do you want to change the table name?");
-				// setInputField(true)
+				setInputField(true);
 			}
 		} else {
 			alert("Actions not Set");
 		}
 		setOpen(false);
 	};
-	// const selectText = () => {
-	// 	var input = document.getElementById("name");
-	// 	input.select()
-	// }
+
+	const selectText = () => {
+		var input = document.getElementById("name");
+		input.select();
+	};
+
+	const changeTableName = (tableId) => {
+		const newTable = [...dataSetState.tempTable].map((tab) => {
+			if (tab.table_uid === tableId) {
+				tab.alias = newName;
+			}
+			return tab;
+		});
+		console.log(newTable);
+		setTempTables(newTable);
+		setNewName("");
+		setInputField(false);
+	};
 
 	return (
 		<div>
@@ -168,17 +225,43 @@ const CanvasTables = ({
 						className="draggableBoxTitle"
 						id={tableData.tableName}
 						title={`${tableData.tableName} (${tableData.schema})`}
+						onDoubleClick={() => {
+							setInputField(true);
+							setNewName(tableData.alias);
+							selectText();
+						}}
 					>
-						<div style={{ flex: 1 }}>{tableData.alias}</div>
-						<div style={{ cursor: "pointer" }}>
-							<MoreVertIcon
-								style={{ float: "right" }}
-								onClick={() => {
-									setTableId(tableData.table_uid);
-									setOpen(true);
-								}}
-							/>
-						</div>
+						{inputField ? (
+							<>
+								<TextField
+									variant="standard"
+									id="name"
+									value={newName}
+									onChange={(e) => {
+										e.preventDefault();
+										setNewName(e.target.value);
+									}}
+								/>
+								<Button onClick={() => changeTableName(tableData.table_uid)}>
+									ok
+								</Button>
+							</>
+						) : (
+							<>
+								<div style={{ flex: 1 }}>{tableData.alias}</div>
+								<div style={{ cursor: "pointer" }}>
+									<MoreVertIcon
+										style={{ float: "right" }}
+										onClick={(e) => {
+											// setTableId(tableData.table_uid);
+											setTableId(tableData.id);
+											setOpen(true);
+											setAnchorEl(e.currentTarget);
+										}}
+									/>
+								</div>
+							</>
+						)}
 					</div>
 
 					{tableData.columns.map((item, index) => {
@@ -194,6 +277,7 @@ const CanvasTables = ({
 								index={index}
 								schema={tableData.schema}
 								checkRelationExists={checkRelationExists}
+								table_Id={tableData.id}
 							/>
 						);
 					})}
@@ -206,7 +290,12 @@ const CanvasTables = ({
 				arrowProp={arrowProp}
 				addRelationship={addRelationship}
 			/>
-			<ActionPopover open={open} setOpen={setOpen} selectAction={selectAction} />
+			<ActionPopover
+				open={open}
+				setOpen={setOpen}
+				selectAction={selectAction}
+				anchorEl={anchorEl}
+			/>
 		</div>
 	);
 };
@@ -223,6 +312,7 @@ const mapDispatchToProps = (dispatch) => {
 		addArrows: (payload) => dispatch(addArrows(payload)),
 		actionsOnRemoveTable: (tempTables, tables, tableId) =>
 			dispatch(actionsOnRemoveTable({ tempTables, tables, tableId })),
+		setTempTables: (pl) => dispatch(setTempTables(pl)),
 	};
 };
 

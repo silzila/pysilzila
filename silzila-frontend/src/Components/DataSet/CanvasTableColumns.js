@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import ConnectPointsWrapper from "./ConnectPointsWrapper";
 import { Abc, AccessTime, CalendarToday, PriorityHigh, TagTwoTone } from "@mui/icons-material";
 import { NotificationDialog } from "../CommonFunctions/DialogComponents";
+import { connect } from "react-redux";
 
 const CanvasTableColumns = ({
 	// props
@@ -14,6 +15,11 @@ const CanvasTableColumns = ({
 	index,
 	schema,
 	checkRelationExists,
+	table_Id,
+
+	//state
+	arrows,
+	relationships,
 }) => {
 	const boxRef = useRef();
 
@@ -44,28 +50,90 @@ const CanvasTableColumns = ({
 	};
 
 	const arrowDropped = (e) => {
-		// TODO: Priority 5 - Check table arrow loop
+		// TODO: Priority 10 - Check table arrow loop
 		// Make sure the tables in a new connection doesn't already have a link between them
 		// Eg., 			A -> B -> C
 		// 					A -> D
 		// A new connection between B & D  or C & D shouldn't happen
 
-		// TODO: Priority 1 - Check for duplicate arrow
+		// TODO:(C) Priority 1 - Check for duplicate arrow
 		// If an arrow is dropped between same two tables and same two columns, It shouldn't add to redux state
 
 		// Check if both column types (Arrow start and end column) are of same dataType
-
-		if (
-			e.dataTransfer.getData("connectItemId") === itemId ||
-			e.dataTransfer.getData("connectTableName") === tableName
-		) {
-			console.log("same table names");
-			if (e.dataTransfer.getData("schema") !== schema) {
-				console.log("same table Diff schema, new rel");
+		if (arrows.length === 0) {
+			if (
+				e.dataTransfer.getData("connectItemId") === itemId ||
+				e.dataTransfer.getData("connectTableName") === tableName
+			) {
+				console.log("same table names");
+				if (e.dataTransfer.getData("schema") !== schema) {
+					console.log("same table Diff schema, new rel");
+					setupForRelation(e);
+				}
+			} else {
 				setupForRelation(e);
 			}
 		} else {
-			setupForRelation(e);
+			// const x = relationships.filter((el) => {
+			// 	return el.endId === e.dataTransfer.getData("tableId");
+			// });
+			// const y = x.map((el) => {
+			// 	return el.startId;
+			// });
+			// console.log(y);
+
+			// let startTablesRelationship = [];
+			// y.map((st) => {
+			// 	startTablesRelationship = relationships.filter((rel) => {
+			// 		return rel.startId === st;
+			// 	});
+			// });
+			// console.log(startTablesRelationship);
+
+			// // startTablesRelationship.forEach((el, i) => {
+			// // 	if (el.endId === table_Id) {
+			// // 		console.log(
+			// // 			"************************* Relationship loop ********************************",
+			// // 			i
+			// // 		);
+			// // 	}
+			// // });
+			// const z = startTablesRelationship.map((el) => {
+			// 	return el.endId;
+			// });
+
+			// var relationLoop = z.some((el) => {
+			// 	return el === table_Id;
+			// });
+
+			// if (!relationLoop) {
+			arrows.map((arr) => {
+				if (
+					(arr.start === e.dataTransfer.getData("connectItemId") && arr.end === itemId) ||
+					(arr.end === e.dataTransfer.getData("connectItemId") && arr.start === itemId)
+				) {
+					console.log("RELATION BETWEEN THESE TWO COLUMNS ARE ALREADY EXIST");
+				} else {
+					if (
+						e.dataTransfer.getData("connectItemId") === itemId ||
+						e.dataTransfer.getData("connectTableName") === tableName
+					) {
+						console.log("same table names");
+						if (e.dataTransfer.getData("schema") !== schema) {
+							console.log("same table Diff schema, new rel");
+							setupForRelation(e);
+						}
+					} else {
+						setupForRelation(e);
+					}
+				}
+			});
+			// }
+			//  else {
+			// 	console.log(
+			// 		"******************************************* Relationship Loop ***************************************"
+			// 	);
+			// }
 		}
 	};
 
@@ -88,12 +156,14 @@ const CanvasTableColumns = ({
 				start: e.dataTransfer.getData("connectItemId"),
 				table1_uid: e.dataTransfer.getData("connecttableUid"),
 				startSchema: e.dataTransfer.getData("schema"),
+				startId: e.dataTransfer.getData("tableId"),
 
 				endTableName: tableName,
 				endColumnName: columnName,
 				end: itemId,
 				table2_uid: table_uid,
 				endSchema: schema,
+				endId: table_Id,
 			};
 			checkRelationExists(refs);
 		}
@@ -120,6 +190,7 @@ const CanvasTableColumns = ({
 						tableName,
 						table_uid,
 						schema,
+						table_Id,
 					}}
 				/>
 			</div>
@@ -136,4 +207,11 @@ const CanvasTableColumns = ({
 	);
 };
 
-export default CanvasTableColumns;
+const mapStateToProps = (state) => {
+	return {
+		arrows: state.dataSetState.arrows,
+		relationships: state.dataSetState.relationships,
+	};
+};
+
+export default connect(mapStateToProps, null)(CanvasTableColumns);

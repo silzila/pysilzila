@@ -105,7 +105,7 @@ const DataSetList = ({
 										<div className="dataConnectionName">{dc.friendly_name}</div>
 
 										{xprops.open ? (
-											// TODO: Priority 1 - Implement edit dataset functionality.
+											// TODO:(c) Priority 1 - Implement edit dataset functionality.
 											<Tooltip
 												title="Edit Dataset"
 												arrow

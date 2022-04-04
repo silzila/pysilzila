@@ -2,12 +2,6 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import "./Dataset.css";
 import Xarrow, { Xwrapper } from "react-xarrows";
-import {
-	addArrows,
-	clickOnArrow,
-	resetState,
-	setArrowType,
-} from "../../redux/Dataset/datasetActions";
 import CanvasTables from "./CanvasTables";
 import RelationshipDefiningComponent from "./RelationshipDefiningComponent";
 import BottomBar from "./BottomBar";
@@ -19,6 +13,9 @@ const Canvas = ({
 	// state
 	tempTable,
 	arrows,
+
+	//props
+	editMode,
 }) => {
 	const [showRelationCard, setShowRelationCard] = useState(false);
 	const [existingArrowProp, setExistingArrowProp] = useState({});
@@ -73,7 +70,7 @@ const Canvas = ({
 					<RenderArrows />
 				</Xwrapper>
 			</div>
-			<BottomBar />
+			<BottomBar editMode={editMode ? editMode : false} />
 
 			<RelationshipDefiningComponent
 				id="idarrow"
