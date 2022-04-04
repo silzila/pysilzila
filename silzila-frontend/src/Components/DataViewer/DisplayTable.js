@@ -18,13 +18,13 @@ const DisplayTable = ({
 		let _fieldsData = [];
 		if (SampleRecords) {
 			var tableKeys = Object.keys(SampleRecords[0]);
-			var schema = tableRecords.recordsColumnType[dsId][table];
+			var dataType = tableRecords.recordsColumnType[dsId][table];
 
 			for (let i = 0; i < tableKeys.length; i++) {
 				_fieldsData.push({
 					fieldname: tableKeys[i],
 					displayname: tableKeys[i],
-					schema: schema.filter((sc) => sc.column_name === tableKeys[i])[0].data_type,
+					dataType: dataType.filter((sc) => sc.column_name === tableKeys[i])[0].data_type,
 					tableId: table,
 				});
 			}
@@ -49,15 +49,18 @@ const DisplayTable = ({
 
 	// Get the column names from getKeys() and render the header for table
 
-	// TODO: Priority 5 - Table header row is not in position sticky!
-
 	const GetHeaders = () => {
 		if (SampleRecords) {
 			var keys = getKeys(SampleRecords[0]);
 			return keys.map((key, index) => {
 				return (
-					<th key={`${index}_${key}`}>
-						<Box name={key} type="card" fieldData={columnsData[index]} />
+					<th key={`${index}_${key}`} className="tableHeadings">
+						<Box
+							name={key}
+							type="card"
+							fieldData={columnsData[index]}
+							colsOnly={false}
+						/>
 					</th>
 				);
 			});
@@ -90,6 +93,9 @@ const DisplayTable = ({
 		} else return null;
 	};
 
+	// TODO: Priority 10 - Table scroll bar position
+	// Scroll bar must start from the body of table instead of starting from the table header
+
 	const RenderButtons = () => {
 		if (SampleRecords) {
 			var keys = getKeys(SampleRecords[0]);
@@ -101,7 +107,12 @@ const DisplayTable = ({
 						draggable="true"
 						// onDragStart={(e) => handleDragStart(e, columnsData[index])}
 					>
-						<Box name={key} type="card" fieldData={columnsData[index]} />
+						<Box
+							name={key}
+							type="card"
+							fieldData={columnsData[index]}
+							colsOnly={true}
+						/>
 					</button>
 				);
 			});
@@ -113,7 +124,7 @@ const DisplayTable = ({
 			<RenderButtons />
 		</div>
 	) : (
-		<div className="tableViewAndControls">
+		<>
 			<table className="displayTable">
 				<thead>
 					<tr>
@@ -122,7 +133,7 @@ const DisplayTable = ({
 				</thead>
 				<tbody>{getRowsData()}</tbody>
 			</table>
-		</div>
+		</>
 	);
 };
 

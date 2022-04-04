@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import {
 	setSelectedDsInTile,
 	setSelectedTableInTile,
-} from "../../redux/ChartProperties/actionsChartProps";
+} from "../../redux/ChartProperties/actionsChartProperties";
 import { addTableRecords } from "../../redux/SampleTableRecords/sampleTableRecordsActions";
 import {
 	setSelectedDataSetList,
@@ -216,7 +216,9 @@ const DataViewerBottom = ({
 				</div>
 
 				<div className="tileTableList">
-					<TableListForDs />
+					<div style={{ flex: 1, overflow: "auto", padding: "0 0.5rem" }}>
+						<TableListForDs />
+					</div>
 				</div>
 				<DatasetListPopover
 					showCard={open}
@@ -236,7 +238,6 @@ const DataViewerBottom = ({
 				) : null}
 			</div>
 			{loading ? <LoadingPopover /> : null}
-
 		</div>
 	);
 };
@@ -245,7 +246,7 @@ const mapStateToProps = (state) => {
 	return {
 		token: state.isLogged.accessToken,
 		tabTileProps: state.tabTileProps,
-		chartProps: state.chartPropsLeft,
+		chartProps: state.chartProperties,
 		sampleRecords: state.sampleRecords,
 	};
 };

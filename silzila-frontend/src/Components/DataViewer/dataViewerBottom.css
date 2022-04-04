@@ -13,6 +13,7 @@
 
 .dataSetAndTableList {
 	width: 14.5rem;
+	min-width: 14.5rem;
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
@@ -24,14 +25,11 @@
 	background-color: rgb(211, 211, 211);
 }
 
-.tileTableView {
-	flex: 1;
-	overflow: auto;
-}
 .tileTableList {
-	padding: 0.5rem;
+	padding: 0.5rem 0;
 	background-color: rgb(238, 238, 238);
-	overflow: auto;
+	overflow: hidden;
+	display: flex;
 }
 .dsIndiTableInTile {
 	border-radius: 2px;
@@ -52,21 +50,36 @@
 	text-align: left;
 	cursor: pointer;
 }
+
+.tileTableView {
+	overflow: auto;
+}
 .displayTable {
+	flex: 1;
 	font-size: 12px;
 	text-align: left;
-	background-color: rgb(211, 211, 211);
+	background-color: rgb(238, 238, 238);
 	border-collapse: collapse;
 	color: rgb(51, 51, 51);
 }
 .tableHeadings {
+	height: 40px;
 	padding: 9px 9px 9px 0;
 	position: sticky;
 	top: 0;
-	background-color: rgb(211, 211, 211);
+	background-color: rgb(238, 238, 238);
 	font-weight: normal;
 	cursor: move;
 	font-weight: 600;
+	z-index: 2;
+}
+
+.tableHeadingsSmall {
+	top: 0;
+	font-size: 12px;
+	font-weight: normal;
+	cursor: move;
+	/* font-weight: 600; */
 }
 .tableHeadings:hover {
 	background-color: rgb(238, 238, 238);
@@ -117,5 +130,4 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	/* font-size: 14px; */
 }

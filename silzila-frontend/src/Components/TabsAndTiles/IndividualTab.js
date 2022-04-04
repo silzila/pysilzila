@@ -1,3 +1,4 @@
+import { width } from "@mui/system";
 import React, { useState } from "react";
 import "./individualTab.css";
 
@@ -19,6 +20,11 @@ function IndividualTab({
 	const handleTabNameValue = (e) => {
 		setRenameValue(e.target.value);
 	};
+
+	// TODO: Priority 5 - Tab Max width
+	// 		- Set Tab max width to 250px
+	// 		- Tooltip shows tile name and the text "Double click to edit". Show the latter in next line in a custom tooltip
+
 	if (selectedTab === tabId && editing) {
 		return (
 			<form

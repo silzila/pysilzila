@@ -23,6 +23,9 @@ function IndividualTile({
 		setRenameValue(e.target.value);
 	};
 
+	// TODO: Priority 5 - Tab Max width
+	// Set Tab max width to 250px
+
 	if (selectedTile === tileId && editing) {
 		return (
 			<form

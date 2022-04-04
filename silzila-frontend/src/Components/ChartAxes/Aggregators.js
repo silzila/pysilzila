@@ -6,18 +6,24 @@ const Aggregators = {
 		date: {
 			time_grain: [
 				{ name: "Year", id: "year" },
-				{ name: "Month", id: "month" },
 				{ name: "Quarter", id: "quarter" },
-				{ name: "Day", id: "day" },
+				{ name: "Month", id: "month" },
+				{ name: "Year Quarter", id: "yearquarter" },
+				{ name: "Year Month", id: "yearmonth" },
+				{ name: "Date", id: "date" },
+				{ name: "Day of Month", id: "dayofmonth" },
 				{ name: "Day of Week", id: "dayofweek" },
 			],
 		},
 		timestamp: {
 			time_grain: [
 				{ name: "Year", id: "year" },
-				{ name: "Month", id: "month" },
 				{ name: "Quarter", id: "quarter" },
-				{ name: "Day", id: "day" },
+				{ name: "Month", id: "month" },
+				{ name: "Year Quarter", id: "yearquarter" },
+				{ name: "Year Month", id: "yearmonth" },
+				{ name: "Date", id: "date" },
+				{ name: "Day of Month", id: "dayofmonth" },
 				{ name: "Day of Week", id: "dayofweek" },
 			],
 		},
@@ -60,9 +66,10 @@ const Aggregators = {
 			],
 			time_grain: [
 				{ name: "Year", id: "year" },
-				{ name: "Month", id: "month" },
 				{ name: "Quarter", id: "quarter" },
-				{ name: "Day", id: "day" },
+				{ name: "Month", id: "month" },
+				{ name: "Date", id: "date" },
+				{ name: "Day of Month", id: "dayofmonth" },
 				{ name: "Day of Week", id: "dayofweek" },
 			],
 		},
@@ -77,9 +84,10 @@ const Aggregators = {
 			],
 			time_grain: [
 				{ name: "Year", id: "year" },
-				{ name: "Month", id: "month" },
 				{ name: "Quarter", id: "quarter" },
-				{ name: "Day", id: "day" },
+				{ name: "Month", id: "month" },
+				{ name: "Date", id: "date" },
+				{ name: "Day of Month", id: "dayofmonth" },
 				{ name: "Day of Week", id: "dayofweek" },
 			],
 		},
@@ -97,10 +105,13 @@ export const AggregatorKeys = {
 	countunique: "Count Unique",
 
 	year: "Year",
+	yearquarter: "Year Qtr",
+	yearmonth: "Year Mth",
 	month: "Month",
 	quarter: "Quarter",
-	day: "Day",
-	dayofweek: "DoW",
+	dayofmonth: "Day Mn",
+	dayofweek: "Day Wk",
+	date: "Date",
 };
 
 export default Aggregators;
