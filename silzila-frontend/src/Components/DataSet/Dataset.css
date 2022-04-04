@@ -10,6 +10,8 @@
 	position: relative;
 	overflow: auto;
 	display: flex;
+	height: 100%;
+	flex-wrap: wrap;
 }
 
 .draggableBox {

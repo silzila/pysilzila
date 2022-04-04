@@ -13,6 +13,9 @@ const Canvas = ({
 	// state
 	tempTable,
 	arrows,
+
+	//props
+	editMode,
 }) => {
 	const [showRelationCard, setShowRelationCard] = useState(false);
 	const [existingArrowProp, setExistingArrowProp] = useState({});
@@ -67,7 +70,7 @@ const Canvas = ({
 					<RenderArrows />
 				</Xwrapper>
 			</div>
-			<BottomBar />
+			<BottomBar editMode={editMode ? editMode : false} />
 
 			<RelationshipDefiningComponent
 				id="idarrow"

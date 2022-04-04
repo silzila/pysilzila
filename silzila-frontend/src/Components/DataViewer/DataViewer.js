@@ -96,8 +96,6 @@ function DataViewer({
 					title="Show / Hide table"
 				>
 					{displayDatViewBot ? (
-						// TODO: Priority 10 - Style changes
-						// Give proper padding, choose a good Icon and color
 						<TableViewIcon style={{ fontSize: "20px" }} />
 					) : (
 						<TableViewIcon style={{ fontSize: "20px", color: "#808080" }} />

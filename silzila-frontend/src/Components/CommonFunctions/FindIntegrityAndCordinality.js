@@ -72,3 +72,18 @@ export const FindCardinality = (Id1, Id2) => {
 		return "many to one";
 	}
 };
+
+export const FindShowHeadAndShowTail = (cardinality) => {
+	switch (cardinality) {
+		case "one to one":
+			return { showHead: false, showTail: false };
+		case "one to many":
+			return { showHead: true, showTail: false };
+		case "many to one":
+			return { showHead: false, showTail: true };
+		case "many to many":
+			return { showHead: true, showTail: true };
+		default:
+			return null;
+	}
+};
