@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import ChartAxes from "../ChartAxes/ChartAxes";
+import ChartControls from "../ChartOptions/ChartControls";
+import GraphArea from "../GraphArea/GraphArea";
 import "./dataViewerMiddle.css";
 
 const DataViewerMiddle = ({
@@ -39,15 +41,14 @@ const DataViewerMiddle = ({
 		<div className="dataViewerMiddle">
 			<ChartAxes tabId={tabId} tileId={tileId} />
 
-			<div className="centerColumn">
-				{chartProp.properties[propKey].chartData
-					? JSON.stringify(chartProp.properties[propKey].chartData.result, null, "\t")
-					: "No Data"}
-			</div>
-			{/* <GraphArea /> */}
+			<GraphArea />
 
 			<div className="rightColumn ">
-				<div className="radioButtonsUserMenu">{renderMenu()} </div>
+				<div className="radioButtonsUserMenu">{renderMenu()}</div>
+				{
+					selectedMenu === "Chart Controls" ? <ChartControls propKey={propKey} /> : null
+					// <ChartUserFilterContainer propKey={propKey} chartProp={chartProp} fileId={fileId} userFilterGroup={userFilterGroup} />
+				}
 			</div>
 		</div>
 	);
@@ -55,7 +56,7 @@ const DataViewerMiddle = ({
 
 const mapStateToProps = (state) => {
 	return {
-		chartProp: state.chartPropsLeft,
+		chartProp: state.chartProperties,
 	};
 };
 

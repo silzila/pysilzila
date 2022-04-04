@@ -240,8 +240,6 @@ const RelationshipDefiningComponent = ({
 	};
 
 	return (
-		// TODO: Priority 10 - Styling Fix required
-		//  Layout doesn't have proper padding all around. Also, select width is not constant.
 		<React.Fragment>
 			<Popover
 				open={showCard}
@@ -255,10 +253,6 @@ const RelationshipDefiningComponent = ({
 					vertical: "top",
 					horizontal: "left",
 				}}
-				// anchorReference="anchorEl"
-
-				// TODO: Priority 5 - Kasthuri created. Positioning relationship popover
-				// set anchorEl={}
 			>
 				<CloseOutlined style={{ float: "right" }} onClick={onClose} />
 				<div className="relpopoverContainer">
@@ -344,22 +338,12 @@ const RelationshipDefiningComponent = ({
 						</Select>
 					</div>
 
-					{/*TODO: Priority 5 - List al column pairs between both table.
-							 Eg.,
-							Table 1					Table2
-							Column 1				Column 1
-							Column 2				Column 2
-						*/}
-
 					{/* ------------------------------------- buutons-------------------------------------------------- */}
 
 					<div className="relpopoverItem">
 						<Button onClick={onSet} id="setButton">
 							set
 						</Button>
-						{/* <Button onClick={onClose} id="cancelBtn">
-							cancel
-						</Button> */}
 					</div>
 				</div>
 			</Popover>

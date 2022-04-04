@@ -1,13 +1,12 @@
 import React from "react";
 import { useDrop } from "react-dnd";
 import { connect } from "react-redux";
-import { editChartPropItem } from "../../redux/ChartProperties/actionsChartProps";
+import { editChartPropItem } from "../../redux/ChartProperties/actionsChartProperties";
 import Card from "./Card";
 import ChartsInfo from "./ChartsInfo2";
 import { setPrefix } from "./SetPrefix";
 
-
-const Dustbin = ({
+const DropZone = ({
 	// props
 	bIndex,
 	name,
@@ -20,6 +19,7 @@ const Dustbin = ({
 
 	// dispatch
 	updateDropZoneItems,
+	moveItemChartProp,
 }) => {
 	const [, drop] = useDrop({
 		accept: "card",
@@ -55,16 +55,33 @@ const Dustbin = ({
 			console.log(newFieldData);
 
 			updateDropZoneItems(propKey, bIndex, newFieldData, allowedNumbers);
+		} else if (item.bIndex !== bIndex) {
+			console.log("-------moving item from within------");
+
+			var newFieldData = JSON.parse(JSON.stringify(setPrefix(item, name, chartType)));
+			["type", "bIndex"].forEach((e) => delete newFieldData[e]);
+
+			// if (name == "Filter") {
+			//     setModalData(newFieldData);
+			//     setParams({ type: "moveItemChartProp", propKey, item_bIndex: item.bIndex, uId: item.uId, newFieldData, bIndex, allowedNumbers });
+			// } else {
+			// }
+			moveItemChartProp(propKey, item.bIndex, item.uId, newFieldData, bIndex, allowedNumbers);
 		}
 	};
-
 
 	return (
 		<div ref={drop} className="chartAxis mt-2">
 			<span className="axisTitle">{name}</span>
 
 			<i>
-				{bIndex === 0 ? <span className="axisInfo"> Drop (1) field(s) here</span> : null}
+				{bIndex === 0 ? (
+					<span className="axisInfo">
+						{" "}
+						Drop (0 - max {ChartsInfo[chartType].dropZones[bIndex].allowedNumbers})
+						field(s) here
+					</span>
+				) : null}
 				{bIndex === 1 && ChartsInfo[chartType].dropZones[bIndex].allowedNumbers === 1 ? (
 					<span className="axisInfo"> Drop (1) field(s) here</span>
 				) : null}
@@ -75,11 +92,14 @@ const Dustbin = ({
 						{ChartsInfo[chartType].dropZones[bIndex].allowedNumbers}) field(s) here
 					</span>
 				) : null}
-				{bIndex === 2 ? (
+				{bIndex === 2 && ChartsInfo[chartType].dropZones[bIndex].allowedNumbers === 1 ? (
+					<span className="axisInfo"> Drop (1) field(s) here</span>
+				) : null}
+				{bIndex === 2 && ChartsInfo[chartType].dropZones[bIndex].allowedNumbers > 1 ? (
 					<span className="axisInfo">
 						{" "}
-						Drop (0 - max {ChartsInfo[chartType].dropZones[bIndex].allowedNumbers})
-						field(s) here
+						Drop (atleast 1 - max{" "}
+						{ChartsInfo[chartType].dropZones[bIndex].allowedNumbers}) field(s) here
 					</span>
 				) : null}
 			</i>
@@ -94,7 +114,6 @@ const Dustbin = ({
 					propKey={propKey}
 				/>
 			))}
-
 		</div>
 	);
 };
@@ -102,7 +121,7 @@ const Dustbin = ({
 const mapStateToProps = (state) => {
 	return {
 		tabTileProps: state.tabTileProps,
-		chartProp: state.chartPropsLeft,
+		chartProp: state.chartProperties,
 		token: state.isLogged.access_token,
 	};
 };
@@ -116,8 +135,15 @@ const mapDispatchToProps = (dispatch) => {
 					details: { propKey, bIndex, item, allowedNumbers },
 				})
 			),
+
+		moveItemChartProp: (propKey, fromBIndex, fromUID, item, toBIndex, allowedNumbers) =>
+			dispatch(
+				editChartPropItem({
+					action: "move",
+					details: { propKey, fromBIndex, fromUID, item, toBIndex, allowedNumbers },
+				})
+			),
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dustbin);
-
+export default connect(mapStateToProps, mapDispatchToProps)(DropZone);

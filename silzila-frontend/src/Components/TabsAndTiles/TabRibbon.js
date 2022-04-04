@@ -136,7 +136,7 @@ const mapStateToProps = (state) => {
 		tabState: state.tabState,
 		// tileState: state.tileState,
 		// tableData: state.tableData,
-		chartProp: state.chartPropsLeft,
+		chartProp: state.chartProperties,
 	};
 };
 

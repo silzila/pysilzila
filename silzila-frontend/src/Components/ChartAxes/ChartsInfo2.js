@@ -1,4 +1,69 @@
 const ChartsInfo = {
+	multibar: {
+		dropZones: [
+			{ name: "Filter", allowedNumbers: 64, min: 0 },
+			{
+				name: "Dimension",
+				allowedNumbers: 1,
+				min: 1,
+				dataType: ["text", "string", "timestamp"],
+			},
+			{ name: "Measure", allowedNumbers: 10, min: 1, dataType: ["int", "float", "double"] },
+		],
+		showSwap: true,
+	},
+	"stacked bar": {
+		dropZones: [
+			{ name: "Filter", allowedNumbers: 64, min: 0 },
+			{
+				name: "Dimension",
+				allowedNumbers: 1,
+				min: 1,
+				dataType: ["text", "string", "timestamp"],
+			},
+			{ name: "Measure", allowedNumbers: 4, min: 1, dataType: ["int", "float", "double"] },
+		],
+		showSwap: true,
+	},
+	area: {
+		dropZones: [
+			{ name: "Filter", allowedNumbers: 64, min: 0 },
+			{
+				name: "Dimension",
+				allowedNumbers: 1,
+				min: 1,
+				dataType: ["text", "string", "timestamp"],
+			},
+			{ name: "Measure", allowedNumbers: 4, min: 1, dataType: ["int", "float", "double"] },
+		],
+		showSwap: true,
+	},
+	line: {
+		dropZones: [
+			{ name: "Filter", allowedNumbers: 64, min: 0 },
+			{
+				name: "Dimension",
+				allowedNumbers: 1,
+				min: 1,
+				dataType: ["text", "string", "timestamp"],
+			},
+			{ name: "Measure", allowedNumbers: 4, min: 1, dataType: ["int", "float", "double"] },
+		],
+		showSwap: true,
+	},
+	"step line": {
+		dropZones: [
+			{ name: "Filter", allowedNumbers: 64, min: 0 },
+			{
+				name: "Dimension",
+				allowedNumbers: 1,
+				min: 1,
+				dataType: ["text", "string", "timestamp"],
+			},
+			{ name: "Measure", allowedNumbers: 4, min: 1, dataType: ["int", "float", "double"] },
+		],
+		showSwap: true,
+	},
 	pie: {
 		dropZones: [
 			{ name: "Filter", allowedNumbers: 64, min: 0 },
@@ -25,59 +90,47 @@ const ChartsInfo = {
 		],
 		showSwap: false,
 	},
-	bar: {
+	funnel: {
 		dropZones: [
 			{ name: "Filter", allowedNumbers: 64, min: 0 },
 			{
 				name: "Dimension",
-				allowedNumbers: 2,
+				allowedNumbers: 1,
+				min: 1,
+				dataType: ["text", "string", "timestamp"],
+			},
+			{ name: "Measure", allowedNumbers: 1, min: 1, dataType: ["int", "float", "double"] },
+		],
+		showSwap: false,
+	},
+	rose: {
+		dropZones: [
+			{ name: "Filter", allowedNumbers: 64, min: 0 },
+			{
+				name: "Dimension",
+				allowedNumbers: 1,
+				min: 1,
+				dataType: ["text", "string", "timestamp"],
+			},
+			{ name: "Measure", allowedNumbers: 1, min: 1, dataType: ["int", "float", "double"] },
+		],
+		showSwap: false,
+	},
+	scatterPlot: {
+		dropZones: [
+			{ name: "Filter", allowedNumbers: 64, min: 0 },
+			{
+				name: "Dimension",
+				allowedNumbers: 1,
+				min: 1,
+				dataType: ["text", "string", "timestamp"],
+			},
+			{ name: "X", allowedNumbers: 1, min: 1, dataType: ["int", "float", "double"] },
+			{ name: "Y", allowedNumbers: 1, min: 1, dataType: ["int", "float", "double"] },
+		],
+		showSwap: false,
+	},
 
-				min: 1,
-				dataType: ["text", "string", "timestamp"],
-			},
-			{ name: "Measure", allowedNumbers: 4, min: 1, dataType: ["int", "float", "double"] },
-		],
-		showSwap: true,
-	},
-	"stacked bar": {
-		dropZones: [
-			{ name: "Filter", allowedNumbers: 64, min: 0 },
-			{
-				name: "Dimension",
-				allowedNumbers: 1,
-				min: 1,
-				dataType: ["text", "string", "timestamp"],
-			},
-			{ name: "Measure", allowedNumbers: 4, min: 1, dataType: ["int", "float", "double"] },
-		],
-		showSwap: true,
-	},
-	line: {
-		dropZones: [
-			{ name: "Filter", allowedNumbers: 64, min: 0 },
-			{
-				name: "Dimension",
-				allowedNumbers: 1,
-				min: 1,
-				dataType: ["text", "string", "timestamp"],
-			},
-			{ name: "Measure", allowedNumbers: 4, min: 1, dataType: ["int", "float", "double"] },
-		],
-		showSwap: true,
-	},
-	area: {
-		dropZones: [
-			{ name: "Filter", allowedNumbers: 64, min: 0 },
-			{
-				name: "Dimension",
-				allowedNumbers: 1,
-				min: 1,
-				dataType: ["text", "string", "timestamp"],
-			},
-			{ name: "Measure", allowedNumbers: 4, min: 1, dataType: ["int", "float", "double"] },
-		],
-		showSwap: true,
-	},
 	heatmap: {
 		dropZones: [
 			{ name: "Filter", allowedNumbers: 64, min: 0 },
@@ -122,20 +175,7 @@ const ChartsInfo = {
 		],
 		showSwap: false,
 	},
-	scatterPlot: {
-		dropZones: [
-			{ name: "Filter", allowedNumbers: 64, min: 0 },
-			{
-				name: "Dimension",
-				allowedNumbers: 1,
-				min: 1,
-				dataType: ["text", "string", "timestamp"],
-			},
-			{ name: "X", allowedNumbers: 1, min: 1, dataType: ["int", "float", "double"] },
-			{ name: "Y", allowedNumbers: 1, min: 1, dataType: ["int", "float", "double"] },
-		],
-		showSwap: false,
-	},
+
 	bullet: {
 		dropZones: [
 			{ name: "Filter", allowedNumbers: 64 },

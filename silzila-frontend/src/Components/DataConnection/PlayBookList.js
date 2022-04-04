@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-	setSelectedDsInTile,
-	setSelectedTableInTile,
-} from "../../redux/ChartProperties/actionsChartProps";
+import { setSelectedDsInTile } from "../../redux/ChartProperties/actionsChartProperties";
 import {
 	setSelectedDataSetList,
 	setTablesForSelectedDataSets,

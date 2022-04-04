@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import ChartsInfo from "./ChartsInfo2";
 import "./ChartAxes.css";
-import Dustbin from "./Dustbin";
+import DropZone from "./DropZone";
 import FetchData from "../../ServerCall/FetchData";
-import { updateChartData } from "../../redux/ChartProperties/actionsChartProps";
+import { updateChartData } from "../../redux/ChartProperties/actionsChartControls";
 import LoadingPopover from "../CommonFunctions/PopOverComponents/LoadingPopover";
 
 const ChartAxes = ({
@@ -39,6 +39,8 @@ const ChartAxes = ({
 			console.log(minReq);
 			if (minReq) {
 				serverCall = true;
+			} else {
+				updateChartData(propKey, "");
 			}
 		}
 
@@ -63,12 +65,10 @@ const ChartAxes = ({
 
 		console.log(minReqMet);
 
-		if (chartProp.properties[propKey].chartType === "bar") {
-			if (minReqMet[1] === true || minReqMet[2] === true) {
-				return true;
-			} else {
-				return false;
-			}
+		if (minReqMet[1] === true && minReqMet[2] === true) {
+			return true;
+		} else {
+			return false;
 		}
 	};
 
@@ -95,13 +95,14 @@ const ChartAxes = ({
 			var formattedFields = [];
 
 			axis.fields.forEach((field) => {
+				console.log(field);
 				var formattedField = {
 					table_id: field.tableId,
 					display_name: field.displayname,
 					field_name: field.fieldname,
-					data_type: field.schema,
+					data_type: field.dataType,
 				};
-				if (field.schema === "date" || field.schema === "timestamp") {
+				if (field.dataType === "date" || field.dataType === "timestamp") {
 					formattedField.time_grain = field.time_grain;
 				}
 
@@ -150,7 +151,7 @@ const ChartAxes = ({
 	return (
 		<div className="charAxesArea">
 			{dropZones.map((zone, zoneI) => (
-				<Dustbin bIndex={zoneI} name={zone} propKey={propKey} key={zoneI} />
+				<DropZone bIndex={zoneI} name={zone} propKey={propKey} key={zoneI} />
 			))}
 			{loading ? <LoadingPopover /> : null}
 		</div>
@@ -161,7 +162,7 @@ const mapStateToProps = (state) => {
 	return {
 		tabTileProps: state.tabTileProps,
 		userFilterGroup: state.userFilterGroup,
-		chartProp: state.chartPropsLeft,
+		chartProp: state.chartProperties,
 		token: state.isLogged.access_token,
 	};
 };

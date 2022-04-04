@@ -58,14 +58,6 @@ const CanvasTables = ({
 	};
 
 	const onAddingArrow = (obj) => {
-		// TODO: Priority 1 - New arrow within existing relationship
-		// Check if arrow are from same two tables but in reverse direction
-		// Eg., Landmark Post (DC) >>> Public (Schema) >>>
-		// Table 1 - Category; Table2 - SubCategory
-		// Connecting categoryId from table 1 to subCategoryId in table 2
-		// Connecting subcategory from table 2 to category from table 1
-		// In this case, tableColumns inside relationship is not capturing the data properly
-
 		/*		Check If Relationship exists already
 					If yes, add arrow to that relation.
 					Else, add a new arrow and a new relationship
