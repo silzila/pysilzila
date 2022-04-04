@@ -188,7 +188,9 @@ const Sidebar = ({
 					onChange={(e) => {
 						onConnectionChange(e);
 					}}
-					// TODO (WARNING)You have provided an out-of-range value `post` for the select component.Consider providing a value that matches one of the available options or ''.The available values are "".
+					// TODO: Priority 5 - (WARNING) in MUI Select component
+					// You have provided an out-of-range value `post` for the select component.
+					// Consider providing a value that matches one of the available options or ''.The available values are "".
 					value={selectedConnection}
 				>
 					{connectionList &&
