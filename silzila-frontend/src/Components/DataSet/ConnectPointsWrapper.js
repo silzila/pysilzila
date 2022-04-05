@@ -26,6 +26,7 @@ const ConnectPointsWrapper = ({
 	tableName,
 	table_uid,
 	schema,
+	table_Id,
 }) => {
 	const ref1 = useRef();
 	const [position, setPosition] = useState({});
@@ -51,6 +52,7 @@ const ConnectPointsWrapper = ({
 				e.dataTransfer.setData("connectItemType", itemType);
 				e.dataTransfer.setData("connecttableUid", table_uid);
 				e.dataTransfer.setData("schema", schema);
+				e.dataTransfer.setData("tableId", table_Id);
 			}}
 			onDragEnd={() => {
 				setPosition({});

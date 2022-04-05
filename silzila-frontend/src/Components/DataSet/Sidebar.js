@@ -1,6 +1,7 @@
 import { MenuItem, Select } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import ShortUniqueId from "short-unique-id";
 import {
 	setConnectionValue,
 	setDataSchema,
@@ -10,12 +11,18 @@ import FetchData from "../../ServerCall/FetchData";
 import { ChangeConnection } from "../CommonFunctions/DialogComponents";
 import { SelectListItem } from "../CommonFunctions/SelectListItem";
 import TableList from "./TableList";
+import "../DataConnection/DataSetup.css";
 
 const Sidebar = ({
+	//props
+	editMode,
+
 	// state
 	token,
 	tableList,
 	tempTable,
+	connectionValue,
+	schemaValue,
 
 	// dispatch
 	setConnection,
@@ -46,7 +53,16 @@ const Sidebar = ({
 	};
 
 	useEffect(() => {
-		getAllDc();
+		console.log(editMode);
+		if (editMode) {
+			getAllDc();
+			setSelectedConnection(connectionValue);
+			setConnectionId(connectionValue);
+			getSchemaList(connectionValue);
+			setSelectedSchema(schemaValue);
+		} else {
+			getAllDc();
+		}
 	}, []);
 
 	useEffect(() => {
@@ -76,15 +92,11 @@ const Sidebar = ({
 
 	const getSchemaList = async (uid) => {
 		const dc_uid = uid;
-		let fname;
-		connectionList.map((con) => {
-			if (con.dc_uid === dc_uid) {
-				fname = con.friendly_name;
-			}
-		});
-		setConnectionId(dc_uid);
-		setConnection(dc_uid);
-		setUserTable([]);
+		if (!editMode) {
+			setConnectionId(dc_uid);
+			setConnection(dc_uid);
+			setUserTable([]);
+		}
 
 		var res = await FetchData({
 			requestType: "noData",
@@ -129,15 +141,36 @@ const Sidebar = ({
 		});
 
 		if (res.status) {
+			const uid = new ShortUniqueId({ length: 8 });
 			const userTable = res.data.map((el) => {
+				var id = "";
 				var tableAlreadyChecked = tempTable.filter(
 					(tbl) =>
 						tbl.dcId === connectionId && tbl.schema === schema && tbl.tableName === el
 				)[0];
+				tempTable.forEach((tbl) => {
+					if (
+						tbl.dcId === connectionId &&
+						tbl.schema === schema &&
+						tbl.tableName === el
+					) {
+						id = tbl.id;
+					}
+				});
 				if (tableAlreadyChecked) {
-					return { tableName: el, isSelected: true, table_uid: schema.concat(el) };
+					return {
+						tableName: el,
+						isSelected: true,
+						table_uid: schema.concat(el),
+						id: id,
+					};
 				}
-				return { tableName: el, isSelected: false, table_uid: schema.concat(el) };
+				return {
+					tableName: el,
+					isSelected: false,
+					table_uid: schema.concat(el),
+					id: uid(),
+				};
 			});
 
 			setUserTable(userTable);
@@ -155,12 +188,27 @@ const Sidebar = ({
 					onChange={(e) => {
 						onConnectionChange(e);
 					}}
+					// TODO: Priority 5 - (WARNING) in MUI Select component
+					// You have provided an out-of-range value `post` for the select component.
+					// Consider providing a value that matches one of the available options or ''.The available values are "".
 					value={selectedConnection}
 				>
 					{connectionList &&
 						connectionList.map((connection, i) => {
 							return (
-								<MenuItem value={connection.dc_uid} key={connection.dc_uid}>
+								<MenuItem
+									sx={{
+										fontSize: "14px",
+										width: "200px",
+										paddingBottom: "4px",
+										paddingTop: "4px",
+										paddingRight: "8px",
+										paddingLeft: "8px",
+										textOverflow: "ellipsis",
+									}}
+									value={connection.dc_uid}
+									key={connection.dc_uid}
+								>
 									{connection.db_name} ({connection.friendly_name})
 								</MenuItem>
 							);
@@ -174,7 +222,19 @@ const Sidebar = ({
 					{schemaList &&
 						schemaList.map((schema) => {
 							return (
-								<MenuItem value={schema} key={schema}>
+								<MenuItem
+									sx={{
+										fontSize: "14px",
+										width: "200px",
+										paddingBottom: "4px",
+										paddingTop: "4px",
+										paddingRight: "8px",
+										paddingLeft: "8px",
+										textOverflow: "ellipsis",
+									}}
+									value={schema}
+									key={schema}
+								>
 									{schema}
 								</MenuItem>
 							);
@@ -222,6 +282,8 @@ const mapStateToProps = (state) => {
 		token: state.isLogged.accessToken,
 		tableList: state.dataSetState.tables,
 		tempTable: state.dataSetState.tempTable,
+		connectionValue: state.dataSetState.connection,
+		schemaValue: state.dataSetState.schema,
 	};
 };
 

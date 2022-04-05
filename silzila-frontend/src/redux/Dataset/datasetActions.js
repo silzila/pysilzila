@@ -35,6 +35,10 @@ export const resetState = () => {
 	return { type: "RESET_STATE" };
 };
 
+export const setFriendlyName = (pl) => {
+	return { type: "SET_FRIENDLY_NAME", payload: pl };
+};
+
 // =============================================================================
 // Actions from Canvas
 // =============================================================================
@@ -87,4 +91,38 @@ export const removeRelationshipFromCanvas = (payload) => {
 // ===============================================================
 export const setDatasetList = (payload) => {
 	return { type: "SET_DATASET_LIST", payload };
+};
+
+// =====================================================================
+// Actions from EditDs
+// =====================================================================
+export const setTempTables = (payload) => {
+	return { type: "SET_TEMP_TABLES", payload };
+};
+
+export const setRelationship = (payload) => {
+	return { type: "SET_RELATIONSHIP_ARRAY", payload };
+};
+
+export const setValuesToState = (payload) => {
+	console.log("SETTING VALUES TO STATE", payload.fname);
+	return (dispatch) => {
+		dispatch(setConnectionValue(payload.conId));
+		dispatch(setFriendlyName(payload.fname));
+		dispatch(setArrows(payload.relationshipArray));
+		dispatch(setDataSchema(payload.schema));
+		dispatch(setTempTables(payload.canvasTables));
+		dispatch(setArrows(payload.arrowsArray));
+		dispatch(setRelationship(payload.relationshipsArray));
+	};
+};
+
+export const actionsOnRemoveTable = ({ tempTables, tables, tableId }) => {
+	console.log("REMOVE TABLE FROM CANVAS", tempTables, tables, tableId);
+	return (dispatch) => {
+		dispatch(setTempTables(tempTables));
+		dispatch(setUserTable(tables));
+		dispatch(removeRelationshipFromTableList(tableId));
+		dispatch(removeArrows(tableId));
+	};
 };

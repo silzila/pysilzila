@@ -62,7 +62,8 @@ const TileRibbon = ({
 			// handle selecting a new tile
 			let nextTileId = tabTileProps.nextTileId;
 			if (numTiles === 1) {
-				addTile(tabId, nextTileId);
+				// addTile(tabId, nextTileId);
+				handleAddTile();
 				removeTile(tabId, tileId, tileIndex);
 			} else {
 				// if there are more than one tiles

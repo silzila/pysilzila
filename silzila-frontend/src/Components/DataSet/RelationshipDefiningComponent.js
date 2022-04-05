@@ -168,9 +168,20 @@ const RelationshipDefiningComponent = ({
 				showHead: FindShowHead(),
 				showTail: FindShowTail(),
 			};
+			const newRelObj = {
+				integrity: FindIntegrity(rowMatchId1, rowMatchId2),
+				cardinality: FindCardinality(rowUniqueId1, rowUniqueId2),
+				startId: newArrowObj.startId,
+				endId: newArrowObj.endId,
+				relationId: newArrowObj.relationId,
+				startTableName: newArrowObj.startTableName,
+				endTableName: newArrowObj.endTableName,
+				showHead: FindShowHead(),
+				showTail: FindShowTail(),
+			};
 			console.log(newArrowObj);
 			addArrows(newArrowObj);
-			addRelationship(newArrowObj);
+			addRelationship(newRelObj);
 			onClose();
 		} else {
 			setSeverity("error");

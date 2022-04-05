@@ -5,8 +5,15 @@ import { useXarrow } from "react-xarrows";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CanvasTableColumns from "./CanvasTableColumns";
 import RelationshipDefiningComponent from "./RelationshipDefiningComponent";
-import { addArrows, addNewRelationship } from "../../redux/Dataset/datasetActions";
+import {
+	actionsOnRemoveTable,
+	addArrows,
+	addNewRelationship,
+	setTempTables,
+} from "../../redux/Dataset/datasetActions";
 import ShortUniqueId from "short-unique-id";
+import ActionPopover from "./ActionPopover";
+import { Button, TextField } from "@mui/material";
 
 const CanvasTables = ({
 	// props
@@ -18,12 +25,19 @@ const CanvasTables = ({
 	// dispatch
 	addNewRelationship,
 	addArrows,
+	actionsOnRemoveTable,
+	setTempTables,
 }) => {
 	const dragRef = useRef();
 	const updateXarrow = useXarrow();
 
 	const [showRelationCard, setShowRelationCard] = useState(false);
 	const [arrowProp, setArrowProp] = useState([]);
+	const [open, setOpen] = useState(false);
+	const [tableId, setTableId] = useState("");
+	const [anchorEl, setAnchorEl] = useState("");
+	const [inputField, setInputField] = useState(false);
+	const [newName, setNewName] = useState("");
 
 	var uid = new ShortUniqueId({ length: 8 });
 
@@ -39,16 +53,11 @@ const CanvasTables = ({
 
 			var sameRelObj = {};
 			var sameRelInvObj = {};
-			// for (i = 0; i < dataSetState.relationships.length; i++)
+
 			dataSetState.relationships.forEach((rel, i) => {
 				console.log(rel);
 				console.log("Relation Loop ", i);
-				if (
-					rel.startSchema === newArrowObj.startSchema &&
-					rel.endSchema === newArrowObj.endSchema &&
-					rel.startTableName === newArrowObj.startTableName &&
-					rel.endTableName === newArrowObj.endTableName
-				) {
+				if (rel.startId === newArrowObj.startId && rel.endId === newArrowObj.endId) {
 					console.log("Another arrow from same relationship");
 
 					newArrowObj.relationId = rel.relationId;
@@ -56,15 +65,9 @@ const CanvasTables = ({
 					newArrowObj.integrity = rel.integrity;
 					newArrowObj.showHead = rel.showHead;
 					newArrowObj.showTail = rel.showTail;
-
 					sameRel = true;
 					sameRelObj = newArrowObj;
-				} else if (
-					rel.startSchema === newArrowObj.endSchema &&
-					rel.endSchema === newArrowObj.startSchema &&
-					rel.startTableName === newArrowObj.endTableName &&
-					rel.endTableName === newArrowObj.startTableName
-				) {
+				} else if (rel.startId === newArrowObj.endId && rel.endId === newArrowObj.startId) {
 					console.log("Another arrow from same relationship - but INVERTED");
 
 					newArrowObj.relationId = rel.relationId;
@@ -116,6 +119,60 @@ const CanvasTables = ({
 		addNewRelationship(relObj);
 	};
 
+	const selectAction = (e) => {
+		console.log(tableId);
+		if (open === true) {
+			if (parseInt(e.target.id) === 1) {
+				const tempTables = [...dataSetState.tempTable].filter((tab) => {
+					return tab.id !== tableId;
+				});
+				const tables = [...dataSetState.tables].map((tab) => {
+					if (tab.id === tableId) {
+						tab.isSelected = false;
+					}
+					return tab;
+				});
+				var is_in_relationship = dataSetState.relationships.filter(
+					(obj) => obj.startId === tableId || obj.endId === tableId
+				)[0];
+				if (is_in_relationship) {
+					var yes = window.confirm("are you sure you want to remove this table?");
+					if (yes) {
+						actionsOnRemoveTable(tempTables, tables, tableId);
+					}
+				} else {
+					console.log(tables);
+					console.log(tempTables);
+					actionsOnRemoveTable(tempTables, tables, tableId);
+				}
+			} else if (parseInt(e.target.id) === 2) {
+				alert("do you want to change the table name?");
+				setInputField(true);
+			}
+		} else {
+			alert("Actions not Set");
+		}
+		setOpen(false);
+	};
+
+	const selectText = () => {
+		var input = document.getElementById("name");
+		input.select();
+	};
+
+	const changeTableName = (tableId) => {
+		const newTable = [...dataSetState.tempTable].map((tab) => {
+			if (tab.table_uid === tableId) {
+				tab.alias = newName;
+			}
+			return tab;
+		});
+		console.log(newTable);
+		setTempTables(newTable);
+		setNewName("");
+		setInputField(false);
+	};
+
 	return (
 		<div>
 			<Draggable
@@ -130,11 +187,42 @@ const CanvasTables = ({
 						className="draggableBoxTitle"
 						id={tableData.tableName}
 						title={`${tableData.tableName} (${tableData.schema})`}
+						onDoubleClick={() => {
+							setInputField(true);
+							setNewName(tableData.alias);
+							selectText();
+						}}
 					>
-						<div style={{ flex: 1 }}>{tableData.alias}</div>
-						<div style={{ cursor: "pointer" }}>
-							<MoreVertIcon style={{ float: "right" }} />
-						</div>
+						{inputField ? (
+							<>
+								<TextField
+									variant="standard"
+									id="name"
+									value={newName}
+									onChange={(e) => {
+										e.preventDefault();
+										setNewName(e.target.value);
+									}}
+								/>
+								<Button onClick={() => changeTableName(tableData.table_uid)}>
+									ok
+								</Button>
+							</>
+						) : (
+							<>
+								<div style={{ flex: 1 }}>{tableData.alias}</div>
+								<div style={{ cursor: "pointer" }}>
+									<MoreVertIcon
+										style={{ float: "right" }}
+										onClick={(e) => {
+											setTableId(tableData.id);
+											setOpen(true);
+											setAnchorEl(e.currentTarget);
+										}}
+									/>
+								</div>
+							</>
+						)}
 					</div>
 
 					{tableData.columns.map((item, index) => {
@@ -150,6 +238,7 @@ const CanvasTables = ({
 								index={index}
 								schema={tableData.schema}
 								checkRelationExists={checkRelationExists}
+								table_Id={tableData.id}
 							/>
 						);
 					})}
@@ -161,6 +250,12 @@ const CanvasTables = ({
 				setShowRelationCard={setShowRelationCard}
 				arrowProp={arrowProp}
 				addRelationship={addRelationship}
+			/>
+			<ActionPopover
+				open={open}
+				setOpen={setOpen}
+				selectAction={selectAction}
+				anchorEl={anchorEl}
 			/>
 		</div>
 	);
@@ -176,6 +271,9 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		addNewRelationship: (payload) => dispatch(addNewRelationship(payload)),
 		addArrows: (payload) => dispatch(addArrows(payload)),
+		actionsOnRemoveTable: (tempTables, tables, tableId) =>
+			dispatch(actionsOnRemoveTable({ tempTables, tables, tableId })),
+		setTempTables: (pl) => dispatch(setTempTables(pl)),
 	};
 };
 

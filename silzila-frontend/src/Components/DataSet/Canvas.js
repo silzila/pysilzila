@@ -6,13 +6,13 @@ import CanvasTables from "./CanvasTables";
 import RelationshipDefiningComponent from "./RelationshipDefiningComponent";
 import BottomBar from "./BottomBar";
 
-// TODO: Priority 10 - Canvas overflow fixing
-// Add table to the canvas where it doesn't overflow the current space.
-
 const Canvas = ({
 	// state
 	tempTable,
 	arrows,
+
+	//props
+	editMode,
 }) => {
 	const [showRelationCard, setShowRelationCard] = useState(false);
 	const [existingArrowProp, setExistingArrowProp] = useState({});
@@ -33,7 +33,6 @@ const Canvas = ({
 		return (
 			arrows &&
 			arrows.map((ar, index) => {
-				// console.log(ar);
 				return (
 					<div
 						className="arrowIcon"
@@ -67,7 +66,7 @@ const Canvas = ({
 					<RenderArrows />
 				</Xwrapper>
 			</div>
-			<BottomBar />
+			<BottomBar editMode={editMode ? editMode : false} />
 
 			<RelationshipDefiningComponent
 				id="idarrow"
