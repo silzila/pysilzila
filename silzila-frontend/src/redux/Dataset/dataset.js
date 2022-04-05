@@ -9,6 +9,7 @@ const initialState = {
 	tempTable: [],
 	relationships: [],
 	dataSetList: [],
+	friendly_name: "",
 };
 
 const DataSetReducer = (state = initialState, action) => {
@@ -33,16 +34,32 @@ const DataSetReducer = (state = initialState, action) => {
 		case "SET_TABLES":
 			return update(state, { tables: { $set: action.payload } });
 
+		case "SET_TEMP_TABLES":
+			return update(state, { tempTable: { $set: action.payload } });
+		// return update(state, { tempTable: { $set: [...action.payload] } });
+
 		// When a table in sidebar is checked / unchecked, update state accordingly
 		case "ON_CHECKED":
 			const x = state.tables.map((tab) => {
-				if (tab.table_uid === action.payload) {
+				if (tab.id === action.payload) {
 					if (tab.isSelected === true) {
-						var yes = window.confirm("are you sure you want to remove this table");
-						if (yes) {
+						var is_in_relationship = state.relationships.filter(
+							(obj) => obj.startId === action.payload || obj.endId === action.payload
+						)[0];
+						if (is_in_relationship) {
+							var yes = window.confirm("are you sure you want to remove this table?");
+							if (yes) {
+								tab.isSelected = !tab.isSelected;
+								state.tempTable.map((el) => {
+									if (el.id === tab.id) {
+										el.isSelected = false;
+									}
+								});
+							}
+						} else {
 							tab.isSelected = !tab.isSelected;
 							state.tempTable.map((el) => {
-								if (el.table_uid === tab.table_uid) {
+								if (el.id === tab.id) {
 									el.isSelected = false;
 								}
 							});
@@ -65,12 +82,13 @@ const DataSetReducer = (state = initialState, action) => {
 			return update(state, { tempTable: { $push: [action.payload] } });
 
 		// Remove all arrows belonging to a particular table (whether the arrow starts or ends in this table)
+
 		case "REMOVE_ARROWS":
 			const y = state.arrows.filter((arr) => {
-				return arr.table1_uid !== action.payload;
+				return arr.startId !== action.payload;
 			});
 			const z = y.filter((arr) => {
-				return arr.table2_uid !== action.payload;
+				return arr.endId !== action.payload;
 			});
 			return update(state, { arrows: { $set: [...z] } });
 
@@ -97,10 +115,10 @@ const DataSetReducer = (state = initialState, action) => {
 
 		case "DELETE_RELATIONSHIP_FROM_TABLELIST":
 			const y1 = state.relationships.filter((rel) => {
-				return rel.table1_uid !== action.payload;
+				return rel.startId !== action.payload;
 			});
 			const z1 = y1.filter((rel) => {
-				return rel.table2_uid !== action.payload;
+				return rel.endId !== action.payload;
 			});
 			console.log(z1);
 			return update(state, { relationships: { $set: z1 } });
@@ -153,6 +171,12 @@ const DataSetReducer = (state = initialState, action) => {
 
 		case "SET_DATASET_LIST":
 			return update(state, { dataSetList: { $set: action.payload } });
+
+		case "SET_RELATIONSHIP_ARRAY":
+			return update(state, { relationships: { $set: action.payload } });
+
+		case "SET_ARROWS":
+			return update(state, { arrows: { $set: action.payload } });
 
 		default:
 			return state;

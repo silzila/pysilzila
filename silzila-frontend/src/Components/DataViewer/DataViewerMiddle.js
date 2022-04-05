@@ -9,13 +9,11 @@ const DataViewerMiddle = ({
 	// props
 	tabId,
 	tileId,
-	selectedFile,
 
 	// state
 	chartProp,
 }) => {
 	var propKey = `${tabId}.${tileId}`;
-	var fileId = selectedFile;
 
 	const rightMenu = ["Chart Controls", "Filter"];
 	const [selectedMenu, setMenu] = useState("Chart Controls");

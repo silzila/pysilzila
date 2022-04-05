@@ -157,6 +157,10 @@ Datasets
 .sidebarHeading {
 	font-weight: bold;
 	font-size: 12px;
+
+	margin: 0 0 0 0.5rem;
+	text-align: left;
+
 	/* padding: 1rem 0 0.5rem 0; */
 }
 
@@ -217,3 +221,5 @@ TableData
 	padding: 3px;
 	height: 28px;
 }
+
+

@@ -1,6 +1,6 @@
 import { Close } from "@mui/icons-material";
 import { Button, Dialog, TextField } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import ShortUniqueId from "short-unique-id";
 import { resetState } from "../../redux/Dataset/datasetActions";
@@ -9,6 +9,9 @@ import { useNavigate } from "react-router-dom";
 import { NotificationDialog } from "../CommonFunctions/DialogComponents";
 
 const BottomBar = ({
+	//props
+	editMode,
+
 	// state
 	tempTable,
 	arrows,
@@ -16,22 +19,28 @@ const BottomBar = ({
 	token,
 	connection,
 	dsId,
+	friendly_name,
 
 	// dispatch
 	resetState,
 }) => {
-	const [fname, setFname] = useState("");
-	const [sendOrUpdate, setSendOrUpdate] = useState("send");
+	const [fname, setFname] = useState(friendly_name);
+	const [sendOrUpdate, setSendOrUpdate] = useState("Send");
 	const [open, setOpen] = useState(false);
 
 	const [openAlert, setOpenAlert] = useState(false);
 	const [testMessage, setTestMessage] = useState("");
 	const [severity, setSeverity] = useState("success");
 
-	const [editMode, setEditMode] = useState(false);
 	const navigate = useNavigate();
 
 	const tablesWithoutRelation = [];
+
+	useEffect(() => {
+		if (editMode) {
+			setSendOrUpdate("Update");
+		}
+	}, []);
 
 	const checkTableRelationShip = (tablesSelectedInSidebar, tablesWithRelation) => {
 		if (tablesSelectedInSidebar.length > 1) {
@@ -64,8 +73,8 @@ const BottomBar = ({
 		) {
 			relationships.forEach((relation) => {
 				var relationObj = {
-					table1: relation.startTableName,
-					table2: relation.endTableName,
+					table1: relation.startId,
+					table2: relation.endId,
 					cardinality: relation.cardinality,
 					ref_integrity: relation.integrity,
 					table1_columns: [],
@@ -118,6 +127,9 @@ const BottomBar = ({
 				},
 			};
 			console.log(options.data);
+
+			// TODO: Priority 5 - Remove axios call from here
+			// Use Fetch Data function for getting data from server through axios call
 			axios
 				.request(options)
 				.then(function (response) {
@@ -165,7 +177,8 @@ const BottomBar = ({
 				return {
 					table_name: el.tableName,
 					schema_name: el.schema,
-					id: uid(),
+					id: el.id,
+					// id: uid(),
 					alias: el.alias,
 				};
 			});
@@ -198,7 +211,7 @@ const BottomBar = ({
 	return (
 		<div className="bottomBar">
 			<Button variant="contained" onClick={onCancelOnDataset} id="cancelButton">
-				cancel
+				Cancel
 			</Button>
 
 			<div>
@@ -275,7 +288,7 @@ const mapStateToProps = (state) => {
 		arrows: state.dataSetState.arrows,
 		relationships: state.dataSetState.relationships,
 		connection: state.dataSetState.connection,
-		// friendly_name: state.dataSetState.friendly_name,
+		friendly_name: state.dataSetState.friendly_name,
 		dsId: state.dataSetState.dsId,
 	};
 };

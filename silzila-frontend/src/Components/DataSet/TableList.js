@@ -10,6 +10,7 @@ import {
 	toggleOnChecked,
 } from "../../redux/Dataset/datasetActions";
 import TableData from "./TableData";
+import ShortUniqueId from "short-unique-id";
 
 const TableList = (props) => {
 	const [selectedTable, setSelectedTable] = useState("");
@@ -18,6 +19,8 @@ const TableList = (props) => {
 	const [objKeys, setObjKeys] = useState([]);
 
 	const getTableColumns = async (tableName) => {
+		const uid = new ShortUniqueId({ length: 8 });
+
 		var result = await FetchData({
 			requestType: "noData",
 			method: "GET",
@@ -36,6 +39,7 @@ const TableList = (props) => {
 					});
 					console.log(arrayWithUid);
 					obj = {
+						id: el.id,
 						table_uid: el.table_uid,
 						tableName: tableName,
 						isSelected: el.isSelected,
@@ -50,19 +54,17 @@ const TableList = (props) => {
 		}
 	};
 
-	const checkAndUncheck = (e, tableUid) => {
-		console.log(e.target.value, tableUid);
-		// props.onChecked(e.target.value);
-		props.onChecked(tableUid);
+	const checkAndUncheck = (e, id) => {
+		props.onChecked(id);
 
 		if (e.target.checked) {
 			getTableColumns(e.target.value);
 		} else {
 			if (props.tempTable.length !== 0) {
 				props.tempTable.map((el) => {
-					if (el.table_uid === tableUid) {
-						props.removeArrows(tableUid);
-						props.removeRelationship(tableUid);
+					if (el.id === id) {
+						props.removeArrows(id);
+						props.removeRelationship(id);
 					}
 				});
 			}
@@ -108,7 +110,7 @@ const TableList = (props) => {
 				style={{ width: "1rem", height: "1rem", margin: "auto 5px auto 0" }}
 				size="1rem"
 				checked={props.table.isSelected ? true : false}
-				onClick={(e) => checkAndUncheck(e, props.table.table_uid)}
+				onClick={(e) => checkAndUncheck(e, props.table.id)}
 				value={props.table.tableName}
 			/>
 
