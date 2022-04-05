@@ -11,6 +11,12 @@ import SignUp from "./LoginSignUp/SignUp";
 
 const Home = (props) => {
 	return (
+		// TODO: Priority 1 - Capture Browser's navigation clicks
+		// Pressing back or forward in browser navigation brings to different Pages.
+		// If the required data is not there in the Pages, they crash
+		// Eg. After going to create / edit Dataset page, come back to dataHome
+		// then again click forward to go to editDataset page
+
 		<React.Fragment>
 			{props.isUserLogged ? (
 				<Router>

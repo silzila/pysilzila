@@ -9,7 +9,7 @@ const chartProperties = {
 			// General Tab Info
 			tabId: 1,
 			tileId: 1,
-			fileId: "",
+
 			chartType: "multibar",
 
 			// Left Column
@@ -86,7 +86,6 @@ const chartPropertiesState = (state = chartProperties, action) => {
 						// General Tab Info
 						tabId: action.payload.tabId,
 						tileId: action.payload.tileId,
-						fileId: action.payload.table,
 						chartType: "multibar",
 
 						// Left Column
@@ -134,7 +133,6 @@ const chartPropertiesState = (state = chartProperties, action) => {
 						// General Tab Info
 						tabId: action.payload.tabId,
 						tileId: action.payload.tileId,
-						fileId: action.payload.table,
 						chartType: "multibar",
 
 						// Left Column

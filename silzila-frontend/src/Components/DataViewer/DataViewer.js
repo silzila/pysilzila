@@ -50,7 +50,6 @@ function DataViewer({
 					<DataViewerMiddle
 						tabId={tabTileProps.selectedTabId}
 						tileId={tabTileProps.selectedTileId}
-						selectedFile={tabTileProps.selectedTable}
 					/>
 
 					{displayDatViewBot ? <DataViewerBottom /> : null}
