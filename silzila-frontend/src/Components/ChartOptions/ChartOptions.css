@@ -1,92 +1,73 @@
-.custom-select-wrapper {
-	position: relative;
-	user-select: none;
-	width: 90%;
+button,
+button:active,
+button:focus {
+	outline: none;
+}
+
+/* ======================================== */
+/* Button groups used in Chart Title */
+.radioButtons {
 	margin: 0 5%;
-	height: 1.5rem;
-	margin-bottom: 10px;
-}
-
-.custom-select-dd {
-	position: relative;
+	width: 90%;
 	display: flex;
-	flex-direction: column;
-	height: 100%;
-}
-.custom-select__trigger {
-	position: relative;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 0 5px 0 20px;
 	font-size: 12px;
-	height: 100%;
-	background: #ffffff;
-	color: rgb(128, 128, 128);
+	padding-bottom: 10px;
+	color: #404040;
 	cursor: pointer;
-	border-radius: 5px;
-	border: 1px solid darkgray;
+}
+
+.radioButtons :first-child {
+	border-radius: 5px 0 0 5px;
+}
+.radioButtons :last-child {
+	border-radius: 0 5px 5px 0;
+}
+
+.radioButton {
+	height: 1.5rem;
+	flex: 1;
+	border: 1px solid lightgray;
+	font-size: 12px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: rgb(238, 238, 238);
+	transition: 0.2s;
 	text-transform: capitalize;
 }
 
-.arrow {
-	position: relative;
+.radioButtonSelected {
+	height: 1.5rem;
+	flex: 1;
+	border: 1px solid lightgray;
+	font-size: 12px;
+	display: flex;
 	align-items: center;
-	height: 8px;
-	width: 8px;
-}
-.arrow::before,
-.arrow::after {
-	content: "";
-	position: absolute;
-	bottom: 0px;
-	width: 0.15rem;
-	height: 100%;
-	transition: all 0.5s;
-}
-.arrow::before {
-	left: -2px;
-	transform: rotate(-30deg);
-	background-color: #394a6d;
-}
-.arrow::after {
-	left: 2px;
-	transform: rotate(30deg);
-	background-color: #394a6d;
-}
-.open .arrow::before {
-	left: -2px;
-	transform: rotate(30deg);
-}
-.open .arrow::after {
-	left: 2px;
-	transform: rotate(-30deg);
+	justify-content: center;
+	background-color: #fff;
+	transition: 0.2s;
+	text-transform: capitalize;
 }
 
-.custom-options {
-	position: absolute;
+.optionsInfo {
+	width: 100%;
+	padding: 10px 0 0 0;
+	font-size: 12px;
 	display: flex;
 	flex-direction: column;
-	top: 100%;
-	left: 0;
-	right: 0;
-	border: 1px solid rgb(211, 211, 211);
-	border-top: 0;
-	background: white;
-	transition: all 0.5s;
-	opacity: 0;
-	visibility: hidden;
-	pointer-events: none;
-	z-index: 2;
-	line-height: 1rem;
-	text-transform: capitalize;
-	color: gray;
+	transition: ease-in 0.3s linear;
 }
-.custom-select-dd.open .custom-options {
-	opacity: 1;
-	visibility: visible;
-	pointer-events: all;
+
+.optionDescription {
+	padding: 0 6% 5px 6%;
+	width: 88%;
+	text-align: left;
+	color: rgb(96, 96, 96);
+	font-weight: 600;
 }
+
+/* ======================================== */
+/* Color theme MUI Select style */
 .custom-option {
 	position: relative;
 	display: block;
@@ -98,16 +79,6 @@
 	border: 1px solid lightgray;
 	flex: 1;
 	background-color: rgb(238, 238, 238);
-}
-.custom-option:hover {
-	cursor: pointer;
-	background-color: #b2b2b2;
-}
-
-.custom-option.selectedColor {
-	margin: 0 8px 0 0;
-	border-left: 8px solid rgb(0, 123, 255);
-	padding: 8px 5px 8px 5px;
 }
 
 .color-name {
@@ -128,76 +99,65 @@
 	flex: 1;
 }
 
-.optionsContainer {
-	width: 20rem;
-	background-color: white;
-	display: flex;
-	flex-direction: column;
-	overflow: auto;
-	height: 100%;
-	color: rgb(128, 128, 128);
-}
+/* ======================================== */
+/* Button groups used in Chart Legend */
 
-.chartOptions {
-	width: 100%;
-	background-color: #f4f4f4;
-	/* border-radius: 20px 0 0 0; */
-	/* box-shadow: 0 0 2px gray; */
-	margin-bottom: 8px;
-	border: 1px solid lightgray;
-}
-
-.optionsTitle {
-	background-color: #aaaaaa;
-	color: white;
-	/* border-radius: 20px 0 0 0; */
-	/* box-shadow: 0 0 2px gray; */
-	font-weight: bold;
-	width: 100%;
-	display: flex;
-}
-
-.optionsCollapse {
-	padding-right: 10px;
-	padding-left: 10px;
-	border-radius: 20px;
+.radioButtons2 {
+	place-content: center;
+	margin: 0 5%;
+	width: 90%;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-gap: 2px;
+	font-size: 11px;
+	padding-bottom: 10px;
 	cursor: pointer;
-	/* border: 1px solid transparent; */
-	transform: rotate(0deg);
-	transition: transform 0.3s linear;
+	white-space: nowrap;
+	color: #404040;
 }
 
-.optionsCollapse.open {
-	padding-right: 10px;
-	padding-left: 10px;
-	border-radius: 20px;
-	cursor: pointer;
-	/* border: 1px solid transparent; */
-	transform: rotate(180deg);
-	transition: transform 0.3s linear;
+button,
+button:active,
+button:focus {
+	outline: none;
 }
 
-/* .optionsCollapse:hover {
-    border-radius: 10px;
-    background-color: #02afaf;
-    border: 1px solid white;
+/* .radioButtons2 :first-child {
+    border-radius: 5px 0 0 5px;
+}
+.radioButtons2 :last-child {
+    border-radius: 0 5px 5px 0;
 } */
 
-.optionsInfo {
-	/* width: 100%; */
-	padding: 10px 0 0 0;
-	background-color: rgb(238, 238, 238);
-	font-size: 12px;
-	color: gray;
+.radioButton2 {
+	border-radius: 5px;
+	height: 1.5rem;
+	flex: 1;
+	border: 1px solid darkgray;
+	transition: 0.2s;
 	display: flex;
-	flex-direction: column;
-	transition: ease-in 0.3s linear;
+	align-items: center;
+	justify-content: center;
 }
 
-.optionDescription {
-	padding: 0 6% 5px 6%;
-	width: 88%;
-	text-align: left;
-	color: rgb(96, 96, 96);
-	font-weight: 600;
+.radioButtonSelected2 {
+	border-radius: 5px;
+	height: 1.5rem;
+	flex: 1;
+	border: 1px solid darkgray;
+	background-color: #fff;
+	transition: 0.2s;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	/* box-shadow: inset 1px 1px 1px gray, inset -1px -1px 1px #008080; */
+}
+
+.resetLegendOptions {
+	margin: 0 20% 8px 20%;
+	height: 1.5rem;
+	font-weight: bold;
+	border-radius: 5px;
+	background-color: rgb(214, 214, 214);
+	width: 60%;
 }

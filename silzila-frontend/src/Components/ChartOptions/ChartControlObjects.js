@@ -20,8 +20,8 @@ const ChartControlObjects = ({
 		"Colors",
 		"Legend",
 		"Margin",
-		"Labels",
 		"MouseOver",
+		"Labels",
 		"Style",
 		"Grid/Axes",
 	];
@@ -29,6 +29,7 @@ const ChartControlObjects = ({
 	const RenderOptions = () => {
 		switch (selectedChart) {
 			case "multibar":
+			case "stacked bar":
 				return barOptionsList.map((option) => {
 					return (
 						<div
