@@ -84,6 +84,12 @@ const MultiBar = ({
 						splitLine: {
 							show: property.axisOptions?.ySplitLine,
 						},
+						min: property.axisOptions.axisMinMax.enableMin
+							? property.axisOptions.axisMinMax.minValue
+							: null,
+						max: property.axisOptions.axisMinMax.enableMax
+							? property.axisOptions.axisMinMax.maxValue
+							: null,
 
 						// TODO: Priority 1 - Log scale
 						// type: "log",

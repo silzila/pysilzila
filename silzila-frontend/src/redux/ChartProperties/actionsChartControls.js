@@ -77,3 +77,8 @@ export const enableGrid = (propKey, value, show) => {
 	console.log("ENABLE_GRID", propKey, value, show);
 	return { type: "ENABLE_GRID", payload: { propKey, value, show } };
 };
+
+export const updateAxisMinMax = (propKey, axisKey, axisValue) => {
+	console.log("AXIS_MIN_MAX", propKey, axisKey, axisValue);
+	return { type: "AXIS_MIN_MAX", payload: { propKey, axisKey, axisValue } };
+};

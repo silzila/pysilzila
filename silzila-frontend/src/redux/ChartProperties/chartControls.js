@@ -34,6 +34,7 @@ const chartControl = {
 			axisOptions: {
 				xSplitLine: false,
 				ySplitLine: true,
+				axisMinMax: { enableMin: false, minValue: 0, enableMax: false, maxValue: 10000 },
 			},
 		},
 	},
@@ -222,6 +223,20 @@ const chartControlsReducer = (state = chartControl, action) => {
 						},
 					});
 			}
+
+		case "AXIS_MIN_MAX":
+			console.log("Changing axis min and max values");
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						axisOptions: {
+							axisMinMax: {
+								[action.payload.axisKey]: { $set: action.payload.axisValue },
+							},
+						},
+					},
+				},
+			});
 
 		default:
 			return state;
