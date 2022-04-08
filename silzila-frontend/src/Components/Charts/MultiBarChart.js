@@ -14,7 +14,6 @@ const MultiBar = ({
 	var property = chartControlState.properties[propKey];
 
 	let chartData = property.chartData ? property.chartData.result : "";
-	console.log(chartData, "+++++ chartData +++++");
 
 	var seriesObj = {
 		type: "bar",
@@ -85,6 +84,10 @@ const MultiBar = ({
 						splitLine: {
 							show: property.axisOptions?.ySplitLine,
 						},
+
+						// TODO: Priority 1 - Log scale
+						// type: "log",
+						// logBase: 2,
 					},
 					series: seriesData,
 				}}

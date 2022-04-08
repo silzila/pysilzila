@@ -25,7 +25,7 @@ const ControlDetail = ({ chartProp, tabTileProps }) => {
 			case "Margin":
 				return <ChartMargin />;
 
-			case "MouseOver":
+			case "Tooltip":
 				return <ChartMouseOver />;
 
 			case "Grid/Axes":

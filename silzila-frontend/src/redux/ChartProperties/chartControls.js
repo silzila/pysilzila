@@ -11,7 +11,7 @@ const chartControl = {
 
 			legendOptions: {
 				showLegend: true,
-				moveSlider: "Symbol Width",
+				moveSlider: "Width",
 				symbolWidth: 20,
 				symbolHeight: 20,
 				itemGap: 10,

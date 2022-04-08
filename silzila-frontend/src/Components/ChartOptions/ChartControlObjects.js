@@ -20,7 +20,7 @@ const ChartControlObjects = ({
 		"Colors",
 		"Legend",
 		"Margin",
-		"MouseOver",
+		"Tooltip",
 		"Labels",
 		"Style",
 		"Grid/Axes",

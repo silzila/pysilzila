@@ -93,7 +93,7 @@ const ChartLegend = ({
 	};
 	const moveSliderToRender = () => {
 		switch (chartControl.properties[propKey].legendOptions.moveSlider) {
-			case "Symbol Width":
+			case "Width":
 				return (
 					<SliderWithInput
 						sliderValue={chartControl.properties[propKey].legendOptions.symbolWidth}
@@ -101,7 +101,7 @@ const ChartLegend = ({
 						changeValue={(value) => updateLegendOption(propKey, "symbolWidth", value)}
 					/>
 				);
-			case "Symbol Height":
+			case "Height":
 				return (
 					<SliderWithInput
 						sliderValue={chartControl.properties[propKey].legendOptions.symbolHeight}
@@ -120,7 +120,7 @@ const ChartLegend = ({
 		}
 	};
 
-	const moveLegend = ["Symbol Width", "Symbol Height", "Item Gap"];
+	const moveLegend = ["Width", "Height", "Item Gap"];
 	const renderMoveLegend = () => {
 		return moveLegend.map((item) => {
 			return (
@@ -182,7 +182,7 @@ const ChartLegend = ({
 					) : null}
 					<div className="optionDescription">ORIENTATION:</div>
 					<div className="radioButtons">{renderOrientation()}</div>
-					<div className="optionDescription">MOVE / RESIZE:</div>
+					<div className="optionDescription">RESIZE:</div>
 					<div className="radioButtons2">{renderMoveLegend()}</div>
 					{moveSliderToRender()}
 				</React.Fragment>
