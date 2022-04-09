@@ -29,23 +29,23 @@ function TableData({
 	};
 	return (
 		<>
-			{/* TODO: Priority 10 - Styling Fix
+			{/* TODO:(c) Priority 10 - Styling Fix
 			 Dialog width have to be increased */}
-			<Dialog open={showTableData}>
+			<Dialog open={showTableData} maxWidth="lg">
 				<DialogTitle
 					sx={{
 						display: "flex",
-						flexDirection: "row",
-						columnGap: "2rem",
-						justifyContent: "space-between",
+						padding: "0 0.5rem 0 2rem",
 						fontSize: "16px",
+						fontWeight: "bold",
 					}}
 				>
-					<p style={{ float: "left" }}>{selectedTable}</p>
-					<p>Rows Displayed: {tableData.length}</p>
-					<CloseOutlined style={{ float: "rigth" }} onClick={handleClose} />
+					<p style={{ flex: 1 }}>{selectedTable}</p>
+					<p style={{ flex: 1 }}>Rows Displayed: {tableData.length}</p>
+
+					<CloseOutlined sx={{ margin: "5px " }} onClick={handleClose} />
 				</DialogTitle>
-				<DialogContent sx={{ maxWidth: "80vw", overflow: "hidden" }}>
+				<DialogContent sx={{ overflow: "auto" }}>
 					<Table stickyHeader>
 						<TableHead>
 							<TableRow>

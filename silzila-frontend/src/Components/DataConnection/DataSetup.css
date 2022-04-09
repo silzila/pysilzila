@@ -25,7 +25,7 @@ Data Setup Page
 	border-radius: 0.5rem;
 	background-color: #f0f0f0;
 	margin-bottom: 2rem;
-	overflow: auto;
+	/* overflow: auto; */
 }
 
 .dataSetContainer {
@@ -33,13 +33,14 @@ Data Setup Page
 	padding: 1rem;
 	border-radius: 0.5rem;
 	background-color: #f0f0f0;
-	overflow: auto;
+	/* overflow: auto; */
 }
 
 .connectionListContainer {
 	display: flex;
 	flex-direction: column;
-	overflow: hidden;
+	overflow-y: auto;
+	max-height: 250px;
 }
 
 .dashboardsContainer {

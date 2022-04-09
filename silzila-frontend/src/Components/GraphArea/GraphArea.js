@@ -22,6 +22,7 @@ import OpenInFullIcon from "@mui/icons-material/OpenInFull";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { a11yLight } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import CloseRounded from "@mui/icons-material/CloseRounded";
+import { Tooltip } from "@mui/material";
 
 const GraphArea = ({
 	// state
@@ -285,23 +286,36 @@ const GraphArea = ({
 					</>
 				)}
 
-				{/* TODO: Priority 5 - Add Tooltip
+				{/* TODO:(c) Priority 5 - Add Tooltip
 				When mouseover, show description of MUI images */}
 				{showSqlCode ? (
 					<div className="graphAreaIcons" onClick={() => setShowSqlCode(false)}>
 						{/* Tooltip: view graph */}
-						<BarChartIcon />
+						<Tooltip title="View graph" arrow placement="right-start">
+							<BarChartIcon />
+						</Tooltip>
 					</div>
 				) : (
 					<div className="graphAreaIcons" onClick={() => setShowSqlCode(true)}>
 						{/* Tooltip: SQL Code */}
-						<CodeIcon />
+						<Tooltip
+							// sx={{ backgroundColor: "white", color: "grey" }}
+							title="SQL Code"
+							arrow
+							placement="right-start"
+						>
+							<CodeIcon
+							// onClick={}
+							/>
+						</Tooltip>
 					</div>
 				)}
 
 				<div className="graphAreaIcons" onClick={() => setFullScreen(true)}>
 					{/* Tooltip: Show full screen */}
-					<OpenInFullIcon />
+					<Tooltip title="Show full screen" arrow placement="right-start">
+						<OpenInFullIcon />
+					</Tooltip>
 				</div>
 			</div>
 

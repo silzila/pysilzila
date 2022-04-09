@@ -19,7 +19,14 @@ export const NotificationDialog = ({ openAlert, severity, testMessage, onCloseAl
 	);
 };
 
-export const ChangeConnection = ({ open, setOpen, setReset }) => {
+export const ChangeConnection = ({
+	open,
+	setOpen,
+	setReset,
+	heading,
+	message,
+	onChangeOrAddDataset,
+}) => {
 	const dispatch = useDispatch();
 
 	return (
@@ -35,26 +42,17 @@ export const ChangeConnection = ({ open, setOpen, setReset }) => {
 				}}
 			>
 				<div style={{ fontWeight: "bold", textAlign: "center" }}>
-					RESET DATASET
+					{/* RESET DATASET */}
+					{heading}
 					<br />
 					<br />
 					<p style={{ fontWeight: "normal" }}>
-						Changing connection will reset this dataset creation. Do you want to discard
-						the progress?
+						{message}
+						{/* Changing connection will reset this dataset creation. Do you want to discard
+						the progress? */}
 					</p>
 				</div>
 				<div style={{ padding: "15px", justifyContent: "space-around", display: "flex" }}>
-					<Button
-						style={{ backgroundColor: "red" }}
-						variant="contained"
-						onClick={() => {
-							dispatch(resetState());
-							setOpen(false);
-							setReset(true);
-						}}
-					>
-						Discard
-					</Button>
 					<Button
 						style={{ backgroundColor: "grey", float: "right" }}
 						onClick={() => setOpen(false)}
@@ -62,6 +60,31 @@ export const ChangeConnection = ({ open, setOpen, setReset }) => {
 					>
 						Cancel
 					</Button>
+					{heading === "RESET DATASET" ? (
+						<Button
+							style={{ backgroundColor: "red" }}
+							variant="contained"
+							onClick={() => {
+								dispatch(resetState());
+								setOpen(false);
+								setReset(true);
+							}}
+						>
+							Discard
+						</Button>
+					) : (
+						<Button
+							style={{ backgroundColor: "red" }}
+							variant="contained"
+							onClick={onChangeOrAddDataset}
+							// 	dispatch(resetState());
+							// 	setOpen(false);
+							// 	setReset(true);
+							// }}
+						>
+							Ok
+						</Button>
+					)}
 				</div>
 			</div>
 		</Dialog>

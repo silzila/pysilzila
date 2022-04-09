@@ -78,3 +78,8 @@
 	background-color: rgb(95, 95, 95);
 	opacity: 1;
 }
+
+.MuiDialog-paperWidthLg{
+	max-width: 80%;
+	background-color: yellowgreen;
+}
