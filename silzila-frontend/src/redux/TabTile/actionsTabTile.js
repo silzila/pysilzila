@@ -70,6 +70,14 @@ export const showDashboardInTab = (tabId, showDash) => {
 	return { type: "SHOW_DASHBOARD_IN_TAB", payload: { tabId, showDash } };
 };
 
+export const updateTabDashDetails = (checked, propKey, dashSpecs, tabId, propIndex) => {
+	console.log(checked, propKey, dashSpecs, tabId);
+	return {
+		type: "UPDATE_DASH_GRAPH_DETAILS",
+		payload: { checked, propKey, dashSpecs, tabId, propIndex },
+	};
+};
+
 //  *************************************************************
 //  to tile state reducer
 //  *************************************************************
@@ -194,6 +202,21 @@ export const setDashGridSize = (gridSize) => {
 
 export const toggleColumnsOnlyDisplay = (columns) => {
 	return { type: "TOGGLE_COLUMNS_ONLY_DISPLAY", payload: columns };
+};
+
+export const updateDashGraphPosition = (tabId, propKey, x, y) => {
+	console.log(tabId, propKey, x, y);
+	return { type: "UPDATE_DASH_GRAPH_POSITION", payload: { tabId, propKey, x, y } };
+};
+
+export const updateDashGraphSize = (tabId, propKey, x, y, width, height) => {
+	console.log(tabId, propKey, x, y, width, height);
+	return { type: "UPDATE_DASH_GRAPH_SIZE", payload: { tabId, propKey, x, y, width, height } };
+};
+
+export const updateGraphHighlight = (tabId, propKey, highlight) => {
+	console.log("SET_GRAPH_BORDER_HIGHLIGHT", tabId, propKey, highlight);
+	return { type: "SET_GRAPH_BORDER_HIGHLIGHT", payload: { tabId, propKey, highlight } };
 };
 
 //  ***************************************************************************************************************************

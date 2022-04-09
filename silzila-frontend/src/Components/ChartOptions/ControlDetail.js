@@ -1,6 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
 import ChartColors from "./Color/ChartColors";
+import GridAndAxes from "./GridAndAxes/GridAndAxes";
+import ChartLegend from "./Legend/ChartLegend";
+import ChartMargin from "./Margin/ChartMargin";
+import ChartMouseOver from "./MouseOver/ChartMouseOver";
+import ChartTitle from "./Title/ChartTitle";
 
 const ControlDetail = ({ chartProp, tabTileProps }) => {
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
@@ -8,8 +13,23 @@ const ControlDetail = ({ chartProp, tabTileProps }) => {
 	const RenderControlDetail = () => {
 		console.log(chartProp.properties[propKey].chartOptionSelected);
 		switch (chartProp.properties[propKey].chartOptionSelected) {
+			case "Title":
+				return <ChartTitle />;
+
 			case "Colors":
 				return <ChartColors />;
+
+			case "Legend":
+				return <ChartLegend />;
+
+			case "Margin":
+				return <ChartMargin />;
+
+			case "Tooltip":
+				return <ChartMouseOver />;
+
+			case "Grid/Axes":
+				return <GridAndAxes />;
 
 			default:
 				return (

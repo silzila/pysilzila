@@ -48,14 +48,47 @@ const StackedBar = ({
 					overflow: "hidden",
 				}}
 				option={{
-					legend: {},
-					tooltip: {},
+					legend: {
+						type: "scroll",
+						show: property.legendOptions?.showLegend,
+						itemHeight: property.legendOptions?.symbolHeight,
+						itemWidth: property.legendOptions?.symbolWidth,
+						itemGap: property.legendOptions?.itemGap,
+
+						left: property.legendOptions?.position?.left,
+						top: property.legendOptions?.position?.top,
+						orient: property.legendOptions?.orientation,
+					},
+					grid: {
+						left: `${property.chartMargin.left}%`,
+						right: `${property.chartMargin.right}%`,
+						top: `${property.chartMargin.top}%`,
+						bottom: `${property.chartMargin.bottom}%`,
+					},
+
+					tooltip: { show: property.mouseOver.enable },
+
 					dataset: {
 						dimensions: Object.keys(chartData[0]),
 						source: chartData,
 					},
-					xAxis: { type: "category" },
-					yAxis: {},
+
+					xAxis: {
+						splitLine: {
+							show: property.axisOptions?.xSplitLine,
+						},
+						type: "category",
+						axisTick: {
+							alignWithLabel: true,
+						},
+					},
+
+					yAxis: {
+						splitLine: {
+							show: property.axisOptions?.ySplitLine,
+						},
+					},
+
 					series: seriesData,
 				}}
 			/>
