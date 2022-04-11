@@ -241,17 +241,13 @@ const Card = ({
 			<button
 				type="button"
 				className="buttonCommon columnDown"
-				// onClick={deleteItem}
 				title="Remove field"
 				style={showOptions ? { visibility: "visible" } : { visibility: "hidden" }}
+				onClick={handleClick}
 			>
-				<KeyboardArrowDownRoundedIcon
-					style={{ fontSize: "14px", margin: "auto" }}
-					onClick={handleClick}
-				/>
-
-				<RenderMenu />
+				<KeyboardArrowDownRoundedIcon style={{ fontSize: "14px", margin: "auto" }} />
 			</button>
+			<RenderMenu />
 		</div>
 	) : null;
 };

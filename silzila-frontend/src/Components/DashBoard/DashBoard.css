@@ -20,3 +20,34 @@
 	width: 15rem;
 	border-left: 1px solid #d3d3d3;
 }
+
+.listOfGraphs {
+	display: flex;
+	margin: 5px 5px;
+	background-color: #fff;
+	border: 1px solid #a9a9a9;
+	line-height: 1.5rem;
+	color: #606060;
+}
+.graphCheckBox {
+	margin: 5px;
+}
+.dragHeader {
+	cursor: move;
+}
+.dashChart {
+	width: 100%;
+	flex: 1;
+}
+.rndObject {
+	box-sizing: border-box;
+	border: 1px #fff solid;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	box-sizing: border-box;
+}
+.rndObject:hover {
+	border: 1px #d3d3d3 solid;
+}

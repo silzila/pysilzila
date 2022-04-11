@@ -85,6 +85,95 @@ const tabStateReducer = (state = initialTabState, action) => {
 				},
 			});
 
+		case "UPDATE_DASH_GRAPH_DETAILS":
+			console.log(
+				action.payload.checked,
+				action.payload.propKey,
+				action.payload.dashSpecs,
+				action.payload.tabId,
+				action.payload.propIndex
+			);
+			if (action.payload.checked) {
+				console.log("Deleting item");
+				var index = state.tabs[action.payload.tabId].tilesInDashboard.indexOf(
+					action.payload.propKey
+				);
+				console.log(index);
+				return update(state, {
+					tabs: {
+						[action.payload.tabId]: {
+							tilesInDashboard: { $splice: [[action.payload.propIndex, 1]] },
+							dashTilesDetails: { $unset: [action.payload.propKey] },
+						},
+					},
+				});
+			} else {
+				console.log("Adding new item");
+				return update(state, {
+					tabs: {
+						[action.payload.tabId]: {
+							tilesInDashboard: { $push: [action.payload.propKey] },
+							dashTilesDetails: {
+								[action.payload.propKey]: { $set: action.payload.dashSpecs },
+							},
+						},
+					},
+				});
+			}
+
+		case "UPDATE_DASH_GRAPH_POSITION":
+			console.log(
+				action.payload.tabId,
+				action.payload.propKey,
+				action.payload.x,
+				action.payload.y
+			);
+			return update(state, {
+				tabs: {
+					[action.payload.tabId]: {
+						dashTilesDetails: {
+							[action.payload.propKey]: {
+								x: { $set: action.payload.x },
+								y: { $set: action.payload.y },
+							},
+						},
+					},
+				},
+			});
+
+		case "UPDATE_DASH_GRAPH_SIZE":
+			return update(state, {
+				tabs: {
+					[action.payload.tabId]: {
+						dashTilesDetails: {
+							[action.payload.propKey]: {
+								x: { $set: action.payload.x },
+								y: { $set: action.payload.y },
+								width: { $set: action.payload.width },
+								height: { $set: action.payload.height },
+							},
+						},
+					},
+				},
+			});
+
+		case "SET_GRAPH_BORDER_HIGHLIGHT":
+			var copyOfDetails = state.tabs[action.payload.tabId].dashTilesDetails;
+			console.log("Details Copy", copyOfDetails);
+			var items = Object.keys(copyOfDetails);
+			console.log("Keys", items);
+			items.map((item) => {
+				if (item === action.payload.propKey) {
+					copyOfDetails[item].highlight = true;
+				} else {
+					copyOfDetails[item].highlight = false;
+				}
+			});
+			console.log("Details Copy changed", copyOfDetails);
+			return update(state, {
+				tabs: { [action.payload.tabId]: { dashTilesDetails: { $set: copyOfDetails } } },
+			});
+
 		default:
 			return state;
 	}
