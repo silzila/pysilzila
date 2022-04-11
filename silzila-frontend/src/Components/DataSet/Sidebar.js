@@ -56,10 +56,10 @@ const Sidebar = ({
 		console.log(editMode);
 		if (editMode) {
 			getAllDc();
-			setSelectedConnection(connectionValue);
-			setConnectionId(connectionValue);
+			// setSelectedConnection(connectionValue);
+			// setConnectionId(connectionValue);
 			getSchemaList(connectionValue);
-			setSelectedSchema(schemaValue);
+			// setSelectedSchema(schemaValue);
 		} else {
 			getAllDc();
 		}
@@ -85,6 +85,10 @@ const Sidebar = ({
 
 		if (res.status) {
 			setConnectionList(res.data);
+			if (editMode) {
+				setSelectedConnection(connectionValue);
+				setConnectionId(connectionValue);
+			}
 		} else {
 			console.log(res.data.detail);
 		}
@@ -121,6 +125,9 @@ const Sidebar = ({
 				} else {
 					console.log(res2.data.detail);
 				}
+			}
+			if (editMode) {
+				setSelectedSchema(schemaValue);
 			}
 		} else {
 			console.log(res.data.detail);
@@ -188,11 +195,14 @@ const Sidebar = ({
 					onChange={(e) => {
 						onConnectionChange(e);
 					}}
-					// TODO: Priority 5 - (WARNING) in MUI Select component
+					// TODO:(c) Priority 5 - (WARNING) in MUI Select component
 					// You have provided an out-of-range value `post` for the select component.
 					// Consider providing a value that matches one of the available options or ''.The available values are "".
 					value={selectedConnection}
 				>
+					{/* <MenuItem value="">
+						<em>---select connection---</em>
+					</MenuItem> */}
 					{connectionList &&
 						connectionList.map((connection, i) => {
 							return (
@@ -219,6 +229,9 @@ const Sidebar = ({
 			<div className="sidebarHeading">Schema</div>
 			<div>
 				<Select className="selectBar" onChange={(e) => getTables(e)} value={selectedSchema}>
+					{/* <MenuItem value="">
+						<em>---Select Schema---</em>
+					</MenuItem> */}
 					{schemaList &&
 						schemaList.map((schema) => {
 							return (
@@ -272,7 +285,14 @@ const Sidebar = ({
 				<div style={{ marginTop: "10px", fontStyle: "italic" }}>No Tables</div>
 			)}
 
-			<ChangeConnection open={openDlg} setOpen={setOpenDlg} setReset={setResetDataset} />
+			<ChangeConnection
+				open={openDlg}
+				setOpen={setOpenDlg}
+				setReset={setResetDataset}
+				heading="RESET DATASET"
+				message="Changing connection will reset this dataset creation. Do you want to discard
+						the progress?"
+			/>
 		</div>
 	);
 };

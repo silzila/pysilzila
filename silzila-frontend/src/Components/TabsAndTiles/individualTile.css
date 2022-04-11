@@ -2,6 +2,7 @@
 	transition: 0.2s;
 	/* box-sizing: border-box; */
 	display: inline-block;
+	
 	height: 1.5rem;
 	line-height: 1.25rem;
 	margin-left: 5px;
@@ -22,6 +23,8 @@
 	/* border-bottom: 1px solid #a9a9a9;
 	border-left: 1px solid #a9a9a9;
 	border-right: 1px solid #a9a9a9; */
+	overflow: hidden;
+
 }
 .indiItemTile {
 	color: gray;
@@ -29,6 +32,12 @@
 	/* border-bottom: 1px solid #a9a9a9;
 	border-left: 1px solid #a9a9a9;
 	border-right: 1px solid #a9a9a9; */
+
+	max-width: 250px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+
 }
 .indiItemHighlightTile {
 	border-top: 2px solid #007bff;
@@ -36,8 +45,15 @@
 	border-left: 1px solid #a9a9a9;
 	border-right: 1px solid #a9a9a9; */
 	background: white;
+
+	max-width: 250px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	
 }
 .closeTile {
+
 	border-radius: 2px;
 	margin-left: 10px;
 	margin-right: 5px;

@@ -52,7 +52,8 @@
 }
 
 .tileTableView {
-	overflow: auto;
+	/* overflow-x: auto; */
+ overflow: hidden; 
 }
 .displayTable {
 	flex: 1;
@@ -61,7 +62,13 @@
 	background-color: rgb(238, 238, 238);
 	border-collapse: collapse;
 	color: rgb(51, 51, 51);
+	overflow-x: auto;
 }
+
+/* .tableBody{
+	 display: block; 
+	overflow: auto;
+} */
 .tableHeadings {
 	height: 40px;
 	padding: 9px 9px 9px 0;
@@ -85,9 +92,12 @@
 	background-color: rgb(238, 238, 238);
 }
 .tableRows:nth-child(odd) {
+
 	background-color: white;
 }
 .tableRows:nth-child(even) {
+
+
 	background-color: rgb(238, 238, 238);
 }
 

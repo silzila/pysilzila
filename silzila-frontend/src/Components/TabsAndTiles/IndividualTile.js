@@ -23,7 +23,7 @@ function IndividualTile({
 		setRenameValue(e.target.value);
 	};
 
-	// TODO: Priority 5 - Tab Max width
+	// TODO:(P) Priority 5 - Tile Max width
 	// 		- Set Tile max width to 250px
 	// 		- Tooltip shows tile name and the text "Double click to edit". Show the latter in next line in a custom tooltip
 

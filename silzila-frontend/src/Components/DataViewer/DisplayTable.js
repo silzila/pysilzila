@@ -93,7 +93,7 @@ const DisplayTable = ({
 		} else return null;
 	};
 
-	// TODO: Priority 10 - Table scroll bar position
+	// TODO:(P) Priority 10 - Table scroll bar position
 	// Scroll bar must start from the body of table instead of starting from the table header
 
 	const RenderButtons = () => {
@@ -131,7 +131,7 @@ const DisplayTable = ({
 						<GetHeaders />
 					</tr>
 				</thead>
-				<tbody>{getRowsData()}</tbody>
+				<tbody className="tableBody">{getRowsData()}</tbody>
 			</table>
 		</>
 	);

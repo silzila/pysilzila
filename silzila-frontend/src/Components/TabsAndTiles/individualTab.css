@@ -8,6 +8,7 @@
 	padding: 0 0 0 10px;
 	cursor: pointer;
 	background-color: rgb(211, 211, 211);
+
 }
 .commonTab:hover {
 	color: rgb(64, 64, 64);
@@ -24,21 +25,41 @@
 	/* border-top: 1px solid rgb(169, 169, 169);
 	border-left: 1px solid rgb(169, 169, 169);
 	border-right: 1px solid rgb(169, 169, 169); */
+
+	overflow: hidden;
+
+	
 }
-.indiItemTab {
+/*this style doesnt belong to current tab*/
+.indiItemTab { 
 	color: rgb(128, 128, 128);
 	border-bottom: 2px solid transparent;
 	/* border-top: 1px solid rgb(169, 169, 169);
 	border-left: 1px solid rgb(169, 169, 169);
 	border-right: 1px solid rgb(169, 169, 169); */
+    background-color: aqua;
+
+	max-width: 250px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	
 }
 .indiItemHighlightTab {
+
+
 	transition: 0.2s;
 	border-bottom: 2px solid rgb(0, 123, 255);
 	/* border-top: 1px solid rgb(128, 128, 128);
 	border-left: 1px solid rgb(128, 128, 128);
 	border-right: 1px solid rgb(128, 128, 128); */
 	background: white;
+
+    max-width: 250px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+
 }
 .editTabSelected {
 	transition: 0.2s;
@@ -52,6 +73,7 @@
 	background-color: white;
 	font-size: 12px;
 }
+
 .editTabSelected:focus {
 	outline: none;
 	border-bottom: 2px solid rgb(0, 123, 255);

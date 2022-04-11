@@ -34,7 +34,7 @@
 	align-items: center;
 }
 
-/* TODO: Priotity 10 - Remove Icons margin
+/* TODO:(c) Priotity 10 - Remove Icons margin
 	When using MUI icons with onClick operations, a margin / padding from  its surrounding div 
 	makes onClick restricted to small area. Remove the padding of parent div and style the MUI
 	icon itself directly */
