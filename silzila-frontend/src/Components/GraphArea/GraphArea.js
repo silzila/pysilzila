@@ -46,7 +46,6 @@ const GraphArea = ({
 	const graphDimensionCompute = () => {
 		const height = document.getElementById("graphContainer").clientHeight;
 		const width = document.getElementById("graphContainer").clientWidth;
-		console.log(height, width);
 		setGraphDimension({
 			height,
 			width,

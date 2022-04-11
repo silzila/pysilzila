@@ -44,7 +44,7 @@ const chartProperties = {
 				chartTitle: "",
 				generateTitle: "Auto",
 			},
-			chartOptionSelected: "Colors",
+			chartOptionSelected: "Title",
 		},
 	},
 

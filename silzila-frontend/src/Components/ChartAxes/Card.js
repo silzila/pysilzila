@@ -241,12 +241,11 @@ const Card = ({
 			<button
 				type="button"
 				className="buttonCommon columnDown"
-				onClick={handleClick}
 				title="Remove field"
 				style={showOptions ? { visibility: "visible" } : { visibility: "hidden" }}
+				onClick={handleClick}
 			>
 				<KeyboardArrowDownRoundedIcon style={{ fontSize: "14px", margin: "auto" }} />
-				{/* <RenderMenu /> */}
 			</button>
 			<RenderMenu />
 		</div>
