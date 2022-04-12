@@ -70,6 +70,11 @@ export const showDashboardInTab = (tabId, showDash) => {
 	return { type: "SHOW_DASHBOARD_IN_TAB", payload: { tabId, showDash } };
 };
 
+export const toggleDashModeInTab = (tabId, dashMode) => {
+	console.log("Dash_mode_in_tab");
+	return { type: "TOGGLE_DASH_MODE_IN_TAB", payload: { tabId, dashMode } };
+};
+
 export const updateTabDashDetails = (checked, propKey, dashSpecs, tabId, propIndex) => {
 	console.log(checked, propKey, dashSpecs, tabId);
 	return {
@@ -146,10 +151,10 @@ export const updateNextTabId = () => {
 	return { type: "UPDATE_NEXT_TAB_ID" };
 };
 
-export const updateSelectedTab = (tabName, tabId, showDash) => {
+export const updateSelectedTab = (tabName, tabId, showDash, dashMode) => {
 	return {
 		type: "SELECTED_TAB",
-		payload: { tabName: tabName, tabId: tabId, showDash },
+		payload: { tabName: tabName, tabId: tabId, showDash, dashMode },
 	};
 };
 
@@ -194,6 +199,10 @@ export const chartPropsLeftUpdated = (updated) => {
 
 export const showDashBoard = (showDash) => {
 	return { type: "SHOW_DASHBOARD", payload: showDash };
+};
+
+export const toggleDashMode = (dashMode) => {
+	return { type: "TOGGLE_DASH_MODE", payload: dashMode };
 };
 
 export const setDashGridSize = (gridSize) => {
@@ -250,9 +259,9 @@ export const actionsToAddTab = ({ tabId, table, selectedDs, selectedTablesInDs }
 	};
 };
 
-export const actionsToSelectTab = ({ tabName, tabId, showDash }) => {
+export const actionsToSelectTab = ({ tabName, tabId, showDash, dashMode }) => {
 	return (dispatch) => {
-		dispatch(updateSelectedTab(tabName, tabId, showDash));
+		dispatch(updateSelectedTab(tabName, tabId, showDash, dashMode));
 	};
 };
 

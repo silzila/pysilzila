@@ -11,6 +11,7 @@ const initialTabState = {
 			selectedTileId: 1,
 			nextTileId: 2,
 			showDash: false,
+			dashMode: "Dev Mode",
 			tilesInDashboard: [],
 			dashTilesDetails: {},
 		},
@@ -38,6 +39,7 @@ const tabStateReducer = (state = initialTabState, action) => {
 						selectedTileId: 1,
 						nextTileId: 2,
 						showDash: false,
+						dashMode: "Dev Mode",
 						tilesInDashboard: [],
 						dashTilesDetails: {},
 					},
@@ -83,6 +85,11 @@ const tabStateReducer = (state = initialTabState, action) => {
 						showDash: { $set: action.payload.showDash },
 					},
 				},
+			});
+
+		case "TOGGLE_DASH_MODE_IN_TAB":
+			return update(state, {
+				tabs: { [action.payload.tabId]: { dashMode: { $set: action.payload.dashMode } } },
 			});
 
 		case "UPDATE_DASH_GRAPH_DETAILS":

@@ -216,10 +216,12 @@ const DashBoard = ({
 				</div>
 			</div>
 
-			<div className="tileListContainer">
-				List of Tiles
-				{tileList}
-			</div>
+			{tabTileProps.dashMode === "Dev Mode" ? (
+				<div className="tileListContainer">
+					List of Tiles
+					{tileList}
+				</div>
+			) : null}
 		</div>
 	);
 };
