@@ -95,44 +95,44 @@ const GraphArea = ({
 					/>
 				);
 
-			// case "scatterPlot":
-			// 	return (
-			// 		<ScatterChart
-			// 			propKey={propKey}
-			// 			graphDimension={fullScreen ? graphDimension2 : graphDimension}
-			// 		/>
-			// 	);
-			// case "area":
-			// 	return (
-			// 		<AreaChart
-			// 			propKey={propKey}
-			// 			graphDimension={fullScreen ? graphDimension2 : graphDimension}
-			// 		/>
-			// 	);
+			case "scatterPlot":
+				return (
+					<ScatterChart
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+					/>
+				);
+			case "area":
+				return (
+					<AreaChart
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+					/>
+				);
+			case "pie":
+				return (
+					<PieChart
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+					/>
+				);
+			case "donut":
+				return (
+					<DoughnutChart
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+					/>
+				);
+			case "line":
+				return (
+					<LineChart
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+					/>
+				);
 			// case "funnel":
 			// 	return (
 			// 		<FunnelChart
-			// 			propKey={propKey}
-			// 			graphDimension={fullScreen ? graphDimension2 : graphDimension}
-			// 		/>
-			// 	);
-			// case "pie":
-			// 	return (
-			// 		<PieChart
-			// 			propKey={propKey}
-			// 			graphDimension={fullScreen ? graphDimension2 : graphDimension}
-			// 		/>
-			// 	);
-			// case "donut":
-			// 	return (
-			// 		<DoughnutChart
-			// 			propKey={propKey}
-			// 			graphDimension={fullScreen ? graphDimension2 : graphDimension}
-			// 		/>
-			// 	);
-			// case "line":
-			// 	return (
-			// 		<LineChart
 			// 			propKey={propKey}
 			// 			graphDimension={fullScreen ? graphDimension2 : graphDimension}
 			// 		/>
