@@ -53,7 +53,7 @@
 
 .tileTableView {
 	/* overflow-x: auto; */
- overflow: hidden; 
+ overflow: auto; 
 }
 .displayTable {
 	flex: 1;
@@ -65,10 +65,6 @@
 	overflow-x: auto;
 }
 
-/* .tableBody{
-	 display: block; 
-	overflow: auto;
-} */
 .tableHeadings {
 	height: 40px;
 	padding: 9px 9px 9px 0;

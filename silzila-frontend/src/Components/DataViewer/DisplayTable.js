@@ -131,7 +131,7 @@ const DisplayTable = ({
 						<GetHeaders />
 					</tr>
 				</thead>
-				<tbody className="tableBody">{getRowsData()}</tbody>
+				<tbody>{getRowsData()}</tbody>
 			</table>
 		</>
 	);

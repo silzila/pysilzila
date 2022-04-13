@@ -14,6 +14,7 @@ import {
 import ShortUniqueId from "short-unique-id";
 import ActionPopover from "./ActionPopover";
 import { Button, TextField } from "@mui/material";
+import { NotificationDialog } from "../CommonFunctions/DialogComponents";
 
 const CanvasTables = ({
 	// props
@@ -38,6 +39,10 @@ const CanvasTables = ({
 	const [anchorEl, setAnchorEl] = useState("");
 	const [inputField, setInputField] = useState(false);
 	const [newName, setNewName] = useState("");
+
+	const [openAlert, setOpenAlert] = useState(false);
+	const [severity, setseverity] = useState("success");
+	const [testMessage, setTestMessage] = useState("");
 
 	var uid = new ShortUniqueId({ length: 8 });
 
@@ -146,7 +151,8 @@ const CanvasTables = ({
 					actionsOnRemoveTable(tempTables, tables, tableId);
 				}
 			} else if (parseInt(e.target.id) === 2) {
-				alert("do you want to change the table name?");
+				// alert("do you want to change the table name?");
+				setNewName(tableData.alias);
 				setInputField(true);
 			}
 		} else {
@@ -161,16 +167,27 @@ const CanvasTables = ({
 	};
 
 	const changeTableName = (tableId) => {
-		const newTable = [...dataSetState.tempTable].map((tab) => {
-			if (tab.table_uid === tableId) {
-				tab.alias = newName;
-			}
-			return tab;
-		});
-		console.log(newTable);
-		setTempTables(newTable);
-		setNewName("");
-		setInputField(false);
+		var spaceCount = newName.split(" ").length - 1;
+		if (newName.length > 0 && newName.length !== spaceCount) {
+			const newTable = [...dataSetState.tempTable].map((tab) => {
+				if (tab.table_uid === tableId) {
+					tab.alias = newName;
+				}
+				return tab;
+			});
+			console.log(newTable);
+			setTempTables(newTable);
+			setNewName("");
+			setInputField(false);
+		} else {
+			setOpenAlert(true);
+			setseverity("error");
+			setTestMessage("Atleast one letter should be provided");
+			setTimeout(() => {
+				setOpenAlert(false);
+				setTestMessage("");
+			}, 4000);
+		}
 	};
 
 	return (
@@ -206,6 +223,14 @@ const CanvasTables = ({
 								/>
 								<Button onClick={() => changeTableName(tableData.table_uid)}>
 									ok
+								</Button>
+								<Button
+									onClick={() => {
+										setInputField(false);
+										setNewName("");
+									}}
+								>
+									cancel
 								</Button>
 							</>
 						) : (
@@ -244,6 +269,15 @@ const CanvasTables = ({
 					})}
 				</div>
 			</Draggable>
+			<NotificationDialog
+				onCloseAlert={() => {
+					setOpenAlert(false);
+					setTestMessage("");
+				}}
+				openAlert={openAlert}
+				severity={severity}
+				testMessage={testMessage}
+			/>
 
 			<RelationshipDefiningComponent
 				showRelationCard={showRelationCard}

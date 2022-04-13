@@ -98,26 +98,13 @@ const DataViewerBottom = ({
 		setAddNewOrChooseExistingDS(value);
 		if (value === "addNewDataset") {
 			console.log(axes);
-			var count = 0;
-			axes.map((axis) => {
-				if (axis.fields.length === 0) {
-					count = count + 1;
-				}
-			});
-			if (count === 3) {
+			if (axes.length > 0) {
 				setOpen(true);
 			} else {
 				setOpenChangeDatasetDlg(true);
 			}
 		} else {
-			console.log(axes);
-			var count = 0;
-			axes.map((axis) => {
-				if (axis.fields.length === 0) {
-					count = count + 1;
-				}
-			});
-			if (count === 3) {
+			if (axes.length > 0) {
 				var dsObj = tabTileProps.selectedDataSetList.filter((ds) => ds.ds_uid === value)[0];
 				setSelectedDs(propKey, dsObj);
 				console.log(dsObj);
