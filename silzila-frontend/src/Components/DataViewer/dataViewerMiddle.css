@@ -82,23 +82,23 @@
 .syntaxHighlight {
 	text-align: left;
 }
-.rightColumn {
+/* .rightColumn {
 	width: 16rem;
 	background-color: #eee;
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
 	color: #404040;
-	/* border: 1px solid #d3d3d3; */
-}
-.radioButtonsUserMenu {
+    /* border: 1px solid #d3d3d3; */
+/* } */
+/* .radioButtonsUserMenu {
 	width: 100%;
 	display: flex;
 	font-size: 16px;
 	line-height: 1.5rem;
 	background-color: #d3d3d3;
-}
-.menuRadioButton {
+} */
+/* .menuRadioButton {
 	flex: 1;
 	border: none;
 	border-bottom: 2px solid transparent;
@@ -112,4 +112,41 @@
 	color: #404040;
 	background-color: #eee;
 	font-weight: 600;
+} */
+.controlsIcon{
+	padding: 7px;
+	width: 43px;
+	height: 43px;
+	/* margin:auto; */
+	margin-top: 8px;
+}
+
+.selectedIcon{
+ border: 2.5px solid transparent;
+ border-right-color: #007bff;
+ border-radius: 4px;
+ background-color: white;
+}
+
+.rightColumn{
+	/* background-color: #eee; */
+	padding: 0%;
+	height: 100%;
+	width: auto;
+	display: flex;
+	flex-direction: row;
+}
+.rightColumnMenu{
+	flex: 1;
+	height: 100%;
+	width: 3.5rem;
+	background-color: #eee;
+}
+.rightColumnControlsAndFilters{
+	flex: 1;
+	margin-top: 2px;
+	margin-right: 4px;
+	height: 100%;
+	background-color: #eee;
+	width: 250px;	
 }
