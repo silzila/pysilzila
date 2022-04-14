@@ -32,6 +32,8 @@ const PieChart = ({
 	}, [chartData]);
 
 	console.log(seriesData);
+
+	// TODO: Priority 1 - Data not rendering properly. It shows dimension value instead of measure when dimension is Year
 	const RenderChart = () => {
 		return (
 			<>
@@ -68,7 +70,7 @@ const PieChart = ({
 						},
 						xAxis: {},
 						yAxis: { type: "category" },
-						series: seriesData,
+						series: [{ type: "pie" }],
 					}}
 				/>
 			</>

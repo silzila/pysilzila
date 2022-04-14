@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import ChartAxes from "../ChartAxes/ChartAxes";
-import ChartControls from "../ChartOptions/ChartControls";
 import GraphArea from "../GraphArea/GraphArea";
 import "./dataViewerMiddle.css";
 import chartControlIcon from "../../assets/chart-control-icon.svg";
@@ -9,6 +8,7 @@ import settingsIcon from "../../assets/charts_theme_settings_icon.svg";
 import FilterIcon from "../../assets/filter_icon.svg";
 import ChartControlObjects from "../ChartOptions/ChartControlObjects";
 import ControlDetail from "../ChartOptions/ControlDetail";
+import ChartTypes from "../ChartOptions/ChartTypes";
 
 const DataViewerMiddle = ({
 	// props
@@ -25,25 +25,7 @@ const DataViewerMiddle = ({
 		{ name: "Filter", icon: FilterIcon },
 	];
 
-	const rightMenu = ["Chart Controls", "Filter"];
 	const [selectedMenu, setMenu] = useState("");
-
-	// const renderMenu = () =>
-	// 	rightMenu.map((option) => {
-	// 		return (
-	// 			<button
-	// 				key={option.id}
-	// 				className={
-	// 					option.id === selectedMenu ? "menuRadioButtonSelected" : "menuRadioButton"
-	// 				}
-	// 				value={option.name}
-	// 				onClick={(e) => setMenu(e.target.value)}
-	// 				title={option.name}
-	// 			>
-	// 				{option}
-	// 			</button>
-	// 		);
-	// 	});
 
 	const renderMenu = rmenu.map((rm) => {
 		return (
@@ -69,20 +51,26 @@ const DataViewerMiddle = ({
 			case "Charts":
 				return (
 					<div className="rightColumnControlsAndFilters">
-						<ChartControls propKey={propKey} />
+						<div className="axisTitle">Charts</div>
+						<ChartTypes propKey={propKey} />
 					</div>
 				);
 
 			case "Chart controls":
 				return (
 					<div className="rightColumnControlsAndFilters">
+						<div className="axisTitle">Charts Controls</div>
 						<ChartControlObjects />
 						<ControlDetail />
 					</div>
 				);
 
 			case "Filter":
-				return <div className="rightColumnControlsAndFilters">Filters</div>;
+				return (
+					<div className="rightColumnControlsAndFilters">
+						<div className="axisTitle">Filters</div>
+					</div>
+				);
 			default:
 				return null;
 		}
@@ -94,16 +82,8 @@ const DataViewerMiddle = ({
 
 			<GraphArea />
 
-			{/* <div className="rightColumn ">
-				<div className="radioButtonsUserMenu">{renderMenu()}</div>
-				{
-					selectedMenu === "Chart Controls" ? <ChartControls propKey={propKey} /> : null
-					// <ChartUserFilterContainer propKey={propKey} chartProp={chartProp} fileId={fileId} userFilterGroup={userFilterGroup} />
-				}
-			</div> */}
-
 			<div className="rightColumn">
-				<div>{controlDisplayed()}</div>
+				{controlDisplayed()}
 				<div className="rightColumnMenu">{renderMenu}</div>
 			</div>
 		</div>

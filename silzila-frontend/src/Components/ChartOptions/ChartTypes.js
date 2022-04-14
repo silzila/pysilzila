@@ -13,11 +13,9 @@ import pieChartIcon from "../../assets/pie_chart.svg";
 import donutChartIcon from "../../assets/donut_chart.svg";
 import scatterPlotIcon from "../../assets/scatter.svg";
 import ChartsInfo from "../ChartAxes/ChartsInfo2";
-import ChartControlObjects from "./ChartControlObjects";
-import ControlDetail from "./ControlDetail";
 import "./ChartOptions.css";
 
-const ChartControls = ({
+const ChartTypes = ({
 	//props
 	propKey,
 
@@ -42,19 +40,6 @@ const ChartControls = ({
 		console.log("===========================================");
 		console.log(oldChartAxes, newChartAxes);
 
-		// let rowColumnValueCharts = ["heatmap", "crossTab"];
-		// let categoryValueCharts = [
-		// 	"bar",
-		// 	"stacked bar",
-		// 	"pie",
-		// 	"donut",
-		// 	"area",
-		// 	"line",
-		// 	"bubble",
-		// 	"treeMap",
-		// 	"calendar",
-		// ];
-
 		switch (oldChart) {
 			case "multibar":
 			case "stacked bar":
@@ -67,72 +52,34 @@ const ChartControls = ({
 				) {
 					keepOldData(propKey, true);
 					return oldChartAxes;
+				} else if (newChart === "scatterPlot") {
+					keepOldData(propKey, true);
+
+					// Map Category to Category
+					if (oldChartAxes[1].fields != undefined)
+						newChartAxes[1].fields = oldChartAxes[1].fields;
+
+					// Map Value to X and Y columns if there are more than one values
+					if (oldChartAxes[2].fields != undefined) {
+						if (oldChartAxes[2].fields.length > 1) {
+							console.log("OldChartAxes: ", oldChartAxes);
+							newChartAxes[2].fields.push(oldChartAxes[2].fields.shift());
+							console.log("OldChartAxes After Shift: ", oldChartAxes);
+							newChartAxes[3].fields = oldChartAxes[2].fields;
+						} else {
+							newChartAxes[1].fields = oldChartAxes[2].fields;
+						}
+					}
+
+					console.log(newChartAxes);
+					return newChartAxes;
 				}
-			// else if (newChart === "scatterPlot") {
-			// 	keepOldData(propKey, true);
-
-			// 	// Map Category to Category
-			// 	if (oldChartAxes[0].fields != undefined)
-			// 		newChartAxes[0].fields = oldChartAxes[0].fields;
-
-			// 	// Map Value to X and Y columns if there are more than one values
-			// 	if (oldChartAxes[1].fields != undefined) {
-			// 		if (oldChartAxes[1].fields.length > 1) {
-			// 			console.log("OldChartAxes: ", oldChartAxes);
-			// 			newChartAxes[1].fields.push(oldChartAxes[1].fields.shift());
-			// 			console.log("OldChartAxes After Shift: ", oldChartAxes);
-			// 			newChartAxes[2].fields = oldChartAxes[1].fields;
-			// 		} else {
-			// 			newChartAxes[1].fields = oldChartAxes[1].fields;
-			// 		}
-			// 	}
-
-			// 	// Map filter to Filter
-			// 	if (oldChartAxes[2].fields != undefined)
-			// 		newChartAxes[3].fields = oldChartAxes[2].fields;
-			// 	return newChartAxes;
-			// } else if (rowColumnValueCharts.includes(newChart)) {
-			// 	// Map Category to Category
-			// 	if (oldChartAxes[0].fields != undefined)
-			// 		newChartAxes[0].fields = oldChartAxes[0].fields;
-
-			// 	// Map Value to Value
-			// 	if (oldChartAxes[1].fields != undefined)
-			// 		newChartAxes[2].fields = oldChartAxes[1].fields;
-
-			// 	// Map filter to Filter
-			// 	if (oldChartAxes[2].fields != undefined)
-			// 		newChartAxes[3].fields = oldChartAxes[2].fields;
-
-			// 	return newChartAxes;
-			// }
-			// case "scatterPlot":
-			// if (newChart === "scatterPlot") {
-			// 	return oldChartAxes;
-			// } else if (categoryValueCharts.includes(newChart)) {
-			// 	keepOldData(propKey, false);
-
-			// 	// Map Category to Category
-			// 	if (oldChartAxes[0].fields != undefined)
-			// 		newChartAxes[0].fields = oldChartAxes[0].fields;
-
-			// 	// Map X & Y to Value
-			// 	var value = [];
-			// 	if (oldChartAxes[1].fields != undefined)
-			// 		value = value.concat(oldChartAxes[1].fields);
-			// 	if (oldChartAxes[2].fields != undefined)
-			// 		value = value.concat(oldChartAxes[2].fields);
-			// 	newChartAxes[1].fields = value;
-
-			// 	// Map filter to Filter
-			// 	if (oldChartAxes[3].fields != undefined)
-			// 		newChartAxes[2].fields = oldChartAxes[3].fields;
-			// 	return newChartAxes;
-			// }
 
 			default:
 				return oldChartAxes;
 		}
+
+		console.log(oldChartAxes, newChartAxes);
 	};
 
 	const chartTypes = [
@@ -146,7 +93,7 @@ const ChartControls = ({
 		// { name: "step line", icon: stepLineIcon },
 		// { name: "funnel", icon: funnelChartIcon },
 		// { name: "rose", icon: roseChartIcon },
-		{ name: "scatterPlot", icon: scatterPlotIcon },
+		// { name: "scatterPlot", icon: scatterPlotIcon },
 		// { name: "multibar", icon: simpleBarChartIcon },
 	];
 
@@ -195,8 +142,6 @@ const ChartControls = ({
 	return (
 		<React.Fragment>
 			<div className="chartIconsContainer">{renderChartTypes}</div>
-			{/* <ChartControlObjects /> */}
-			{/* <ControlDetail /> */}
 		</React.Fragment>
 	);
 };
@@ -213,4 +158,4 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChartControls);
+export default connect(mapStateToProps, mapDispatchToProps)(ChartTypes);
