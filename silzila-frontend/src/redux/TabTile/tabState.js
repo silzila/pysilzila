@@ -5,12 +5,14 @@ const initialTabState = {
 		1: {
 			tabId: 1,
 			tabName: "Tab - 1",
+			showDash: false,
+			dashMode: "Dev Mode",
+			dashLayout: {},
 
 			// properties specific to tiles within this tab
 			selectedTileName: "Tile - 1",
 			selectedTileId: 1,
 			nextTileId: 2,
-			showDash: false,
 			tilesInDashboard: [],
 			dashTilesDetails: {},
 		},
@@ -32,12 +34,14 @@ const tabStateReducer = (state = initialTabState, action) => {
 					[action.payload]: {
 						tabId: action.payload,
 						tabName: `Tab - ${action.payload}`,
+						showDash: false,
+						dashMode: "Dev Mode",
+						dashLayout: {},
 
 						// properties specific to tiles within this tab
 						selectedTileName: "Tile - 1",
 						selectedTileId: 1,
 						nextTileId: 2,
-						showDash: false,
 						tilesInDashboard: [],
 						dashTilesDetails: {},
 					},
@@ -83,6 +87,11 @@ const tabStateReducer = (state = initialTabState, action) => {
 						showDash: { $set: action.payload.showDash },
 					},
 				},
+			});
+
+		case "TOGGLE_DASH_MODE_IN_TAB":
+			return update(state, {
+				tabs: { [action.payload.tabId]: { dashMode: { $set: action.payload.dashMode } } },
 			});
 
 		case "UPDATE_DASH_GRAPH_DETAILS":
@@ -170,6 +179,21 @@ const tabStateReducer = (state = initialTabState, action) => {
 				}
 			});
 			console.log("Details Copy changed", copyOfDetails);
+			return update(state, {
+				tabs: { [action.payload.tabId]: { dashTilesDetails: { $set: copyOfDetails } } },
+			});
+
+		case "RESET_GRAPH_BORDER_HIGHLIGHT":
+			console.log("Reseting graph Highlight for tab ", action.payload.tabId);
+			var copyOfDetails = state.tabs[action.payload.tabId].dashTilesDetails;
+			console.log("Details Copy", copyOfDetails);
+			var items = Object.keys(copyOfDetails);
+			console.log("Keys", items);
+			items.map((item) => {
+				copyOfDetails[item].highlight = false;
+			});
+			console.log("Details Copy changed", copyOfDetails);
+
 			return update(state, {
 				tabs: { [action.payload.tabId]: { dashTilesDetails: { $set: copyOfDetails } } },
 			});

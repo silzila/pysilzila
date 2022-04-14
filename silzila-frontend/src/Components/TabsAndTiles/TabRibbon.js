@@ -36,7 +36,7 @@ const TabRibbon = ({
 		// handle how to get selected tile for the switching tab and update it in two places - tabTileProps and tabState
 		let tabObj = tabState.tabs[tabId];
 
-		selectTab(tabName, tabId, tabObj.showDash);
+		selectTab(tabName, tabId, tabObj.showDash, tabObj.dashMode);
 
 		let tileName = tabObj.selectedTileName;
 		let tileId = tabObj.selectedTileId;
@@ -149,8 +149,8 @@ const mapDispatchToProps = (dispatch) => {
 		addTab: (tabId, table, selectedDs, selectedTablesInDs) =>
 			dispatch(actions.actionsToAddTab({ tabId, table, selectedDs, selectedTablesInDs })),
 
-		selectTab: (tabName, tabId, showDash) =>
-			dispatch(actions.actionsToSelectTab({ tabName, tabId, showDash })),
+		selectTab: (tabName, tabId, showDash, dashMode) =>
+			dispatch(actions.actionsToSelectTab({ tabName, tabId, showDash, dashMode })),
 
 		removeTab: (tabName, tabId, tabToRemoveIndex, newObj) =>
 			dispatch(actions.actionsToRemoveTab({ tabName, tabId, tabToRemoveIndex, newObj })),

@@ -55,7 +55,9 @@ function IndividualTab({
 				onDoubleClick={() => renameTabBegin(tabId)}
 				title={`${tabName}. Double click to edit name`}
 			>
-				<span onClick={() => selectTab(tabName, tabId)}>{tabName}</span>
+				<span className="tabText" onClick={() => selectTab(tabName, tabId)}>
+					{tabName}
+				</span>
 				<span
 					title="Delete Tab"
 					className="closeTab"
