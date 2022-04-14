@@ -90,6 +90,14 @@ const ChartAxes = ({
 				case "Measure":
 					dim = "measures";
 					break;
+
+				// case "X":
+				// 	dim = "X";
+				// 	break;
+
+				// case "Y":
+				// 	dim = "Y";
+				// 	break;
 			}
 
 			var formattedFields = [];

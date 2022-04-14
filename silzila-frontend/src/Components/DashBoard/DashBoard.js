@@ -1,11 +1,14 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import {
+	resetGraphHighlight,
 	setDashGridSize,
 	toggleGraphSize,
+	updateGraphHighlight,
 	updateTabDashDetails,
 } from "../../redux/TabTile/actionsTabTile";
 import "./DashBoard.css";
+import DashBoardLayoutControl from "./DashBoardLayoutControl";
 import GraphRNDDash from "./GraphRNDDash";
 
 const DashBoard = ({
@@ -18,6 +21,8 @@ const DashBoard = ({
 	updateDashDetails,
 	toggleGraphSize,
 	setGridSize,
+	graphHighlight,
+	resetHighlight,
 }) => {
 	var targetRef = useRef();
 	const [mouseDownOutsideGraphs, setmouseDownOutsideGraphs] = useState(false);
@@ -79,31 +84,31 @@ const DashBoard = ({
 
 	useLayoutEffect(() => {
 		test_dimensions();
-	}, []);
+	}, [tabTileProps.showDash, tabTileProps.dashMode]);
 
 	const graphArea = () => {
 		console.log(dimensions.width, dimensions.height);
 
 		var xUnit = dimensions.width / 32;
-		var yUnit = dimensions.height / 18;
+		var yUnit = dimensions.height / 16;
 
 		// var innerDimensions = {};
 
 		console.log(xUnit, yUnit);
 
-		if (xUnit * 18 > dimensions.height) {
+		if (xUnit * 16 > dimensions.height) {
 			console.log("Cant use X unit as base");
 		} else {
 			console.log("Can use X unit as base");
 			var truncatedX = Math.trunc(xUnit, 0);
-			setinnerDimensions({ width: truncatedX * 32, height: truncatedX * 18 });
+			setinnerDimensions({ width: truncatedX * 32, height: truncatedX * 16 });
 			setdashStyle({
 				...dashStyle,
 				width: truncatedX * 32,
-				height: truncatedX * 18,
+				height: truncatedX * 16,
 				backgroundSize: `${truncatedX}px ${truncatedX}px, ${truncatedX}px ${truncatedX}px, ${
 					truncatedX * 16
-				}px ${truncatedX * 16}px, ${truncatedX * 9}px ${truncatedX * 9}px`,
+				}px ${truncatedX * 16}px, ${truncatedX * 8}px ${truncatedX * 8}px`,
 			});
 			setGridSize(truncatedX);
 		}
@@ -113,14 +118,14 @@ const DashBoard = ({
 		} else {
 			console.log("Can use Y unit as base");
 			var truncatedY = Math.trunc(yUnit, 0);
-			setinnerDimensions({ width: truncatedY * 32, height: truncatedY * 18 });
+			setinnerDimensions({ width: truncatedY * 32, height: truncatedY * 16 });
 			setdashStyle({
 				...dashStyle,
 				width: truncatedY * 32,
-				height: truncatedY * 18,
+				height: truncatedY * 16,
 				backgroundSize: `${truncatedY}px ${truncatedY}px , ${truncatedY}px ${truncatedY}px, ${
 					truncatedY * 16
-				}px ${truncatedY * 16}px, ${truncatedY * 9}px ${truncatedY * 9}px`,
+				}px ${truncatedY * 16}px, ${truncatedY * 8}px ${truncatedY * 8}px`,
 			});
 			setGridSize(truncatedY);
 		}
@@ -159,7 +164,13 @@ const DashBoard = ({
 		console.log("Checked state: ", checked);
 
 		return (
-			<div className="listOfGraphs">
+			<div
+				className={
+					tabState.tabs[tabTileProps.selectedTabId].dashTilesDetails[propKey]?.highlight
+						? "listOfGraphsHighlighted"
+						: "listOfGraphs"
+				}
+			>
 				<input
 					type="checkbox"
 					className="graphCheckBox"
@@ -209,17 +220,54 @@ const DashBoard = ({
 	};
 
 	return (
-		<div className="dashboardWrapper">
+		<div
+			className="dashboardWrapper"
+			onMouseDown={(e) => {
+				var container = "dragHeader";
+				var container2 = "dashChart";
+				var container3 = "rndObject";
+				console.log(e.target);
+				console.log(e.target.attributes);
+
+				if (e.target.attributes.class) {
+					if (
+						(e.target.attributes.class.value === container) |
+						(e.target.attributes.class.value === container2) |
+						(e.target.attributes.class.value === container3)
+					) {
+						console.log("Mouse down within graphs");
+						setmouseDownOutsideGraphs(false);
+
+						console.log(e.target.attributes.propkey);
+						graphHighlight(
+							tabTileProps.selectedTabId,
+							e.target.attributes.propkey.value,
+							true
+						);
+					} else {
+						console.log("Mouse down outside graphs");
+						setmouseDownOutsideGraphs(true);
+
+						resetHighlight(tabTileProps.selectedTabId);
+					}
+				}
+			}}
+		>
 			<div className="dashboardOuter" ref={targetRef}>
 				<div className="dashboardArea" style={dashStyle}>
 					{renderGraphs()}
 				</div>
 			</div>
 
-			<div className="tileListContainer">
-				List of Tiles
-				{tileList}
-			</div>
+			{tabTileProps.dashMode === "Dev Mode" ? (
+				<div className="dashBoardSideBar">
+					<div className="tileListContainer">
+						List of Tiles
+						{tileList}
+					</div>
+					<DashBoardLayoutControl />
+				</div>
+			) : null}
 		</div>
 	);
 };
@@ -239,8 +287,9 @@ const mapDispatchToProps = (dispatch) => {
 
 		toggleGraphSize: (tileKey, graphSize) => dispatch(toggleGraphSize(tileKey, graphSize)),
 
-		// 	graphHighlight: (tabId, propKey, highlight) => dispatch(updateGraphHighlight(tabId, propKey, highlight)),
-		// resetHighlight: (tabId) => dispatch(resetGraphHighlight(tabId)),
+		graphHighlight: (tabId, propKey, highlight) =>
+			dispatch(updateGraphHighlight(tabId, propKey, highlight)),
+		resetHighlight: (tabId) => dispatch(resetGraphHighlight(tabId)),
 		setGridSize: (gridSize) => dispatch(setDashGridSize(gridSize)),
 	};
 };

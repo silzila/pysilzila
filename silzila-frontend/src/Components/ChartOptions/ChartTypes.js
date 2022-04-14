@@ -8,12 +8,14 @@ import "./ChartIconStyles.css";
 import multiBarIcon from "../../assets/bar_chart_grouped.svg";
 import stackedBarIcon from "../../assets/bar_chart_stacked.svg";
 import lineChartIcon from "../../assets/line_chart.svg";
+import areaChartIcon from "../../assets/area-chart.svg";
+import pieChartIcon from "../../assets/pie_chart.svg";
+import donutChartIcon from "../../assets/donut_chart.svg";
+import scatterPlotIcon from "../../assets/scatter.svg";
 import ChartsInfo from "../ChartAxes/ChartsInfo2";
-import ChartControlObjects from "./ChartControlObjects";
-import ControlDetail from "./ControlDetail";
 import "./ChartOptions.css";
 
-const ChartControls = ({
+const ChartTypes = ({
 	//props
 	propKey,
 
@@ -42,24 +44,52 @@ const ChartControls = ({
 			case "multibar":
 			case "stacked bar":
 			case "line":
-				if (["multibar", "stacked bar", "line"].includes(newChart)) {
+			case "area":
+			case "pie":
+			case "donut":
+				if (
+					["multibar", "stacked bar", "line", "area", "pie", "donut"].includes(newChart)
+				) {
 					keepOldData(propKey, true);
 					return oldChartAxes;
+				} else if (newChart === "scatterPlot") {
+					keepOldData(propKey, true);
+
+					// Map Category to Category
+					if (oldChartAxes[1].fields != undefined)
+						newChartAxes[1].fields = oldChartAxes[1].fields;
+
+					// Map Value to X and Y columns if there are more than one values
+					if (oldChartAxes[2].fields != undefined) {
+						if (oldChartAxes[2].fields.length > 1) {
+							console.log("OldChartAxes: ", oldChartAxes);
+							newChartAxes[2].fields.push(oldChartAxes[2].fields.shift());
+							console.log("OldChartAxes After Shift: ", oldChartAxes);
+							newChartAxes[3].fields = oldChartAxes[2].fields;
+						} else {
+							newChartAxes[1].fields = oldChartAxes[2].fields;
+						}
+					}
+
+					console.log(newChartAxes);
+					return newChartAxes;
 				}
 
 			default:
 				return oldChartAxes;
 		}
+
+		console.log(oldChartAxes, newChartAxes);
 	};
 
 	const chartTypes = [
 		{ name: "multibar", icon: multiBarIcon },
 		{ name: "stacked bar", icon: stackedBarIcon },
+		{ name: "pie", icon: pieChartIcon },
+		{ name: "donut", icon: donutChartIcon },
 		{ name: "line", icon: lineChartIcon },
+		{ name: "area", icon: areaChartIcon },
 
-		// { name: "pie", icon: pieChartIcon },
-		// { name: "donut", icon: donutChartIcon },
-		// { name: "area", icon: areaChartIcon },
 		// { name: "step line", icon: stepLineIcon },
 		// { name: "funnel", icon: funnelChartIcon },
 		// { name: "rose", icon: roseChartIcon },
@@ -81,14 +111,14 @@ const ChartControls = ({
 							"stacked bar",
 							"line",
 
-							// "pie",
-							// "donut",
+							"pie",
+							"donut",
 
-							// "area",
+							"area",
+							"scatterPlot",
 							// "step line",
 							// "funnel",
 							// "rose",
-							// "scatterPlot",
 
 							// "heatmap",
 							// "calendar",
@@ -112,8 +142,6 @@ const ChartControls = ({
 	return (
 		<React.Fragment>
 			<div className="chartIconsContainer">{renderChartTypes}</div>
-			<ChartControlObjects />
-			<ControlDetail />
 		</React.Fragment>
 	);
 };
@@ -130,4 +158,4 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChartControls);
+export default connect(mapStateToProps, mapDispatchToProps)(ChartTypes);

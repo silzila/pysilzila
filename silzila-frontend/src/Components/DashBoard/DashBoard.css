@@ -16,16 +16,32 @@
 	border: 1px solid #d3d3d3;
 	border-top: none;
 }
-.tileListContainer {
+.dashBoardSideBar {
 	width: 15rem;
 	border-left: 1px solid #d3d3d3;
+	display: flex;
+	flex-direction: column;
+}
+.tileListContainer {
+	flex: 1;
+}
+.dashboardLayoutControl {
+	flex: 1;
 }
 
 .listOfGraphs {
 	display: flex;
 	margin: 5px 5px;
 	background-color: #fff;
-	border: 1px solid #a9a9a9;
+	border: 1px solid rgb(211, 211, 211);
+	line-height: 1.5rem;
+	color: #606060;
+}
+.listOfGraphsHighlighted {
+	display: flex;
+	margin: 5px 5px;
+	background-color: #fff;
+	border: 1px solid rgb(0, 123, 255);
 	line-height: 1.5rem;
 	color: #606060;
 }
