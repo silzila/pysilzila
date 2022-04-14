@@ -11,6 +11,8 @@ import ScatterChart from "../Charts/ScatterChart";
 import StackedBar from "../Charts/StackedBar";
 import MultiBar from "../Charts/MultiBarChart";
 import StepLine from "../Charts/StepLine";
+import CrossTabChart from "../Charts/CrossTab/CrossTabChart";
+
 import {
 	setChartTitle,
 	setGenerateTitle,
@@ -95,6 +97,14 @@ const GraphArea = ({
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
 					/>
 				);
+
+				case "crossTab":
+					return (
+						<CrossTabChart 
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						></CrossTabChart>
+					);
 
 			// case "scatterPlot":
 			// 	return (

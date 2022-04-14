@@ -104,7 +104,7 @@ const DropZone = ({
 				) : null}
 			</i>
 
-			{chartProp.properties[propKey].chartAxes[bIndex].fields.map((field, index) => (
+			{chartProp.properties[propKey].chartAxes[bIndex] && chartProp.properties[propKey].chartAxes[bIndex].fields.map((field, index) => (
 				<Card
 					field={field}
 					bIndex={bIndex}

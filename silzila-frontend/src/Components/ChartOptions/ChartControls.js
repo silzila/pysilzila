@@ -8,6 +8,7 @@ import "./ChartIconStyles.css";
 import multiBarIcon from "../../assets/bar_chart_grouped.svg";
 import stackedBarIcon from "../../assets/bar_chart_stacked.svg";
 import lineChartIcon from "../../assets/line_chart.svg";
+import crossTabIcon from "../../assets/crosstab.png";
 import ChartsInfo from "../ChartAxes/ChartsInfo2";
 import ChartControlObjects from "./ChartControlObjects";
 import ControlDetail from "./ControlDetail";
@@ -56,7 +57,7 @@ const ChartControls = ({
 		{ name: "multibar", icon: multiBarIcon },
 		{ name: "stacked bar", icon: stackedBarIcon },
 		{ name: "line", icon: lineChartIcon },
-
+		{ name: "crossTab", icon: crossTabIcon }, // working chart
 		// { name: "pie", icon: pieChartIcon },
 		// { name: "donut", icon: donutChartIcon },
 		// { name: "area", icon: areaChartIcon },
@@ -92,7 +93,7 @@ const ChartControls = ({
 
 							// "heatmap",
 							// "calendar",
-							// "crossTab",
+							 "crossTab",
 							// "bubble",
 							// "treeMap",
 						].includes(chart.name)
