@@ -73,6 +73,17 @@ const chartControlsReducer = (state = chartControl, action) => {
 						mouseOver: {
 							enable: true,
 						},
+
+						axisOptions: {
+							xSplitLine: false,
+							ySplitLine: true,
+							axisMinMax: {
+								enableMin: false,
+								minValue: 0,
+								enableMax: false,
+								maxValue: 10000,
+							},
+						},
 					},
 				},
 				propList: {
@@ -110,6 +121,17 @@ const chartControlsReducer = (state = chartControl, action) => {
 
 						mouseOver: {
 							enable: true,
+						},
+
+						axisOptions: {
+							xSplitLine: false,
+							ySplitLine: true,
+							axisMinMax: {
+								enableMin: false,
+								minValue: 0,
+								enableMax: false,
+								maxValue: 10000,
+							},
 						},
 					},
 				},

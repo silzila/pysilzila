@@ -228,6 +228,11 @@ export const updateGraphHighlight = (tabId, propKey, highlight) => {
 	return { type: "SET_GRAPH_BORDER_HIGHLIGHT", payload: { tabId, propKey, highlight } };
 };
 
+export const resetGraphHighlight = (tabId) => {
+	console.log("RESET_GRAPH_BORDER_HIGHLIGHT", tabId);
+	return { type: "RESET_GRAPH_BORDER_HIGHLIGHT", payload: { tabId } };
+};
+
 //  ***************************************************************************************************************************
 //  ***************************************************************************************************************************
 //
