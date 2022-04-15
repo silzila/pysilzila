@@ -32,7 +32,7 @@
 .listOfGraphs {
 	display: flex;
 	margin: 5px 5px;
-	background-color: #fff;
+	background-color: rgb(246, 246, 246);
 	border: 1px solid rgb(211, 211, 211);
 	line-height: 1.5rem;
 	color: #606060;

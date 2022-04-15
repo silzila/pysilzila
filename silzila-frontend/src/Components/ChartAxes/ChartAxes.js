@@ -91,13 +91,13 @@ const ChartAxes = ({
 					dim = "measures";
 					break;
 
-				// case "X":
-				// 	dim = "X";
-				// 	break;
+				case "X":
+					dim = "dims";
+					break;
 
-				// case "Y":
-				// 	dim = "Y";
-				// 	break;
+				case "Y":
+					dim = "dims";
+					break;
 			}
 
 			var formattedFields = [];

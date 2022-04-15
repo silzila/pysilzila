@@ -9,6 +9,7 @@ import FilterIcon from "../../assets/filter_icon.svg";
 import ChartControlObjects from "../ChartOptions/ChartControlObjects";
 import ControlDetail from "../ChartOptions/ControlDetail";
 import ChartTypes from "../ChartOptions/ChartTypes";
+import { setSelectedControlMenu } from "../../redux/TabTile/actionsTabTile";
 
 const DataViewerMiddle = ({
 	// props
@@ -17,6 +18,10 @@ const DataViewerMiddle = ({
 
 	// state
 	chartProp,
+	tabTileProps,
+
+	// dispatch
+	setMenu,
 }) => {
 	var propKey = `${tabId}.${tileId}`;
 	const rmenu = [
@@ -25,17 +30,21 @@ const DataViewerMiddle = ({
 		{ name: "Filter", icon: FilterIcon },
 	];
 
-	const [selectedMenu, setMenu] = useState("");
+	// const [tabTileProps.selectedControlMenu, setMenu] = useState("");
 
 	const renderMenu = rmenu.map((rm) => {
 		return (
 			<img
 				key={rm.name}
-				className={rm.name === selectedMenu ? "controlsIcon selectedIcon" : "controlsIcon"}
+				className={
+					rm.name === tabTileProps.selectedControlMenu
+						? "controlsIcon selectedIcon"
+						: "controlsIcon"
+				}
 				src={rm.icon}
 				alt={rm.name}
 				onClick={() => {
-					if (selectedMenu === rm.name) {
+					if (tabTileProps.selectedControlMenu === rm.name) {
 						setMenu("");
 					} else {
 						setMenu(rm.name);
@@ -47,7 +56,7 @@ const DataViewerMiddle = ({
 	});
 
 	const controlDisplayed = () => {
-		switch (selectedMenu) {
+		switch (tabTileProps.selectedControlMenu) {
 			case "Charts":
 				return (
 					<div className="rightColumnControlsAndFilters">
@@ -93,7 +102,14 @@ const DataViewerMiddle = ({
 const mapStateToProps = (state) => {
 	return {
 		chartProp: state.chartProperties,
+		tabTileProps: state.tabTileProps,
 	};
 };
 
-export default connect(mapStateToProps, null)(DataViewerMiddle);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		setMenu: (menu) => dispatch(setSelectedControlMenu(menu)),
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DataViewerMiddle);

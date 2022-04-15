@@ -213,6 +213,14 @@ export const toggleColumnsOnlyDisplay = (columns) => {
 	return { type: "TOGGLE_COLUMNS_ONLY_DISPLAY", payload: columns };
 };
 
+export const toggleShowDataViewerBottom = (show) => {
+	return { type: "TOGGLE_SHOW_DATA_VIEWER_BOTTOM", payload: show };
+};
+
+export const setSelectedControlMenu = (menu) => {
+	return { type: "SET_SELECTED_CONTROL_MENU", payload: menu };
+};
+
 export const updateDashGraphPosition = (tabId, propKey, x, y) => {
 	console.log(tabId, propKey, x, y);
 	return { type: "UPDATE_DASH_GRAPH_POSITION", payload: { tabId, propKey, x, y } };

@@ -89,11 +89,11 @@ const ChartTypes = ({
 		{ name: "donut", icon: donutChartIcon },
 		{ name: "line", icon: lineChartIcon },
 		{ name: "area", icon: areaChartIcon },
+		// { name: "scatterPlot", icon: scatterPlotIcon },
 
 		// { name: "step line", icon: stepLineIcon },
 		// { name: "funnel", icon: funnelChartIcon },
 		// { name: "rose", icon: roseChartIcon },
-		// { name: "scatterPlot", icon: scatterPlotIcon },
 		// { name: "multibar", icon: simpleBarChartIcon },
 	];
 
