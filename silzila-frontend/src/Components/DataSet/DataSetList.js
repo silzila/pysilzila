@@ -89,59 +89,62 @@ const DataSetList = ({
 					}}
 				/>
 			</div>
+			<div style={{ height: "100%", overflow: "auto" }}>
+				<div className="connectionListContainer">
+					{dataSetList &&
+						dataSetList.map((dc) => {
+							return (
+								<SelectListItem
+									key={dc.friendly_name}
+									render={(xprops) => (
+										<div
+											className="dataConnectionList"
+											onMouseOver={() => xprops.setOpen(true)}
+											onMouseLeave={() => xprops.setOpen(false)}
+										>
+											<div className="dataConnectionName">
+												{dc.friendly_name}
+											</div>
 
-			<div className="connectionListContainer">
-				{dataSetList &&
-					dataSetList.map((dc) => {
-						return (
-							<SelectListItem
-								key={dc.friendly_name}
-								render={(xprops) => (
-									<div
-										className="dataConnectionList"
-										onMouseOver={() => xprops.setOpen(true)}
-										onMouseLeave={() => xprops.setOpen(false)}
-									>
-										<div className="dataConnectionName">{dc.friendly_name}</div>
-
-										{xprops.open ? (
-											<Tooltip
-												title="Edit Dataset"
-												arrow
-												placement="right-start"
-											>
-												<>
-													<ModeEditOutlineTwoTone
-														style={{
-															width: "1rem",
-															height: "1rem",
-															margin: "auto",
-														}}
-														onClick={() => editDs(dc.ds_uid)}
-													/>
-													<DeleteIcon
-														style={{
-															width: "1rem",
-															height: "1rem",
-															margin: "auto",
-														}}
-														onClick={() => {
-															var yes = window.confirm(
-																"are you sure you want to Delete this Dataset?"
-															);
-															if (yes) {
-																deleteDs(dc.ds_uid);
-															}
-														}}
-													/>
-												</>
-											</Tooltip>
-										) : null}
-									</div>
-								)}
-							/>
-						);
-					})}
+											{xprops.open ? (
+												<Tooltip
+													title="Edit Dataset"
+													arrow
+													placement="right-start"
+												>
+													<>
+														<ModeEditOutlineTwoTone
+															style={{
+																width: "1rem",
+																height: "1rem",
+																margin: "auto",
+															}}
+															onClick={() => editDs(dc.ds_uid)}
+														/>
+														<DeleteIcon
+															style={{
+																width: "1rem",
+																height: "1rem",
+																margin: "auto",
+															}}
+															onClick={() => {
+																var yes = window.confirm(
+																	"are you sure you want to Delete this Dataset?"
+																);
+																if (yes) {
+																	deleteDs(dc.ds_uid);
+																}
+															}}
+														/>
+													</>
+												</Tooltip>
+											) : null}
+										</div>
+									)}
+								/>
+							);
+						})}
+				</div>
 			</div>
 
 			<NotificationDialog
