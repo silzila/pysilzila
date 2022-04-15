@@ -8,6 +8,7 @@ import {
 	toggleColumnsOnlyDisplay,
 	toggleDashMode,
 	toggleDashModeInTab,
+	toggleShowDataViewerBottom,
 } from "../../redux/TabTile/actionsTabTile";
 import DataViewerMiddle from "./DataViewerMiddle.js";
 import DataViewerBottom from "./DataViewerBottom";
@@ -27,25 +28,23 @@ function DataViewer({
 	toggleColumns,
 	toggleDashMode,
 	toggleDashModeInTab,
+	toggleDataViewerBottom,
 }) {
-	const [displayDatViewBot, setDisplayDatViewBot] = useState(true);
+	// const [tabTileProps.showDataViewerBottom, setDisplayDatViewBot] = useState(true);
 
 	const handleTableDisplayToggle = () => {
-		setDisplayDatViewBot((prevState) => {
-			return !prevState;
-		});
+		toggleDataViewerBottom(!tabTileProps.showDataViewerBottom);
 	};
 
 	const handleColumnsOnlyDisplay = (col) => {
 		toggleColumns(col);
-		setDisplayDatViewBot(true);
 	};
 
 	// ===========================================================================================
 	//                                      UI Components
 	// ===========================================================================================
 
-	const menuStyle = { fontSize: "12px", padding: "2px", margin: 0 };
+	const menuStyle = { fontSize: "12px", padding: "2px 8px", margin: 0 };
 	return (
 		<div className="dataViewer">
 			<Menu />
@@ -55,7 +54,7 @@ function DataViewer({
 
 				{tabTileProps.showDash ? (
 					<Select
-						sx={{ height: "1.5rem", fontSize: "12px" }}
+						sx={{ height: "1.5rem", fontSize: "12px", width: "6rem" }}
 						value={tabTileProps.dashMode}
 						onChange={(e) => {
 							console.log(e.target.value);
@@ -63,11 +62,11 @@ function DataViewer({
 							toggleDashModeInTab(tabTileProps.selectedTabId, e.target.value);
 						}}
 					>
-						<MenuItem sx={menuStyle} value="Dev Mode">
-							Dev Mode
+						<MenuItem sx={menuStyle} value="Edit">
+							Edit
 						</MenuItem>
-						<MenuItem sx={menuStyle} value="Presentation Mode">
-							Presentation Mode
+						<MenuItem sx={menuStyle} value="Present">
+							Present
 						</MenuItem>
 					</Select>
 				) : null}
@@ -82,11 +81,11 @@ function DataViewer({
 						tileId={tabTileProps.selectedTileId}
 					/>
 
-					{displayDatViewBot ? <DataViewerBottom /> : null}
+					{tabTileProps.showDataViewerBottom ? <DataViewerBottom /> : null}
 				</React.Fragment>
 			)}
 
-			{tabTileProps.dashMode === "Dev Mode" ? (
+			{tabTileProps.dashMode === "Edit" ? (
 				<div className="tilearea">
 					<div className="tileItems">
 						<span
@@ -107,34 +106,40 @@ function DataViewer({
 					</div>
 
 					{!tabTileProps.showDash ? (
-						<>
-							<div className="showTableColumns">
-								{tabTileProps.columnsOnlyDisplay ? (
-									<TableChartOutlinedIcon
-										style={{ fontSize: "20px", color: "#404040" }}
-										onClick={() => handleColumnsOnlyDisplay(false)}
-										title="Show full table"
-									/>
-								) : (
-									<TableRowsIcon
-										style={{ fontSize: "20px", color: "#404040" }}
-										onClick={() => handleColumnsOnlyDisplay(true)}
-										title="Show Column Headers only"
-									/>
-								)}
-							</div>
+						tabTileProps.showDataViewerBottom ? (
+							<>
+								<div className="showTableColumns">
+									{tabTileProps.columnsOnlyDisplay ? (
+										<TableChartOutlinedIcon
+											style={{ fontSize: "20px", color: "#404040" }}
+											onClick={() => handleColumnsOnlyDisplay(false)}
+											title="Show full table"
+										/>
+									) : (
+										<TableRowsIcon
+											style={{ fontSize: "20px", color: "#404040" }}
+											onClick={() => handleColumnsOnlyDisplay(true)}
+											title="Show Column Headers only"
+										/>
+									)}
+								</div>
+								<div
+									className="tableDisplayToggle"
+									onClick={handleTableDisplayToggle}
+									title="Show / Hide table"
+								>
+									<TableViewIcon style={{ fontSize: "20px" }} />
+								</div>
+							</>
+						) : (
 							<div
 								className="tableDisplayToggle"
 								onClick={handleTableDisplayToggle}
 								title="Show / Hide table"
 							>
-								{displayDatViewBot ? (
-									<TableViewIcon style={{ fontSize: "20px" }} />
-								) : (
-									<TableViewIcon style={{ fontSize: "20px", color: "#808080" }} />
-								)}
+								<TableViewIcon style={{ fontSize: "20px", color: "#808080" }} />
 							</div>
-						</>
+						)
 					) : null}
 				</div>
 			) : null}
@@ -158,6 +163,7 @@ const mapDispatchToProps = (dispatch) => {
 		toggleColumns: (columns) => dispatch(toggleColumnsOnlyDisplay(columns)),
 		toggleDashMode: (dashMode) => dispatch(toggleDashMode(dashMode)),
 		toggleDashModeInTab: (tabId, dashMode) => dispatch(toggleDashModeInTab(tabId, dashMode)),
+		toggleDataViewerBottom: (show) => dispatch(toggleShowDataViewerBottom(show)),
 	};
 };
 

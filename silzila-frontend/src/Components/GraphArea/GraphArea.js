@@ -68,7 +68,7 @@ const GraphArea = ({
 		window.addEventListener("resize", updateSize);
 		updateSize();
 		return () => window.removeEventListener("resize", updateSize);
-	}, [fullScreen]);
+	}, [fullScreen, tabTileProps.showDataViewerBottom, tabTileProps.selectedControlMenu]);
 
 	const removeFullScreen = (e) => {
 		console.log(e.keyCode);

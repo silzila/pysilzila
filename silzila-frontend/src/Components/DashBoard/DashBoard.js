@@ -259,10 +259,10 @@ const DashBoard = ({
 				</div>
 			</div>
 
-			{tabTileProps.dashMode === "Dev Mode" ? (
+			{tabTileProps.dashMode === "Edit" ? (
 				<div className="dashBoardSideBar">
 					<div className="tileListContainer">
-						List of Tiles
+						<div className="axisTitle">List of Tiles</div>
 						{tileList}
 					</div>
 					<DashBoardLayoutControl />

@@ -4,7 +4,11 @@
 import React from "react";
 
 const DashBoardLayoutControl = () => {
-	return <div className="dashboardLayoutControl">Dashboard Layout</div>;
+	return (
+		<div className="dashboardLayoutControl">
+			<div className="axisTitle">Dashboard Size</div>
+		</div>
+	);
 };
 
 export default DashBoardLayoutControl;
