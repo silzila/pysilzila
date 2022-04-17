@@ -14,17 +14,16 @@ async def compose_query(req: schema.ColumnFilter, dc_uid: str, ds_uid: str, vend
     data_schema = await engine.get_data_schema(dc_uid, ds_uid)
     QUERY = ""
     FROM_TBL = ""
-    if req['regular_filter'] is not None and req['regular_filter']['table_id'] and \
-            req['regular_filter']['field_name'] and req['regular_filter']['data_type']:
+    if req['filter_type'] in ['binary_user_selection', 'text_user_selection', 'number_user_selection',  'number_search', 'date_user_selection', 'date_search']:
         table = list(filter(
-            lambda obj: obj["id"] == req['regular_filter']['table_id'], data_schema["tables"]))[0]
+            lambda obj: obj["id"] == req['table_id'], data_schema["tables"]))[0]
         FROM_TBL = f"{table['schema_name']}.{table['table_name']} AS {table['id']}"
 
-    elif req['relative_filter'] is not None and req['relative_filter']['table_id'] and \
-            req['relative_filter']['field_name'] and req['relative_filter']['data_type']:
-        table = list(filter(
-            lambda obj: obj["id"] == req['relative_filter']['table_id'], data_schema["tables"]))[0]
-        FROM_TBL = f"{table['schema_name']}.{table['table_name']} AS {table['id']}"
+    # elif req['relative_filter'] is not None and req['relative_filter']['table_id'] and \
+    #         req['relative_filter']['field_name'] and req['relative_filter']['data_type']:
+    #     table = list(filter(
+    #         lambda obj: obj["id"] == req['relative_filter']['table_id'], data_schema["tables"]))[0]
+    #     FROM_TBL = f"{table['schema_name']}.{table['table_name']} AS {table['id']}"
     else:
         FROM_TBL = ""
     ####################### Query changes as per dialect ############################
