@@ -1,5 +1,6 @@
 import React from "react";
 import {
+	autocompleteClasses,
 	Dialog,
 	DialogContent,
 	DialogTitle,
@@ -10,6 +11,7 @@ import {
 	TableRow,
 } from "@mui/material";
 import { CloseOutlined } from "@mui/icons-material";
+import "./Dataset.css";
 
 function TableData({
 	showTableData,
@@ -29,12 +31,9 @@ function TableData({
 		<>
 			{/* TODO: Priority 10 - Styling Fix
 			 Dialog width have to be increased */}
-			<Dialog
-				open={showTableData}
-				// onClose={handleClose}
-			>
+			<Dialog open={showTableData}>
 				<DialogTitle
-					style={{
+					sx={{
 						display: "flex",
 						flexDirection: "row",
 						columnGap: "2rem",
@@ -46,7 +45,7 @@ function TableData({
 					<p>Rows Displayed: {tableData.length}</p>
 					<CloseOutlined style={{ float: "rigth" }} onClick={handleClose} />
 				</DialogTitle>
-				<DialogContent>
+				<DialogContent sx={{ maxWidth: "80vw", overflow: "hidden" }}>
 					<Table stickyHeader>
 						<TableHead>
 							<TableRow>

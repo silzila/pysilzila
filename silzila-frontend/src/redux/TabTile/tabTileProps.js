@@ -1,28 +1,6 @@
 import update from "immutability-helper";
 
 const initialProperties = {
-	// for dynamic rendering
-
-	// // general properties for tab
-	// selectedTabName: "Tab - 1",
-	// selectedTabId: 1,
-	// nextTabId: 2,
-	// editTabName: false,
-
-	// // general properties for tiles
-	// selectedTileName: "Tile - 1",
-	// selectedTileId: 1,
-	// nextTileId: 2,
-	// editTileName: false,
-	// selectedTable: null,
-
-	// // other properties for css changes
-	// dragging: false,
-	// chartPropUpdated: false,
-	// showDash: false,
-
-	// for fixed loading when developing
-
 	selectedTabName: "Tab - 1",
 	selectedTabId: 1,
 	nextTabId: 2,
@@ -38,7 +16,13 @@ const initialProperties = {
 	dragging: false,
 	chartPropUpdated: false,
 	showDash: false,
+	dashMode: "Edit",
 	dashGridSize: null,
+
+	columnsOnlyDisplay: false,
+	showDataViewerBottom: true,
+	selectedControlMenu: "Charts",
+
 	selectedDataSetList: [
 		{
 			friendly_name: "landmark post",
@@ -104,8 +88,6 @@ const initialProperties = {
 			},
 		],
 	},
-
-	columnsOnlyDisplay: false,
 };
 
 const tabTilePropsReducer = (state = initialProperties, action) => {
@@ -119,6 +101,7 @@ const tabTilePropsReducer = (state = initialProperties, action) => {
 				selectedTabId: action.payload.tabId,
 				selectedTabName: action.payload.tabName,
 				showDash: action.payload.showDash,
+				dashMode: action.payload.dashMode ? action.payload.dashMode : "Dev Mode",
 			};
 
 		case "EDITING_TAB":
@@ -164,6 +147,15 @@ const tabTilePropsReducer = (state = initialProperties, action) => {
 
 		case "TOGGLE_COLUMNS_ONLY_DISPLAY":
 			return update(state, { columnsOnlyDisplay: { $set: action.payload } });
+
+		case "TOGGLE_SHOW_DATA_VIEWER_BOTTOM":
+			return update(state, { showDataViewerBottom: { $set: action.payload } });
+
+		case "TOGGLE_DASH_MODE":
+			return update(state, { dashMode: { $set: action.payload } });
+
+		case "SET_SELECTED_CONTROL_MENU":
+			return update(state, { selectedControlMenu: { $set: action.payload } });
 
 		default:
 			return state;

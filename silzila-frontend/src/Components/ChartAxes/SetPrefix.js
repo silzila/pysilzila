@@ -6,7 +6,7 @@ export const setPrefix = (fieldData, binName, chartType) => {
 	}
 
 	let data = JSON.parse(JSON.stringify(fieldData));
-	switch (data.schema) {
+	switch (data.dataType) {
 		case "integer":
 		case "decimal":
 			if (binName === "Measure") {

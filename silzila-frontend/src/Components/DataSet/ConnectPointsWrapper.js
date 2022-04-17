@@ -17,15 +17,16 @@ const connectPointOffset = {
 };
 
 const ConnectPointsWrapper = ({
-	// props
 	itemId,
-	handler,
 	dragRef,
 	boxRef,
 	index,
 	itemType,
 	columnName,
 	tableName,
+	table_uid,
+	schema,
+	table_Id,
 }) => {
 	const ref1 = useRef();
 	const [position, setPosition] = useState({});
@@ -34,13 +35,13 @@ const ConnectPointsWrapper = ({
 	return (
 		<div
 			className="connectPoint"
+			ref={ref1}
 			style={{
 				...connectPointStyle,
-				...connectPointOffset[handler],
+				...connectPointOffset["right"],
 				...position,
 			}}
 			draggable
-			onMouseDown={(e) => e.stopPropagation()}
 			onDragStart={(e) => {
 				setBeingDragged(true);
 
@@ -49,6 +50,13 @@ const ConnectPointsWrapper = ({
 				e.dataTransfer.setData("connectTableName", tableName);
 				e.dataTransfer.setData("connectColumnName", columnName);
 				e.dataTransfer.setData("connectItemType", itemType);
+				e.dataTransfer.setData("connecttableUid", table_uid);
+				e.dataTransfer.setData("schema", schema);
+				e.dataTransfer.setData("tableId", table_Id);
+			}}
+			onDragEnd={() => {
+				setPosition({});
+				setBeingDragged(false);
 			}}
 			onDrag={(e) => {
 				const { offsetTop, offsetLeft } = boxRef.current;
@@ -60,11 +68,6 @@ const ConnectPointsWrapper = ({
 					transform: "none",
 					opacity: 0,
 				});
-			}}
-			ref={ref1}
-			onDragEnd={() => {
-				setPosition({});
-				setBeingDragged(false);
 			}}
 		>
 			{beingDragged ? <Xarrow start={itemId} end={ref1} /> : null}

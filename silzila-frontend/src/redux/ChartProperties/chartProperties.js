@@ -1,13 +1,16 @@
+// This file is used for storing all data related to properties of charts that
+// need not result in rerender of the chart immediately
+
 import update from "immutability-helper";
 
-const chartPropLeft = {
+const chartProperties = {
 	properties: {
 		1.1: {
 			// General Tab Info
 			tabId: 1,
 			tileId: 1,
-			fileId: "",
-			chartType: "bar",
+
+			chartType: "multibar",
 
 			// Left Column
 			axesEdited: false,
@@ -35,18 +38,37 @@ const chartPropLeft = {
 			selectedTable: {
 				dspost: "s",
 			},
+
+			titleOptions: {
+				fontSize: 28,
+				chartTitle: "",
+				generateTitle: "Auto",
+			},
+			chartOptionSelected: "Title",
 		},
 	},
 
 	propList: { 1: ["1.1"] },
 };
 
-const chartPropLeftReducer = (state = chartPropLeft, action) => {
+const chartPropertiesState = (state = chartProperties, action) => {
 	const findCardIndex = (propKey, fromBIndex, fromUid) => {
 		var removeIndex = state.properties[propKey].chartAxes[fromBIndex].fields.findIndex(
 			(obj) => obj.uId === fromUid
 		);
 		return removeIndex;
+	};
+
+	const findCardObject = (propKey, bIndex, uId) => {
+		var cardIndex = state.properties[propKey].chartAxes[bIndex].fields.findIndex(
+			(obj) => obj.uId === uId
+		);
+		var card = state.properties[propKey].chartAxes[bIndex].fields[cardIndex];
+		console.log(cardIndex, card);
+		return {
+			cardIndex,
+			card,
+		};
 	};
 
 	switch (action.type) {
@@ -64,8 +86,7 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 						// General Tab Info
 						tabId: action.payload.tabId,
 						tileId: action.payload.tileId,
-						fileId: action.payload.table,
-						chartType: "bar",
+						chartType: "multibar",
 
 						// Left Column
 						axesEdited: false,
@@ -86,6 +107,14 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 
 						selectedDs: action.payload.selectedDs,
 						selectedTable: action.payload.selectedTablesInDs,
+
+						titleOptions: {
+							fontSize: 28,
+							chartTitle: "",
+							generateTitle: "Auto",
+						},
+
+						chartOptionSelected: "Colors",
 					},
 				},
 				propList: {
@@ -104,8 +133,7 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 						// General Tab Info
 						tabId: action.payload.tabId,
 						tileId: action.payload.tileId,
-						fileId: action.payload.table,
-						chartType: "bar",
+						chartType: "multibar",
 
 						// Left Column
 						axesEdited: false,
@@ -125,6 +153,14 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 						],
 						selectedDs: action.payload.selectedDs,
 						selectedTable: action.payload.selectedTablesInDs,
+
+						titleOptions: {
+							fontSize: 28,
+							chartTitle: "",
+							generateTitle: "Auto",
+						},
+
+						chartOptionSelected: "Colors",
 					},
 				},
 				propList: { ...state.propList, [action.payload.tabId]: [tileKey2] },
@@ -256,15 +292,6 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 				},
 			});
 
-		case "UPDATE_CHART_DATA":
-			return update(state, {
-				properties: {
-					[action.payload.propKey]: {
-						chartData: { $set: action.payload.chartData },
-					},
-				},
-			});
-
 		case "UPDATE_AXES_QUERY_PARAM":
 			console.log(
 				action.payload.propKey,
@@ -287,9 +314,120 @@ const chartPropLeftReducer = (state = chartPropLeft, action) => {
 				},
 			});
 
+		case "CHANGE_CHART_TYPE":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: { chartType: { $set: action.payload.chartType } },
+				},
+			});
+
+		case "CHANGE_CHART_AXES":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: { chartAxes: { $set: action.payload.newAxes } },
+				},
+			});
+
+		case "REUSE_DATA":
+			console.log("REUSE_DATA", action.payload.propKey, action.payload.reUseData);
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: { reUseData: { $set: action.payload.reUseData } },
+				},
+			});
+
+		// ########################################
+		// Title
+
+		case "SET_CHART_TITLE":
+			console.log(action.payload.propKey, action.payload.title);
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						titleOptions: { chartTitle: { $set: action.payload.title } },
+					},
+				},
+			});
+
+		case "SET_GENERATE_TITLE":
+			console.log(action.payload.propKey, action.payload.generateTitle);
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						titleOptions: { generateTitle: { $set: action.payload.generateTitle } },
+					},
+				},
+			});
+
+		// ########################################
+		// Drag and Drop cards between dropzones
+
+		case "SORT_ITEM":
+			var dropIndex = findCardIndex(
+				action.payload.propKey,
+				action.payload.bIndex,
+				action.payload.dropUId
+			);
+			var dragObj = findCardObject(
+				action.payload.propKey,
+				action.payload.bIndex,
+				action.payload.dragUId
+			);
+
+			console.log(dragObj);
+
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						chartAxes: {
+							[action.payload.bIndex]: {
+								fields: {
+									$splice: [
+										[dragObj.cardIndex, 1],
+										[dropIndex, 0, dragObj.card],
+									],
+								},
+							},
+						},
+					},
+				},
+			});
+
+		case "REVERT_ITEM":
+			var dragObj2 = findCardObject(
+				action.payload.propKey,
+				action.payload.bIndex,
+				action.payload.uId
+			);
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						chartAxes: {
+							[action.payload.bIndex]: {
+								fields: {
+									$splice: [
+										[dragObj2.cardIndex, 1],
+										[action.payload.originalIndex, 0, dragObj2.card],
+									],
+								},
+							},
+						},
+					},
+				},
+			});
+
+		case "CHANGE_CHART_OPTION":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						chartOptionSelected: { $set: action.payload.chartOption },
+					},
+				},
+			});
+
 		default:
 			return state;
 	}
 };
 
-export default chartPropLeftReducer;
+export default chartPropertiesState;

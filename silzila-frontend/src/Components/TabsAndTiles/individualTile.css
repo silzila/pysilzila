@@ -50,16 +50,18 @@
 }
 .editTileSelected {
 	transition: 0.2s;
-	/* box-sizing: border-box; */
 	display: inline-block;
 	height: 1.5rem;
 	line-height: 1.5rem;
 	margin-left: 5px;
-	border-radius: 0px 0px 5px 5px;
 	padding: 0 0 0 10px;
 	border-top: 2px solid #007bff;
-	border-bottom: 1px solid #a9a9a9;
-	border-left: 1px solid #a9a9a9;
-	border-right: 1px solid #a9a9a9;
-	background-color: #ffff91;
+	border: none;
+	background-color: white;
+	font-size: 12px;
+}
+.editTileSelected:focus {
+	outline: none;
+	border-top: 2px solid rgb(0, 123, 255);
+	margin: 0 0 0 5px;
 }

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import {
 	setSelectedDsInTile,
 	setSelectedTableInTile,
-} from "../../redux/ChartProperties/actionsChartProps";
+} from "../../redux/ChartProperties/actionsChartProperties";
 import { addTableRecords } from "../../redux/SampleTableRecords/sampleTableRecordsActions";
 import {
 	setSelectedDataSetList,
@@ -48,8 +48,9 @@ const DataViewerBottom = ({
 			if (isAlready.length > 0) {
 				window.alert("Dataset already in selected list");
 			} else {
-				// TODO: Priority 1 - Open in new tab if any of the column by default for now
-				// Later in left already has a field in it.
+				// TODO: Priority 5 - When Dataset is changed in dataviewer page, where to load new Dataset
+				// If the page already has any values under filter, measure or dimension, open the newly selected dataset
+				// in a new tile. If not, open in the same tile
 				setSelectedDataSetList(selectedDataset);
 				setSelectedDs(propKey, selectedDataset);
 				setOpen(false);
@@ -216,7 +217,9 @@ const DataViewerBottom = ({
 				</div>
 
 				<div className="tileTableList">
-					<TableListForDs />
+					<div style={{ flex: 1, overflow: "auto", padding: "0 0.5rem" }}>
+						<TableListForDs />
+					</div>
 				</div>
 				<DatasetListPopover
 					showCard={open}
@@ -236,7 +239,6 @@ const DataViewerBottom = ({
 				) : null}
 			</div>
 			{loading ? <LoadingPopover /> : null}
-
 		</div>
 	);
 };
@@ -245,7 +247,7 @@ const mapStateToProps = (state) => {
 	return {
 		token: state.isLogged.accessToken,
 		tabTileProps: state.tabTileProps,
-		chartProps: state.chartPropsLeft,
+		chartProps: state.chartProperties,
 		sampleRecords: state.sampleRecords,
 	};
 };

@@ -7,10 +7,15 @@
 //  ***************************************************************************************************************************
 
 import {
-	removeMultiplePropLeft,
+	addControl,
+	removeChartControls,
+	removeMultipleChartControls,
+} from "../ChartProperties/actionsChartControls";
+import {
+	removeMultipleChartProperties,
 	addProp,
-	removeChartPropLeft,
-} from "../ChartProperties/actionsChartProps";
+	removeChartProperties,
+} from "../ChartProperties/actionsChartProperties";
 
 //  *************************************************************
 //  to tab state reducer
@@ -63,6 +68,19 @@ export const updateSelectedTileToTab = (tabId, tileName, tileId) => {
 
 export const showDashboardInTab = (tabId, showDash) => {
 	return { type: "SHOW_DASHBOARD_IN_TAB", payload: { tabId, showDash } };
+};
+
+export const toggleDashModeInTab = (tabId, dashMode) => {
+	console.log("Dash_mode_in_tab");
+	return { type: "TOGGLE_DASH_MODE_IN_TAB", payload: { tabId, dashMode } };
+};
+
+export const updateTabDashDetails = (checked, propKey, dashSpecs, tabId, propIndex) => {
+	console.log(checked, propKey, dashSpecs, tabId);
+	return {
+		type: "UPDATE_DASH_GRAPH_DETAILS",
+		payload: { checked, propKey, dashSpecs, tabId, propIndex },
+	};
 };
 
 //  *************************************************************
@@ -133,10 +151,10 @@ export const updateNextTabId = () => {
 	return { type: "UPDATE_NEXT_TAB_ID" };
 };
 
-export const updateSelectedTab = (tabName, tabId, showDash) => {
+export const updateSelectedTab = (tabName, tabId, showDash, dashMode) => {
 	return {
 		type: "SELECTED_TAB",
-		payload: { tabName: tabName, tabId: tabId, showDash },
+		payload: { tabName: tabName, tabId: tabId, showDash, dashMode },
 	};
 };
 
@@ -183,12 +201,44 @@ export const showDashBoard = (showDash) => {
 	return { type: "SHOW_DASHBOARD", payload: showDash };
 };
 
+export const toggleDashMode = (dashMode) => {
+	return { type: "TOGGLE_DASH_MODE", payload: dashMode };
+};
+
 export const setDashGridSize = (gridSize) => {
 	return { type: "SET_DASH_GRID_SIZE", payload: gridSize };
 };
 
 export const toggleColumnsOnlyDisplay = (columns) => {
 	return { type: "TOGGLE_COLUMNS_ONLY_DISPLAY", payload: columns };
+};
+
+export const toggleShowDataViewerBottom = (show) => {
+	return { type: "TOGGLE_SHOW_DATA_VIEWER_BOTTOM", payload: show };
+};
+
+export const setSelectedControlMenu = (menu) => {
+	return { type: "SET_SELECTED_CONTROL_MENU", payload: menu };
+};
+
+export const updateDashGraphPosition = (tabId, propKey, x, y) => {
+	console.log(tabId, propKey, x, y);
+	return { type: "UPDATE_DASH_GRAPH_POSITION", payload: { tabId, propKey, x, y } };
+};
+
+export const updateDashGraphSize = (tabId, propKey, x, y, width, height) => {
+	console.log(tabId, propKey, x, y, width, height);
+	return { type: "UPDATE_DASH_GRAPH_SIZE", payload: { tabId, propKey, x, y, width, height } };
+};
+
+export const updateGraphHighlight = (tabId, propKey, highlight) => {
+	console.log("SET_GRAPH_BORDER_HIGHLIGHT", tabId, propKey, highlight);
+	return { type: "SET_GRAPH_BORDER_HIGHLIGHT", payload: { tabId, propKey, highlight } };
+};
+
+export const resetGraphHighlight = (tabId) => {
+	console.log("RESET_GRAPH_BORDER_HIGHLIGHT", tabId);
+	return { type: "RESET_GRAPH_BORDER_HIGHLIGHT", payload: { tabId } };
 };
 
 //  ***************************************************************************************************************************
@@ -222,9 +272,9 @@ export const actionsToAddTab = ({ tabId, table, selectedDs, selectedTablesInDs }
 	};
 };
 
-export const actionsToSelectTab = ({ tabName, tabId, showDash }) => {
+export const actionsToSelectTab = ({ tabName, tabId, showDash, dashMode }) => {
 	return (dispatch) => {
-		dispatch(updateSelectedTab(tabName, tabId, showDash));
+		dispatch(updateSelectedTab(tabName, tabId, showDash, dashMode));
 	};
 };
 
@@ -232,7 +282,8 @@ export const actionsToRemoveTab = ({ tabName, tabId, tabToRemoveIndex, newObj })
 	return (dispatch) => {
 		dispatch(removeTab(tabName, tabId, tabToRemoveIndex));
 		dispatch(removeTilesOfTab(tabName, tabId));
-		dispatch(removeMultiplePropLeft(tabId));
+		dispatch(removeMultipleChartProperties(tabId));
+		dispatch(removeMultipleChartControls(tabId));
 		if (newObj) {
 			dispatch(updateSelectedTab(newObj.tabName, newObj.tabId));
 			dispatch(
@@ -275,11 +326,12 @@ export const actionsToAddTile = ({
 }) => {
 	let tileName = `Tile - ${nextTileId}`;
 	return (dispatch) => {
+		dispatch(addProp(tabId, nextTileId, table, newTab, selectedDs, selectedTablesInDs));
+		dispatch(addControl(tabId, nextTileId, newTab));
 		dispatch(addTile(tabId, nextTileId, newTab));
 		dispatch(updateNextTileId(nextTileId, tabId));
 		dispatch(updateSelectedTile(tileName, nextTileId, nextTileId + 1));
 		dispatch(updateSelectedTileToTab(tabId, tileName, nextTileId));
-		dispatch(addProp(tabId, nextTileId, table, newTab, selectedDs, selectedTablesInDs));
 		dispatch(showDashBoard(false));
 	};
 };
@@ -321,7 +373,8 @@ export const actionsToRemoveTile = ({ tabId, tileId, tileIndex }) => {
 	var propKey = `${tabId}.${tileId}`;
 	return (dispatch) => {
 		dispatch(removeTile(tabId, tileId, tileIndex));
-		dispatch(removeChartPropLeft(tabId, tileId, propKey, tileIndex));
+		dispatch(removeChartProperties(tabId, tileId, propKey, tileIndex));
+		dispatch(removeChartControls(tabId, tileId, propKey, tileIndex));
 	};
 };
 

@@ -10,6 +10,8 @@
 	position: relative;
 	overflow: auto;
 	display: flex;
+	height: 100%;
+	flex-wrap: wrap;
 }
 
 .draggableBox {
@@ -17,12 +19,16 @@
 	max-width: 300px;
 	margin: 20px;
 	display: inline-block;
+	font-size: 14px;
 }
 
 .bottomBar {
-	height: 3rem;
+	height: 3.5rem;
 	background-color: #f0f0f0;
 	border-top: 1px solid #e4e4e4;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
 }
 
 .draggableTable {
@@ -32,7 +38,7 @@
 
 .draggableBoxTitle {
 	/* text-align: center; */
-	cursor: pointer;
+	cursor: move;
 	background-color: #d7d9db;
 	padding: 5px 0;
 	display: flex;
@@ -71,63 +77,4 @@
 .connectPoint:hover {
 	background-color: rgb(95, 95, 95);
 	opacity: 1;
-}
-/* 
-----------------------------------------------
-Relationship popover
----------------------------------------------- 
-*/
-.relpopoverContainer {
-	display: flex;
-	flex-direction: column;
-	/* background-color: aquamarine; */
-}
-.relpopoverItem {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-around;
-	align-items: center;
-}
-
-#setButton {
-	background-color: rgb(26, 111, 221);
-	color: white;
-	margin-top: 1rem;
-}
-
-#cancelBtn {
-	background-color: red;
-	color: white;
-	margin-top: 1rem;
-}
-.relpopoverSelect {
-	height: 40px;
-	width: 10rem;
-}
-.tbl_clm_name {
-	display: flex;
-	justify-content: space-around;
-	height: 2rem;
-	align-items: center;
-	color: rgb(75, 75, 75);
-	font-style: italic;
-}
-.integrityAndcardinality {
-	flex-grow: 0;
-	flex-shrink: 0;
-	flex-basis: 80px;
-	text-align: center;
-}
-#selectRel {
-	align-self: center;
-	margin: 0;
-	color: rgb(9, 13, 255);
-	font-weight: bold;
-}
-.selIntegerityandCadinality {
-	align-self: center;
-	justify-self: center;
-	margin: 0.5rem;
-	color: rgb(232, 15, 240);
-	padding: 5px;
 }

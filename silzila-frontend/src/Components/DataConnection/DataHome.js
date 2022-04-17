@@ -4,6 +4,10 @@ import DataConnection from "./DataConnection";
 import "./DataSetup.css";
 import PlayBookList from "./PlayBookList";
 
+// TODO: Priority 10 - DC and DS list title sticky while scroll When there are more
+// items in each list, the title bar also keeps scrolling. Need to keep the title
+// sticky
+
 const DataHome = () => {
 	return (
 		<div className="dataSetup">

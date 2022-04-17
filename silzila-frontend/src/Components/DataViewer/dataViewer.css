@@ -33,13 +33,19 @@
 /* ========================================================================================== */
 /* TabRibbon styling */
 
+.tabArea {
+	display: flex;
+	background-color: rgb(238, 238, 238);
+	padding: 2px 2px 0 0;
+}
 .tabItems {
+	flex: 1;
 	height: 1.75rem;
 	font-size: 12px;
 	margin: 0;
 	padding: 2px 0 0 0;
 	text-align: left;
-	background-color: rgb(238, 238, 238);
+
 	/* border-bottom: 1px solid rgb(211, 211, 211); */
 }
 
