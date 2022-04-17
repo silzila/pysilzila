@@ -168,6 +168,22 @@ class ColumnFilterRegular(BaseModel):
 #                                           CalendarToRollingPeriod, RollingToCalendarPeriod]]
 
 
+# class ColumnFilter(BaseModel):
+#     regular_filter: Optional[ColumnFilterRegular]
+#     # relative_filter: Optional[ColumnFilterRelativeSpan]
+
+
 class ColumnFilter(BaseModel):
-    regular_filter: Optional[ColumnFilterRegular]
-    # relative_filter: Optional[ColumnFilterRelativeSpan]
+    filter_type: Literal['binary_user_selection', 'text_user_selection', 'number_user_selection',
+                         'number_search', 'date_user_selection', 'date_search']
+    table_id: Optional[str]
+    field_name: Optional[str]
+    display_name: Optional[str]
+    data_type: Literal['text', 'integer',
+                       'decimal', 'boolean', 'date', 'timestamp']
+    # filter_type: Literal['pick_from_list',
+    #                      'search_condition', 'aggregate_level_match']
+    # aggr: Optional[Literal['sum', 'avg', 'min', 'max', 'count',
+    #                        'countnn', 'countn', 'countu']]
+    time_grain: Optional[Literal['year', 'quarter',
+                                 'month', 'yearquarter', 'yearmonth', 'date', 'dayofweek', 'dayofmonth']]
