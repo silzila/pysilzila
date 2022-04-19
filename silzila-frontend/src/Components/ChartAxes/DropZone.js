@@ -102,6 +102,9 @@ const DropZone = ({
 						{ChartsInfo[chartType].dropZones[bIndex].allowedNumbers}) field(s) here
 					</span>
 				) : null}
+				{bIndex === 3 && ChartsInfo[chartType].dropZones[bIndex].allowedNumbers === 1 ? (
+					<span className="axisInfo"> Drop (1) field(s) here</span>
+				) : null}
 			</i>
 
 			{chartProp.properties[propKey].chartAxes[bIndex].fields.map((field, index) => (

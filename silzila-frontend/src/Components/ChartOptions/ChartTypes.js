@@ -65,13 +65,38 @@ const ChartTypes = ({
 							console.log("OldChartAxes: ", oldChartAxes);
 							newChartAxes[2].fields.push(oldChartAxes[2].fields.shift());
 							console.log("OldChartAxes After Shift: ", oldChartAxes);
-							newChartAxes[3].fields = oldChartAxes[2].fields;
+							newChartAxes[3].fields.push(oldChartAxes[2].fields.shift());
 						} else {
 							newChartAxes[1].fields = oldChartAxes[2].fields;
 						}
 					}
 
 					console.log(newChartAxes);
+					return newChartAxes;
+				}
+
+			case "scatterPlot":
+				if (newChart === "scatterPlot") {
+					return oldChartAxes;
+				} else if (
+					["multibar", "stacked bar", "line", "area", "pie", "donut"].includes(newChart)
+				) {
+					keepOldData(propKey, true);
+					// Map Category to Category
+					if (oldChartAxes[1].fields != undefined)
+						newChartAxes[1].fields = oldChartAxes[1].fields;
+
+					// Map X & Y to Value
+					var value = [];
+					if (oldChartAxes[2].fields != undefined)
+						value = value.concat(oldChartAxes[2].fields);
+					if (oldChartAxes[3].fields != undefined)
+						value = value.concat(oldChartAxes[3].fields);
+					newChartAxes[2].fields = value;
+
+					// Map filter to Filter
+					if (oldChartAxes[0].fields != undefined)
+						newChartAxes[0].fields = oldChartAxes[0].fields;
 					return newChartAxes;
 				}
 
@@ -89,7 +114,7 @@ const ChartTypes = ({
 		{ name: "donut", icon: donutChartIcon },
 		{ name: "line", icon: lineChartIcon },
 		{ name: "area", icon: areaChartIcon },
-		// { name: "scatterPlot", icon: scatterPlotIcon },
+		{ name: "scatterPlot", icon: scatterPlotIcon },
 
 		// { name: "step line", icon: stepLineIcon },
 		// { name: "funnel", icon: funnelChartIcon },

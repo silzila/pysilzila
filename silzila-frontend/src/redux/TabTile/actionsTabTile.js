@@ -258,7 +258,7 @@ export const actionsToAddTab = ({ tabId, table, selectedDs, selectedTablesInDs }
 	return (dispatch) => {
 		dispatch(addTab(tabId));
 		dispatch(updateNextTabId());
-		dispatch(updateSelectedTab(tabname, tabId, false));
+		dispatch(updateSelectedTab(tabname, tabId, false, "Edit"));
 		dispatch(
 			actionsToAddTile({
 				tabId: tabId,

@@ -44,6 +44,21 @@ const ChartAxes = ({
 			}
 		}
 
+		if (chartProp.properties[propKey].chartType === "scatterPlot") {
+			var combinedValues = { name: "Measure", fields: [] };
+
+			var values1 = axesValues[2].fields;
+			var values2 = axesValues[3].fields;
+
+			var allValues = values1.concat(values2);
+
+			combinedValues.fields = allValues;
+			console.log(combinedValues);
+
+			axesValues.splice(2, 2, combinedValues);
+			console.log(axesValues);
+		}
+
 		if (serverCall) {
 			setLoading(true);
 			console.log("Time for API call");
@@ -65,10 +80,10 @@ const ChartAxes = ({
 
 		console.log(minReqMet);
 
-		if (minReqMet[1] === true && minReqMet[2] === true) {
-			return true;
-		} else {
+		if (minReqMet.includes(false)) {
 			return false;
+		} else {
+			return true;
 		}
 	};
 
@@ -92,11 +107,11 @@ const ChartAxes = ({
 					break;
 
 				case "X":
-					dim = "dims";
+					dim = "measures";
 					break;
 
 				case "Y":
-					dim = "dims";
+					dim = "measures";
 					break;
 			}
 
@@ -152,7 +167,7 @@ const ChartAxes = ({
 		if (res.status) {
 			return res.data;
 		} else {
-			console.log("Get Table Data Error".res.data.detail);
+			console.log("Get Table Data Error", res.data.detail);
 		}
 	};
 

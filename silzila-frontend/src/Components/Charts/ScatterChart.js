@@ -5,18 +5,27 @@ const ScatterChart = ({
 	//props
 	propKey,
 	graphDimension,
+	chartArea,
 
 	//state
 	chartProp,
 	chartControls,
 }) => {
-	// var property = chartProp.properties[propKey];
 	var property = chartControls.properties[propKey];
 
 	let chartData = property.chartData ? property.chartData.result : "";
 	console.log(chartData, "+++++ chartData +++++");
 
-	var seriesObj = { symbolSize: 20, type: "scatter" };
+	var seriesObj = {
+		symbolSize: chartArea === "dashboard" ? 10 : 20,
+		type: "scatter",
+		encode: {
+			x: chartData ? Object.keys(chartData[0])[1] : "",
+			y: chartData ? Object.keys(chartData[0])[2] : "",
+			tooltip: chartData ? Object.keys(chartData[0])[0] : "",
+		},
+		name: chartData ? Object.keys(chartData[0])[0] : "",
+	};
 
 	const [seriesData, setSeriesData] = useState([]);
 
@@ -46,8 +55,14 @@ const ScatterChart = ({
 						legend: {
 							type: "scroll",
 							show: property.legendOptions?.showLegend,
-							itemHeight: property.legendOptions?.symbolHeight,
-							itemWidth: property.legendOptions?.symbolWidth,
+							itemHeight:
+								chartArea === "dashboard"
+									? property.legendOptions?.symbolHeight / 2
+									: property.legendOptions?.symbolHeight,
+							itemWidth:
+								chartArea === "dashboard"
+									? property.legendOptions?.symbolWidth / 2
+									: property.legendOptions?.symbolWidth,
 							itemGap: property.legendOptions?.itemGap,
 
 							left: property.legendOptions?.position?.left,
@@ -55,10 +70,22 @@ const ScatterChart = ({
 							orient: property.legendOptions?.orientation,
 						},
 						grid: {
-							left: `${property.chartMargin.left}%`,
-							right: `${property.chartMargin.right}%`,
-							top: `${property.chartMargin.top}%`,
-							bottom: `${property.chartMargin.bottom}%`,
+							left:
+								chartArea === "dashboard"
+									? `${property.chartMargin.left + 10}%`
+									: `${property.chartMargin.left}%`,
+							right:
+								chartArea === "dashboard"
+									? `${property.chartMargin.right + 0}%`
+									: `${property.chartMargin.right}%`,
+							top:
+								chartArea === "dashboard"
+									? `${property.chartMargin.top + 10}%`
+									: `${property.chartMargin.top}%`,
+							bottom:
+								chartArea === "dashboard"
+									? `${property.chartMargin.bottom + 5}%`
+									: `${property.chartMargin.bottom}%`,
 						},
 						tooltip: { show: property.mouseOver.enable },
 						dataset: {
@@ -76,37 +103,6 @@ const ScatterChart = ({
 	return <>{chartData ? <RenderChart /> : ""}</>;
 };
 
-// const ScatterChart = ({
-// 	//props
-// 	propKey,
-
-// 	//state
-// 	chartProp,
-// }) => {
-// 	var property = chartProp.properties[propKey];
-// 	console.log(property, "+++++ PROPERTY +++++");
-// 	let chartData = property.chartData ? property.chartData.result : "";
-// 	console.log(chartData, "+++++ chartData +++++");
-// 	return (
-// 		// <ReactEcharts
-// 		// 	option={{
-// 		// 		xAxis: {},
-// 		// 		yAxis: {},
-// 		// 		series: [
-// 		// 			{
-// 		// 				symbolSize: 10,
-// 		// 				data: [
-// 		// 					[1, 200],
-// 		// 					[2, 250],
-// 		// 				],
-// 		// 				type: "scatter",
-// 		// 			},
-// 		// 		],
-// 		// 	}}
-// 		// />
-// 		<div>no data</div>
-// 	);
-// };
 const mapStateToProps = (state) => {
 	return {
 		chartProp: state.chartProperties,
