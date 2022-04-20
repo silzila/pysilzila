@@ -7,6 +7,7 @@ const MultiBar = ({
 	propKey,
 	graphDimension,
 	chartArea,
+	graphTileSize,
 
 	//state
 	chartControlState,
@@ -45,15 +46,14 @@ const MultiBar = ({
 					width: graphDimension.width,
 					height: graphDimension.height,
 					overflow: "hidden",
+					// border: graphTileSize ? "none" : "1px solid rgb(238,238,238)",
 				}}
 				option={{
 					legend: {
 						type: "scroll",
 						show: property.legendOptions?.showLegend,
-						itemHeight:
-							chartArea === "dashboard" ? 10 : property.legendOptions?.symbolHeight,
-						itemWidth:
-							chartArea === "dashboard" ? 10 : property.legendOptions?.symbolWidth,
+						itemHeight: property.legendOptions?.symbolHeight,
+						itemWidth: property.legendOptions?.symbolWidth,
 						itemGap: property.legendOptions?.itemGap,
 
 						left: property.legendOptions?.position?.left,
@@ -61,22 +61,10 @@ const MultiBar = ({
 						orient: property.legendOptions?.orientation,
 					},
 					grid: {
-						left:
-							chartArea === "dashboard"
-								? `${property.chartMargin.left + 10}%`
-								: `${property.chartMargin.left}%`,
-						right:
-							chartArea === "dashboard"
-								? `${property.chartMargin.right + 0}%`
-								: `${property.chartMargin.right}%`,
-						top:
-							chartArea === "dashboard"
-								? `${property.chartMargin.top + 10}%`
-								: `${property.chartMargin.top}%`,
-						bottom:
-							chartArea === "dashboard"
-								? `${property.chartMargin.bottom + 5}%`
-								: `${property.chartMargin.bottom}%`,
+						left: `${property.chartMargin.left}%`,
+						right: `${property.chartMargin.right}%`,
+						top: `${property.chartMargin.top}%`,
+						bottom: `${property.chartMargin.bottom}%`,
 					},
 
 					tooltip: { show: property.mouseOver.enable },

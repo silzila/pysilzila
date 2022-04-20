@@ -25,6 +25,8 @@ import CloseRounded from "@mui/icons-material/CloseRounded";
 
 const GraphArea = ({
 	// state
+	tileState,
+	tabState,
 	tabTileProps,
 	chartProperties,
 	chartControlState,
@@ -43,12 +45,23 @@ const GraphArea = ({
 	const [fullScreen, setFullScreen] = useState(false);
 
 	const graphDimensionCompute = () => {
-		const height = document.getElementById("graphContainer").clientHeight;
-		const width = document.getElementById("graphContainer").clientWidth;
-		setGraphDimension({
-			height,
-			width,
-		});
+		if (tileState.tiles[propKey].graphSizeFull) {
+			const height = document.getElementById("graphContainer").clientHeight;
+			const width = document.getElementById("graphContainer").clientWidth;
+			setGraphDimension({
+				height,
+				width,
+			});
+		} else {
+			setGraphDimension({
+				height:
+					tabState.tabs[tabTileProps.selectedTabId].dashTilesDetails[propKey].height *
+					tabTileProps.dashGridSize,
+				width:
+					tabState.tabs[tabTileProps.selectedTabId].dashTilesDetails[propKey].width *
+					tabTileProps.dashGridSize,
+			});
+		}
 	};
 
 	const graphDimensionCompute2 = () => {
@@ -68,7 +81,12 @@ const GraphArea = ({
 		window.addEventListener("resize", updateSize);
 		updateSize();
 		return () => window.removeEventListener("resize", updateSize);
-	}, [fullScreen, tabTileProps.showDataViewerBottom, tabTileProps.selectedControlMenu]);
+	}, [
+		fullScreen,
+		tabTileProps.showDataViewerBottom,
+		tabTileProps.selectedControlMenu,
+		tileState.tiles[propKey].graphSizeFull,
+	]);
 
 	const removeFullScreen = (e) => {
 		console.log(e.keyCode);
@@ -84,6 +102,7 @@ const GraphArea = ({
 					<MultiBar
 						propKey={propKey}
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
 					/>
 				);
 
@@ -304,7 +323,11 @@ const GraphArea = ({
 				</div>
 			</div>
 
-			<div id="graphContainer" className="graphContainer">
+			<div
+				id="graphContainer"
+				className="graphContainer"
+				style={{ margin: tileState.tiles[propKey].graphSizeFull ? "0" : "1rem" }}
+			>
 				{showSqlCode ? <ShowFormattedQuery /> : chartDisplayed()}
 			</div>
 			<ChartThemes />
@@ -334,6 +357,8 @@ const GraphArea = ({
 
 const mapStateToProps = (state) => {
 	return {
+		tileState: state.tileState,
+		tabState: state.tabState,
 		tabTileProps: state.tabTileProps,
 		chartControlState: state.chartControls,
 		chartProperties: state.chartProperties,
