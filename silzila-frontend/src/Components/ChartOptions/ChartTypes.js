@@ -12,6 +12,7 @@ import areaChartIcon from "../../assets/area-chart.svg";
 import pieChartIcon from "../../assets/pie_chart.svg";
 import donutChartIcon from "../../assets/donut_chart.svg";
 import scatterPlotIcon from "../../assets/scatter.svg";
+import funnelChartIcon from "../../assets/funnel.png";
 import ChartsInfo from "../ChartAxes/ChartsInfo2";
 import "./ChartOptions.css";
 
@@ -52,15 +53,17 @@ const ChartTypes = ({
 				) {
 					keepOldData(propKey, true);
 					return oldChartAxes;
-				} else if (newChart === "scatterPlot") {
+				}
+
+				if (newChart === "scatterPlot") {
 					keepOldData(propKey, true);
 
 					// Map Category to Category
-					if (oldChartAxes[1].fields != undefined)
+					if (oldChartAxes[1].fields.length > 0)
 						newChartAxes[1].fields = oldChartAxes[1].fields;
 
 					// Map Value to X and Y columns if there are more than one values
-					if (oldChartAxes[2].fields != undefined) {
+					if (oldChartAxes[2].fields.length > 0) {
 						if (oldChartAxes[2].fields.length > 1) {
 							console.log("OldChartAxes: ", oldChartAxes);
 							newChartAxes[2].fields.push(oldChartAxes[2].fields.shift());
@@ -75,36 +78,81 @@ const ChartTypes = ({
 					return newChartAxes;
 				}
 
+				if (newChart === "funnel") {
+					keepOldData(propKey, true);
+
+					if (oldChartAxes[2].fields.length > 0)
+						newChartAxes[1].fields = oldChartAxes[2].fields;
+
+					return newChartAxes;
+				}
+
 			case "scatterPlot":
 				if (newChart === "scatterPlot") {
 					return oldChartAxes;
-				} else if (
+				}
+
+				if (
 					["multibar", "stacked bar", "line", "area", "pie", "donut"].includes(newChart)
 				) {
 					keepOldData(propKey, true);
 					// Map Category to Category
-					if (oldChartAxes[1].fields != undefined)
+					if (oldChartAxes[1].fields.length > 0)
 						newChartAxes[1].fields = oldChartAxes[1].fields;
 
 					// Map X & Y to Value
 					var value = [];
-					if (oldChartAxes[2].fields != undefined)
+					if (oldChartAxes[2].fields.length > 0)
 						value = value.concat(oldChartAxes[2].fields);
-					if (oldChartAxes[3].fields != undefined)
+					if (oldChartAxes[3].fields.length > 0)
 						value = value.concat(oldChartAxes[3].fields);
 					newChartAxes[2].fields = value;
 
 					// Map filter to Filter
-					if (oldChartAxes[0].fields != undefined)
+					if (oldChartAxes[0].fields.length > 0)
 						newChartAxes[0].fields = oldChartAxes[0].fields;
+					return newChartAxes;
+				}
+
+				if (newChart === "funnel") {
+					var value = [];
+					if (oldChartAxes[2].fields.length > 0)
+						value = value.concat(oldChartAxes[2].fields);
+					if (oldChartAxes[3].fields.length > 0)
+						value = value.concat(oldChartAxes[3].fields);
+					newChartAxes[1].fields = value;
+					return newChartAxes;
+				}
+
+			case "funnel":
+				if (newChart === "funnel") {
+					return oldChartAxes;
+				}
+
+				if (
+					["multibar", "stacked bar", "line", "area", "pie", "donut"].includes(newChart)
+				) {
+					if (oldChartAxes[1].fields.length > 0)
+						newChartAxes[2].fields = oldChartAxes[1].fields;
+
+					return newChartAxes;
+				}
+
+				if (newChart === "scatterPlot") {
+					if (oldChartAxes[1].fields.length > 0) {
+						if (oldChartAxes[1].fields.length > 1) {
+							newChartAxes[2].fields.push(oldChartAxes[1].fields.shift());
+							newChartAxes[3].fields.push(oldChartAxes[1].fields.shift());
+						} else {
+							newChartAxes[2].fields = oldChartAxes[1].fields;
+						}
+					}
 					return newChartAxes;
 				}
 
 			default:
 				return oldChartAxes;
 		}
-
-		console.log(oldChartAxes, newChartAxes);
 	};
 
 	const chartTypes = [
@@ -115,9 +163,9 @@ const ChartTypes = ({
 		{ name: "line", icon: lineChartIcon },
 		{ name: "area", icon: areaChartIcon },
 		{ name: "scatterPlot", icon: scatterPlotIcon },
+		{ name: "funnel", icon: funnelChartIcon },
 
 		// { name: "step line", icon: stepLineIcon },
-		// { name: "funnel", icon: funnelChartIcon },
 		// { name: "rose", icon: roseChartIcon },
 		// { name: "multibar", icon: simpleBarChartIcon },
 	];
@@ -141,8 +189,10 @@ const ChartTypes = ({
 
 							"area",
 							"scatterPlot",
+
+							"funnel",
+
 							// "step line",
-							// "funnel",
 							// "rose",
 
 							// "heatmap",

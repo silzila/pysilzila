@@ -88,7 +88,7 @@ const DropZone = ({
 				{bIndex === 1 && ChartsInfo[chartType].dropZones[bIndex].allowedNumbers > 1 ? (
 					<span className="axisInfo">
 						{" "}
-						Drop (atleast 1 - max{" "}
+						Drop (atleast {ChartsInfo[chartType].dropZones[bIndex].min} - max{" "}
 						{ChartsInfo[chartType].dropZones[bIndex].allowedNumbers}) field(s) here
 					</span>
 				) : null}
@@ -98,7 +98,7 @@ const DropZone = ({
 				{bIndex === 2 && ChartsInfo[chartType].dropZones[bIndex].allowedNumbers > 1 ? (
 					<span className="axisInfo">
 						{" "}
-						Drop (atleast 1 - max{" "}
+						Drop (atleast {ChartsInfo[chartType].dropZones[bIndex].min} - max{" "}
 						{ChartsInfo[chartType].dropZones[bIndex].allowedNumbers}) field(s) here
 					</span>
 				) : null}

@@ -42,7 +42,14 @@ const Menu = ({
 							? {}
 							: { cursor: "not-allowed" }
 					}
-					onClick={() => toggleGraphSize(propKey, false)}
+					onClick={() => {
+						if (
+							tabState.tabs[tabTileProps.selectedTabId].tilesInDashboard.includes(
+								propKey
+							)
+						)
+							toggleGraphSize(propKey, false);
+					}}
 				>
 					<FullscreenExitIcon sx={{ color: "#404040" }} />
 				</div>

@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import SimpleBar from "../Charts/SimpleBar";
 import AreaChart from "../Charts/AreaChart";
 import DoughnutChart from "../Charts/DoughnutChart";
-import FunnelChart from "../Charts/FunelChart";
 import LineChart from "../Charts/LineChart";
 import PieChart from "../Charts/PieChart";
 import RoseChart from "../Charts/RoseChart";
@@ -22,6 +21,7 @@ import OpenInFullIcon from "@mui/icons-material/OpenInFull";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { a11yLight } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import CloseRounded from "@mui/icons-material/CloseRounded";
+import FunnelChart from "../Charts/FunnelChart";
 
 const GraphArea = ({
 	// state
@@ -149,13 +149,13 @@ const GraphArea = ({
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
 					/>
 				);
-			// case "funnel":
-			// 	return (
-			// 		<FunnelChart
-			// 			propKey={propKey}
-			// 			graphDimension={fullScreen ? graphDimension2 : graphDimension}
-			// 		/>
-			// 	);
+			case "funnel":
+				return (
+					<FunnelChart
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+					/>
+				);
 			// case "rose":
 			// 	return (
 			// 		<RoseChart
@@ -185,7 +185,7 @@ const GraphArea = ({
 			const chartAxes = chartProperties.properties[propKey].chartAxes;
 
 			var title = "";
-			if (chartAxes[2].fields.length > 0) {
+			if (chartAxes[2]?.fields.length > 0) {
 				chartAxes[2].fields.forEach((element, index) => {
 					console.log(element, index);
 					if (index === 0) {

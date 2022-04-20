@@ -25,45 +25,6 @@ const ChartsInfo = {
 		],
 		showSwap: true,
 	},
-	area: {
-		dropZones: [
-			{ name: "Filter", allowedNumbers: 64, min: 0 },
-			{
-				name: "Dimension",
-				allowedNumbers: 1,
-				min: 1,
-				dataType: ["text", "string", "timestamp"],
-			},
-			{ name: "Measure", allowedNumbers: 4, min: 1, dataType: ["int", "float", "double"] },
-		],
-		showSwap: true,
-	},
-	line: {
-		dropZones: [
-			{ name: "Filter", allowedNumbers: 64, min: 0 },
-			{
-				name: "Dimension",
-				allowedNumbers: 1,
-				min: 1,
-				dataType: ["text", "string", "timestamp"],
-			},
-			{ name: "Measure", allowedNumbers: 4, min: 1, dataType: ["int", "float", "double"] },
-		],
-		showSwap: true,
-	},
-	"step line": {
-		dropZones: [
-			{ name: "Filter", allowedNumbers: 64, min: 0 },
-			{
-				name: "Dimension",
-				allowedNumbers: 1,
-				min: 1,
-				dataType: ["text", "string", "timestamp"],
-			},
-			{ name: "Measure", allowedNumbers: 4, min: 1, dataType: ["int", "float", "double"] },
-		],
-		showSwap: true,
-	},
 	pie: {
 		dropZones: [
 			{ name: "Filter", allowedNumbers: 64, min: 0 },
@@ -90,14 +51,7 @@ const ChartsInfo = {
 		],
 		showSwap: false,
 	},
-	funnel: {
-		dropZones: [
-			{ name: "Filter", allowedNumbers: 64, min: 0 },
-			{ name: "Measure", allowedNumbers: 1, min: 1, dataType: ["int", "float", "double"] },
-		],
-		showSwap: false,
-	},
-	rose: {
+	line: {
 		dropZones: [
 			{ name: "Filter", allowedNumbers: 64, min: 0 },
 			{
@@ -106,9 +60,22 @@ const ChartsInfo = {
 				min: 1,
 				dataType: ["text", "string", "timestamp"],
 			},
-			{ name: "Measure", allowedNumbers: 1, min: 1, dataType: ["int", "float", "double"] },
+			{ name: "Measure", allowedNumbers: 4, min: 1, dataType: ["int", "float", "double"] },
 		],
-		showSwap: false,
+		showSwap: true,
+	},
+	area: {
+		dropZones: [
+			{ name: "Filter", allowedNumbers: 64, min: 0 },
+			{
+				name: "Dimension",
+				allowedNumbers: 1,
+				min: 1,
+				dataType: ["text", "string", "timestamp"],
+			},
+			{ name: "Measure", allowedNumbers: 4, min: 1, dataType: ["int", "float", "double"] },
+		],
+		showSwap: true,
 	},
 	scatterPlot: {
 		dropZones: [
@@ -131,7 +98,6 @@ const ChartsInfo = {
 		],
 		showSwap: true,
 	},
-
 	heatmap: {
 		dropZones: [
 			{ name: "Filter", allowedNumbers: 64, min: 0 },
@@ -146,6 +112,45 @@ const ChartsInfo = {
 		],
 		showSwap: true,
 	},
+	funnel: {
+		dropZones: [
+			{ name: "Filter", allowedNumbers: 64, min: 0 },
+			{ name: "Measure", allowedNumbers: 4, min: 2, dataType: ["int", "float", "double"] },
+		],
+		showSwap: false,
+	},
+
+	// ============================================?
+	// Future graph types
+
+	"step line": {
+		dropZones: [
+			{ name: "Filter", allowedNumbers: 64, min: 0 },
+			{
+				name: "Dimension",
+				allowedNumbers: 1,
+				min: 1,
+				dataType: ["text", "string", "timestamp"],
+			},
+			{ name: "Measure", allowedNumbers: 4, min: 1, dataType: ["int", "float", "double"] },
+		],
+		showSwap: true,
+	},
+
+	rose: {
+		dropZones: [
+			{ name: "Filter", allowedNumbers: 64, min: 0 },
+			{
+				name: "Dimension",
+				allowedNumbers: 1,
+				min: 1,
+				dataType: ["text", "string", "timestamp"],
+			},
+			{ name: "Measure", allowedNumbers: 1, min: 1, dataType: ["int", "float", "double"] },
+		],
+		showSwap: false,
+	},
+
 	crossTab: {
 		dropZones: [
 			{ name: "Filter", allowedNumbers: 64, min: 0 },
