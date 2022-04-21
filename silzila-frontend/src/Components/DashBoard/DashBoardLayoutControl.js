@@ -156,7 +156,8 @@ const DashBoardLayoutControl = ({
 							onChange={(e) => setAspectRatioHeight(tabId, e.target.value)}
 							label="Height"
 							InputLabelProps={{ shrink: true }}
-							inputProps={textFieldInputProps}
+							minValue
+							inputProps={{ ...textFieldInputProps, min: 1 }}
 						/>
 						<TextField
 							type="number"
@@ -164,7 +165,7 @@ const DashBoardLayoutControl = ({
 							value={tabState.tabs[tabId].dashLayout.aspectRatio.width}
 							onChange={(e) => setAspectRatioWidth(tabId, e.target.value)}
 							InputLabelProps={{ shrink: true }}
-							inputProps={textFieldInputProps}
+							inputProps={{ ...textFieldInputProps, min: 1 }}
 						/>
 					</div>
 				)}
@@ -217,7 +218,7 @@ const DashBoardLayoutControl = ({
 							onChange={(e) => setCustomHeight(tabId, e.target.value)}
 							label="Height"
 							InputLabelProps={{ shrink: true }}
-							inputProps={textFieldInputProps}
+							inputProps={{ ...textFieldInputProps, min: 1 }}
 						/>
 						<TextField
 							type="number"
@@ -225,7 +226,7 @@ const DashBoardLayoutControl = ({
 							onChange={(e) => setCustomWidth(tabId, e.target.value)}
 							label="Width"
 							InputLabelProps={{ shrink: true }}
-							inputProps={textFieldInputProps}
+							inputProps={{ ...textFieldInputProps, min: 1 }}
 						/>
 					</div>
 				) : null}
@@ -256,7 +257,7 @@ const DashBoardLayoutControl = ({
 								onChange={(e) => setCustomRMinHeight(tabId, e.target.value)}
 								label="Height"
 								InputLabelProps={{ shrink: true }}
-								inputProps={textFieldInputProps}
+								inputProps={{ ...textFieldInputProps, min: 1 }}
 							/>
 							<TextField
 								type="number"
@@ -264,7 +265,7 @@ const DashBoardLayoutControl = ({
 								onChange={(e) => setCustomRMinWidth(tabId, e.target.value)}
 								label="Width"
 								InputLabelProps={{ shrink: true }}
-								inputProps={textFieldInputProps}
+								inputProps={{ ...textFieldInputProps, min: 1 }}
 							/>
 						</div>
 						<InputLabel sx={{ float: "left", flex: 1, fontSize: "14px" }}>
@@ -277,7 +278,7 @@ const DashBoardLayoutControl = ({
 								onChange={(e) => setCustomRMaxHeight(tabId, e.target.value)}
 								label="Height"
 								InputLabelProps={{ shrink: true }}
-								inputProps={textFieldInputProps}
+								inputProps={{ ...textFieldInputProps, min: 1 }}
 							/>
 							<TextField
 								type="number"
@@ -285,7 +286,7 @@ const DashBoardLayoutControl = ({
 								onChange={(e) => setCustomRMaxWidth(tabId, e.target.value)}
 								label="Width"
 								InputLabelProps={{ shrink: true }}
-								inputProps={textFieldInputProps}
+								inputProps={{ ...textFieldInputProps, min: 1 }}
 							/>
 						</div>
 					</div>
