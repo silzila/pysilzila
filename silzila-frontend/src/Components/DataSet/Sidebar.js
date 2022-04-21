@@ -1,4 +1,4 @@
-import { MenuItem, Select } from "@mui/material";
+import { Menu, MenuItem, Select, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import ShortUniqueId from "short-unique-id";
@@ -207,17 +207,25 @@ const Sidebar = ({
 						connectionList.map((connection, i) => {
 							return (
 								<MenuItem
+									// TODO menuItem Width have to be decreased and elipsis text when overflow
 									sx={{
-										fontSize: "14px",
-										width: "200px",
-										paddingBottom: "4px",
-										paddingTop: "4px",
-										paddingRight: "8px",
-										paddingLeft: "8px",
-										textOverflow: "ellipsis",
+										// 	fontSize: "14px",
+										width: "100px",
+										// 	paddingBottom: "4px",
+										// 	paddingTop: "4px",
+										// 	paddingRight: "8px",
+										// 	paddingLeft: "8px",
+										// 	textOverflow: "ellipsis",
 									}}
 									value={connection.dc_uid}
 									key={connection.dc_uid}
+									title={
+										connection.db_name +
+										" " +
+										"(" +
+										connection.friendly_name +
+										")"
+									}
 								>
 									{connection.db_name} ({connection.friendly_name})
 								</MenuItem>

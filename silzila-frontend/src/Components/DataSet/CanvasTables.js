@@ -211,8 +211,16 @@ const CanvasTables = ({
 						}}
 					>
 						{inputField ? (
-							<>
+							<div
+								style={{
+									display: "flex",
+									padding: "0px 5px 0px 5px",
+									width: "auto",
+								}}
+							>
+								TODO need to enable autoFocus
 								<TextField
+									autoFocus={true}
 									variant="standard"
 									id="name"
 									value={newName}
@@ -221,10 +229,14 @@ const CanvasTables = ({
 										setNewName(e.target.value);
 									}}
 								/>
-								<Button onClick={() => changeTableName(tableData.table_uid)}>
+								<Button
+									sx={{ fontSize: "12px" }}
+									onClick={() => changeTableName(tableData.table_uid)}
+								>
 									ok
 								</Button>
 								<Button
+									sx={{ fontSize: "12px" }}
 									onClick={() => {
 										setInputField(false);
 										setNewName("");
@@ -232,7 +244,7 @@ const CanvasTables = ({
 								>
 									cancel
 								</Button>
-							</>
+							</div>
 						) : (
 							<>
 								<div style={{ flex: 1 }}>{tableData.alias}</div>
