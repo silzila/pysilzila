@@ -6,30 +6,34 @@ const HeatMap = ({
 	//props
 	propKey,
 	graphDimension,
+	chartArea,
 
 	//state
 	chartControl,
+	chartProperty,
 }) => {
 	var property = chartControl.properties[propKey];
 	console.log(property, "+++++ PROPERTY +++++");
 	let chartData = property.chartData ? property.chartData.result : "";
 	console.log(chartData, "+++++ chartData +++++");
 
-	// const [newData, setNewData] = useState([]);
+	const [maxValue, setMaxValue] = useState(0);
 
-	// useEffect(() => {
-	// 	if (chartData) {
-	// 		var newData = [];
-	// 		Object.keys(chartData[0]).map((key) => {
-	// 			newData.push({
-	// 				name: key,
-	// 				value: chartData[0][key],
-	// 			});
-	// 			console.log(newData);
-	// 		});
-	// 		setNewData(newData);
-	// 	}
-	// }, [chartData]);
+	useEffect(() => {
+		if (chartData) {
+			var measureField = chartProperty.properties[propKey].chartAxes[3].fields[0];
+			var maxFieldName = `${measureField.fieldname}__${measureField.agg}`;
+
+			var max = 0;
+			chartData.forEach((element) => {
+				if (element[maxFieldName] > max) {
+					max = element[maxFieldName];
+				}
+			});
+			console.log(max);
+			setMaxValue(max);
+		}
+	}, [chartData]);
 
 	const RenderChart = () => {
 		return (
@@ -43,7 +47,31 @@ const HeatMap = ({
 				}}
 				option={{
 					legend: {},
-					tooltip: {},
+
+					// TODO: Priorit 5 - Margin doesn't reflect in graph
+					// Margin for a Funnel chart changes only the grid line and not the actual funnel graph
+					grid: {
+						left:
+							chartArea === "dashboard"
+								? `${property.chartMargin.left + 10}%`
+								: `${property.chartMargin.left}%`,
+						right:
+							chartArea === "dashboard"
+								? `${property.chartMargin.right + 0}%`
+								: `${property.chartMargin.right}%`,
+						top:
+							chartArea === "dashboard"
+								? `${property.chartMargin.top + 10}%`
+								: `${property.chartMargin.top}%`,
+						bottom:
+							chartArea === "dashboard"
+								? `${property.chartMargin.bottom + 5}%`
+								: `${property.chartMargin.bottom}%`,
+					},
+
+					label: { show: true, fontSize: 14 },
+					tooltip: { show: property.mouseOver.enable },
+
 					dataset: {
 						source: chartData,
 					},
@@ -56,7 +84,7 @@ const HeatMap = ({
 					visualMap: [
 						{
 							min: 0,
-							max: 500000,
+							max: maxValue,
 						},
 					],
 					series: [{ type: "heatmap" }],
@@ -70,6 +98,7 @@ const HeatMap = ({
 const mapStateToProps = (state) => {
 	return {
 		chartControl: state.chartControls,
+		chartProperty: state.chartProperties,
 	};
 };
 

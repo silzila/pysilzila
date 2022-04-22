@@ -28,6 +28,12 @@ const ChartControlObjects = ({
 
 	const pieOptionsList = ["Title", "Colors", "Legend", "Margin", "Tooltip", "Labels", "Style"];
 
+	const funnelOptionList = ["Title", "Colors", "Legend", "Margin", "Tooltip"];
+
+	const gaugeOptionList = ["Title", "Colors", "Margin", "Tooltip"];
+
+	const heatmapOptionList = ["Title", "Colors", "Margin", "Tooltip"];
+
 	const RenderOptions = () => {
 		switch (selectedChart) {
 			case "multibar":
@@ -56,6 +62,57 @@ const ChartControlObjects = ({
 					return (
 						<div
 							key={option}
+							className={
+								chartProp.properties[propKey].chartOptionSelected === option
+									? "optionImageSelected"
+									: "optionImage"
+							}
+							onClick={() => changeChartOption(propKey, option)}
+						>
+							{option}
+						</div>
+					);
+				});
+
+			case "funnel":
+				return funnelOptionList.map((option) => {
+					return (
+						<div
+							ley={option}
+							className={
+								chartProp.properties[propKey].chartOptionSelected === option
+									? "optionImageSelected"
+									: "optionImage"
+							}
+							onClick={() => changeChartOption(propKey, option)}
+						>
+							{option}
+						</div>
+					);
+				});
+
+			case "gauge":
+				return gaugeOptionList.map((option) => {
+					return (
+						<div
+							ley={option}
+							className={
+								chartProp.properties[propKey].chartOptionSelected === option
+									? "optionImageSelected"
+									: "optionImage"
+							}
+							onClick={() => changeChartOption(propKey, option)}
+						>
+							{option}
+						</div>
+					);
+				});
+
+			case "heatmap":
+				return heatmapOptionList.map((option) => {
+					return (
+						<div
+							ley={option}
 							className={
 								chartProp.properties[propKey].chartOptionSelected === option
 									? "optionImageSelected"

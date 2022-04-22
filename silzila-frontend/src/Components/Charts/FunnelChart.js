@@ -6,6 +6,7 @@ const FunnelChart = ({
 	//props
 	propKey,
 	graphDimension,
+	chartArea,
 
 	//state
 	chartControl,
@@ -42,8 +43,46 @@ const FunnelChart = ({
 					overflow: "hidden",
 				}}
 				option={{
-					legend: {},
-					tooltip: {},
+					legend: {
+						type: "scroll",
+						show: property.legendOptions?.showLegend,
+						itemHeight:
+							chartArea === "dashboard"
+								? property.legendOptions?.symbolHeight / 2
+								: property.legendOptions?.symbolHeight,
+						itemWidth:
+							chartArea === "dashboard"
+								? property.legendOptions?.symbolWidth / 2
+								: property.legendOptions?.symbolWidth,
+						itemGap: property.legendOptions?.itemGap,
+
+						left: property.legendOptions?.position?.left,
+						top: property.legendOptions?.position?.top,
+						orient: property.legendOptions?.orientation,
+					},
+
+					// TODO: Priorit 5 - Margin doesn't reflect in graph
+					// Margin for a Funnel chart changes only the grid line and not the actual funnel graph
+					grid: {
+						left:
+							chartArea === "dashboard"
+								? `${property.chartMargin.left + 10}%`
+								: `${property.chartMargin.left}%`,
+						right:
+							chartArea === "dashboard"
+								? `${property.chartMargin.right + 0}%`
+								: `${property.chartMargin.right}%`,
+						top:
+							chartArea === "dashboard"
+								? `${property.chartMargin.top + 10}%`
+								: `${property.chartMargin.top}%`,
+						bottom:
+							chartArea === "dashboard"
+								? `${property.chartMargin.bottom + 5}%`
+								: `${property.chartMargin.bottom}%`,
+					},
+
+					tooltip: { show: property.mouseOver.enable },
 					dataset: {
 						source: newData,
 					},
