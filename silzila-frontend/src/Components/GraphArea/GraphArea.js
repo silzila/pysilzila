@@ -22,6 +22,8 @@ import SyntaxHighlighter from "react-syntax-highlighter";
 import { a11yLight } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import CloseRounded from "@mui/icons-material/CloseRounded";
 import FunnelChart from "../Charts/FunnelChart";
+import GaugeChart from "../Charts/GaugeChart";
+import HeatMap from "../Charts/HeatMap";
 
 const GraphArea = ({
 	// state
@@ -106,7 +108,7 @@ const GraphArea = ({
 					/>
 				);
 
-			case "stacked bar":
+			case "stackedBar":
 				return (
 					<StackedBar
 						propKey={propKey}
@@ -156,6 +158,23 @@ const GraphArea = ({
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
 					/>
 				);
+
+			case "gauge":
+				return (
+					<GaugeChart
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+					/>
+				);
+
+			case "heatmap":
+				return (
+					<HeatMap
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+					/>
+				);
+
 			// case "rose":
 			// 	return (
 			// 		<RoseChart
@@ -179,6 +198,10 @@ const GraphArea = ({
 	// ############################################
 	// Setting title automatically
 	// ############################################
+
+	// TODO: Priority 5 - Setting title for different types of graphs
+	// Different graphs have different Dropzones. Setting automatic title must take into account of all these types
+	// Eg., Scatter plot has 2 measures, Funnel has 1 measure and no dimension, Heatmap has 2 dimensions, etc....
 
 	const graphTitle = () => {
 		if (chartProperties.properties[propKey].titleOptions.generateTitle === "Auto") {

@@ -32,7 +32,7 @@ const DashGraph = ({
 		console.log(dimensions);
 
 		switch (chartProp?.properties[propKey]?.chartType) {
-			// "bar", "stacked bar", "pie", "donut", "line", "area", "heatmap", "table", "calendar", "scatterPlot", "crossTab"
+			// "bar", "stackedBar", "pie", "donut", "line", "area", "heatmap", "table", "calendar", "scatterPlot", "crossTab"
 			case "multibar":
 				return (
 					<MultiBarChart
@@ -42,7 +42,7 @@ const DashGraph = ({
 					/>
 				);
 
-			case "stacked bar":
+			case "stackedBar":
 				return (
 					<StackedBar
 						propKey={propKey}

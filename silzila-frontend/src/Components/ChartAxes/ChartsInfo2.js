@@ -12,7 +12,7 @@ const ChartsInfo = {
 		],
 		showSwap: true,
 	},
-	"stacked bar": {
+	stackedBar: {
 		dropZones: [
 			{ name: "Filter", allowedNumbers: 64, min: 0 },
 			{
@@ -115,7 +115,7 @@ const ChartsInfo = {
 	funnel: {
 		dropZones: [
 			{ name: "Filter", allowedNumbers: 64, min: 0 },
-			{ name: "Measure", allowedNumbers: 4, min: 2, dataType: ["int", "float", "double"] },
+			{ name: "Measure", allowedNumbers: 12, min: 2, dataType: ["int", "float", "double"] },
 		],
 		showSwap: false,
 	},

@@ -31,7 +31,7 @@ const ChartControlObjects = ({
 	const RenderOptions = () => {
 		switch (selectedChart) {
 			case "multibar":
-			case "stacked bar":
+			case "stackedBar":
 			case "line":
 			case "area":
 			case "scatterPlot":

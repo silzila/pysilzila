@@ -6,7 +6,7 @@ const initialTabState = {
 			tabId: 1,
 			tabName: "Tab - 1",
 			showDash: false,
-			dashMode: "Dev Mode",
+			dashMode: "Edit",
 			dashLayout: {},
 
 			// properties specific to tiles within this tab
@@ -35,7 +35,7 @@ const tabStateReducer = (state = initialTabState, action) => {
 						tabId: action.payload,
 						tabName: `Tab - ${action.payload}`,
 						showDash: false,
-						dashMode: "Dev Mode",
+						dashMode: "Edit",
 						dashLayout: {},
 
 						// properties specific to tiles within this tab

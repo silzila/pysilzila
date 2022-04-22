@@ -84,54 +84,26 @@
 .syntaxHighlight {
 	text-align: left;
 }
-/* .rightColumn {
-	width: 16rem;
-	background-color: #eee;
-	display: flex;
-	flex-direction: column;
-	overflow: hidden;
-	color: #404040;
-    /* border: 1px solid #d3d3d3; */
-/* } */
-/* .radioButtonsUserMenu {
-	width: 100%;
-	display: flex;
-	font-size: 16px;
-	line-height: 1.5rem;
-	background-color: #d3d3d3;
-} */
-/* .menuRadioButton {
-	flex: 1;
-	border: none;
-	border-bottom: 2px solid transparent;
-	color: #404040;
-	background-color: #d3d3d3;
-}
-.menuRadioButtonSelected {
-	flex: 1;
-	border: none;
-	border-bottom: 2px solid #007bff;
-	color: #404040;
-	background-color: #eee;
-	font-weight: 600;
-} */
+
 .controlsIcon {
-	padding: 9px;
+	padding: 12px;
 	width: 48px;
 	height: 48px;
 	margin: 0;
-	border: 3px solid transparent;
+	border-right: 3px solid transparent;
+	cursor: pointer;
+}
+.controlsIcon:hover {
+	background-color: white;
 }
 
 .selectedIcon {
-	border: 3px solid transparent;
+	border-right: 3px solid transparent;
 	border-right-color: #007bff;
-	border-radius: 4px;
 	background-color: white;
 }
 
 .rightColumn {
-	/* background-color: #eee; */
 	padding: 0%;
 	height: 100%;
 	width: auto;
@@ -144,6 +116,8 @@
 	background-color: #eee;
 	border-bottom: 1px solid rgb(211, 211, 211);
 	border-top: 1px solid rgb(211, 211, 211);
+	display: flex;
+	flex-direction: column;
 }
 .rightColumnControlsAndFilters {
 	flex: 1;
