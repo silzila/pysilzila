@@ -7,7 +7,14 @@ const initialTabState = {
 			tabName: "Tab - 1",
 			showDash: false,
 			dashMode: "Dev Mode",
-			dashLayout: {},
+			dashLayout: {
+				dashboardLayout: "Auto",
+				selectedOptionForAuto: "Full Screen",
+				aspectRatio: { height: 9, width: 16 },
+				selectedOptionForFixed: "HD",
+				custom: { height: 9, width: 16 },
+				customRange: { minHeight: 9, minWidth: 16, maxHeight: 12, maxWidth: 24 },
+			},
 
 			// properties specific to tiles within this tab
 			selectedTileName: "Tile - 1",
@@ -36,7 +43,14 @@ const tabStateReducer = (state = initialTabState, action) => {
 						tabName: `Tab - ${action.payload}`,
 						showDash: false,
 						dashMode: "Dev Mode",
-						dashLayout: {},
+						dashLayout: {
+							dashboardLayout: "auto",
+							selectedOptionForAuto: "full Screen",
+							aspectRatio: { height: 0, width: 0 },
+							selectedOptionForFixed: "",
+							custom: { height: 0, width: 0 },
+							customRange: { minHeight: 0, minWidth: 0, maxHeight: 0, maxWidth: 0 },
+						},
 
 						// properties specific to tiles within this tab
 						selectedTileName: "Tile - 1",
@@ -196,6 +210,118 @@ const tabStateReducer = (state = initialTabState, action) => {
 
 			return update(state, {
 				tabs: { [action.payload.tabId]: { dashTilesDetails: { $set: copyOfDetails } } },
+			});
+		case "SET_DASHLAYOUT":
+			return update(state, {
+				tabs: {
+					[action.payload.tabId]: {
+						dashLayout: {
+							dashboardLayout: { $set: action.payload.value },
+						},
+					},
+				},
+			});
+		case "SET_DASHLAYOUT_SELECTEDOPTION_FOR_AUTO":
+			return update(state, {
+				tabs: {
+					[action.payload.tabId]: {
+						dashLayout: {
+							selectedOptionForAuto: { $set: action.payload.value },
+							// selectedOptionForFixed: { $set: "" },
+						},
+					},
+				},
+			});
+		case "SET_ASPECTRATIO_HEIGHT":
+			return update(state, {
+				tabs: {
+					[action.payload.tabId]: {
+						dashLayout: {
+							aspectRatio: { height: { $set: action.payload.value } },
+						},
+					},
+				},
+			});
+		case "SET_ASPECTRATIO_WIDTH":
+			return update(state, {
+				tabs: {
+					[action.payload.tabId]: {
+						dashLayout: {
+							aspectRatio: { width: { $set: action.payload.value } },
+						},
+					},
+				},
+			});
+		case "SET_CUSTOM_HEIGHT":
+			return update(state, {
+				tabs: {
+					[action.payload.tabId]: {
+						dashLayout: {
+							custom: { height: { $set: action.payload.value } },
+						},
+					},
+				},
+			});
+		case "SET_CUSTOM_WIDTH":
+			return update(state, {
+				tabs: {
+					[action.payload.tabId]: {
+						dashLayout: {
+							custom: { width: { $set: action.payload.value } },
+						},
+					},
+				},
+			});
+		case "SET_CR_MAX_WIDTH":
+			return update(state, {
+				tabs: {
+					[action.payload.tabId]: {
+						dashLayout: {
+							customRange: { maxWidth: { $set: action.payload.value } },
+						},
+					},
+				},
+			});
+		case "SET_CR_MIN_WIDTH":
+			return update(state, {
+				tabs: {
+					[action.payload.tabId]: {
+						dashLayout: {
+							customRange: { minWidth: { $set: action.payload.value } },
+						},
+					},
+				},
+			});
+		case "SET_CR_MAX_HEIGHT":
+			return update(state, {
+				tabs: {
+					[action.payload.tabId]: {
+						dashLayout: {
+							customRange: { maxHeight: { $set: action.payload.value } },
+						},
+					},
+				},
+			});
+		case "SET_CR_MIN_HEIGHT":
+			return update(state, {
+				tabs: {
+					[action.payload.tabId]: {
+						dashLayout: {
+							customRange: { minHeight: { $set: action.payload.value } },
+						},
+					},
+				},
+			});
+		case "SET_DASHLAYOUT_SELECTEDOPTION_FOR_FIXED":
+			return update(state, {
+				tabs: {
+					[action.payload.tabId]: {
+						dashLayout: {
+							selectedOptionForFixed: { $set: action.payload.value },
+							// selectedOptionForAuto: { $set: "" },
+						},
+					},
+				},
 			});
 
 		default:

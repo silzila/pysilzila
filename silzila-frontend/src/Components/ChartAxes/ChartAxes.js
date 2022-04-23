@@ -7,6 +7,7 @@ import DropZone from "./DropZone";
 import FetchData from "../../ServerCall/FetchData";
 import { updateChartData } from "../../redux/ChartProperties/actionsChartControls";
 import LoadingPopover from "../CommonFunctions/PopOverComponents/LoadingPopover";
+import { canReUseData, toggleAxesEdited } from "../../redux/ChartProperties/actionsChartProperties";
 
 const ChartAxes = ({
 	// props
@@ -19,6 +20,8 @@ const ChartAxes = ({
 
 	// dispatch
 	updateChartData,
+	toggleAxesEdit,
+	reUseOldData,
 }) => {
 	const [loading, setLoading] = useState(false);
 
@@ -35,13 +38,49 @@ const ChartAxes = ({
 		let serverCall = false;
 
 		if (chartProp.properties[propKey].axesEdited) {
-			var minReq = checkMinRequiredCards();
-			console.log(minReq);
-			if (minReq) {
-				serverCall = true;
+			if (chartProp.properties[propKey].reUseData) {
+				console.log("Can reuse old data");
+				serverCall = false;
+				resetStore();
 			} else {
-				updateChartData(propKey, "");
+				var minReq = checkMinRequiredCards();
+				console.log(minReq);
+				if (minReq) {
+					serverCall = true;
+				} else {
+					updateChartData(propKey, "");
+				}
 			}
+		}
+
+		if (chartProp.properties[propKey].chartType === "scatterPlot") {
+			var combinedValues = { name: "Measure", fields: [] };
+
+			var values1 = axesValues[2].fields;
+			var values2 = axesValues[3].fields;
+
+			var allValues = values1.concat(values2);
+
+			combinedValues.fields = allValues;
+			console.log(combinedValues);
+
+			axesValues.splice(2, 2, combinedValues);
+			console.log(axesValues);
+		}
+
+		if (chartProp.properties[propKey].chartType === "heatmap") {
+			var combinedValues = { name: "Dimension", fields: [] };
+
+			var values1 = axesValues[1].fields;
+			var values2 = axesValues[2].fields;
+
+			var allValues = values1.concat(values2);
+
+			combinedValues.fields = allValues;
+			console.log(combinedValues);
+
+			axesValues.splice(1, 2, combinedValues);
+			console.log(axesValues);
 		}
 
 		if (serverCall) {
@@ -65,11 +104,16 @@ const ChartAxes = ({
 
 		console.log(minReqMet);
 
-		if (minReqMet[1] === true && minReqMet[2] === true) {
-			return true;
-		} else {
+		if (minReqMet.includes(false)) {
 			return false;
+		} else {
+			return true;
 		}
+	};
+
+	const resetStore = () => {
+		toggleAxesEdit(propKey);
+		reUseOldData(propKey);
 	};
 
 	const getChartData = async (axesValues) => {
@@ -92,11 +136,11 @@ const ChartAxes = ({
 					break;
 
 				case "X":
-					dim = "dims";
+					dim = "measures";
 					break;
 
 				case "Y":
-					dim = "dims";
+					dim = "measures";
 					break;
 			}
 
@@ -125,6 +169,13 @@ const ChartAxes = ({
 
 		formattedAxes.fields = [];
 
+		if (
+			chartProp.properties[propKey].chartType === "funnel" ||
+			chartProp.properties[propKey].chartType === "gauge"
+		) {
+			formattedAxes.dims = [];
+		}
+
 		// TODO: Priority 5 - Integrate Filters
 		// Right now no filter is passed to server. Discuss with balu and pass filters
 		formattedAxes.filters = [];
@@ -152,7 +203,7 @@ const ChartAxes = ({
 		if (res.status) {
 			return res.data;
 		} else {
-			console.log("Get Table Data Error".res.data.detail);
+			console.log("Get Table Data Error", res.data.detail);
 		}
 	};
 
@@ -178,6 +229,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		updateChartData: (propKey, chartData) => dispatch(updateChartData(propKey, chartData)),
+		toggleAxesEdit: (propKey) => dispatch(toggleAxesEdited(propKey, false)),
+		reUseOldData: (propKey) => dispatch(canReUseData(propKey, false)),
 	};
 };
 

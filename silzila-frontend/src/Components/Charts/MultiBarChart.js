@@ -6,10 +6,11 @@ const MultiBar = ({
 	// props
 	propKey,
 	graphDimension,
+	chartArea,
+	graphTileSize,
 
 	//state
 	chartControlState,
-	chartProperties,
 }) => {
 	var property = chartControlState.properties[propKey];
 
@@ -41,10 +42,11 @@ const MultiBar = ({
 				opts={{ renderer: "svg" }}
 				theme={property.colorScheme}
 				style={{
-					padding: "1rem",
+					padding: chartArea === "dashboard" ? "0.5rem" : "1rem",
 					width: graphDimension.width,
 					height: graphDimension.height,
 					overflow: "hidden",
+					// border: graphTileSize ? "none" : "1px solid rgb(238,238,238)",
 				}}
 				option={{
 					legend: {
@@ -105,7 +107,6 @@ const MultiBar = ({
 };
 const mapStateToProps = (state) => {
 	return {
-		chartProperties: state.chartProperties,
 		chartControlState: state.chartControls,
 	};
 };
