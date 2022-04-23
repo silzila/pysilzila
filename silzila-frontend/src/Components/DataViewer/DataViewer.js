@@ -5,6 +5,7 @@ import Menu from "./Menu";
 import TabRibbon from "../TabsAndTiles/TabRibbon";
 import {
 	setShowDashBoard,
+	showDashboardInTab,
 	toggleColumnsOnlyDisplay,
 	toggleDashMode,
 	toggleDashModeInTab,
@@ -22,6 +23,7 @@ import { MenuItem, Select } from "@mui/material";
 function DataViewer({
 	// state
 	tabTileProps,
+	tabState,
 
 	// dispatch
 	showDashBoard,
@@ -95,9 +97,7 @@ function DataViewer({
 									? "plusTile commonTile indiItemHighlightTile"
 									: "plusTile commonTile indiItemTile"
 							}
-							onClick={() => {
-								showDashBoard(tabTileProps.selectedTabId, true);
-							}}
+							onClick={() => showDashBoard(tabTileProps.selectedTabId, true)}
 						>
 							Dashboard
 						</span>
@@ -154,6 +154,7 @@ function DataViewer({
 const mapStateToProps = (state) => {
 	return {
 		tabTileProps: state.tabTileProps,
+		tabState: state.tabState,
 	};
 };
 

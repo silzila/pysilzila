@@ -101,7 +101,8 @@ const tabTilePropsReducer = (state = initialProperties, action) => {
 				selectedTabId: action.payload.tabId,
 				selectedTabName: action.payload.tabName,
 				showDash: action.payload.showDash,
-				dashMode: action.payload.dashMode ? action.payload.dashMode : "Dev Mode",
+				dashMode: action.payload.dashMode ? action.payload.dashMode : "Edit",
+				// dashMode: action.payload.dashMode ? action.payload.dashMode : "Dev Mode",
 			};
 
 		case "EDITING_TAB":

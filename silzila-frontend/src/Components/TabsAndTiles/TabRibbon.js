@@ -18,6 +18,7 @@ const TabRibbon = ({
 	enableRenameTab,
 	completeRenameTab,
 	selectTile,
+	showDashBoard,
 }) => {
 	const handleAddTab = () => {
 		let tabId = tabTileProps.nextTabId;
@@ -34,9 +35,15 @@ const TabRibbon = ({
 
 	const handleSelectTab = (tabName, tabId) => {
 		// handle how to get selected tile for the switching tab and update it in two places - tabTileProps and tabState
+		// console.log(tabTileProps.showDash, tabTileProps.dashMode, "_____(@^@)_____");
 		let tabObj = tabState.tabs[tabId];
-
-		selectTab(tabName, tabId, tabObj.showDash, tabObj.dashMode);
+		// if showdash in tabtileProps is true then change showdash prop in tabstate-> tab true when it is selected.
+		// changes:
+		// tabObj.showDash -> tabTailProps.showDash
+		// tabObj.dashMode -> tabTailProps.dashMode
+		// added line 'showDashBoard(tabTileProps.selectedTabId, tabTileProps.showDash);'
+		selectTab(tabName, tabId, tabTileProps.showDash, tabTileProps.dashMode);
+		showDashBoard(tabTileProps.selectedTabId, tabTileProps.showDash);
 
 		let tileName = tabObj.selectedTileName;
 		let tileId = tabObj.selectedTileId;
@@ -112,6 +119,9 @@ const TabRibbon = ({
 				removeTab={handleRemoveTab}
 				renameTabBegin={handleRenameTabBegin}
 				renameTabComplete={handleRenameTabComplete}
+				//showdash prop
+				showDash={tabTileProps.showDash}
+				dashMode={tabTileProps.dashMode}
 			/>
 		);
 	});
@@ -119,13 +129,16 @@ const TabRibbon = ({
 	return (
 		<div className="tabItems">
 			{tablist}
-			<span
-				title="Create a new tab"
-				className="plusTab commonTab"
-				onClick={() => handleAddTab()}
-			>
-				+
-			</span>
+			{/* If dashboard in the presentation mode the '+'(adding new tab) will be disappear */}
+			{tabTileProps.dashMode !== "Present" ? (
+				<span
+					title="Create a new tab"
+					className="plusTab commonTab"
+					onClick={() => handleAddTab()}
+				>
+					+
+				</span>
+			) : null}
 		</div>
 	);
 };
@@ -145,6 +158,7 @@ const mapDispatchToProps = (dispatch) => {
 		// ###########################################################
 		// Tab related dispatch methods
 		// ###########################################################
+		showDashBoard: (tabId, showDash) => dispatch(actions.showDashboardInTab(tabId, showDash)),
 
 		addTab: (tabId, table, selectedDs, selectedTablesInDs) =>
 			dispatch(actions.actionsToAddTab({ tabId, table, selectedDs, selectedTablesInDs })),

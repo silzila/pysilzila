@@ -29,13 +29,15 @@ const DashBoard = ({
 	const [dimensions, setDimensions] = useState({});
 	const [innerDimensions, setinnerDimensions] = useState({});
 
+	var dashbackground = `linear-gradient(-90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+	linear-gradient( rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+	linear-gradient(-90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+	linear-gradient( rgba(0, 0, 0, 0.05) 1px, transparent 1px)`;
+
 	const [dashStyle, setdashStyle] = useState({
 		width: innerDimensions.width,
 		height: innerDimensions.height,
-		background: `linear-gradient(-90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px), 
-		linear-gradient( rgba(0, 0, 0, 0.05) 1px, transparent 1px),
-		linear-gradient(-90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px), 
-		linear-gradient( rgba(0, 0, 0, 0.05) 1px, transparent 1px)`,
+		background: dashbackground,
 	});
 
 	const [style, setStyle] = useState({
@@ -63,6 +65,14 @@ const DashBoard = ({
 		window.addEventListener("resize", handleResize);
 		return () => window.removeEventListener("resize", handleResize);
 	}, [dimensions]);
+
+	useEffect(() => {
+		if (tabTileProps.dashMode === "Present") {
+			setdashStyle({ ...dashStyle, background: null });
+		} else {
+			setdashStyle({ ...dashStyle, background: dashbackground });
+		}
+	}, [tabTileProps.dashMode]);
 
 	let movement_timer = null;
 	const RESET_TIMEOUT = 300;
