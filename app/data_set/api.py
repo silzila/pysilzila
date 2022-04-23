@@ -172,7 +172,7 @@ async def query(query: schema.Query, dc_uid: str, ds_uid: str, db: Session = Dep
 
 
 @ router.post("/filter-options/{dc_uid}/{ds_uid}")
-async def query(query: schema.ColumnFilter, dc_uid: str, ds_uid: str, db: Session = Depends(get_db)):
+async def query_filter(query: schema.ColumnFilter, dc_uid: str, ds_uid: str, db: Session = Depends(get_db)):
     vendor_name = await activate_dc_ds(dc_uid, ds_uid, db)
     print("Vendor Name =====", vendor_name)
     qry_composed = await query_composer_filter.compose_query(query, dc_uid, ds_uid, vendor_name)
@@ -182,3 +182,13 @@ async def query(query: schema.ColumnFilter, dc_uid: str, ds_uid: str, db: Sessio
     # except Exception as error:
     #     raise HTTPException(
     #         status_code=500, detail=error)
+
+
+# @ router.post("/filter-options-get-today-date/{day}")
+# async def query_filter_date(day: str, dc_uid: str, ds_uid: str, db: Session = Depends(get_db)):
+#     vendor_name = await activate_dc_ds(dc_uid, ds_uid, db)
+#     print("Vendor Name =====", vendor_name)
+#     qry_composed = await query_composer_filter.compose_query(query, dc_uid, ds_uid, vendor_name)
+#     # try:
+#     qry_result = await engine.run_query_filter(dc_uid, qry_composed)
+#     return qry_result
