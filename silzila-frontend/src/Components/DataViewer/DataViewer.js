@@ -34,6 +34,7 @@ function DataViewer({
 	toggleDataViewerBottom,
 }) {
 	// const [tabTileProps.showDataViewerBottom, setDisplayDatViewBot] = useState(true);
+
 	const [showListofTileMenu, setShowListofTileMenu] = useState(false);
 	const [showFilters, setShowFilters] = useState(false);
 	const [dashbordResizeColumn, setDashbordResizeColumn] = useState(false);
@@ -51,6 +52,7 @@ function DataViewer({
 
 	const menuStyle = { fontSize: "12px", padding: "2px 8px", margin: 0 };
 	const menuIconStyle = { width: "20px", height: "20px", margin: "0px 2px 0px 8px" };
+
 	return (
 		<div className="dataViewer">
 			<Menu />

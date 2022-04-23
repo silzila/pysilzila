@@ -9,33 +9,26 @@ export const setPrefix = (fieldData, binName, chartType) => {
 	switch (data.dataType) {
 		case "integer":
 		case "decimal":
-			if (binName === "Measure") {
+			if (binName === "Measure" || binName === "X" || binName === "Y") {
 				data.agg = "sum";
-				// sum, avg, min, max, count, countnonnull, countnull, countunique
 			}
 			break;
 
 		case "text":
-			if (binName === "Measure") {
+			if (binName === "Measure" || binName === "X" || binName === "Y") {
 				data.agg = "count";
-				// count, countnonnull, countnull, countunique
 			}
 			break;
 
 		case "date":
 		case "timestamp":
-			if (binName === "Measure") {
+			if (binName === "Measure" || binName === "X" || binName === "Y") {
 				data.time_grain = "year";
-				// year, month, quarter, dayofweek, day
-
 				data.agg = "max";
-				// min, max, count, countnonnull, countnull, countunique
 			} else if (binName === "Dimension") {
 				data.time_grain = "year";
-				// year, month, quarter, dayofweek, day
 			} else {
 				data.time_grain = "year";
-				// year, month, quarter, dayofweek, day
 			}
 			break;
 

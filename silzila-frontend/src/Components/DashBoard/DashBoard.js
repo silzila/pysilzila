@@ -186,7 +186,7 @@ const DashBoard = ({
 							tabTileProps.selectedTabId,
 							propIndex
 						);
-						toggleGraphSize(propKey, false);
+						toggleGraphSize(propKey, checked ? true : false);
 					}}
 					checked={checked}
 					key={index}

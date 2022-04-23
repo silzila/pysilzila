@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import MultiBarChart from "../Charts/MultiBarChart";
+import ScatterChart from "../Charts/ScatterChart";
 import StackedBar from "../Charts/StackedBar";
 
 const DashGraph = ({
@@ -31,12 +32,33 @@ const DashGraph = ({
 		console.log(dimensions);
 
 		switch (chartProp?.properties[propKey]?.chartType) {
-			// "bar", "stacked bar", "pie", "donut", "line", "area", "heatmap", "table", "calendar", "scatterPlot", "crossTab"
+			// "bar", "stackedBar", "pie", "donut", "line", "area", "heatmap", "table", "calendar", "scatterPlot", "crossTab"
 			case "multibar":
-				return <MultiBarChart propKey={propKey} graphDimension={dimensions} />;
+				return (
+					<MultiBarChart
+						propKey={propKey}
+						graphDimension={dimensions}
+						chartArea="dashboard"
+					/>
+				);
 
-			case "stacked bar":
-				return <StackedBar propKey={propKey} graphDimension={dimensions} />;
+			case "stackedBar":
+				return (
+					<StackedBar
+						propKey={propKey}
+						graphDimension={dimensions}
+						chartArea="dashboard"
+					/>
+				);
+
+			case "scatterPlot":
+				return (
+					<ScatterChart
+						propKey={propKey}
+						graphDimension={dimensions}
+						chartArea="dashboard"
+					/>
+				);
 		}
 	};
 	return <React.Fragment>{renderGraph()}</React.Fragment>;

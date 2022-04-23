@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import SimpleBar from "../Charts/SimpleBar";
 import AreaChart from "../Charts/AreaChart";
 import DoughnutChart from "../Charts/DoughnutChart";
-import FunnelChart from "../Charts/FunelChart";
 import LineChart from "../Charts/LineChart";
 import PieChart from "../Charts/PieChart";
 import RoseChart from "../Charts/RoseChart";
@@ -22,9 +21,14 @@ import OpenInFullIcon from "@mui/icons-material/OpenInFull";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { a11yLight } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import CloseRounded from "@mui/icons-material/CloseRounded";
+import FunnelChart from "../Charts/FunnelChart";
+import GaugeChart from "../Charts/GaugeChart";
+import HeatMap from "../Charts/HeatMap";
 
 const GraphArea = ({
 	// state
+	tileState,
+	tabState,
 	tabTileProps,
 	chartProperties,
 	chartControlState,
@@ -43,12 +47,23 @@ const GraphArea = ({
 	const [fullScreen, setFullScreen] = useState(false);
 
 	const graphDimensionCompute = () => {
-		const height = document.getElementById("graphContainer").clientHeight;
-		const width = document.getElementById("graphContainer").clientWidth;
-		setGraphDimension({
-			height,
-			width,
-		});
+		if (tileState.tiles[propKey].graphSizeFull) {
+			const height = document.getElementById("graphContainer").clientHeight;
+			const width = document.getElementById("graphContainer").clientWidth;
+			setGraphDimension({
+				height,
+				width,
+			});
+		} else {
+			setGraphDimension({
+				height:
+					tabState.tabs[tabTileProps.selectedTabId].dashTilesDetails[propKey].height *
+					tabTileProps.dashGridSize,
+				width:
+					tabState.tabs[tabTileProps.selectedTabId].dashTilesDetails[propKey].width *
+					tabTileProps.dashGridSize,
+			});
+		}
 	};
 
 	const graphDimensionCompute2 = () => {
@@ -68,7 +83,12 @@ const GraphArea = ({
 		window.addEventListener("resize", updateSize);
 		updateSize();
 		return () => window.removeEventListener("resize", updateSize);
-	}, [fullScreen, tabTileProps.showDataViewerBottom, tabTileProps.selectedControlMenu]);
+	}, [
+		fullScreen,
+		tabTileProps.showDataViewerBottom,
+		tabTileProps.selectedControlMenu,
+		tileState.tiles[propKey].graphSizeFull,
+	]);
 
 	const removeFullScreen = (e) => {
 		console.log(e.keyCode);
@@ -84,10 +104,11 @@ const GraphArea = ({
 					<MultiBar
 						propKey={propKey}
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
 					/>
 				);
 
-			case "stacked bar":
+			case "stackedBar":
 				return (
 					<StackedBar
 						propKey={propKey}
@@ -130,13 +151,30 @@ const GraphArea = ({
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
 					/>
 				);
-			// case "funnel":
-			// 	return (
-			// 		<FunnelChart
-			// 			propKey={propKey}
-			// 			graphDimension={fullScreen ? graphDimension2 : graphDimension}
-			// 		/>
-			// 	);
+			case "funnel":
+				return (
+					<FunnelChart
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+					/>
+				);
+
+			case "gauge":
+				return (
+					<GaugeChart
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+					/>
+				);
+
+			case "heatmap":
+				return (
+					<HeatMap
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+					/>
+				);
+
 			// case "rose":
 			// 	return (
 			// 		<RoseChart
@@ -161,12 +199,16 @@ const GraphArea = ({
 	// Setting title automatically
 	// ############################################
 
+	// TODO: Priority 5 - Setting title for different types of graphs
+	// Different graphs have different Dropzones. Setting automatic title must take into account of all these types
+	// Eg., Scatter plot has 2 measures, Funnel has 1 measure and no dimension, Heatmap has 2 dimensions, etc....
+
 	const graphTitle = () => {
 		if (chartProperties.properties[propKey].titleOptions.generateTitle === "Auto") {
 			const chartAxes = chartProperties.properties[propKey].chartAxes;
 
 			var title = "";
-			if (chartAxes[2].fields.length > 0) {
+			if (chartAxes[2]?.fields.length > 0) {
 				chartAxes[2].fields.forEach((element, index) => {
 					console.log(element, index);
 					if (index === 0) {
@@ -304,7 +346,11 @@ const GraphArea = ({
 				</div>
 			</div>
 
-			<div id="graphContainer" className="graphContainer">
+			<div
+				id="graphContainer"
+				className="graphContainer"
+				style={{ margin: tileState.tiles[propKey].graphSizeFull ? "0" : "1rem" }}
+			>
 				{showSqlCode ? <ShowFormattedQuery /> : chartDisplayed()}
 			</div>
 			<ChartThemes />
@@ -334,6 +380,8 @@ const GraphArea = ({
 
 const mapStateToProps = (state) => {
 	return {
+		tileState: state.tileState,
+		tabState: state.tabState,
 		tabTileProps: state.tabTileProps,
 		chartControlState: state.chartControls,
 		chartProperties: state.chartProperties,
