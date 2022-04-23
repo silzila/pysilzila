@@ -234,45 +234,42 @@ const DataConnection = (props) => {
 					}}
 				/>
 			</div>
-			<div style={{ height: "100%", overflow: "auto" }}>
-				<div className="connectionListContainer">
-					{dataConnectionList &&
-						dataConnectionList.map((dc) => {
-							return (
-								<SelectListItem
-									key={dc.friendly_name}
-									render={(xprops) => (
-										<div
-											className="dataConnectionList"
-											onMouseOver={() => xprops.setOpen(true)}
-											onMouseLeave={() => xprops.setOpen(false)}
-										>
-											<div className="dataConnectionName">
-												{dc.friendly_name} (<i className="">{dc.db_name}</i>
-												){" "}
-											</div>
-											{xprops.open ? (
-												<Tooltip
-													title="View / Edit Data Connection"
-													arrow
-													placement="right-start"
-												>
-													<VisibilitySharp
-														style={{
-															width: "1rem",
-															height: "1rem",
-															margin: "auto",
-														}}
-														onClick={() => ViewOrEditDc(dc.dc_uid)}
-													/>
-												</Tooltip>
-											) : null}
+			<div className="connectionListContainer">
+				{dataConnectionList &&
+					dataConnectionList.map((dc) => {
+						return (
+							<SelectListItem
+								key={dc.friendly_name}
+								render={(xprops) => (
+									<div
+										className="dataConnectionList"
+										onMouseOver={() => xprops.setOpen(true)}
+										onMouseLeave={() => xprops.setOpen(false)}
+									>
+										<div className="dataConnectionName">
+											{dc.friendly_name} (<i className="">{dc.db_name}</i>){" "}
 										</div>
-									)}
-								/>
-							);
-						})}
-				</div>
+										{xprops.open ? (
+											<Tooltip
+												title="View / Edit Data Connection"
+												arrow
+												placement="right-start"
+											>
+												<VisibilitySharp
+													style={{
+														width: "1rem",
+														height: "1rem",
+														margin: "auto",
+													}}
+													onClick={() => ViewOrEditDc(dc.dc_uid)}
+												/>
+											</Tooltip>
+										) : null}
+									</div>
+								)}
+							/>
+						);
+					})}
 			</div>
 			<FormDialog {...properties} />
 			<NotificationDialog
