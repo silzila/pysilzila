@@ -35,15 +35,13 @@ const TabRibbon = ({
 
 	const handleSelectTab = (tabName, tabId) => {
 		// handle how to get selected tile for the switching tab and update it in two places - tabTileProps and tabState
-		// console.log(tabTileProps.showDash, tabTileProps.dashMode, "_____(@^@)_____");
 		let tabObj = tabState.tabs[tabId];
-		// if showdash in tabtileProps is true then change showdash prop in tabstate-> tab true when it is selected.
-		// changes:
-		// tabObj.showDash -> tabTailProps.showDash
-		// tabObj.dashMode -> tabTailProps.dashMode
-		// added line 'showDashBoard(tabTileProps.selectedTabId, tabTileProps.showDash);'
-		selectTab(tabName, tabId, tabTileProps.showDash, tabTileProps.dashMode);
-		showDashBoard(tabTileProps.selectedTabId, tabTileProps.showDash);
+
+		if (tabTileProps.dashMode === "Present") {
+			selectTab(tabName, tabId, true, "Present");
+		} else {
+			selectTab(tabName, tabId, tabObj.showDash, tabObj.dashMode);
+		}
 
 		let tileName = tabObj.selectedTileName;
 		let tileId = tabObj.selectedTileId;

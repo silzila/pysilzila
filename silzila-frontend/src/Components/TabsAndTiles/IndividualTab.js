@@ -62,11 +62,7 @@ function IndividualTab({
 				<span
 					className="tabText"
 					onClick={() => {
-						// if (showDash === false) {
 						selectTab(tabName, tabId);
-						// } else {
-						// console.log(showDash);
-						// }
 					}}
 				>
 					{tabName}

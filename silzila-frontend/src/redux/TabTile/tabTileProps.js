@@ -101,6 +101,7 @@ const tabTilePropsReducer = (state = initialProperties, action) => {
 				selectedTabId: action.payload.tabId,
 				selectedTabName: action.payload.tabName,
 				showDash: action.payload.showDash,
+				//when dashmode is undefined assign value as "Edit"(case: open new tab for first timme)
 				dashMode: action.payload.dashMode ? action.payload.dashMode : "Edit",
 				// dashMode: action.payload.dashMode ? action.payload.dashMode : "Dev Mode",
 			};
