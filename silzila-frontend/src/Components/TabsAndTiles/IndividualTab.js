@@ -56,7 +56,11 @@ function IndividualTab({
 						? "commonTab indiItemHighlightTab"
 						: "commonTab indiItemTab"
 				}
-				onDoubleClick={() => renameTabBegin(tabId)}
+				onDoubleClick={() => {
+					if (dashMode !== "Present") {
+						renameTabBegin(tabId);
+					}
+				}}
 				title={`${tabName}. Double click to edit name`}
 			>
 				<span

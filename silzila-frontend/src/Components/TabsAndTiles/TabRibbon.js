@@ -19,6 +19,7 @@ const TabRibbon = ({
 	completeRenameTab,
 	selectTile,
 	showDashBoard,
+	toggleDashModeInTab,
 }) => {
 	const handleAddTab = () => {
 		let tabId = tabTileProps.nextTabId;
@@ -37,10 +38,20 @@ const TabRibbon = ({
 		// handle how to get selected tile for the switching tab and update it in two places - tabTileProps and tabState
 		let tabObj = tabState.tabs[tabId];
 
+		// changes:
+		//  added showDashBoard(tabObj.tabId, tabObj.showDash); in dataviewer comp under onchange
+		// once tabtileProps-> dashmode set to present then that remain same for all the tabs that can be selected after this
+		// once tabTileprops-> dashmode set to "Edit" then that mode remain same for all tabs that can be selected after this
+		// ...but tabtileProps->showdash will change according to individual tab prop(tabstate->tabs->tabid-> showdash)
+
 		if (tabTileProps.dashMode === "Present") {
 			selectTab(tabName, tabId, true, "Present");
 		} else {
-			selectTab(tabName, tabId, tabObj.showDash, tabObj.dashMode);
+			// selectTab(tabName, tabId, tabObj.showDash, tabObj.dashMode);
+			selectTab(tabName, tabId, tabObj.showDash, tabTileProps.dashMode);
+			// showDashBoard(tabTileProps.selectedTabId, tabObj.showDash);
+			toggleDashModeInTab(tabTileProps.selectedTabId, tabTileProps.dashMode);
+			// // selectTab(tabName, tabId, tabTileProps.showDash, tabTileProps.dashMode);
 		}
 
 		let tileName = tabObj.selectedTileName;
@@ -172,6 +183,8 @@ const mapDispatchToProps = (dispatch) => {
 
 		completeRenameTab: (renameValue, tabId) =>
 			dispatch(actions.actionsToRenameTab({ renameValue, tabId })),
+		toggleDashModeInTab: (tabId, dashMode) =>
+			dispatch(actions.toggleDashModeInTab(tabId, dashMode)),
 
 		// ###########################################################
 		// Tile related dispatch methods

@@ -45,6 +45,7 @@ function DataViewer({
 	// ===========================================================================================
 	//                                      UI Components
 	// ===========================================================================================
+	let tabObj = tabState.tabs[tabTileProps.selectedTabId];
 
 	const menuStyle = { fontSize: "12px", padding: "2px 8px", margin: 0 };
 	return (
@@ -62,6 +63,7 @@ function DataViewer({
 							console.log(e.target.value);
 							toggleDashMode(e.target.value);
 							toggleDashModeInTab(tabTileProps.selectedTabId, e.target.value);
+							showDashBoard(tabObj.tabId, tabObj.showDash);
 						}}
 					>
 						<MenuItem sx={menuStyle} value="Edit">
