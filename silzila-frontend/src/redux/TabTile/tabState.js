@@ -6,7 +6,7 @@ const initialTabState = {
 			tabId: 1,
 			tabName: "Tab - 1",
 			showDash: false,
-			dashMode: "Dev Mode",
+			dashMode: "Edit",
 			dashLayout: {
 				dashboardLayout: "Auto",
 				selectedOptionForAuto: "Full Screen",
@@ -42,7 +42,7 @@ const tabStateReducer = (state = initialTabState, action) => {
 						tabId: action.payload,
 						tabName: `Tab - ${action.payload}`,
 						showDash: false,
-						dashMode: "Dev Mode",
+						dashMode: "Edit",
 						dashLayout: {
 							dashboardLayout: "auto",
 							selectedOptionForAuto: "full Screen",
