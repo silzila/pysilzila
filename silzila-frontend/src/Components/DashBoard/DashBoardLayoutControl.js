@@ -121,7 +121,7 @@ const DashBoardLayoutControl = ({
 					onChange={() => {
 						setFullScreen(!fullScreen);
 						if (!fullScreen === true) {
-							setDashLayoutSelectedOptionForAuto(tabId, "full Screen");
+							setDashLayoutSelectedOptionForAuto(tabId, "Full Screen");
 						} else {
 							setDashLayoutSelectedOptionForAuto(tabId, "Aspect Ratio");
 						}

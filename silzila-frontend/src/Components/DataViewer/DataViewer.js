@@ -51,7 +51,7 @@ function DataViewer({
 	// ===========================================================================================
 
 	const menuStyle = { fontSize: "12px", padding: "2px 8px", margin: 0 };
-	const menuIconStyle = { width: "20px", height: "20px", margin: "0px 2px 0px 8px" };
+	const menuIconStyle = { width: "20px", height: "20px", margin: "0px 4px" };
 
 	return (
 		<div className="dataViewer">
@@ -60,7 +60,7 @@ function DataViewer({
 			<div className="tabArea">
 				<TabRibbon />
 				{tabTileProps.showDash ? (
-					<div>
+					<div style={{ display: "flex", alignItems: "center" }}>
 						{tabTileProps.dashMode === "Edit" ? (
 							<>
 								<img
@@ -158,9 +158,7 @@ function DataViewer({
 									? "plusTile commonTile indiItemHighlightTile"
 									: "plusTile commonTile indiItemTile"
 							}
-							onClick={() => {
-								showDashBoard(tabTileProps.selectedTabId, true);
-							}}
+							onClick={() => showDashBoard(tabTileProps.selectedTabId, true)}
 						>
 							Dashboard
 						</span>
