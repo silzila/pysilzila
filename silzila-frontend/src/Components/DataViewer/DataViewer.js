@@ -20,7 +20,7 @@ import DashBoard from "../DashBoard/DashBoard";
 import { MenuItem, Select } from "@mui/material";
 import listOfTilesIcon from "../../assets/listoftilesIcon.svg";
 import filterIcon from "../../assets/filter_icon.svg";
-import dashbordSizeIcon from "../../assets/dashbordSize.svg";
+import dashbordSizeIcon from "../../assets/screenSize.png";
 
 function DataViewer({
 	// state
