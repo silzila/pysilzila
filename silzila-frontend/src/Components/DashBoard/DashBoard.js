@@ -100,7 +100,7 @@ const DashBoard = ({
 
 	useLayoutEffect(() => {
 		test_dimensions();
-	}, [tabTileProps.showDash, tabTileProps.dashMode]);
+	}, [tabTileProps.showDash, tabTileProps.dashMode, showListofTileMenu, dashboardResizeColumn]);
 
 	const graphArea = () => {
 		console.log(dimensions.width, dimensions.height);
@@ -112,17 +112,39 @@ const DashBoard = ({
 			dashLayoutProperty.selectedOptionForAuto === "Full Screen"
 		) {
 			console.log(dimensions.width / 32, dimensions.height / 18);
-			setinnerDimensions({ width: dimensions.width, height: dimensions.height });
+
+			// setinnerDimensions({ width: dimensions.width, height: dimensions.height });
+			// setdashStyle({
+			// 	...dashStyle,
+			// 	width: dimensions.width,
+			// 	height: dimensions.height,
+			// 	backgroundSize: `${dimensions.width / 32}px ${dimensions.height / 18}px,
+			// 	${dimensions.width / 32}px ${dimensions.height / 18}px,
+			// 	${dimensions.width / 2}px ${dimensions.width / 2}px,
+			// 	${dimensions.height / 2}px ${dimensions.height / 2}px`,
+			// });
+			// setGridSize({ x: dimensions.width / 32, y: dimensions.height / 18 });
+
+			console.log(
+				Math.trunc(dimensions.width / 32, 0),
+				Math.trunc(dimensions.height / 18, 0)
+			);
+
+			var fullWidth = Math.trunc(dimensions.width / 32, 0) * 32;
+			var fullHeight = Math.trunc(dimensions.height / 18, 0) * 18;
+
+			console.log(fullWidth, fullHeight);
+			setinnerDimensions({ width: fullWidth, height: fullHeight });
 			setdashStyle({
 				...dashStyle,
-				width: dimensions.width,
-				height: dimensions.height,
-				backgroundSize: `${dimensions.width / 32}px ${dimensions.height / 18}px, 
-				${dimensions.width / 32}px ${dimensions.height / 18}px, 
-				${dimensions.width / 2}px ${dimensions.width / 2}px,
-				${dimensions.height / 2}px ${dimensions.height / 2}px`,
+				width: fullWidth,
+				height: fullHeight,
+				backgroundSize: `${fullWidth / 32}px ${fullHeight / 18}px, 
+				${fullWidth / 32}px ${fullHeight / 18}px, 
+				${fullWidth / 2}px ${fullWidth / 2}px,
+				${fullHeight / 2}px ${fullHeight / 2}px`,
 			});
-			setGridSize({ x: dimensions.width / 32, y: dimensions.height / 18 });
+			setGridSize({ x: fullWidth / 32, y: fullHeight / 18 });
 		}
 
 		if (

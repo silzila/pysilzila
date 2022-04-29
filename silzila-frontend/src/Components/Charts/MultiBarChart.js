@@ -42,7 +42,7 @@ const MultiBar = ({
 				opts={{ renderer: "svg" }}
 				theme={property.colorScheme}
 				style={{
-					padding: "0.5rem",
+					padding: "5px",
 					width: graphDimension.width,
 					height: graphDimension.height,
 					overflow: "hidden",

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./dataViewer.css";
 import { connect } from "react-redux";
-import Menu from "./Menu";
 import TabRibbon from "../TabsAndTiles/TabRibbon";
 import {
 	setShowDashBoard,
@@ -17,6 +16,7 @@ import TileRibbon from "../TabsAndTiles/TileRibbon";
 import DashBoard from "../DashBoard/DashBoard";
 import listOfTilesIcon from "../../assets/listoftilesIcon.svg";
 import dashbordSizeIcon from "../../assets/screenSize.png";
+import MenuBar from "./MenuBar";
 
 function DataViewer({
 	// state
@@ -45,19 +45,25 @@ function DataViewer({
 	//                                      UI Components
 	// ===========================================================================================
 
-	const menuIconStyle = { width: "26px", height: "26px", margin: "auto 1px", padding: "2px" };
+	const menuIconStyle = {
+		width: "26px",
+		height: "26px",
+		margin: "auto 10px auto 0",
+		padding: "2px",
+		borderBottom: "2px solid transparent",
+	};
 	const menuIconSelectedStyle = {
 		width: "26px",
 		height: "26px",
-		margin: "auto 1px",
+		margin: "auto 10px auto 0",
 		padding: "2px",
 		backgroundColor: "#ffffff",
+		borderBottom: "2px solid rgb(0,128,255)",
 	};
 
 	return (
 		<div className="dataViewer">
-			<Menu />
-
+			<MenuBar />
 			<div className="tabArea">
 				<TabRibbon />
 				{tabTileProps.showDash ? (

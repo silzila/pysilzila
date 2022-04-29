@@ -60,7 +60,7 @@
 .tabArea {
 	display: flex;
 	background-color: rgb(238, 238, 238);
-	padding: 2px 2px 0 0;
+	/* padding: 2px 2px 0 0; */
 }
 .tabItems {
 	flex: 1;

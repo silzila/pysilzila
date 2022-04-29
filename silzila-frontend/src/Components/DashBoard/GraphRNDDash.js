@@ -67,7 +67,7 @@ const GraphRNDDash = ({
 					tabId,
 					boxDetails.propKey,
 					(d.lastX - 5) / gridSize.x,
-					(d.lastY - 62) / gridSize.y
+					(d.lastY - 60) / gridSize.y
 				);
 				setStyle({ ...style, border: "1px solid transparent" });
 			}}

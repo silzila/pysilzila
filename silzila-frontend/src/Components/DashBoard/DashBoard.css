@@ -9,7 +9,7 @@
 	background-color: #fff;
 	flex: 1;
 	overflow: hidden;
-	padding-left: 5px;
+	margin-left: 5px;
 }
 .dashboardArea {
 	box-sizing: border-box;
@@ -52,6 +52,10 @@
 }
 .dragHeader {
 	cursor: move;
+	font-weight: 600;
+	color: #929292;
+	border-bottom: 1px solid rgb(211, 211, 211);
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 .dashChart {
 	width: 100%;

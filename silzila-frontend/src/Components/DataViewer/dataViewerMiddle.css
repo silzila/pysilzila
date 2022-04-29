@@ -84,10 +84,10 @@
 }
 
 .controlsIcon {
-	padding: 12px;
+	padding: 8px;
 	width: 48px;
 	height: 48px;
-	margin: 0;
+	margin: 0 0 10px 0;
 	border-right: 3px solid transparent;
 	cursor: pointer;
 }
