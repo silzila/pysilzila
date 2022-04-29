@@ -83,8 +83,6 @@ const GaugeChart = ({
 					},
 					tooltip: { show: property.mouseOver.enable },
 
-					xAxis: {},
-					yAxis: {},
 					series: [
 						{
 							type: "gauge",

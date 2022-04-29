@@ -17,7 +17,7 @@ const initialProperties = {
 	chartPropUpdated: false,
 	showDash: false,
 	dashMode: "Edit",
-	dashGridSize: null,
+	dashGridSize: { x: null, y: null },
 
 	columnsOnlyDisplay: false,
 	showDataViewerBottom: true,

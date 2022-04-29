@@ -68,8 +68,7 @@ const PieChart = ({
 							dimensions: Object.keys(chartData[0]),
 							source: chartData,
 						},
-						xAxis: {},
-						yAxis: { type: "category" },
+
 						series: [{ type: "pie" }],
 					}}
 				/>

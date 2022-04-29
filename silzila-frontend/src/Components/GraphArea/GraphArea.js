@@ -58,10 +58,10 @@ const GraphArea = ({
 			setGraphDimension({
 				height:
 					tabState.tabs[tabTileProps.selectedTabId].dashTilesDetails[propKey].height *
-					tabTileProps.dashGridSize,
+					tabTileProps.dashGridSize.y,
 				width:
 					tabState.tabs[tabTileProps.selectedTabId].dashTilesDetails[propKey].width *
-					tabTileProps.dashGridSize,
+					tabTileProps.dashGridSize.x,
 			});
 		}
 	};
