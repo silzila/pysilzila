@@ -74,11 +74,9 @@
 	font-family: "Segoe UI";
 }
 .graphContainer {
-	/* box-sizing: border-box; */
 	flex: 1;
-	overflow: hidden;
+	overflow: auto;
 	background-color: #fff;
-	display: flex;
 	justify-content: center;
 }
 .syntaxHighlight {

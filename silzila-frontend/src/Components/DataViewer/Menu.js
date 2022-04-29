@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
-import { toggleGraphSize } from "../../redux/TabTile/actionsTabTile";
+import {
+	toggleDashMode,
+	toggleDashModeInTab,
+	toggleGraphSize,
+} from "../../redux/TabTile/actionsTabTile";
+import { MenuItem, Select } from "@mui/material";
 
 const Menu = ({
 	// state
@@ -12,8 +17,12 @@ const Menu = ({
 
 	// dispatch
 	toggleGraphSize,
+	toggleDashMode,
+	toggleDashModeInTab,
 }) => {
 	const propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
+
+	const menuStyle = { fontSize: "12px", padding: "2px 8px", margin: 0 };
 
 	const RenderScreenOption = () => {
 		return (
@@ -77,7 +86,31 @@ const Menu = ({
 					</div>
 				</React.Fragment>
 			)}
-			<div></div>
+
+			{tabState.tabs[tabTileProps.selectedTabId].showDash ? (
+				<Select
+					size="small"
+					sx={{
+						height: "1.5rem",
+						fontSize: "12px",
+						width: "6rem",
+						margin: "auto 0.5rem",
+					}}
+					value={tabTileProps.dashMode}
+					onChange={(e) => {
+						console.log(e.target.value);
+						toggleDashMode(e.target.value);
+						toggleDashModeInTab(tabTileProps.selectedTabId, e.target.value);
+					}}
+				>
+					<MenuItem sx={menuStyle} value="Edit">
+						Edit
+					</MenuItem>
+					<MenuItem sx={menuStyle} value="Present">
+						Present
+					</MenuItem>
+				</Select>
+			) : null}
 		</div>
 	);
 };
@@ -93,6 +126,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		toggleGraphSize: (tileKey, graphSize) => dispatch(toggleGraphSize(tileKey, graphSize)),
+
+		toggleDashMode: (dashMode) => dispatch(toggleDashMode(dashMode)),
+		toggleDashModeInTab: (tabId, dashMode) => dispatch(toggleDashModeInTab(tabId, dashMode)),
 	};
 };
 

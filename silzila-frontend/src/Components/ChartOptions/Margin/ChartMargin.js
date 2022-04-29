@@ -18,7 +18,7 @@ const ChartMargin = ({
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 
 	const marginSlider = chartControl.properties[propKey].chartMargin.selectedMargin;
-	const marginOptions = ["top", "right", "bottom", "left"];
+	const marginOptions = ["left", "top", "bottom", "right"];
 	const renderMarginOptions = () => {
 		return marginOptions.map((item) => {
 			return (
@@ -33,14 +33,14 @@ const ChartMargin = ({
 		});
 	};
 
-	const marginMinMax = { min: 0, max: 50, step: 1 };
+	const marginMinMax = { min: 0, max: 200, step: 1 };
 
 	const marginSliderToRender = () => {
 		switch (marginSlider) {
 			case "top":
 				return (
 					<SliderWithInput
-						percent={true}
+						percent={false}
 						sliderValue={chartControl.properties[propKey].chartMargin.top}
 						sliderMinMax={marginMinMax}
 						changeValue={(value) => updateMargin(propKey, "top", value)}
@@ -50,7 +50,7 @@ const ChartMargin = ({
 			case "right":
 				return (
 					<SliderWithInput
-						percent={true}
+						percent={false}
 						sliderValue={chartControl.properties[propKey].chartMargin.right}
 						sliderMinMax={marginMinMax}
 						changeValue={(value) => updateMargin(propKey, "right", value)}
@@ -60,7 +60,7 @@ const ChartMargin = ({
 			case "bottom":
 				return (
 					<SliderWithInput
-						percent={true}
+						percent={false}
 						sliderValue={chartControl.properties[propKey].chartMargin.bottom}
 						sliderMinMax={marginMinMax}
 						changeValue={(value) => updateMargin(propKey, "bottom", value)}
@@ -70,7 +70,7 @@ const ChartMargin = ({
 			case "left":
 				return (
 					<SliderWithInput
-						percent={true}
+						percent={false}
 						sliderValue={chartControl.properties[propKey].chartMargin.left}
 						sliderMinMax={marginMinMax}
 						changeValue={(value) => updateMargin(propKey, "left", value)}

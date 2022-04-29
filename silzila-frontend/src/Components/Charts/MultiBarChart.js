@@ -42,11 +42,15 @@ const MultiBar = ({
 				opts={{ renderer: "svg" }}
 				theme={property.colorScheme}
 				style={{
-					padding: chartArea === "dashboard" ? "0.5rem" : "1rem",
+					padding: "0.5rem",
 					width: graphDimension.width,
 					height: graphDimension.height,
 					overflow: "hidden",
-					// border: graphTileSize ? "none" : "1px solid rgb(238,238,238)",
+					border: chartArea
+						? "none"
+						: graphTileSize
+						? "none"
+						: "1px solid rgb(238,238,238)",
 				}}
 				option={{
 					legend: {
@@ -61,10 +65,10 @@ const MultiBar = ({
 						orient: property.legendOptions?.orientation,
 					},
 					grid: {
-						left: `${property.chartMargin.left}%`,
-						right: `${property.chartMargin.right}%`,
-						top: `${property.chartMargin.top}%`,
-						bottom: `${property.chartMargin.bottom}%`,
+						left: property.chartMargin.left,
+						right: property.chartMargin.right,
+						top: property.chartMargin.top,
+						bottom: property.chartMargin.bottom,
 					},
 
 					tooltip: { show: property.mouseOver.enable },

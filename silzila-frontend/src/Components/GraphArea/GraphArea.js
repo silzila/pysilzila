@@ -1,15 +1,12 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { connect } from "react-redux";
-import SimpleBar from "../Charts/SimpleBar";
 import AreaChart from "../Charts/AreaChart";
 import DoughnutChart from "../Charts/DoughnutChart";
 import LineChart from "../Charts/LineChart";
 import PieChart from "../Charts/PieChart";
-import RoseChart from "../Charts/RoseChart";
 import ScatterChart from "../Charts/ScatterChart";
 import StackedBar from "../Charts/StackedBar";
 import MultiBar from "../Charts/MultiBarChart";
-import StepLine from "../Charts/StepLine";
 import {
 	setChartTitle,
 	setGenerateTitle,

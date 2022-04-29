@@ -70,7 +70,7 @@ const DropZone = ({
 		}
 	};
 
-	return (
+	return bIndex === 0 ? null : (
 		<div ref={drop} className="chartAxis mt-2">
 			<span className="axisTitle">{name}</span>
 

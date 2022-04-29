@@ -205,10 +205,10 @@ const DashBoard = ({
 			highlight: false,
 			propKey,
 			tileId: currentObj.tileId,
-			width: 16,
-			height: 10,
-			x: 17,
-			y: 10,
+			width: 10,
+			height: 6,
+			x: 11,
+			y: 6,
 		};
 
 		var propIndex = tabState.tabs[currentObj.tabId].tilesInDashboard.indexOf(propKey);
