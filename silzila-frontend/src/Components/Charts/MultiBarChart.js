@@ -13,6 +13,7 @@ const MultiBar = ({
 	chartControlState,
 }) => {
 	var property = chartControlState.properties[propKey];
+	console.log(property);
 
 	let chartData = property.chartData ? property.chartData.result : "";
 

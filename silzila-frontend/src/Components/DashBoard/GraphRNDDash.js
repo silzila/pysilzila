@@ -41,9 +41,13 @@ const GraphRNDDash = ({
 
 	return (
 		<Rnd
+			disableDragging={tabTileProps.dashMode === "Edit" ? false : true}
+			enableResizing={tabTileProps.dashMode === "Edit" ? true : false}
 			onMouseEnter={() => {
-				console.log("Mouse Entered in GraphRNDDash component");
-				setHovering(true);
+				if (tabTileProps.dashMode === "Edit") {
+					console.log("Mouse Entered in GraphRNDDash component");
+					setHovering(true);
+				}
 			}}
 			onMouseLeave={() => {
 				if (!boxDetails.highlight) setHovering(false);
@@ -110,7 +114,11 @@ const GraphRNDDash = ({
 			<div className="rndObject" propKey={boxDetails.propKey}>
 				<div
 					className="dragHeader"
-					style={{ whiteSpace: "nowrap", overflow: "hidden", texOverflow: "ellipsis" }}
+					style={
+						tabTileProps.dashMode === "Present"
+							? { cursor: "default" }
+							: { cursor: "move" }
+					}
 					propKey={boxDetails.propKey}
 				>
 					{chartProp.properties[boxDetails.propKey].titleOptions.chartTitle}
