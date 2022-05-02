@@ -190,3 +190,7 @@ export const changeChartOptionSelected = (propKey, chartOption) => {
 		payload: { propKey, chartOption },
 	};
 };
+
+export const loadChartProperties = (chartProperties) => {
+	return { type: "LOAD_CHART_PROPERTIES", payload: chartProperties };
+};

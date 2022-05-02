@@ -21,10 +21,10 @@ const chartControl = {
 
 			chartMargin: {
 				selectedMargin: "top",
-				top: 5,
+				top: 30,
 				right: 5,
 				bottom: 5,
-				left: 10,
+				left: 50,
 			},
 
 			mouseOver: {
@@ -64,10 +64,10 @@ const chartControlsReducer = (state = chartControl, action) => {
 
 						chartMargin: {
 							selectedMargin: "top",
-							top: 5,
+							top: 30,
 							right: 5,
 							bottom: 5,
-							left: 10,
+							left: 50,
 						},
 
 						mouseOver: {
@@ -259,6 +259,9 @@ const chartControlsReducer = (state = chartControl, action) => {
 					},
 				},
 			});
+
+		case "LOAD_CHART_CONTROLS":
+			return action.payload;
 
 		default:
 			return state;

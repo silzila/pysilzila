@@ -425,6 +425,9 @@ const chartPropertiesState = (state = chartProperties, action) => {
 				},
 			});
 
+		case "LOAD_CHART_PROPERTIES":
+			return action.payload;
+
 		default:
 			return state;
 	}

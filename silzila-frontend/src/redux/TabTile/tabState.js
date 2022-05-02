@@ -304,6 +304,9 @@ const tabStateReducer = (state = initialTabState, action) => {
 				},
 			});
 
+		case "LOAD_TAB_STATE_FROM_PLAYBOOK":
+			return action.payload;
+
 		default:
 			return state;
 	}
