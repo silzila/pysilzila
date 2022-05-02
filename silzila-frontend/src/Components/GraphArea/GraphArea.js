@@ -22,6 +22,10 @@ import FunnelChart from "../Charts/FunnelChart";
 import GaugeChart from "../Charts/GaugeChart";
 import HeatMap from "../Charts/HeatMap";
 
+import FullscreenIcon from "@mui/icons-material/Fullscreen";
+import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
+import { toggleGraphSize } from "../../redux/TabTile/actionsTabTile";
+
 const GraphArea = ({
 	// state
 	tileState,
@@ -33,6 +37,7 @@ const GraphArea = ({
 	// dispatch
 	setChartTitle,
 	setGenerateTitleToStore,
+	toggleGraphSize,
 }) => {
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 
@@ -285,6 +290,48 @@ const GraphArea = ({
 		);
 	};
 
+	const RenderScreenOption = () => {
+		return (
+			<>
+				<div
+					className={
+						!tileState.tiles[propKey].graphSizeFull
+							? "graphAreaIconsSelected"
+							: "graphAreaIcons"
+					}
+					title="Match Dashboard Size"
+					style={
+						tabState.tabs[tabTileProps.selectedTabId].tilesInDashboard.includes(propKey)
+							? {}
+							: { cursor: "not-allowed" }
+					}
+					onClick={() => {
+						if (
+							tabState.tabs[tabTileProps.selectedTabId].tilesInDashboard.includes(
+								propKey
+							)
+						)
+							toggleGraphSize(propKey, false);
+					}}
+				>
+					<FullscreenExitIcon />
+				</div>
+
+				<div
+					className={
+						tileState.tiles[propKey].graphSizeFull
+							? "graphAreaIconsSelected"
+							: "graphAreaIcons"
+					}
+					title="Fit Tile Size"
+					onClick={() => toggleGraphSize(propKey, true)}
+				>
+					<FullscreenIcon />
+				</div>
+			</>
+		);
+	};
+
 	return (
 		<div className="centerColumn">
 			<div className="graphTitleAndEdit">
@@ -323,24 +370,43 @@ const GraphArea = ({
 					</>
 				)}
 
-				{/* TODO: Priority 5 - Add Tooltip
-				When mouseover, show description of MUI images */}
+				{!showSqlCode ? (
+					tabState.tabs[tabTileProps.selectedTabId].showDash ? null : (
+						<>
+							<RenderScreenOption />
+							<div
+								className="graphAreaIcons"
+								onClick={() => setFullScreen(true)}
+								title="Show full screen"
+							>
+								<OpenInFullIcon />
+							</div>
+						</>
+					)
+				) : null}
+				<div
+					style={{
+						borderRight: "1px solid rgb(211,211,211)",
+						margin: "6px 2px",
+					}}
+				></div>
 				{showSqlCode ? (
-					<div className="graphAreaIcons" onClick={() => setShowSqlCode(false)}>
-						{/* Tooltip: view graph */}
+					<div
+						className="graphAreaIcons"
+						onClick={() => setShowSqlCode(false)}
+						title="View graph"
+					>
 						<BarChartIcon />
 					</div>
 				) : (
-					<div className="graphAreaIcons" onClick={() => setShowSqlCode(true)}>
-						{/* Tooltip: SQL Code */}
+					<div
+						className="graphAreaIcons"
+						onClick={() => setShowSqlCode(true)}
+						title="View SQL Code"
+					>
 						<CodeIcon />
 					</div>
 				)}
-
-				<div className="graphAreaIcons" onClick={() => setFullScreen(true)}>
-					{/* Tooltip: Show full screen */}
-					<OpenInFullIcon />
-				</div>
 			</div>
 
 			<div
@@ -364,11 +430,22 @@ const GraphArea = ({
 						removeFullScreen(e);
 					}}
 				>
+					<div style={{ display: "flex" }}>
+						<span
+							className="graphTitle"
+							style={{
+								fontSize: chartProperties.properties[propKey].titleOptions.fontSize,
+							}}
+							onDoubleClick={() => editTitleText()}
+						>
+							{chartProperties.properties[propKey].titleOptions.chartTitle}
+						</span>
+						<CloseRounded
+							style={{ margin: "0.25rem" }}
+							onClick={() => setFullScreen(false)}
+						/>
+					</div>
 					{chartDisplayed()}
-					<CloseRounded
-						style={{ margin: "0.25rem", display: "inline" }}
-						onClick={() => setFullScreen(false)}
-					/>
 				</div>
 			) : null}
 		</div>
@@ -389,6 +466,7 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		setChartTitle: (propKey, title) => dispatch(setChartTitle(propKey, title)),
 		setGenerateTitleToStore: (propKey, option) => dispatch(setGenerateTitle(propKey, option)),
+		toggleGraphSize: (tileKey, graphSize) => dispatch(toggleGraphSize(tileKey, graphSize)),
 	};
 };
 

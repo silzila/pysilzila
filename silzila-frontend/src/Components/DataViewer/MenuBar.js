@@ -18,7 +18,7 @@ import {
 	TextField,
 	Typography,
 } from "@mui/material";
-import { Box } from "@mui/system";
+import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 
 const MenuBar = ({
 	// state
@@ -52,48 +52,6 @@ const MenuBar = ({
 		// If no, open a popover to get a name for this Playbook
 
 		setSaveModal(true);
-	};
-
-	const RenderScreenOption = () => {
-		return (
-			<>
-				<div
-					className={
-						tileState.tiles[propKey].graphSizeFull
-							? "quickSettingSelected"
-							: "quickSetting"
-					}
-					title="Fit Tile Size"
-					onClick={() => toggleGraphSize(propKey, true)}
-				>
-					<FullscreenIcon sx={{ color: "#404040" }} />
-				</div>
-
-				<div
-					className={
-						!tileState.tiles[propKey].graphSizeFull
-							? "quickSettingSelected"
-							: "quickSetting"
-					}
-					title="Match Dashboard Size"
-					style={
-						tabState.tabs[tabTileProps.selectedTabId].tilesInDashboard.includes(propKey)
-							? {}
-							: { cursor: "not-allowed" }
-					}
-					onClick={() => {
-						if (
-							tabState.tabs[tabTileProps.selectedTabId].tilesInDashboard.includes(
-								propKey
-							)
-						)
-							toggleGraphSize(propKey, false);
-					}}
-				>
-					<FullscreenExitIcon sx={{ color: "#404040" }} />
-				</div>
-			</>
-		);
 	};
 
 	var fileMenuStyle = { fontSize: "12px", padding: "2px 1rem" };
@@ -132,6 +90,9 @@ const MenuBar = ({
 
 	return (
 		<div className="dataViewerMenu">
+			<div className="menuHome">
+				<HomeRoundedIcon sx={{ color: "#333" }} />
+			</div>
 			<div className="menuItemsGroup">
 				<div
 					className="menuItem"
@@ -145,14 +106,6 @@ const MenuBar = ({
 				<div className="menuItem">Edit</div>
 				<div className="menuItem">Data</div>
 			</div>
-
-			{tabState.tabs[tabTileProps.selectedTabId].showDash ? null : (
-				<React.Fragment>
-					<div className="quickSettingsGroup">
-						<RenderScreenOption />
-					</div>
-				</React.Fragment>
-			)}
 
 			{tabState.tabs[tabTileProps.selectedTabId].showDash ? (
 				<Select
@@ -255,8 +208,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		toggleGraphSize: (tileKey, graphSize) => dispatch(toggleGraphSize(tileKey, graphSize)),
-
 		toggleDashMode: (dashMode) => dispatch(toggleDashMode(dashMode)),
 		toggleDashModeInTab: (tabId, dashMode) => dispatch(toggleDashModeInTab(tabId, dashMode)),
 	};

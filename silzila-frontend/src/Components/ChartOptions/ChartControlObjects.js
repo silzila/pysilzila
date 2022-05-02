@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { changeChartOptionSelected } from "../../redux/ChartProperties/actionsChartProperties";
+import { chartTypes } from "./ChartTypes";
 
 const ChartControlObjects = ({
 	// state
@@ -128,9 +129,14 @@ const ChartControlObjects = ({
 	};
 
 	return (
-		<div className="chartOptionImagesContainer">
-			<RenderOptions />
-		</div>
+		<>
+			<div className="axisInfo">
+				for {chartTypes.filter((chart) => chart.name === selectedChart)[0].value}
+			</div>
+			<div className="chartOptionImagesContainer">
+				<RenderOptions />
+			</div>
+		</>
 	);
 };
 

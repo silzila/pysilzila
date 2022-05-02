@@ -286,8 +286,8 @@ export const playBookData = {
 						selectedMargin: "top",
 						top: 30,
 						right: 5,
-						bottom: 5,
-						left: 50,
+						bottom: 25,
+						left: 65,
 					},
 					mouseOver: {
 						enable: true,

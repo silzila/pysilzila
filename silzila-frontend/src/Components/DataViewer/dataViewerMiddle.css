@@ -37,6 +37,7 @@
 }
 .graphFullScreen {
 	display: flex;
+	flex-direction: column;
 	position: absolute;
 	left: 50%;
 	top: 50%;
@@ -56,6 +57,14 @@
 }
 .graphAreaIcons:hover {
 	cursor: pointer;
+	color: #404040;
+}
+
+.graphAreaIconsSelected {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 5px;
 	color: #404040;
 }
 
