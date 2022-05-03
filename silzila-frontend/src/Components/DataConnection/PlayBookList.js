@@ -8,7 +8,9 @@ import {
 	setTablesForSelectedDataSets,
 } from "../../redux/TabTile/actionsTabTile";
 import FetchData from "../../ServerCall/FetchData";
+import { getChartData } from "../ChartAxes/ChartAxes";
 import DatasetListPopover from "../CommonFunctions/PopOverComponents/DatasetListPopover";
+import LoadingPopover from "../CommonFunctions/PopOverComponents/LoadingPopover";
 import { playBookData } from "../DataViewer/samplePlaybookData";
 
 const PlayBookList = ({
@@ -23,6 +25,8 @@ const PlayBookList = ({
 }) => {
 	const [openPopOver, setOpenPopOver] = useState(false);
 	const [selectedDataset, setSelectedDataset] = useState("");
+
+	const [loading, setLoading] = useState(false);
 
 	var navigate = useNavigate();
 
@@ -53,6 +57,31 @@ const PlayBookList = ({
 		}
 	};
 
+	const getPlayBookDataFromServer = async () => {
+		console.log("Open Sample Playbook");
+
+		var pB = playBookData;
+		var newChartControl = JSON.parse(JSON.stringify(pB.data.chartControl));
+
+		setLoading(true);
+
+		await Promise.all(
+			Object.keys(pB.data.chartControl.properties).map(async (property) => {
+				var axesValue = pB.data.chartProperty.properties[property].chartAxes;
+				var data = await getChartData(axesValue, pB.data.chartProperty, property, token);
+				console.log(data);
+				newChartControl.properties[property].chartData = data;
+			})
+		);
+
+		setLoading(false);
+
+		pB.data.chartControl = newChartControl;
+		console.log(JSON.stringify(pB.data, null, 4));
+		loadPlayBook(pB.data);
+		navigate("/dataviewer");
+	};
+
 	return (
 		<div className="dashboardsContainer">
 			<div className="containersHead">
@@ -78,24 +107,15 @@ const PlayBookList = ({
 					<div
 						className="dataConnectionName"
 						onClick={() => {
-							console.log("Open Sample Playbook");
-
-							var pB = playBookData;
-							console.log(pB.name);
-							console.log(pB.data);
-
-							// Read Sample playbook
-							// Set current dataset
-							// set selected table
-							// set tabState, tileState, tabTileProps, chartProperty & ChartControl
-							loadPlayBook(pB.data);
-							navigate("/dataviewer");
+							getPlayBookDataFromServer();
 						}}
 					>
 						Sample PlayBook
 					</div>
 				</div>
 			</div>
+
+			{loading ? <LoadingPopover /> : null}
 		</div>
 	);
 };

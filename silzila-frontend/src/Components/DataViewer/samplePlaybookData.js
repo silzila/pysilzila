@@ -1,12 +1,12 @@
 export const playBookData = {
-	name: "Test 2 graph",
+	name: "T4",
 	data: {
 		tabState: {
 			tabs: {
 				1: {
 					tabId: 1,
 					tabName: "Tab - 1",
-					showDash: true,
+					showDash: false,
 					dashMode: "Edit",
 					dashLayout: {
 						dashboardLayout: "Auto",
@@ -27,8 +27,8 @@ export const playBookData = {
 							maxWidth: 24,
 						},
 					},
-					selectedTileName: "Tile - 2",
-					selectedTileId: 2,
+					selectedTileName: "Tile - 1",
+					selectedTileId: 1,
 					nextTileId: 3,
 					tilesInDashboard: ["1.1", "1.2"],
 					dashTilesDetails: {
@@ -38,7 +38,7 @@ export const playBookData = {
 							propKey: "1.1",
 							tileId: 1,
 							width: 16,
-							height: 12,
+							height: 11,
 							x: 0,
 							y: 0,
 						},
@@ -47,9 +47,9 @@ export const playBookData = {
 							highlight: true,
 							propKey: "1.2",
 							tileId: 2,
-							width: 16,
-							height: 16,
-							x: 16,
+							width: 13,
+							height: 11,
+							x: 19,
 							y: 0,
 						},
 					},
@@ -81,16 +81,16 @@ export const playBookData = {
 			selectedTabId: 1,
 			nextTabId: 2,
 			editTabName: false,
-			selectedTileName: "Tile - 2",
-			selectedTileId: 2,
+			selectedTileName: "Tile - 1",
+			selectedTileId: 1,
 			nextTileId: 3,
 			editTileName: false,
 			dragging: false,
 			chartPropUpdated: false,
-			showDash: true,
+			showDash: false,
 			dashMode: "Edit",
 			dashGridSize: {
-				x: 39,
+				x: 59,
 				y: 47,
 			},
 			columnsOnlyDisplay: false,
@@ -130,11 +130,11 @@ export const playBookData = {
 							name: "Dimension",
 							fields: [
 								{
-									fieldname: "delivery_date",
-									displayname: "delivery_date",
+									fieldname: "order_date",
+									displayname: "order_date",
 									dataType: "date",
 									tableId: "pt",
-									uId: "74c6",
+									uId: "16b2",
 									time_grain: "year",
 								},
 							],
@@ -147,7 +147,7 @@ export const playBookData = {
 									displayname: "sales",
 									dataType: "decimal",
 									tableId: "pt",
-									uId: "42fd",
+									uId: "ce48",
 									agg: "sum",
 								},
 								{
@@ -155,7 +155,7 @@ export const playBookData = {
 									displayname: "profit",
 									dataType: "decimal",
 									tableId: "pt",
-									uId: "2fc9",
+									uId: "160e",
 									agg: "sum",
 								},
 							],
@@ -172,7 +172,7 @@ export const playBookData = {
 					},
 					titleOptions: {
 						fontSize: 28,
-						chartTitle: "Sales, profit by year of delivery_date",
+						chartTitle: "Sales, profit by year of order_date",
 						generateTitle: "Auto",
 					},
 					chartOptionSelected: "Title",
@@ -180,7 +180,7 @@ export const playBookData = {
 				1.2: {
 					tabId: 1,
 					tileId: 2,
-					chartType: "pie",
+					chartType: "donut",
 					axesEdited: true,
 					chartAxes: [
 						{
@@ -195,7 +195,7 @@ export const playBookData = {
 									displayname: "category",
 									dataType: "text",
 									tableId: "pt",
-									uId: "93aa",
+									uId: "67f3",
 								},
 							],
 						},
@@ -203,11 +203,11 @@ export const playBookData = {
 							name: "Measure",
 							fields: [
 								{
-									fieldname: "profit",
-									displayname: "profit",
+									fieldname: "sales",
+									displayname: "sales",
 									dataType: "decimal",
 									tableId: "pt",
-									uId: "a481",
+									uId: "580d",
 									agg: "sum",
 								},
 							],
@@ -224,7 +224,7 @@ export const playBookData = {
 					},
 					titleOptions: {
 						fontSize: 28,
-						chartTitle: "Profit by category",
+						chartTitle: "Sales by category",
 						generateTitle: "Auto",
 					},
 					chartOptionSelected: "Colors",
@@ -238,36 +238,7 @@ export const playBookData = {
 		chartControl: {
 			properties: {
 				1.1: {
-					chartData: {
-						query: "SELECT \n\tEXTRACT(YEAR FROM pt.delivery_date)::INTEGER AS delivery_date__year,\n\tSUM(pt.sales) AS sales__sum,\n\tSUM(pt.profit) AS profit__sum\nFROM\n\tpos_denormalized.pos_transaction AS pt\nGROUP BY\n\tEXTRACT(YEAR FROM pt.delivery_date)::INTEGER\nORDER BY\n\tEXTRACT(YEAR FROM pt.delivery_date)::INTEGER",
-						result: [
-							{
-								delivery_date__year: 2018,
-								sales__sum: 1330367,
-								profit__sum: 358461.25,
-							},
-							{
-								delivery_date__year: 2019,
-								sales__sum: 2050585,
-								profit__sum: 540814.75,
-							},
-							{
-								delivery_date__year: 2020,
-								sales__sum: 2489705.5,
-								profit__sum: 671087.5,
-							},
-							{
-								delivery_date__year: 2021,
-								sales__sum: 2245978.5,
-								profit__sum: 681831,
-							},
-							{
-								delivery_date__year: 2022,
-								sales__sum: 270,
-								profit__sum: 45,
-							},
-						],
-					},
+					chartData: {},
 					colorScheme: "walden",
 					legendOptions: {
 						showLegend: true,
@@ -304,31 +275,7 @@ export const playBookData = {
 					},
 				},
 				1.2: {
-					chartData: {
-						query: "SELECT \n\tpt.category AS category,\n\tSUM(pt.profit) AS profit__sum\nFROM\n\tpos_denormalized.pos_transaction AS pt\nGROUP BY\n\tpt.category\nORDER BY\n\tpt.category",
-						result: [
-							{
-								category: "Books",
-								profit__sum: 222970,
-							},
-							{
-								category: "Electronics",
-								profit__sum: 682360,
-							},
-							{
-								category: "Home Appliances",
-								profit__sum: 189325,
-							},
-							{
-								category: "Sports",
-								profit__sum: 1047469,
-							},
-							{
-								category: "Stationery",
-								profit__sum: 110115.5,
-							},
-						],
-					},
+					chartData: {},
 					colorScheme: "walden",
 					legendOptions: {
 						showLegend: true,
@@ -341,8 +288,8 @@ export const playBookData = {
 						selectedMargin: "top",
 						top: 30,
 						right: 5,
-						bottom: 5,
-						left: 50,
+						bottom: 25,
+						left: 65,
 					},
 					mouseOver: {
 						enable: true,

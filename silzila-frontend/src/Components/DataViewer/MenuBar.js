@@ -10,6 +10,7 @@ import {
 import {
 	Button,
 	Dialog,
+	FormControl,
 	Menu,
 	MenuItem,
 	Modal,
@@ -56,6 +57,32 @@ const MenuBar = ({
 
 	var fileMenuStyle = { fontSize: "12px", padding: "2px 1rem" };
 
+	const savePlaybook = () => {
+		setSaveModal(false);
+		// Get all data from redux store and export it as a JSON file.
+
+		var playBookObj = {
+			name: playBookName,
+			data: {
+				tabState,
+				tileState,
+				tabTileProps,
+				chartProperty,
+				// chartControl,
+			},
+		};
+		var chartControlCopy = JSON.parse(JSON.stringify(chartControl));
+		Object.keys(chartControlCopy.properties).forEach((property) => {
+			console.log(property);
+			chartControlCopy.properties[property].chartData = {};
+		});
+
+		playBookObj.data.chartControl = chartControlCopy;
+		console.log(chartControlCopy);
+
+		console.log(playBookObj);
+	};
+
 	const FileMenu = () => {
 		return (
 			<Menu
@@ -91,7 +118,7 @@ const MenuBar = ({
 	return (
 		<div className="dataViewerMenu">
 			<div className="menuHome">
-				<HomeRoundedIcon sx={{ color: "#333" }} />
+				<HomeRoundedIcon sx={{ color: "#666" }} />
 			</div>
 			<div className="menuItemsGroup">
 				<div
@@ -154,6 +181,11 @@ const MenuBar = ({
 							label="Playbook Name"
 							variant="outlined"
 							onChange={(e) => setPlayBookName(e.target.value)}
+							onKeyDown={(e) => {
+								if (e.key === "Enter") {
+									savePlaybook();
+								}
+							}}
 						/>
 					</div>
 					<div
@@ -161,31 +193,15 @@ const MenuBar = ({
 					>
 						<Button
 							style={{ backgroundColor: "grey", float: "right" }}
-							// onClick={() => setOpen(false)}
+							onClick={() => setSaveModal(false)}
 							variant="contained"
 						>
 							Cancel
-						</Button>{" "}
+						</Button>
 						<Button
 							style={{ backgroundColor: "rgb(0,123,255)" }}
 							variant="contained"
-							onClick={() => {
-								setSaveModal(false);
-								// Get all data from redux store and export it as a JSON file.
-
-								var playBookObj = {
-									name: playBookName,
-									data: {
-										tabState,
-										tileState,
-										tabTileProps,
-										chartProperty,
-										chartControl,
-									},
-								};
-
-								console.log(playBookObj);
-							}}
+							onClick={() => savePlaybook()}
 						>
 							Save
 						</Button>

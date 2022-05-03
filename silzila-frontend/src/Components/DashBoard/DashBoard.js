@@ -234,13 +234,8 @@ const DashBoard = ({
 		};
 
 		var propIndex = tabState.tabs[currentObj.tabId].tilesInDashboard.indexOf(propKey);
-		// console.log("Index in array ", propIndex);
-
 		var indexOfProps = tabState.tabs[currentObj.tabId].tilesInDashboard.includes(propKey);
-		// console.log("Is tab present", indexOfProps);
-
 		var checked = indexOfProps ? true : false;
-		// console.log("Checked state: ", checked);
 
 		return (
 			<div
@@ -280,8 +275,6 @@ const DashBoard = ({
 		return tabState.tabs[tabTileProps.selectedTabId].tilesInDashboard.map((box, index) => {
 			var boxDetails = tabState.tabs[tabTileProps.selectedTabId].dashTilesDetails[box];
 
-			// console.log("===========================");
-			// console.log("Re Rendering graphs");
 			return (
 				<GraphRNDDash
 					key={index}
@@ -332,7 +325,24 @@ const DashBoard = ({
 		>
 			<div className="dashboardOuter" ref={targetRef}>
 				<div className="dashboardArea" style={dashStyle}>
-					{renderGraphs()}
+					{tabState.tabs[tabTileProps.selectedTabId].tilesInDashboard.length > 0 ? (
+						renderGraphs()
+					) : (
+						<div
+							style={{
+								height: "100%",
+								display: "flex",
+								alignItems: "center",
+								justifyContent: "center",
+								color: "#999999",
+							}}
+						>
+							<pre style={{ fontFamily: "Monaco", fontSize: "12px" }}>
+								No graphs selected{"\n\n"} Select tiles from right panel to place
+								graph here
+							</pre>
+						</div>
+					)}
 				</div>
 			</div>
 			{tabTileProps.dashMode === "Edit" ? (
