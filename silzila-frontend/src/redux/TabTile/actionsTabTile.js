@@ -83,6 +83,40 @@ export const updateTabDashDetails = (checked, propKey, dashSpecs, tabId, propInd
 	};
 };
 
+export const setDashLayout = (tabId, value) => {
+	return { type: "SET_DASHLAYOUT", payload: { tabId, value } };
+};
+export const setDashLayoutSelectedOptionForAuto = (tabId, value) => {
+	return { type: "SET_DASHLAYOUT_SELECTEDOPTION_FOR_AUTO", payload: { tabId, value } };
+};
+export const setDashLayoutSelectedOptionForFixed = (tabId, value) => {
+	return { type: "SET_DASHLAYOUT_SELECTEDOPTION_FOR_FIXED", payload: { tabId, value } };
+};
+export const setAspectRatioHeight = (tabId, value) => {
+	return { type: "SET_ASPECTRATIO_HEIGHT", payload: { tabId, value } };
+};
+export const setAspectRatioWidth = (tabId, value) => {
+	return { type: "SET_ASPECTRATIO_WIDTH", payload: { tabId, value } };
+};
+export const setCustomHeight = (tabId, value) => {
+	return { type: "SET_CUSTOM_HEIGHT", payload: { tabId, value } };
+};
+export const setCustomWidth = (tabId, value) => {
+	return { type: "SET_CUSTOM_WIDTH", payload: { tabId, value } };
+};
+export const setCustomRMaxHeight = (tabId, value) => {
+	return { type: "SET_CR_MAX_HEIGHT", payload: { tabId, value } };
+};
+export const setCustomRMaxWidth = (tabId, value) => {
+	return { type: "SET_CR_MAX_WIDTH", payload: { tabId, value } };
+};
+export const setCustomRMinHeight = (tabId, value) => {
+	return { type: "SET_CR_MIN_HEIGHT", payload: { tabId, value } };
+};
+export const setCustomRMinWidth = (tabId, value) => {
+	return { type: "SET_CR_MIN_WIDTH", payload: { tabId, value } };
+};
+
 //  *************************************************************
 //  to tile state reducer
 //  *************************************************************
@@ -258,7 +292,7 @@ export const actionsToAddTab = ({ tabId, table, selectedDs, selectedTablesInDs }
 	return (dispatch) => {
 		dispatch(addTab(tabId));
 		dispatch(updateNextTabId());
-		dispatch(updateSelectedTab(tabname, tabId, false));
+		dispatch(updateSelectedTab(tabname, tabId, false, "Edit"));
 		dispatch(
 			actionsToAddTile({
 				tabId: tabId,

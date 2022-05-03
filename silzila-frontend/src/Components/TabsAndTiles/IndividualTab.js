@@ -8,6 +8,8 @@ function IndividualTab({
 	editing,
 	selectedTab,
 	tabId,
+	showDash,
+	dashMode,
 
 	// functions in parent
 	selectTab,
@@ -20,6 +22,8 @@ function IndividualTab({
 	const handleTabNameValue = (e) => {
 		setRenameValue(e.target.value);
 	};
+
+	console.log(selectedTab, tabId);
 
 	// TODO: Priority 5 - Tab Max width
 	// 		- Set Tab max width to 250px
@@ -52,19 +56,32 @@ function IndividualTab({
 						? "commonTab indiItemHighlightTab"
 						: "commonTab indiItemTab"
 				}
-				onDoubleClick={() => renameTabBegin(tabId)}
+				onDoubleClick={() => {
+					if (dashMode !== "Present") {
+						renameTabBegin(tabId);
+					}
+				}}
 				title={`${tabName}. Double click to edit name`}
 			>
-				<span className="tabText" onClick={() => selectTab(tabName, tabId)}>
+				<span
+					className="tabText"
+					onClick={() => {
+						selectTab(tabName, tabId);
+					}}
+				>
 					{tabName}
 				</span>
-				<span
-					title="Delete Tab"
-					className="closeTab"
-					onClick={() => removeTab(tabName, tabId)}
-				>
-					X
-				</span>
+
+				{/* If dashboard in the presentation mode the 'X'(closing tab icon) will be disappear */}
+				{dashMode !== "Present" ? (
+					<span
+						title="Delete Tab"
+						className="closeTab"
+						onClick={() => removeTab(tabName, tabId)}
+					>
+						X
+					</span>
+				) : null}
 			</span>
 		);
 	}

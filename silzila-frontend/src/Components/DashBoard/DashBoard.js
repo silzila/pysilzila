@@ -12,6 +12,10 @@ import DashBoardLayoutControl from "./DashBoardLayoutControl";
 import GraphRNDDash from "./GraphRNDDash";
 
 const DashBoard = ({
+	// props
+	showListofTileMenu,
+	dashbordResizeColumn,
+	showFilters,
 	// state
 	tabState,
 	tabTileProps,
@@ -29,13 +33,15 @@ const DashBoard = ({
 	const [dimensions, setDimensions] = useState({});
 	const [innerDimensions, setinnerDimensions] = useState({});
 
+	var dashbackground = `linear-gradient(-90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+	linear-gradient( rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+	linear-gradient(-90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+	linear-gradient( rgba(0, 0, 0, 0.05) 1px, transparent 1px)`;
+
 	const [dashStyle, setdashStyle] = useState({
 		width: innerDimensions.width,
 		height: innerDimensions.height,
-		background: `linear-gradient(-90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px), 
-		linear-gradient( rgba(0, 0, 0, 0.05) 1px, transparent 1px),
-		linear-gradient(-90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px), 
-		linear-gradient( rgba(0, 0, 0, 0.05) 1px, transparent 1px)`,
+		background: dashbackground,
 	});
 
 	const [style, setStyle] = useState({
@@ -64,9 +70,16 @@ const DashBoard = ({
 		return () => window.removeEventListener("resize", handleResize);
 	}, [dimensions]);
 
+	useEffect(() => {
+		if (tabTileProps.dashMode === "Present") {
+			setdashStyle({ ...dashStyle, background: null });
+		} else {
+			setdashStyle({ ...dashStyle, background: dashbackground });
+		}
+	}, [tabTileProps.dashMode]);
+
 	let movement_timer = null;
 	const RESET_TIMEOUT = 300;
-
 	const handleResize = () => {
 		// console.log(`Resize: ${dimensions.width} x ${dimensions.height}`);
 		clearInterval(movement_timer);
@@ -183,7 +196,7 @@ const DashBoard = ({
 							tabTileProps.selectedTabId,
 							propIndex
 						);
-						toggleGraphSize(propKey, false);
+						toggleGraphSize(propKey, checked ? true : false);
 					}}
 					checked={checked}
 					key={index}
@@ -258,16 +271,38 @@ const DashBoard = ({
 					{renderGraphs()}
 				</div>
 			</div>
-
 			{tabTileProps.dashMode === "Edit" ? (
-				<div className="dashBoardSideBar">
-					<div className="tileListContainer">
-						<div className="axisTitle">List of Tiles</div>
-						{tileList}
-					</div>
-					<DashBoardLayoutControl />
+				<div>
+					{showListofTileMenu ? (
+						<div className="dashBoardSideBar">
+							<div className="tileListContainer">
+								<div className="axisTitle">List of Tiles</div>
+								{tileList}
+							</div>
+						</div>
+					) : (
+						<>
+							{dashbordResizeColumn ? (
+								<div className="dashBoardSideBar">
+									<DashBoardLayoutControl />
+								</div>
+							) : (
+								<div className="dashBoardSideBar">
+									<div className="axisTitle">Filters</div>
+								</div>
+							)}
+						</>
+					)}
 				</div>
-			) : null}
+			) : (
+				<>
+					{showFilters ? (
+						<div className="dashBoardSideBar">
+							<div className="axisTitle">Filters</div>
+						</div>
+					) : null}
+				</>
+			)}
 		</div>
 	);
 };

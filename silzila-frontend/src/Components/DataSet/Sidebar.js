@@ -197,13 +197,16 @@ const Sidebar = ({
 						connectionList.map((connection, i) => {
 							return (
 								<MenuItem
+									title={
+										connection.db_name +
+										" ".concat("(" + connection.friendly_name + ")")
+									}
 									sx={{
 										fontSize: "14px",
-										width: "200px",
-										paddingBottom: "4px",
-										paddingTop: "4px",
-										paddingRight: "8px",
-										paddingLeft: "8px",
+										maxWidth: "200px",
+										margin: "4px 8px 4px 0px",
+										whiteSpace: "nowrap",
+										overflow: "hidden",
 										textOverflow: "ellipsis",
 									}}
 									value={connection.dc_uid}
