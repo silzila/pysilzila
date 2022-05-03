@@ -9,6 +9,97 @@ import { updateChartData } from "../../redux/ChartProperties/actionsChartControl
 import LoadingPopover from "../CommonFunctions/PopOverComponents/LoadingPopover";
 import { canReUseData, toggleAxesEdited } from "../../redux/ChartProperties/actionsChartProperties";
 
+export const getChartData = async (axesValues, chartProp, propKey, token) => {
+	console.log(axesValues);
+
+	var formattedAxes = {};
+	axesValues.forEach((axis) => {
+		var dim = "";
+		switch (axis.name) {
+			case "Filter":
+				dim = "filters";
+				break;
+
+			case "Dimension":
+				dim = "dims";
+				break;
+
+			case "Measure":
+				dim = "measures";
+				break;
+
+			case "X":
+				dim = "measures";
+				break;
+
+			case "Y":
+				dim = "measures";
+				break;
+		}
+
+		var formattedFields = [];
+
+		axis.fields.forEach((field) => {
+			console.log(field);
+			var formattedField = {
+				table_id: field.tableId,
+				display_name: field.displayname,
+				field_name: field.fieldname,
+				data_type: field.dataType,
+			};
+			if (field.dataType === "date" || field.dataType === "timestamp") {
+				formattedField.time_grain = field.time_grain;
+			}
+
+			if (axis.name === "Measure") {
+				formattedField.aggr = field.agg;
+			}
+
+			formattedFields.push(formattedField);
+		});
+		formattedAxes[dim] = formattedFields;
+	});
+
+	formattedAxes.fields = [];
+
+	if (
+		chartProp.properties[propKey].chartType === "funnel" ||
+		chartProp.properties[propKey].chartType === "gauge"
+	) {
+		formattedAxes.dims = [];
+	}
+
+	// TODO: Priority 5 - Integrate Filters
+	// Right now no filter is passed to server. Discuss with balu and pass filters
+	formattedAxes.filters = [];
+
+	console.log(formattedAxes);
+	var url =
+		"ds/query/" +
+		chartProp.properties[propKey].selectedDs.dc_uid +
+		"/" +
+		chartProp.properties[propKey].selectedDs.ds_uid;
+	console.log(url);
+
+	var res = await FetchData({
+		requestType: "withData",
+		method: "POST",
+		url:
+			"ds/query/" +
+			chartProp.properties[propKey].selectedDs.dc_uid +
+			"/" +
+			chartProp.properties[propKey].selectedDs.ds_uid,
+		headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+		data: formattedAxes,
+	});
+
+	if (res.status) {
+		return res.data;
+	} else {
+		console.log("Get Table Data Error", res.data.detail);
+	}
+};
+
 const ChartAxes = ({
 	// props
 	tabId,
@@ -86,7 +177,7 @@ const ChartAxes = ({
 		if (serverCall) {
 			setLoading(true);
 			console.log("Time for API call");
-			var data = await getChartData(axesValues);
+			var data = await getChartData(axesValues, chartProp, propKey, token);
 			updateChartData(propKey, data);
 			setLoading(false);
 		}
@@ -114,97 +205,6 @@ const ChartAxes = ({
 	const resetStore = () => {
 		toggleAxesEdit(propKey);
 		reUseOldData(propKey);
-	};
-
-	const getChartData = async (axesValues) => {
-		console.log(axesValues);
-
-		var formattedAxes = {};
-		axesValues.forEach((axis) => {
-			var dim = "";
-			switch (axis.name) {
-				case "Filter":
-					dim = "filters";
-					break;
-
-				case "Dimension":
-					dim = "dims";
-					break;
-
-				case "Measure":
-					dim = "measures";
-					break;
-
-				case "X":
-					dim = "measures";
-					break;
-
-				case "Y":
-					dim = "measures";
-					break;
-			}
-
-			var formattedFields = [];
-
-			axis.fields.forEach((field) => {
-				console.log(field);
-				var formattedField = {
-					table_id: field.tableId,
-					display_name: field.displayname,
-					field_name: field.fieldname,
-					data_type: field.dataType,
-				};
-				if (field.dataType === "date" || field.dataType === "timestamp") {
-					formattedField.time_grain = field.time_grain;
-				}
-
-				if (axis.name === "Measure") {
-					formattedField.aggr = field.agg;
-				}
-
-				formattedFields.push(formattedField);
-			});
-			formattedAxes[dim] = formattedFields;
-		});
-
-		formattedAxes.fields = [];
-
-		if (
-			chartProp.properties[propKey].chartType === "funnel" ||
-			chartProp.properties[propKey].chartType === "gauge"
-		) {
-			formattedAxes.dims = [];
-		}
-
-		// TODO: Priority 5 - Integrate Filters
-		// Right now no filter is passed to server. Discuss with balu and pass filters
-		formattedAxes.filters = [];
-
-		console.log(formattedAxes);
-		var url =
-			"ds/query/" +
-			chartProp.properties[propKey].selectedDs.dc_uid +
-			"/" +
-			chartProp.properties[propKey].selectedDs.ds_uid;
-		console.log(url);
-
-		var res = await FetchData({
-			requestType: "withData",
-			method: "POST",
-			url:
-				"ds/query/" +
-				chartProp.properties[propKey].selectedDs.dc_uid +
-				"/" +
-				chartProp.properties[propKey].selectedDs.ds_uid,
-			headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-			data: formattedAxes,
-		});
-
-		if (res.status) {
-			return res.data;
-		} else {
-			console.log("Get Table Data Error", res.data.detail);
-		}
 	};
 
 	return (

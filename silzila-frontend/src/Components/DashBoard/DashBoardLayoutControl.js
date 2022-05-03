@@ -45,7 +45,6 @@ const DashBoardLayoutControl = ({
 }) => {
 	const [isAutoSelected, setIsAutoSelected] = useState(true);
 	const [isFixedSelected, setIsFixedSelected] = useState(false);
-	const [fullScreen, setFullScreen] = useState(true);
 	const [isCoustomSelected, setIsCustomSelected] = useState(false);
 	const [isCoustomRangeSelected, setIsCustomRangeSelected] = useState(false);
 
@@ -118,13 +117,8 @@ const DashBoardLayoutControl = ({
 				<RadioGroup
 					aria-labelledby="demo-controlled-radio-buttons-group"
 					name="controlled-radio-buttons-group"
-					onChange={() => {
-						setFullScreen(!fullScreen);
-						if (!fullScreen === true) {
-							setDashLayoutSelectedOptionForAuto(tabId, "full Screen");
-						} else {
-							setDashLayoutSelectedOptionForAuto(tabId, "Aspect Ratio");
-						}
+					onChange={(e) => {
+						setDashLayoutSelectedOptionForAuto(tabId, e.target.value);
 					}}
 				>
 					<FormControlLabel
@@ -140,9 +134,8 @@ const DashBoardLayoutControl = ({
 						label={typographyComponent("Aspect Ratio")}
 					/>
 				</RadioGroup>
-				{fullScreen ? (
-					""
-				) : (
+				{tabState.tabs[tabTileProps.selectedTabId].dashLayout.selectedOptionForAuto ===
+				"Aspect Ratio" ? (
 					<div
 						style={{
 							display: "flex",
@@ -152,23 +145,23 @@ const DashBoardLayoutControl = ({
 					>
 						<TextField
 							type="number"
-							value={tabState.tabs[tabId].dashLayout.aspectRatio.height}
-							onChange={(e) => setAspectRatioHeight(tabId, e.target.value)}
-							label="Height"
-							InputLabelProps={{ shrink: true }}
-							minValue
-							inputProps={{ ...textFieldInputProps, min: 1 }}
-						/>
-						<TextField
-							type="number"
 							label="Width"
 							value={tabState.tabs[tabId].dashLayout.aspectRatio.width}
 							onChange={(e) => setAspectRatioWidth(tabId, e.target.value)}
 							InputLabelProps={{ shrink: true }}
 							inputProps={{ ...textFieldInputProps, min: 1 }}
 						/>
+						<TextField
+							type="number"
+							value={tabState.tabs[tabId].dashLayout.aspectRatio.height}
+							onChange={(e) => setAspectRatioHeight(tabId, e.target.value)}
+							label="Height"
+							InputLabelProps={{ shrink: true }}
+							minvalue
+							inputProps={{ ...textFieldInputProps, min: 1 }}
+						/>
 					</div>
-				)}
+				) : null}
 			</div>
 		);
 	};
@@ -311,8 +304,9 @@ const DashBoardLayoutControl = ({
 	return (
 		<div className="dashboardLayoutControl">
 			<div className="axisTitle">Dashboard Size</div>
-			{dashSizeOptionBtn()}
-			{isAutoSelected ? (
+			{/* {dashSizeOptionBtn()} */}
+			{whenPageSizeisAuto()}
+			{/* {isAutoSelected ? (
 				whenPageSizeisAuto()
 			) : (
 				<div style={{ padding: "0px 5px 5px 16px", textAlign: "left" }}>
@@ -325,7 +319,7 @@ const DashBoardLayoutControl = ({
 						{whenPagesizeIsFixed()}
 					</RadioGroup>
 				</div>
-			)}
+			)} */}
 		</div>
 	);
 };

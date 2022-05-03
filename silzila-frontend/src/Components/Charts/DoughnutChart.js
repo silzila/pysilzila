@@ -58,10 +58,10 @@ const DoughnutChart = ({
 							orient: property.legendOptions?.orientation,
 						},
 						grid: {
-							left: `${property.chartMargin.left}%`,
-							right: `${property.chartMargin.right}%`,
-							top: `${property.chartMargin.top}%`,
-							bottom: `${property.chartMargin.bottom}%`,
+							left: property.chartMargin.left,
+							right: property.chartMargin.right,
+							top: property.chartMargin.top,
+							bottom: property.chartMargin.bottom,
 						},
 						tooltip: { show: property.mouseOver.enable },
 						dataset: {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Rnd } from "react-rnd";
 import { connect } from "react-redux";
 import {
@@ -23,26 +23,41 @@ const GraphRNDDash = ({
 	tabTileProps,
 }) => {
 	const gridSize = tabTileProps.dashGridSize;
-	const dragGridX = gridSize;
-	const dragGridY = gridSize;
-	const resizeGridX = gridSize;
-	const resizeGridY = gridSize;
+	const dragGridX = gridSize.x;
+	const dragGridY = gridSize.y;
+	const resizeGridX = gridSize.x;
+	const resizeGridY = gridSize.y;
 
 	// const [graphDimension, setGraphDimension] = useState({});
-	console.log(gridSize);
-	console.log(boxDetails);
-	console.log("x:", boxDetails.x * gridSize, "y:", boxDetails.y * gridSize);
+	// console.log(gridSize);
+	// console.log(boxDetails);
+	// console.log("x:", boxDetails.x * gridSize.x, "y:", boxDetails.y * gridSize.y);
 
-	console.log();
+	const [hovering, setHovering] = useState(false);
+
+	useEffect(() => {
+		if (!boxDetails.highlight) setHovering(false);
+	}, [boxDetails.highlight]);
 
 	return (
 		<Rnd
+			disableDragging={tabTileProps.dashMode === "Edit" ? false : true}
+			enableResizing={tabTileProps.dashMode === "Edit" ? true : false}
+			onMouseEnter={() => {
+				if (tabTileProps.dashMode === "Edit") {
+					console.log("Mouse Entered in GraphRNDDash component");
+					setHovering(true);
+				}
+			}}
+			onMouseLeave={() => {
+				if (!boxDetails.highlight) setHovering(false);
+			}}
 			bounds="parent"
 			dragGrid={[dragGridX, dragGridY]}
 			resizeGrid={[resizeGridX, resizeGridY]}
-			style={boxDetails.highlight ? style2 : style}
-			size={{ width: boxDetails.width * gridSize, height: boxDetails.height * gridSize }}
-			position={{ x: boxDetails.x * gridSize, y: boxDetails.y * gridSize }}
+			style={boxDetails.highlight || hovering ? style2 : style}
+			size={{ width: boxDetails.width * gridSize.x, height: boxDetails.height * gridSize.y }}
+			position={{ x: boxDetails.x * gridSize.x, y: boxDetails.y * gridSize.y }}
 			onDragStart={(e, d) => {
 				console.log(d);
 			}}
@@ -55,8 +70,8 @@ const GraphRNDDash = ({
 				updateDashGraphPos(
 					tabId,
 					boxDetails.propKey,
-					(d.lastX - 5) / gridSize,
-					(d.lastY - 62) / gridSize
+					(d.lastX - 5) / gridSize.x,
+					(d.lastY - 60) / gridSize.y
 				);
 				setStyle({ ...style, border: "1px solid transparent" });
 			}}
@@ -70,10 +85,10 @@ const GraphRNDDash = ({
 				updateDashGraphSz(
 					tabId,
 					boxDetails.propKey,
-					position.width / gridSize,
-					position.height / gridSize,
-					widthInt / gridSize,
-					heightInt / gridSize
+					position.width / gridSize.x,
+					position.height / gridSize.y,
+					widthInt / gridSize.x,
+					heightInt / gridSize.y
 				);
 				setStyle({ ...style, border: "1px solid gray" });
 			}}
@@ -87,10 +102,10 @@ const GraphRNDDash = ({
 				updateDashGraphSz(
 					tabId,
 					boxDetails.propKey,
-					position.x / gridSize,
-					position.y / gridSize,
-					widthInt / gridSize,
-					heightInt / gridSize
+					position.x / gridSize.x,
+					position.y / gridSize.y,
+					widthInt / gridSize.x,
+					heightInt / gridSize.y
 				);
 				setStyle({ ...style, border: "1px solid transparent" });
 			}}
@@ -99,7 +114,11 @@ const GraphRNDDash = ({
 			<div className="rndObject" propKey={boxDetails.propKey}>
 				<div
 					className="dragHeader"
-					style={{ whiteSpace: "nowrap", overflow: "hidden", texOverflow: "ellipsis" }}
+					style={
+						tabTileProps.dashMode === "Present"
+							? { cursor: "default" }
+							: { cursor: "move" }
+					}
 					propKey={boxDetails.propKey}
 				>
 					{chartProp.properties[boxDetails.propKey].titleOptions.chartTitle}

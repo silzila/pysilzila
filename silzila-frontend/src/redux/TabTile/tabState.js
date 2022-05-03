@@ -6,7 +6,7 @@ const initialTabState = {
 			tabId: 1,
 			tabName: "Tab - 1",
 			showDash: false,
-			dashMode: "Dev Mode",
+			dashMode: "Edit",
 			dashLayout: {
 				dashboardLayout: "Auto",
 				selectedOptionForAuto: "Full Screen",
@@ -42,7 +42,7 @@ const tabStateReducer = (state = initialTabState, action) => {
 						tabId: action.payload,
 						tabName: `Tab - ${action.payload}`,
 						showDash: false,
-						dashMode: "Dev Mode",
+						dashMode: "Edit",
 						dashLayout: {
 							dashboardLayout: "auto",
 							selectedOptionForAuto: "full Screen",
@@ -109,19 +109,10 @@ const tabStateReducer = (state = initialTabState, action) => {
 			});
 
 		case "UPDATE_DASH_GRAPH_DETAILS":
-			console.log(
-				action.payload.checked,
-				action.payload.propKey,
-				action.payload.dashSpecs,
-				action.payload.tabId,
-				action.payload.propIndex
-			);
 			if (action.payload.checked) {
-				console.log("Deleting item");
 				var index = state.tabs[action.payload.tabId].tilesInDashboard.indexOf(
 					action.payload.propKey
 				);
-				console.log(index);
 				return update(state, {
 					tabs: {
 						[action.payload.tabId]: {
@@ -131,7 +122,6 @@ const tabStateReducer = (state = initialTabState, action) => {
 					},
 				});
 			} else {
-				console.log("Adding new item");
 				return update(state, {
 					tabs: {
 						[action.payload.tabId]: {
@@ -145,12 +135,6 @@ const tabStateReducer = (state = initialTabState, action) => {
 			}
 
 		case "UPDATE_DASH_GRAPH_POSITION":
-			console.log(
-				action.payload.tabId,
-				action.payload.propKey,
-				action.payload.x,
-				action.payload.y
-			);
 			return update(state, {
 				tabs: {
 					[action.payload.tabId]: {
@@ -182,9 +166,8 @@ const tabStateReducer = (state = initialTabState, action) => {
 
 		case "SET_GRAPH_BORDER_HIGHLIGHT":
 			var copyOfDetails = state.tabs[action.payload.tabId].dashTilesDetails;
-			console.log("Details Copy", copyOfDetails);
 			var items = Object.keys(copyOfDetails);
-			console.log("Keys", items);
+
 			items.map((item) => {
 				if (item === action.payload.propKey) {
 					copyOfDetails[item].highlight = true;
@@ -192,21 +175,18 @@ const tabStateReducer = (state = initialTabState, action) => {
 					copyOfDetails[item].highlight = false;
 				}
 			});
-			console.log("Details Copy changed", copyOfDetails);
+
 			return update(state, {
 				tabs: { [action.payload.tabId]: { dashTilesDetails: { $set: copyOfDetails } } },
 			});
 
 		case "RESET_GRAPH_BORDER_HIGHLIGHT":
-			console.log("Reseting graph Highlight for tab ", action.payload.tabId);
 			var copyOfDetails = state.tabs[action.payload.tabId].dashTilesDetails;
-			console.log("Details Copy", copyOfDetails);
 			var items = Object.keys(copyOfDetails);
-			console.log("Keys", items);
+
 			items.map((item) => {
 				copyOfDetails[item].highlight = false;
 			});
-			console.log("Details Copy changed", copyOfDetails);
 
 			return update(state, {
 				tabs: { [action.payload.tabId]: { dashTilesDetails: { $set: copyOfDetails } } },
@@ -323,6 +303,9 @@ const tabStateReducer = (state = initialTabState, action) => {
 					},
 				},
 			});
+
+		case "LOAD_TAB_STATE_FROM_PLAYBOOK":
+			return action.payload;
 
 		default:
 			return state;

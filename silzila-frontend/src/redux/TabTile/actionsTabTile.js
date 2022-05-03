@@ -8,6 +8,7 @@
 
 import {
 	addControl,
+	loadChartControls,
 	removeChartControls,
 	removeMultipleChartControls,
 } from "../ChartProperties/actionsChartControls";
@@ -15,6 +16,7 @@ import {
 	removeMultipleChartProperties,
 	addProp,
 	removeChartProperties,
+	loadChartProperties,
 } from "../ChartProperties/actionsChartProperties";
 
 //  *************************************************************
@@ -416,5 +418,31 @@ export const setShowDashBoard = (tabId, showDash) => {
 	return (dispatch) => {
 		dispatch(showDashBoard(showDash));
 		dispatch(showDashboardInTab(tabId, showDash));
+	};
+};
+
+//  *************************************************************
+//  Load Playbook data to many different reducers
+//  *************************************************************
+
+export const loadTabState = (tabState) => {
+	return { type: "LOAD_TAB_STATE_FROM_PLAYBOOK", payload: tabState };
+};
+
+export const loadTileState = (tileState) => {
+	return { type: "LOAD_TILE_STATE_FROM_PLAYBOOK", payload: tileState };
+};
+
+export const loadTabTileProps = (tabTileProps) => {
+	return { type: "LOAD_TAB_TILE_PROPS_FROM_PLAYBOOK", payload: tabTileProps };
+};
+
+export const loadPlaybook = (playbook) => {
+	return (dispatch) => {
+		dispatch(loadTabState(playbook.tabState));
+		dispatch(loadTileState(playbook.tileState));
+		dispatch(loadTabTileProps(playbook.tabTileProps));
+		dispatch(loadChartControls(playbook.chartControl));
+		dispatch(loadChartProperties(playbook.chartProperty));
 	};
 };

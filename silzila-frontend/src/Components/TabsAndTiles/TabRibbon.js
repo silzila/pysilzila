@@ -18,6 +18,8 @@ const TabRibbon = ({
 	enableRenameTab,
 	completeRenameTab,
 	selectTile,
+	showDashBoard,
+	toggleDashModeInTab,
 }) => {
 	const handleAddTab = () => {
 		let tabId = tabTileProps.nextTabId;
@@ -36,7 +38,18 @@ const TabRibbon = ({
 		// handle how to get selected tile for the switching tab and update it in two places - tabTileProps and tabState
 		let tabObj = tabState.tabs[tabId];
 
-		selectTab(tabName, tabId, tabObj.showDash, tabObj.dashMode);
+		// changes:
+		//  added showDashBoard(tabObj.tabId, tabObj.showDash); in dataviewer comp under onchange
+		// once tabtileProps-> dashmode set to present then that remain same for all the tabs that can be selected after this
+		// once tabTileprops-> dashmode set to "Edit" then that mode remain same for all tabs that can be selected after this
+		// ...but tabtileProps->showdash will change according to individual tab prop(tabstate->tabs->tabid-> showdash)
+
+		if (tabTileProps.dashMode === "Present") {
+			selectTab(tabName, tabId, true, "Present");
+		} else {
+			selectTab(tabName, tabId, tabObj.showDash, tabTileProps.dashMode);
+			toggleDashModeInTab(tabTileProps.selectedTabId, tabTileProps.dashMode);
+		}
 
 		let tileName = tabObj.selectedTileName;
 		let tileId = tabObj.selectedTileId;
@@ -112,6 +125,9 @@ const TabRibbon = ({
 				removeTab={handleRemoveTab}
 				renameTabBegin={handleRenameTabBegin}
 				renameTabComplete={handleRenameTabComplete}
+				//showdash prop
+				showDash={tabTileProps.showDash}
+				dashMode={tabTileProps.dashMode}
 			/>
 		);
 	});
@@ -119,13 +135,16 @@ const TabRibbon = ({
 	return (
 		<div className="tabItems">
 			{tablist}
-			<span
-				title="Create a new tab"
-				className="plusTab commonTab"
-				onClick={() => handleAddTab()}
-			>
-				+
-			</span>
+			{/* If dashboard in the presentation mode the '+'(adding new tab) will be disappear */}
+			{tabTileProps.dashMode !== "Present" ? (
+				<span
+					title="Create a new tab"
+					className="plusTab commonTab"
+					onClick={() => handleAddTab()}
+				>
+					+
+				</span>
+			) : null}
 		</div>
 	);
 };
@@ -145,6 +164,7 @@ const mapDispatchToProps = (dispatch) => {
 		// ###########################################################
 		// Tab related dispatch methods
 		// ###########################################################
+		showDashBoard: (tabId, showDash) => dispatch(actions.showDashboardInTab(tabId, showDash)),
 
 		addTab: (tabId, table, selectedDs, selectedTablesInDs) =>
 			dispatch(actions.actionsToAddTab({ tabId, table, selectedDs, selectedTablesInDs })),
@@ -160,6 +180,8 @@ const mapDispatchToProps = (dispatch) => {
 
 		completeRenameTab: (renameValue, tabId) =>
 			dispatch(actions.actionsToRenameTab({ renameValue, tabId })),
+		toggleDashModeInTab: (tabId, dashMode) =>
+			dispatch(actions.toggleDashModeInTab(tabId, dashMode)),
 
 		// ###########################################################
 		// Tile related dispatch methods
