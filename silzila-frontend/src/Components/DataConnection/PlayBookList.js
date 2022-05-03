@@ -3,11 +3,15 @@ import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setSelectedDsInTile } from "../../redux/ChartProperties/actionsChartProperties";
 import {
+	loadPlaybook,
 	setSelectedDataSetList,
 	setTablesForSelectedDataSets,
 } from "../../redux/TabTile/actionsTabTile";
 import FetchData from "../../ServerCall/FetchData";
+import { getChartData } from "../ChartAxes/ChartAxes";
 import DatasetListPopover from "../CommonFunctions/PopOverComponents/DatasetListPopover";
+import LoadingPopover from "../CommonFunctions/PopOverComponents/LoadingPopover";
+import { playBookData } from "../DataViewer/samplePlaybookData";
 
 const PlayBookList = ({
 	// state
@@ -17,9 +21,12 @@ const PlayBookList = ({
 	setSelectedDataSetList,
 	setTablesForDs,
 	setSelectedDs,
+	loadPlayBook,
 }) => {
 	const [openPopOver, setOpenPopOver] = useState(false);
 	const [selectedDataset, setSelectedDataset] = useState("");
+
+	const [loading, setLoading] = useState(false);
 
 	var navigate = useNavigate();
 
@@ -50,6 +57,31 @@ const PlayBookList = ({
 		}
 	};
 
+	const getPlayBookDataFromServer = async () => {
+		console.log("Open Sample Playbook");
+
+		var pB = playBookData;
+		var newChartControl = JSON.parse(JSON.stringify(pB.data.chartControl));
+
+		setLoading(true);
+
+		await Promise.all(
+			Object.keys(pB.data.chartControl.properties).map(async (property) => {
+				var axesValue = pB.data.chartProperty.properties[property].chartAxes;
+				var data = await getChartData(axesValue, pB.data.chartProperty, property, token);
+				console.log(data);
+				newChartControl.properties[property].chartData = data;
+			})
+		);
+
+		setLoading(false);
+
+		pB.data.chartControl = newChartControl;
+		console.log(JSON.stringify(pB.data, null, 4));
+		loadPlayBook(pB.data);
+		navigate("/dataviewer");
+	};
+
 	return (
 		<div className="dashboardsContainer">
 			<div className="containersHead">
@@ -70,6 +102,20 @@ const PlayBookList = ({
 					}}
 				/>
 			</div>
+			<div className="connectionListContainer">
+				<div className="dataConnectionList">
+					<div
+						className="dataConnectionName"
+						onClick={() => {
+							getPlayBookDataFromServer();
+						}}
+					>
+						Sample PlayBook
+					</div>
+				</div>
+			</div>
+
+			{loading ? <LoadingPopover /> : null}
 		</div>
 	);
 };
@@ -85,6 +131,7 @@ const mapDispatchToProps = (dispatch) => {
 		setSelectedDataSetList: (dataset) => dispatch(setSelectedDataSetList(dataset)),
 		setTablesForDs: (tablesObj) => dispatch(setTablesForSelectedDataSets(tablesObj)),
 		setSelectedDs: (selectedDs) => dispatch(setSelectedDsInTile("1.1", selectedDs)),
+		loadPlayBook: (playBook) => dispatch(loadPlaybook(playBook)),
 	};
 };
 

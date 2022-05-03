@@ -2,15 +2,15 @@
 	width: 100%;
 	background-color: #eee;
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
 	padding-bottom: 10px;
 	padding: 0 4px 8px 4px;
 }
 
 .chartIcon {
 	padding: 8px;
-	width: 60px;
-	height: 60px;
+	width: 50px;
+	height: 50px;
 	margin: 10px auto;
 	border: 1px solid transparent;
 	border-radius: 4px;

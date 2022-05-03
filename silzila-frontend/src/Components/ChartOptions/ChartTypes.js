@@ -18,6 +18,19 @@ import heatMapIcon from "../../assets/heat_map.png";
 import ChartsInfo from "../ChartAxes/ChartsInfo2";
 import "./ChartOptions.css";
 
+export const chartTypes = [
+	{ name: "multibar", icon: multiBarIcon, value: "Multi Bar" },
+	{ name: "stackedBar", icon: stackedBarIcon, value: "Stacked Bar" },
+	{ name: "pie", icon: pieChartIcon, value: " Pie Chart" },
+	{ name: "donut", icon: donutChartIcon, value: " Donut Chart" },
+	{ name: "line", icon: lineChartIcon, value: "Line Chart" },
+	{ name: "area", icon: areaChartIcon, value: "Area Chart" },
+	{ name: "scatterPlot", icon: scatterPlotIcon, value: " Scatter Plot" },
+	{ name: "funnel", icon: funnelChartIcon, value: "Funnel Chart" },
+	{ name: "gauge", icon: gaugeChartIcon, value: "Gauge Chart" },
+	{ name: "heatmap", icon: heatMapIcon, value: " Heat Map" },
+];
+
 const ChartTypes = ({
 	//props
 	propKey,
@@ -339,23 +352,6 @@ const ChartTypes = ({
 		}
 	};
 
-	const chartTypes = [
-		{ name: "multibar", icon: multiBarIcon },
-		{ name: "stackedBar", icon: stackedBarIcon },
-		{ name: "pie", icon: pieChartIcon },
-		{ name: "donut", icon: donutChartIcon },
-		{ name: "line", icon: lineChartIcon },
-		{ name: "area", icon: areaChartIcon },
-		{ name: "scatterPlot", icon: scatterPlotIcon },
-		{ name: "funnel", icon: funnelChartIcon },
-		{ name: "gauge", icon: gaugeChartIcon },
-		{ name: "heatmap", icon: heatMapIcon },
-
-		// { name: "step line", icon: stepLineIcon },
-		// { name: "rose", icon: roseChartIcon },
-		// { name: "multibar", icon: simpleBarChartIcon },
-	];
-
 	const renderChartTypes = chartTypes.map((chart) => {
 		return (
 			<img
@@ -396,7 +392,7 @@ const ChartTypes = ({
 						updateChartTypeAndAxes(propKey, chart.name, newChartAxes);
 					}
 				}}
-				title={`${chart.name} chart`}
+				title={chart.value}
 			/>
 		);
 	});

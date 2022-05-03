@@ -82,3 +82,7 @@ export const updateAxisMinMax = (propKey, axisKey, axisValue) => {
 	console.log("AXIS_MIN_MAX", propKey, axisKey, axisValue);
 	return { type: "AXIS_MIN_MAX", payload: { propKey, axisKey, axisValue } };
 };
+
+export const loadChartControls = (chartControls) => {
+	return { type: "LOAD_CHART_CONTROLS", payload: chartControls };
+};

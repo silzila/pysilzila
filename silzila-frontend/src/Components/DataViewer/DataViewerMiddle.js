@@ -27,7 +27,7 @@ const DataViewerMiddle = ({
 	const rmenu = [
 		{ name: "Charts", icon: chartControlIcon },
 		{ name: "Chart controls", icon: settingsIcon },
-		{ name: "Filter", icon: FilterIcon },
+		// { name: "Filter", icon: FilterIcon },
 	];
 
 	// const [tabTileProps.selectedControlMenu, setMenu] = useState("");

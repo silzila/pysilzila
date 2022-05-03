@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { changeChartOptionSelected } from "../../redux/ChartProperties/actionsChartProperties";
+import { chartTypes } from "./ChartTypes";
 
 const ChartControlObjects = ({
 	// state
@@ -27,11 +28,8 @@ const ChartControlObjects = ({
 	];
 
 	const pieOptionsList = ["Title", "Colors", "Legend", "Margin", "Tooltip", "Labels", "Style"];
-
 	const funnelOptionList = ["Title", "Colors", "Legend", "Margin", "Tooltip"];
-
 	const gaugeOptionList = ["Title", "Colors", "Margin", "Tooltip"];
-
 	const heatmapOptionList = ["Title", "Colors", "Margin", "Tooltip"];
 
 	const RenderOptions = () => {
@@ -131,9 +129,14 @@ const ChartControlObjects = ({
 	};
 
 	return (
-		<div className="chartOptionImagesContainer">
-			<RenderOptions />
-		</div>
+		<>
+			<div className="axisInfo">
+				for {chartTypes.filter((chart) => chart.name === selectedChart)[0].value}
+			</div>
+			<div className="chartOptionImagesContainer">
+				<RenderOptions />
+			</div>
+		</>
 	);
 };
 

@@ -77,6 +77,9 @@ const tileStateReducer = (state = initialTileState, action) => {
 				},
 			});
 
+		case "LOAD_TILE_STATE_FROM_PLAYBOOK":
+			return action.payload;
+
 		default:
 			return state;
 	}
