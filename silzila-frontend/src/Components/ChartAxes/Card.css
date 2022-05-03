@@ -72,8 +72,7 @@
 	text-overflow: ellipsis;
 }
 .columnPrefix {
-	font-style: italic;
-	color: #cc6d00;
+	color: #d25e00;
 	padding: 5px 1px;
 	white-space: nowrap;
 
