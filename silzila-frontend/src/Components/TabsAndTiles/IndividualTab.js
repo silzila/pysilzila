@@ -84,8 +84,19 @@ function IndividualTab({
 							: { visibility: "hidden" }
 					}
 				>
-					X
+					{tabName}
 				</span>
+
+				{/* If dashboard in the presentation mode the 'X'(closing tab icon) will be disappear */}
+				{dashMode !== "Present" ? (
+					<span
+						title="Delete Tab"
+						className="closeTab"
+						onClick={() => removeTab(tabName, tabId)}
+					>
+						X
+					</span>
+				) : null}
 			</span>
 		);
 	}

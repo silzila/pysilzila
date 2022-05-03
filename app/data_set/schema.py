@@ -91,18 +91,20 @@ class Field(BaseModel):
 
 
 class Filter(BaseModel):
+    filter_type: Literal['binary_user_selection', 'text_user_selection', 'number_user_selection',
+                         'number_search', 'date_user_selection', 'date_search']
     table_id: str
     field_name: str
     display_name: str
     data_type: Literal['text', 'integer',
                        'decimal', 'boolean', 'date', 'timestamp']
+    negate: Optional[bool]
     user_selection: Optional[List[Any]]
+    search_type: Optional[Literal['equal_to', 'not_equal_to', 'greater_than', 'less_than',
+                                  'greater_than_equal_to', 'less_than_equal_to', 'between']]
+    search_condition: Optional[List[Any]]
     time_grain: Optional[Literal['year',
                                  'month', 'quarter', 'dayofweek', 'day']]
-    negate: Optional[bool]
-    expr_type: Optional[Literal['equal_to', 'not_equal_to', 'greater_than', 'less_than',
-                                'greater_than_equal_to', 'less_than_equal_to', 'between']]
-    expr: Optional[List[Any]]
 
 
 class Query(BaseModel):
