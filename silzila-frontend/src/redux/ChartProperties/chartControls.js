@@ -9,6 +9,8 @@ const chartControl = {
 			chartData: "",
 			colorScheme: "walden",
 
+			colorScale: { colorScaleType: "Automatic", min: 0, max: 0 },
+
 			legendOptions: {
 				showLegend: true,
 				moveSlider: "Width",
@@ -27,6 +29,15 @@ const chartControl = {
 				left: 10,
 			},
 
+			labelOptions: {
+				showLabel: true,
+				labelColor: "#888888",
+				fontSize: 15,
+				fontStyle: "normal",
+				fontWeigth: "normal",
+				fontFamily: "sans-serif",
+			},
+
 			mouseOver: {
 				enable: true,
 			},
@@ -34,6 +45,47 @@ const chartControl = {
 			axisOptions: {
 				xSplitLine: false,
 				ySplitLine: true,
+				inverse: false,
+				yAxis: {
+					position: "left",
+					onZero: true,
+
+					showLabel: true,
+
+					name: "",
+					nameLocation: "middle",
+					nameGap: 15,
+
+					// onZeroLeft: true,
+					tickSizeLeft: 5,
+					tickPaddingLeft: 5,
+					tickRotationLeft: 0,
+
+					// onZeroRight: false,
+					tickSizeRight: 5,
+					tickPaddingRight: 5,
+					tickRotationRight: 0,
+				},
+				xAxis: {
+					position: "bottom",
+					onZero: true,
+
+					showLabel: true,
+
+					name: "",
+					nameLocation: "middle",
+					nameGap: 15,
+
+					// onZeroBottom: true,
+					tickSizeBottom: 5,
+					tickPaddingBottom: 5,
+					tickRotationBottom: 0,
+
+					// onZeroTop: false,
+					tickSizeTop: 5,
+					tickPaddingTop: 5,
+					tickRotationTop: 0,
+				},
 				axisMinMax: { enableMin: false, minValue: 0, enableMax: false, maxValue: 10000 },
 			},
 		},
@@ -54,12 +106,16 @@ const chartControlsReducer = (state = chartControl, action) => {
 						chartData: "",
 						colorScheme: "walden",
 
+						colorScale: { colorScaleType: "Automatic", min: 0, max: 0 },
+
 						legendOptions: {
 							showLegend: true,
-							moveSlider: "Item Width",
-							symbolWidth: 25,
-							symbolHeight: 25,
-							itemGap: 2,
+							moveSlider: "Width",
+							symbolWidth: 20,
+							symbolHeight: 20,
+							itemGap: 10,
+							position: { pos: "Top", top: "top", left: "center" },
+							orientation: "horizontal",
 						},
 
 						chartMargin: {
@@ -70,6 +126,15 @@ const chartControlsReducer = (state = chartControl, action) => {
 							left: 10,
 						},
 
+						labelOptions: {
+							showLabel: true,
+							labelColor: "#888888",
+							fontSize: 15,
+							fontStyle: "normal",
+							fontWeigth: "normal",
+							fontFamily: "sans-serif",
+						},
+
 						mouseOver: {
 							enable: true,
 						},
@@ -77,6 +142,47 @@ const chartControlsReducer = (state = chartControl, action) => {
 						axisOptions: {
 							xSplitLine: false,
 							ySplitLine: true,
+							inverse: false,
+							yAxis: {
+								position: "left",
+								onZero: true,
+
+								showLabel: true,
+
+								name: "",
+								nameLocation: "middle",
+								nameGap: 15,
+
+								// onZeroLeft: true,
+								tickSizeLeft: 5,
+								tickPaddingLeft: 5,
+								tickRotationLeft: 0,
+
+								// onZeroRight: false,
+								tickSizeRight: 5,
+								tickPaddingRight: 5,
+								tickRotationRight: 0,
+							},
+							xAxis: {
+								position: "bottom",
+								onZero: true,
+
+								showLabel: true,
+
+								name: "",
+								nameLocation: "middle",
+								nameGap: 15,
+
+								// onZeroBottom: true,
+								tickSizeBottom: 5,
+								tickPaddingBottom: 5,
+								tickRotationBottom: 0,
+
+								// onZeroTop: false,
+								tickSizeTop: 5,
+								tickPaddingTop: 5,
+								tickRotationTop: 0,
+							},
 							axisMinMax: {
 								enableMin: false,
 								minValue: 0,
@@ -103,12 +209,16 @@ const chartControlsReducer = (state = chartControl, action) => {
 						chartData: "",
 						colorScheme: "walden",
 
+						colorScale: { colorScaleType: "Automatic", min: 0, max: 0 },
+
 						legendOptions: {
 							showLegend: true,
-							moveSlider: "Item Width",
-							symbolWidth: 25,
-							symbolHeight: 25,
-							itemGap: 2,
+							moveSlider: "Width",
+							symbolWidth: 20,
+							symbolHeight: 20,
+							itemGap: 10,
+							position: { pos: "Top", top: "top", left: "center" },
+							orientation: "horizontal",
 						},
 
 						chartMargin: {
@@ -119,6 +229,15 @@ const chartControlsReducer = (state = chartControl, action) => {
 							left: 10,
 						},
 
+						labelOptions: {
+							showLabel: true,
+							labelColor: "#888888",
+							fontSize: 15,
+							fontStyle: "normal",
+							fontWeigth: "normal",
+							fontFamily: "sans-serif",
+						},
+
 						mouseOver: {
 							enable: true,
 						},
@@ -126,6 +245,47 @@ const chartControlsReducer = (state = chartControl, action) => {
 						axisOptions: {
 							xSplitLine: false,
 							ySplitLine: true,
+							inverse: false,
+							yAxis: {
+								position: "left",
+								onZero: true,
+
+								showLabel: true,
+
+								name: "",
+								nameLocation: "middle",
+								nameGap: 15,
+
+								// onZeroLeft: true,
+								tickSizeLeft: 5,
+								tickPaddingLeft: 5,
+								tickRotationLeft: 0,
+
+								// onZeroRight: false,
+								tickSizeRight: 5,
+								tickPaddingRight: 5,
+								tickRotationRight: 0,
+							},
+							xAxis: {
+								position: "bottom",
+								onZero: true,
+
+								showLabel: true,
+
+								name: "",
+								nameLocation: "middle",
+								nameGap: 15,
+
+								// onZeroBottom: true,
+								tickSizeBottom: 5,
+								tickPaddingBottom: 5,
+								tickRotationBottom: 0,
+
+								// onZeroTop: false,
+								tickSizeTop: 5,
+								tickPaddingTop: 5,
+								tickRotationTop: 0,
+							},
 							axisMinMax: {
 								enableMin: false,
 								minValue: 0,
@@ -244,6 +404,17 @@ const chartControlsReducer = (state = chartControl, action) => {
 							},
 						},
 					});
+				case "axisBottom":
+				case "axisLeft":
+				case "axisTop":
+				case "axisRight":
+					return update(state, {
+						properties: {
+							[action.payload.propKey]: {
+								axisOptions: { selectedAxis: { $set: action.payload.value } },
+							},
+						},
+					});
 			}
 
 		case "AXIS_MIN_MAX":
@@ -254,6 +425,132 @@ const chartControlsReducer = (state = chartControl, action) => {
 						axisOptions: {
 							axisMinMax: {
 								[action.payload.axisKey]: { $set: action.payload.axisValue },
+							},
+						},
+					},
+				},
+			});
+		case "SET_COLOR_SCALE_OPTION":
+			console.log("CHANGING COLOR SCALE OPTION");
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						colorScale: {
+							[action.payload.option]: { $set: action.payload.value },
+						},
+					},
+				},
+			});
+
+		case "UPDATE_LABEL_OPTIONS":
+			// console.log(action.payload.option, action.payload.value);
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						labelOptions: { [action.payload.option]: { $set: action.payload.value } },
+					},
+				},
+			});
+		case "UPDATE_REVERSE":
+			console.log("updating reverse");
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						axisOptions: { inverse: { $set: action.payload.value } },
+					},
+				},
+			});
+		case "UPDATE_X_OR_Y_AXIS":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						axisOptions: {
+							[action.payload.axis]: {
+								position: {
+									$set: action.payload.value,
+								},
+							},
+						},
+					},
+				},
+			});
+
+		case "TOGGLE_AXIS_ON_ZERO":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						axisOptions: {
+							[action.payload.axis]: {
+								onZero: {
+									$set: action.payload.value,
+								},
+							},
+						},
+					},
+				},
+			});
+
+		case "UPDATE_TICK_SIZE":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						axisOptions: {
+							[action.payload.axis]: {
+								[action.payload.option]: {
+									$set: action.payload.value,
+								},
+							},
+						},
+					},
+				},
+			});
+
+		case "SET_AXIS_LABEL_MARGIN":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						axisOptions: {
+							[action.payload.axis]: {
+								[action.payload.option]: { $set: action.payload.value },
+							},
+						},
+					},
+				},
+			});
+
+		case "SET_AXIS_LABEL_ANGLE":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						axisOptions: {
+							[action.payload.axis]: {
+								[action.payload.option]: { $set: action.payload.value },
+							},
+						},
+					},
+				},
+			});
+
+		case "SET_AXIS_LABEL_SHOW_OR_HIDE":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						axisOptions: {
+							[action.payload.axis]: {
+								[action.payload.option]: { $set: action.payload.value },
+							},
+						},
+					},
+				},
+			});
+
+		case "UPDATE_AXIS_NAME_PROPS":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						axisOptions: {
+							[action.payload.axis]: {
+								[action.payload.option]: { $set: action.payload.value },
 							},
 						},
 					},

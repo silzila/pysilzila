@@ -88,7 +88,16 @@ const FunnelChart = ({
 					},
 					xAxis: {},
 					yAxis: {},
-					series: [{ type: "funnel" }],
+					series: [
+						{
+							type: "funnel",
+							label: {
+								show: property.labelOptions.showLabel,
+								fontSize: property.labelOptions.fontSize,
+								color: property.labelOptions.labelColor,
+							},
+						},
+					],
 				}}
 			/>
 		);

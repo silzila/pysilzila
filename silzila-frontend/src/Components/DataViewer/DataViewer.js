@@ -59,7 +59,7 @@ function DataViewer({
 
 			<div className="tabArea">
 				<TabRibbon />
-				{tabTileProps.showDash ? (
+				{tabTileProps.showDash || tabTileProps.dashMode === "Present" ? (
 					<div style={{ display: "flex", alignItems: "center" }}>
 						{tabTileProps.dashMode === "Edit" ? (
 							<>
@@ -116,7 +116,6 @@ function DataViewer({
 							onChange={(e) => {
 								console.log(e.target.value);
 								toggleDashMode(e.target.value);
-								toggleDashModeInTab(tabTileProps.selectedTabId, e.target.value);
 							}}
 						>
 							<MenuItem sx={menuStyle} value="Edit">

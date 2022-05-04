@@ -36,6 +36,23 @@ export const removeMultipleChartControls = (tabId) => {
 	return { type: "DELETE_CONTROLS_OF_TAB", payload: tabId };
 };
 
+// ===================================
+// Color Scale
+export const setColorScaleOption = (option, value, propKey) => {
+	return {
+		type: "SET_COLOR_SCALE_OPTION",
+		payload: { option: option, value: value, propKey: propKey },
+	};
+};
+// ===================================
+// Labels
+
+export const updateLabelOption = (propKey, option, value) => {
+	return {
+		type: "UPDATE_LABEL_OPTIONS",
+		payload: { propKey: propKey, option: option, value: value },
+	};
+};
 // ==============================
 // Legend
 
@@ -81,4 +98,35 @@ export const enableGrid = (propKey, value, show) => {
 export const updateAxisMinMax = (propKey, axisKey, axisValue) => {
 	console.log("AXIS_MIN_MAX", propKey, axisKey, axisValue);
 	return { type: "AXIS_MIN_MAX", payload: { propKey, axisKey, axisValue } };
+};
+
+export const updateReverse = (propKey, value) => {
+	return { type: "UPDATE_REVERSE", payload: { propKey, value } };
+};
+
+export const updateAxisPosition = (propKey, axis, value) => {
+	return { type: "UPDATE_X_OR_Y_AXIS", payload: { propKey, axis, value } };
+};
+
+export const toggleOnZeroProp = (propKey, axis, value) => {
+	return { type: "TOGGLE_AXIS_ON_ZERO", payload: { propKey, axis, value } };
+};
+
+export const updateTickSize = (propKey, axis, option, value) => {
+	return { type: "UPDATE_TICK_SIZE", payload: { propKey, axis, option, value } };
+};
+export const updateTickPadding = (propKey, axis, option, value) => {
+	return { type: "SET_AXIS_LABEL_MARGIN", payload: { propKey, axis, option, value } };
+};
+
+export const setLabelAngle = (propKey, axis, option, value) => {
+	return { type: "SET_AXIS_LABEL_ANGLE", payload: { propKey, axis, option, value } };
+};
+
+export const setShowAxisLabel = (propKey, axis, option, value) => {
+	return { type: "SET_AXIS_LABEL_SHOW_OR_HIDE", payload: { propKey, axis, option, value } };
+};
+
+export const setAxisNameProps = (propKey, axis, option, value) => {
+	return { type: "UPDATE_AXIS_NAME_PROPS", payload: { propKey, axis, option, value } };
 };

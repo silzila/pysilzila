@@ -22,7 +22,14 @@ const MultiBar = ({
 		emphasis: {
 			focus: "series",
 		},
+		label: {
+			show: property.labelOptions.showLabel,
+			fontSize: property.labelOptions.fontSize,
+			color: property.labelOptions.labelColor,
+		},
 	};
+
+	console.log(seriesObj);
 
 	const [seriesData, setSeriesData] = useState([]);
 
@@ -34,7 +41,7 @@ const MultiBar = ({
 			}
 			setSeriesData(seriesDataTemp);
 		}
-	}, [chartData]);
+	}, [chartData, property]);
 
 	const RenderChart = () => {
 		return (
@@ -78,8 +85,34 @@ const MultiBar = ({
 							show: property.axisOptions?.xSplitLine,
 						},
 						type: "category",
+						position: property.axisOptions.xAxis.position,
+
+						axisLine: {
+							onZero: property.axisOptions.xAxis.onZero,
+						},
+
+						show: property.axisOptions.xAxis.showLabel,
+
+						name: property.axisOptions.xAxis.name,
+						nameLocation: property.axisOptions.xAxis.nameLocation,
+						nameGap: property.axisOptions.xAxis.nameGap,
+
 						axisTick: {
 							alignWithLabel: true,
+							length:
+								property.axisOptions.xAxis.position === "top"
+									? property.axisOptions.xAxis.tickSizeTop
+									: property.axisOptions.xAxis.tickSizeBottom,
+						},
+						axisLabel: {
+							rotate:
+								property.axisOptions.xAxis.position === "top"
+									? property.axisOptions.xAxis.tickRotationTop
+									: property.axisOptions.xAxis.tickRotationBottom,
+							margin:
+								property.axisOptions.xAxis.position === "top"
+									? property.axisOptions.xAxis.tickPaddingTop
+									: property.axisOptions.xAxis.tickPaddingBottom,
 						},
 					},
 					yAxis: {
@@ -92,6 +125,39 @@ const MultiBar = ({
 						max: property.axisOptions.axisMinMax.enableMax
 							? property.axisOptions.axisMinMax.maxValue
 							: null,
+
+						inverse: property.axisOptions.inverse,
+
+						position: property.axisOptions.yAxis.position,
+
+						axisLine: {
+							onZero: property.axisOptions.yAxis.onZero,
+						},
+
+						axisTick: {
+							alignWithLabel: true,
+							length:
+								property.axisOptions.yAxis.position === "left"
+									? property.axisOptions.yAxis.tickSizeLeft
+									: property.axisOptions.yAxis.tickSizeRight,
+						},
+
+						axisLabel: {
+							rotate:
+								property.axisOptions.yAxis.position === "left"
+									? property.axisOptions.yAxis.tickRotationLeft
+									: property.axisOptions.yAxis.tickRotationRight,
+							margin:
+								property.axisOptions.yAxis.position === "left"
+									? property.axisOptions.yAxis.tickPaddingLeft
+									: property.axisOptions.yAxis.tickPaddingRight,
+						},
+
+						show: property.axisOptions.yAxis.showLabel,
+
+						name: property.axisOptions.yAxis.name,
+						nameLocation: property.axisOptions.yAxis.nameLocation,
+						nameGap: property.axisOptions.yAxis.nameGap,
 
 						// TODO: Priority 1 - Log scale
 						// type: "log",

@@ -17,7 +17,15 @@ const PieChart = ({
 	let chartData = property.chartData ? property.chartData.result : "";
 	console.log(chartData, "+++++ chartData +++++");
 
-	var seriesObj = { type: "pie" };
+	var seriesObj = {
+		type: "pie",
+		label: {
+			position: "outSide",
+			show: property.labelOptions.showLabel,
+			fontSize: property.labelOptions.fontSize,
+			color: property.labelOptions.labelColor,
+		},
+	};
 
 	const [seriesData, setSeriesData] = useState([]);
 
@@ -70,7 +78,17 @@ const PieChart = ({
 						},
 						xAxis: {},
 						yAxis: { type: "category" },
-						series: [{ type: "pie" }],
+						series: [
+							{
+								type: "pie",
+								label: {
+									// position: "outSide",
+									show: property.labelOptions.showLabel,
+									fontSize: property.labelOptions.fontSize,
+									color: property.labelOptions.labelColor,
+								},
+							},
+						],
 					}}
 				/>
 			</>

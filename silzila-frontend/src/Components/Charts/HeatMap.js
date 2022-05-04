@@ -77,17 +77,47 @@ const HeatMap = ({
 					},
 					xAxis: {
 						type: "category",
+						// show: property.axisOptions.xAxis.showLabel,
+
+						// name: property.axisOptions.xAxis.name,
+						// nameLocation: property.axisOptions.xAxis.nameLocation,
+						// nameGap: property.axisOptions.xAxis.nameGap,
 					},
 					yAxis: {
 						type: "category",
+
+						// show: property.axisOptions.yAxis.showLabel,
+
+						// name: property.axisOptions.yAxis.name,
+						// nameLocation: property.axisOptions.yAxis.nameLocation,
+						// nameGap: property.axisOptions.yAxis.nameGap,
 					},
 					visualMap: [
 						{
-							min: 0,
-							max: maxValue,
+							min:
+								property.colorScale.colorScaleType === "Manual"
+									? property.colorScale.min !== ""
+										? parseInt(property.colorScale.min)
+										: 0
+									: 0,
+							max:
+								property.colorScale.colorScaleType === "Manual"
+									? property.colorScale.max !== ""
+										? parseInt(property.colorScale.max)
+										: 0
+									: maxValue,
 						},
 					],
-					series: [{ type: "heatmap" }],
+					series: [
+						{
+							type: "heatmap",
+							label: {
+								show: property.labelOptions.showLabel,
+								fontSize: property.labelOptions.fontSize,
+								color: property.labelOptions.labelColor,
+							},
+						},
+					],
 				}}
 			/>
 		);

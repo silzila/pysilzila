@@ -303,6 +303,9 @@ const GraphArea = ({
 							autoFocus
 							style={{
 								fontSize: chartProperties.properties[propKey].titleOptions.fontSize,
+
+								textAlign:
+									chartProperties.properties[propKey].titleOptions.titleAlign,
 							}}
 							type="text"
 							className="editTitle"
@@ -317,6 +320,11 @@ const GraphArea = ({
 							className="graphTitle"
 							style={{
 								fontSize: chartProperties.properties[propKey].titleOptions.fontSize,
+								textAlign:
+									chartProperties.properties[propKey].titleOptions.titleAlign,
+								paddingLeft:
+									chartProperties.properties[propKey].titleOptions
+										.titleLeftPadding,
 							}}
 							onDoubleClick={() => editTitleText()}
 							title="Double click to set title manually"

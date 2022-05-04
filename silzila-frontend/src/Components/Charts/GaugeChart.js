@@ -15,7 +15,6 @@ const GaugeChart = ({
 	console.log(property, "+++++ PROPERTY +++++");
 	let chartData = property.chartData ? property.chartData.result : "";
 	console.log(chartData, "+++++ chartData +++++");
-
 	const [newData, setNewData] = useState([]);
 
 	useEffect(() => {
@@ -31,6 +30,8 @@ const GaugeChart = ({
 			setNewData(newTempData);
 		}
 	}, [chartData]);
+
+	console.log(newData, "***@@@@***");
 
 	const RenderChart = () => {
 		return (
@@ -88,7 +89,23 @@ const GaugeChart = ({
 					series: [
 						{
 							type: "gauge",
-							max: newData[0] ? newData[0].value * 2 : 0,
+							max:
+								property.colorScale.colorScaleType === "Manual"
+									? property.colorScale.max !== ""
+										? parseInt(property.colorScale.max)
+										: newData[0]
+										? newData[0].value * 2
+										: 0
+									: newData[0]
+									? newData[0].value * 2
+									: 0,
+
+							min:
+								property.colorScale.colorScaleType === "Manual"
+									? property.colorScale.min !== ""
+										? parseInt(property.colorScale.min)
+										: 0
+									: 0,
 							data: newData,
 
 							axisLine: {
@@ -102,6 +119,13 @@ const GaugeChart = ({
 								},
 
 								roundCap: true,
+							},
+
+							axisLabel: {
+								// position: "outSide",
+								show: property.labelOptions.showLabel,
+								fontSize: property.labelOptions.fontSize,
+								color: property.labelOptions.labelColor,
 							},
 						},
 					],

@@ -41,6 +41,8 @@ const chartProperties = {
 
 			titleOptions: {
 				fontSize: 28,
+				titleLeftPadding: "20px",
+				titleAlign: "center",
 				chartTitle: "",
 				generateTitle: "Auto",
 			},
@@ -110,6 +112,8 @@ const chartPropertiesState = (state = chartProperties, action) => {
 
 						titleOptions: {
 							fontSize: 28,
+							titleLeftPadding: "20px",
+							titleAlign: "center",
 							chartTitle: "",
 							generateTitle: "Auto",
 						},
@@ -156,6 +160,8 @@ const chartPropertiesState = (state = chartProperties, action) => {
 
 						titleOptions: {
 							fontSize: 28,
+							titleLeftPadding: "20px",
+							titleAlign: "center",
 							chartTitle: "",
 							generateTitle: "Auto",
 						},
@@ -355,6 +361,15 @@ const chartPropertiesState = (state = chartProperties, action) => {
 				properties: {
 					[action.payload.propKey]: {
 						titleOptions: { generateTitle: { $set: action.payload.generateTitle } },
+					},
+				},
+			});
+
+		case "SET_TITLE_ALIGN":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						titleOptions: { titleAlign: { $set: action.payload.align } },
 					},
 				},
 			});

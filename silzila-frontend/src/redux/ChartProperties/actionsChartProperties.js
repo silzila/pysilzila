@@ -163,6 +163,13 @@ export const setGenerateTitle = (propKey, generateTitle) => {
 	};
 };
 
+export const setTitleAlignment = (propKey, align) => {
+	return {
+		type: "SET_TITLE_ALIGN",
+		payload: { propKey, align },
+	};
+};
+
 export const sortAxes = (propKey, bIndex, dragUId, dropUId) => {
 	console.log("SORTING ITEM", propKey, bIndex, dragUId, dropUId);
 	return {

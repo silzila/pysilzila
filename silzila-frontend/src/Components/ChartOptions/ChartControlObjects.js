@@ -22,17 +22,25 @@ const ChartControlObjects = ({
 		"Margin",
 		"Tooltip",
 		"Labels",
-		"Style",
+		// "Style",
 		"Grid/Axes",
 	];
 
-	const pieOptionsList = ["Title", "Colors", "Legend", "Margin", "Tooltip", "Labels", "Style"];
+	const pieOptionsList = [
+		"Title",
+		"Colors",
+		"Legend",
+		"Margin",
+		"Tooltip",
+		"Labels",
+		// ,"Style"
+	];
 
 	const funnelOptionList = ["Title", "Colors", "Legend", "Margin", "Tooltip"];
 
 	const gaugeOptionList = ["Title", "Colors", "Margin", "Tooltip"];
 
-	const heatmapOptionList = ["Title", "Colors", "Margin", "Tooltip"];
+	const heatmapOptionList = ["Title", "Colors", "Margin", "Tooltip", "Labels"];
 
 	const RenderOptions = () => {
 		switch (selectedChart) {
@@ -78,7 +86,7 @@ const ChartControlObjects = ({
 				return funnelOptionList.map((option) => {
 					return (
 						<div
-							ley={option}
+							key={option}
 							className={
 								chartProp.properties[propKey].chartOptionSelected === option
 									? "optionImageSelected"
@@ -95,7 +103,7 @@ const ChartControlObjects = ({
 				return gaugeOptionList.map((option) => {
 					return (
 						<div
-							ley={option}
+							key={option}
 							className={
 								chartProp.properties[propKey].chartOptionSelected === option
 									? "optionImageSelected"
@@ -112,7 +120,7 @@ const ChartControlObjects = ({
 				return heatmapOptionList.map((option) => {
 					return (
 						<div
-							ley={option}
+							key={option}
 							className={
 								chartProp.properties[propKey].chartOptionSelected === option
 									? "optionImageSelected"

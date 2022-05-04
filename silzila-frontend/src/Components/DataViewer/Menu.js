@@ -69,7 +69,7 @@ const Menu = ({
 			{/* - control buttons  */}
 			{/* - user account information */}
 
-			{tabState.tabs[tabTileProps.selectedTabId].showDash ? null : (
+			{tabState.tabs[tabTileProps.selectedTabId].showDash || tabTileProps.showDash ? null : (
 				<React.Fragment>
 					<div className="quickSettingsGroup">
 						<RenderScreenOption />

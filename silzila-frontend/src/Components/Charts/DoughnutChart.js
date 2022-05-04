@@ -70,7 +70,18 @@ const DoughnutChart = ({
 						},
 						xAxis: { type: "category" },
 						yAxis: {},
-						series: [{ type: "pie", radius: ["40%", "70%"] }],
+						series: [
+							{
+								type: "pie",
+								label: {
+									position: "outSide",
+									show: property.labelOptions.showLabel,
+									fontSize: property.labelOptions.fontSize,
+									color: property.labelOptions.labelColor,
+								},
+								radius: ["40%", "70%"],
+							},
+						],
 					}}
 				/>
 			</>
