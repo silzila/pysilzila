@@ -1,66 +1,6 @@
 import update from "immutability-helper";
 
-const SampleRecordsReducer = (
-	state = {
-		recordsColumnType: {
-			dspost: {
-				s: [
-					{
-						column_name: "store_id",
-						data_type: "integer",
-					},
-					{
-						column_name: "store_name",
-						data_type: "text",
-					},
-					{
-						column_name: "city",
-						data_type: "text",
-					},
-					{
-						column_name: "region",
-						data_type: "text",
-					},
-				],
-			},
-		},
-		dspost: {
-			s: [
-				{
-					store_id: 1,
-					store_name: "Spencers",
-					city: "Chennai",
-					region: "South",
-				},
-				{
-					store_id: 2,
-					store_name: "Orion",
-					city: "Bangalore",
-					region: "South",
-				},
-				{
-					store_id: 3,
-					store_name: "Palladium",
-					city: "Pune",
-					region: "West",
-				},
-				{
-					store_id: 4,
-					store_name: "Phoenix",
-					city: "Mumbai",
-					region: "West",
-				},
-				{
-					store_id: 5,
-					store_name: "CP",
-					city: "Delhi",
-					region: "North",
-				},
-			],
-		},
-	},
-	action
-) => {
+const SampleRecordsReducer = (state = { recordsColumnType: {} }, action) => {
 	switch (action.type) {
 		case "ADD_TABLE_RECORDS":
 			console.log(action.payload.ds_uid, action.payload.tableId, action.payload.columnType);

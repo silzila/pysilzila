@@ -51,22 +51,10 @@ const HeatMap = ({
 					// TODO: Priorit 5 - Margin doesn't reflect in graph
 					// Margin for a Funnel chart changes only the grid line and not the actual funnel graph
 					grid: {
-						left:
-							chartArea === "dashboard"
-								? `${property.chartMargin.left + 10}%`
-								: `${property.chartMargin.left}%`,
-						right:
-							chartArea === "dashboard"
-								? `${property.chartMargin.right + 0}%`
-								: `${property.chartMargin.right}%`,
-						top:
-							chartArea === "dashboard"
-								? `${property.chartMargin.top + 10}%`
-								: `${property.chartMargin.top}%`,
-						bottom:
-							chartArea === "dashboard"
-								? `${property.chartMargin.bottom + 5}%`
-								: `${property.chartMargin.bottom}%`,
+						left: property.chartMargin.left,
+						right: property.chartMargin.right,
+						top: property.chartMargin.top,
+						bottom: property.chartMargin.bottom,
 					},
 
 					label: { show: true, fontSize: 14 },
