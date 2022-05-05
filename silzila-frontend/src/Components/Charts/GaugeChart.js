@@ -120,12 +120,17 @@ const GaugeChart = ({
 
 								roundCap: true,
 							},
+							startAngle: property.axisOptions.gaugeAxisOptions.startAngle,
+							endAngle: property.axisOptions.gaugeAxisOptions.endAngle,
+							axisTick: {
+								show: property.axisOptions.gaugeAxisOptions.showTick,
+								length: property.axisOptions.gaugeAxisOptions.tickSize,
+								distance: property.axisOptions.gaugeAxisOptions.tickPadding,
+							},
 
 							axisLabel: {
-								// position: "outSide",
-								show: property.labelOptions.showLabel,
-								fontSize: property.labelOptions.fontSize,
-								color: property.labelOptions.labelColor,
+								show: property.axisOptions.gaugeAxisOptions.showAxisLabel,
+								distance: property.axisOptions.gaugeAxisOptions.labelPadding,
 							},
 						},
 					],

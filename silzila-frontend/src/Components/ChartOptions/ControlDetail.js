@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import ChartColors from "./Color/ChartColors";
 import ColorScale from "./Color/ColorScale";
+import AxisControls from "./GridAndAxes/AxisControls";
 import GridAndAxes from "./GridAndAxes/GridAndAxes";
 import ChartLabels from "./Labels/ChartLabels";
 import ChartLegend from "./Legend/ChartLegend";
@@ -37,19 +38,11 @@ const ControlDetail = ({ chartProp, tabTileProps }) => {
 				return <ChartMouseOver />;
 
 			case "Grid/Axes":
-				if (
-					chartType === "heatmap" ||
-					chartType === "gauge" ||
-					chartType === "funnel" ||
-					chartType === "pie" ||
-					chartType === "donut"
-				) {
-					return null;
-				} else {
-					return <GridAndAxes />;
-				}
+				return <GridAndAxes />;
 			case "Labels":
 				return <ChartLabels />;
+			case "Axis":
+				return <AxisControls />;
 
 			default:
 				return (

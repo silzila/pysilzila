@@ -1,20 +1,29 @@
-import { FormControl, Input, MenuItem, Select, TextField } from "@mui/material";
+import { FormControl, MenuItem, Select, TextField } from "@mui/material";
 import React from "react";
 import { connect } from "react-redux";
 import {
 	enableGrid,
-	setLabelAngle,
-	toggleOnZeroProp,
 	updateAxisMinMax,
-	updateAxisPosition,
+	updateAxisOptions,
+	updateGaugeAxisOptions,
 	updateReverse,
-	updateTickPadding,
-	updateTickSize,
-	setShowAxisLabel,
-	setAxisNameProps,
 } from "../../../redux/ChartProperties/actionsChartControls";
-import InputNumber from "../CommonFunctions/InputNumber";
 import SliderWithInput from "../SliderWithInput";
+// import GridControls from "./GridControls";
+// import ControlsForXAxis from "./ControlsForXAxis";
+// import ControlsForYAxis from "./ControlsForYAxis";
+import InputNumber from "../CommonFunctions/InputNumber";
+
+const textFieldStyleProps = {
+	style: {
+		fontSize: "12px",
+		width: "90%",
+		margin: "0 auto 0.5rem auto",
+		backgroundColor: "white",
+		height: "1.5rem",
+		color: "#404040",
+	},
+};
 
 const GridAndAxes = ({
 	// state
@@ -22,21 +31,19 @@ const GridAndAxes = ({
 	tabTileProps,
 	chartProp,
 
-	// dispatch
-	enableGrids,
+	//dispatch
+	updateGaugeAxisOptions,
 	setAxisMinMax,
 	setReverse,
-	updateAxisPosition,
-	toggleOnZeroProp,
-	updateTickSize,
-	updateTickPadding,
-	setLabelAngle,
-	setShowAxisLabel,
-	setAxisNameProps,
+	enableGrids,
+	updateAxisOptions,
 }) => {
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
-
 	var property = chartControl.properties[propKey].axisOptions;
+
+	// var selectedChart = chartProp[propKey].chartType;
+	var xAxisProps = property.xAxis;
+	var yAxisProps = property.yAxis;
 
 	const positions = [
 		{ name: "Start", value: "start" },
@@ -44,6 +51,7 @@ const GridAndAxes = ({
 		{ name: "End", value: "end" },
 	];
 
+	// ============================================== GRID =====================================================
 	const gridOptions = [
 		{ type: "Enable X-grid", value: "xSplitLine" },
 		{ type: "Enable Y-grid", value: "ySplitLine" },
@@ -66,6 +74,8 @@ const GridAndAxes = ({
 		});
 	};
 
+	// ============================================ X-Axis ======================================================
+
 	const axisOptionsForX = [
 		{ type: "Bottom", value: "bottom" },
 		{ type: "Top", value: "top" },
@@ -83,8 +93,9 @@ const GridAndAxes = ({
 					}
 					value={item.value}
 					onClick={(e) => {
-						updateAxisPosition(propKey, "xAxis", item.value);
-						toggleOnZeroProp(propKey, "xAxis", !property.xAxis.onZero);
+						console.log("SETTING X-AXIS POSITION");
+						updateAxisOptions(propKey, "xAxis", "position", item.value);
+						updateAxisOptions(propKey, "xAxis", "onZero", !property.xAxis.onZero);
 					}}
 				>
 					{item.type}
@@ -93,6 +104,7 @@ const GridAndAxes = ({
 		});
 	};
 
+	// ============================================= Y - AXIS ===================================================
 	const axisOptionsForY = [
 		{ type: "Left", value: "left" },
 		{ type: "Right", value: "right" },
@@ -104,14 +116,13 @@ const GridAndAxes = ({
 				<div
 					key={item.value}
 					className={
-						item.value === property.yAxis.position
-							? "radioButtonSelected"
-							: "radioButton"
+						item.value === yAxisProps.position ? "radioButtonSelected" : "radioButton"
 					}
 					value={item.value}
 					onClick={(e) => {
-						updateAxisPosition(propKey, "yAxis", item.value);
-						toggleOnZeroProp(propKey, "yAxis", !property.yAxis.onZero);
+						console.log("SETTING Y-AXIS POSITION");
+						updateAxisOptions(propKey, "yAxis", "position", item.value);
+						updateAxisOptions(propKey, "yAxis", "onZero", !yAxisProps.onZero);
 					}}
 				>
 					{item.type}
@@ -121,7 +132,11 @@ const GridAndAxes = ({
 	};
 
 	return (
-		<div className="optionsInfo" style={{ height: "400px", overflow: "auto" }}>
+		<div className="optionsInfo">
+			{/* 
+			======================================================================================================
+			                                        GRID PROPS
+			====================================================================================================== */}
 			<React.Fragment>
 				<div className="optionDescription">GRID</div>
 				<div className="radioButtons">{renderGridOptions()}</div>
@@ -185,43 +200,43 @@ const GridAndAxes = ({
 					/>
 				) : null}
 			</div>
+			{/* ==================================================================================
+                                                 AXIS PROPS
+			================================================================================== */}
+
+			{/* =========================================================================================
+			                                    X - AXIS PROPS
+			========================================================================================= */}
 			<div className="optionDescription">X-AXES</div>
 
-			{/* </FormControl> */}
 			<div className="optionDescription">
 				<input
 					type="checkbox"
 					id="enableDisable"
-					checked={property.xAxis.showLabel}
+					checked={xAxisProps.showLabel}
 					onChange={(e) => {
-						setShowAxisLabel(propKey, "xAxis", "showLabel", !property.xAxis.showLabel);
+						console.log("SETTING  AXIS LABEL SHOW OR HIDE");
+						updateAxisOptions(propKey, "xAxis", "showLabel", !xAxisProps.showLabel);
 					}}
 				/>
 				<label for="enableDisable" className="enableDisableLabel">
 					show Label
 				</label>
 			</div>
-			{property.xAxis.showLabel ? (
+			{xAxisProps.showLabel ? (
 				<React.Fragment>
 					<div className="radioButtons">{renderAxisOptionsForX()}</div>
 
 					<div className="optionDescription">Axis Name</div>
-					{/* <FormControl fullWidth size="small" style={{ fontSize: "12px", borderRadius: "4px" }}> */}
-					{/* <TextField */}
-					<input
-						value={property.xAxis.name}
+					<TextField
+						value={xAxisProps.name}
 						variant="outlined"
-						onChange={(e) => setAxisNameProps(propKey, "xAxis", "name", e.target.value)}
-						// sx={{
-						// 	fontSize: "12px",
-						// 	width: "90%",
-						// 	margin: "0 auto 0.5rem auto",
-						// 	backgroundColor: "white",
-						// 	height: "20px",
-						// 	color: "#404040",
-						// }}
+						onChange={(e) => {
+							console.log("SETTING X-AXIS NAME");
+							updateAxisOptions(propKey, "xAxis", "name", e.target.value);
+						}}
+						InputProps={{ ...textFieldStyleProps }}
 					/>
-					{/* </FormControl> */}
 
 					<div className="optionDescription">Name Position</div>
 					<FormControl
@@ -231,10 +246,11 @@ const GridAndAxes = ({
 					>
 						<Select
 							label=""
-							value={property.xAxis.nameLocation}
+							value={xAxisProps.nameLocation}
 							variant="outlined"
 							onChange={(e) => {
-								setAxisNameProps(propKey, "xAxis", "nameLocation", e.target.value);
+								console.log("SETTING X-AXIS NAME POSITION");
+								updateAxisOptions(propKey, "xAxis", "nameLocation", e.target.value);
 							}}
 							sx={{
 								fontSize: "12px",
@@ -262,38 +278,33 @@ const GridAndAxes = ({
 						</Select>
 					</FormControl>
 					<div className="optionDescription">Name Gap</div>
-					{/* <FormControl fullWidth size="small" style={{ fontSize: "12px", borderRadius: "4px" }}> */}
-					{/* <TextField */}
-					<input
-						value={property.xAxis.nameGap}
+
+					<TextField
+						value={xAxisProps.nameGap}
 						variant="outlined"
 						onChange={(e) => {
-							setAxisNameProps(propKey, "xAxis", "nameGap", e.target.value);
+							console.log("SETTING X-AXIS NAME MARGIN");
+							updateAxisOptions(propKey, "xAxis", "nameGap", e.target.value);
 						}}
-						// sx={{
-						// 	fontSize: "12px",
-						// 	width: "90%",
-						// 	margin: "0 auto 0.5rem auto",
-						// 	backgroundColor: "white",
-						// 	height: "20px",
-						// 	color: "#404040",
-						// }}
+						InputProps={{ ...textFieldStyleProps }}
 					/>
 
 					<div className="optionDescription">Tick Size</div>
 					<SliderWithInput
 						percent={false}
 						sliderValue={
-							property.xAxis.position === "top"
-								? property.xAxis.tickSizeTop
-								: property.xAxis.tickSizeBottom
+							xAxisProps.position === "top"
+								? xAxisProps.tickSizeTop
+								: xAxisProps.tickSizeBottom
 						}
 						sliderMinMax={{ min: 0, max: 20, step: 1 }}
 						changeValue={(value) => {
-							if (property.xAxis.position === "top") {
-								updateTickSize(propKey, "xAxis", "tickSizeTop", value);
-							} else if (property.xAxis.position === "bottom") {
-								updateTickSize(propKey, "xAxis", "tickSizeBottom", value);
+							if (xAxisProps.position === "top") {
+								// CHANGING TICK SIZE OF X-AXIS WHEN POSITION IS TOP
+								updateAxisOptions(propKey, "xAxis", "tickSizeTop", value);
+							} else if (xAxisProps.position === "bottom") {
+								// CHANGING TICK SIZE OF X-AXIS WHEN POSITION IS BOTTOM
+								updateAxisOptions(propKey, "xAxis", "tickSizeBottom", value);
 							}
 						}}
 					/>
@@ -301,16 +312,18 @@ const GridAndAxes = ({
 					<SliderWithInput
 						percent={false}
 						sliderValue={
-							property.xAxis.position === "top"
-								? property.xAxis.tickPaddingTop
-								: property.xAxis.tickPaddingBottom
+							xAxisProps.position === "top"
+								? xAxisProps.tickPaddingTop
+								: xAxisProps.tickPaddingBottom
 						}
 						sliderMinMax={{ min: 0, max: 20, step: 1 }}
 						changeValue={(value) => {
-							if (property.xAxis.position === "top") {
-								updateTickPadding(propKey, "xAxis", "tickPaddingTop", value);
-							} else if (property.xAxis.position === "bottom") {
-								updateTickPadding(propKey, "xAxis", "tickPaddingBottom", value);
+							if (xAxisProps.position === "top") {
+								//CHANGING TICK PADDING OF X-AXIS WHEN POSITION IS IN TOP
+								updateAxisOptions(propKey, "xAxis", "tickPaddingTop", value);
+							} else if (xAxisProps.position === "bottom") {
+								//CHANGING TICK PADDING OF X-AXIS WHEN POSITION IS IN BOTTOM
+								updateAxisOptions(propKey, "xAxis", "tickPaddingBottom", value);
 							}
 						}}
 					/>
@@ -318,57 +331,57 @@ const GridAndAxes = ({
 					<SliderWithInput
 						degree={true}
 						sliderValue={
-							property.xAxis.position === "top"
-								? property.xAxis.tickRotationTop
-								: property.xAxis.tickRotationBottom
+							xAxisProps.position === "top"
+								? xAxisProps.tickRotationTop
+								: xAxisProps.tickRotationBottom
 						}
 						sliderMinMax={{ min: -90, max: 90, step: 1 }}
 						changeValue={(value) => {
-							if (property.xAxis.position === "top") {
-								setLabelAngle(propKey, "xAxis", "tickRotationTop", value);
-							} else if (property.xAxis.position === "bottom") {
-								setLabelAngle(propKey, "xAxis", "tickRotationBottom", value);
+							if (xAxisProps.position === "top") {
+								// SET TICK ROTATION OF X-AXIS WHEN POSITION IS IN TOP
+								updateAxisOptions(propKey, "xAxis", "tickRotationTop", value);
+							} else if (xAxisProps.position === "bottom") {
+								// SET TICK ROTATION OF X-AXIS WHEN POSITION IS IN TOP
+								updateAxisOptions(propKey, "xAxis", "tickRotationBottom", value);
 							}
 						}}
 					/>
 				</React.Fragment>
 			) : null}
 
+			{/* ============================================================================================
+			Y-AXIS PROPS
+			============================================================================================ */}
 			<div className="optionDescription">Y-AXES</div>
 			<div className="optionDescription">
 				<input
 					type="checkbox"
 					id="enableDisable"
-					checked={property.yAxis.showLabel}
+					checked={yAxisProps.showLabel}
 					onChange={(e) => {
-						setShowAxisLabel(propKey, "yAxis", "showLabel", !property.yAxis.showLabel);
+						console.log("SETTING Y-AXIS LABEL SHOW OR HIDE");
+						updateAxisOptions(propKey, "yAxis", "showLabel", !yAxisProps.showLabel);
 					}}
 				/>
 				<label for="enableDisable" className="enableDisableLabel">
 					show Label
 				</label>
 			</div>
-			{property.yAxis.showLabel ? (
+			{yAxisProps.showLabel ? (
 				<React.Fragment>
 					<div className="radioButtons">{renderAxisOptionsForY()}</div>
 
 					<div className="optionDescription">Axis Name</div>
-					{/* <FormControl fullWidth size="small" style={{ fontSize: "12px", borderRadius: "4px" }}> */}
-					{/* <TextField */}
-					<input
-						value={property.yAxis.name}
+
+					<TextField
+						value={yAxisProps.name}
 						variant="outlined"
-						onChange={(e) => setAxisNameProps(propKey, "yAxis", "name", e.target.value)}
-						// sx={{
-						// 	fontSize: "12px",
-						// 	width: "90%",
-						// 	margin: "0 auto 0.5rem auto",
-						// 	backgroundColor: "white",
-						// 	height: "20px",
-						// 	color: "#404040",
-						// }}
+						onChange={(e) => {
+							console.log("SETTING NAME FOR Y-AXIS ");
+							updateAxisOptions(propKey, "yAxis", "name", e.target.value);
+						}}
+						InputProps={{ ...textFieldStyleProps }}
 					/>
-					{/* </FormControl> */}
 
 					<div className="optionDescription">Name Position</div>
 					<FormControl
@@ -378,10 +391,11 @@ const GridAndAxes = ({
 					>
 						<Select
 							label=""
-							value={property.yAxis.nameLocation}
+							value={yAxisProps.nameLocation}
 							variant="outlined"
 							onChange={(e) => {
-								setAxisNameProps(propKey, "yAxis", "nameLocation", e.target.value);
+								console.log("SETTING NAME POSITION OF Y-AXIS");
+								updateAxisOptions(propKey, "yAxis", "nameLocation", e.target.value);
 							}}
 							sx={{
 								fontSize: "12px",
@@ -409,39 +423,33 @@ const GridAndAxes = ({
 						</Select>
 					</FormControl>
 					<div className="optionDescription">Name Gap</div>
-					{/* <FormControl fullWidth size="small" style={{ fontSize: "12px", borderRadius: "4px" }}> */}
-					{/* <TextField */}
-					<input
-						value={property.yAxis.nameGap}
+
+					<TextField
+						value={yAxisProps.nameGap}
 						variant="outlined"
 						onChange={(e) => {
-							setAxisNameProps(propKey, "yAxis", "nameGap", e.target.value);
+							console.log("SETTING Y-AXIS NAME MARGIN");
+							updateAxisOptions(propKey, "yAxis", "nameGap", e.target.value);
 						}}
-						// sx={{
-						// 	fontSize: "12px",
-						// 	width: "90%",
-						// 	margin: "0 auto 0.5rem auto",
-						// 	backgroundColor: "white",
-						// 	height: "20px",
-						// 	color: "#404040",
-						// }}
+						InputProps={{ ...textFieldStyleProps }}
 					/>
-					{/* </FormControl> */}
 
 					<div className="optionDescription">Tick Size</div>
 					<SliderWithInput
 						percent={false}
 						sliderValue={
-							property.yAxis.position === "left"
-								? property.yAxis.tickSizeLeft
-								: property.yAxis.tickSizeRight
+							yAxisProps.position === "left"
+								? yAxisProps.tickSizeLeft
+								: yAxisProps.tickSizeRight
 						}
 						sliderMinMax={{ min: 0, max: 20, step: 1 }}
 						changeValue={(value) => {
-							if (property.yAxis.position === "left") {
-								updateTickSize(propKey, "yAxis", "tickSizeLeft", value);
-							} else if (property.yAxis.position === "right") {
-								updateTickSize(propKey, "yAxis", "tickSizeRight", value);
+							if (yAxisProps.position === "left") {
+								// CHANGING Y-AXIS TICK SIZE WHEN POSITION IS INN LEFT
+								updateAxisOptions(propKey, "yAxis", "tickSizeLeft", value);
+							} else if (yAxisProps.position === "right") {
+								//CHANGING Y-AXIS TICK SIZE WHEN POSITION IS IN RIGHT
+								updateAxisOptions(propKey, "yAxis", "tickSizeRight", value);
 							}
 						}}
 					/>
@@ -450,16 +458,18 @@ const GridAndAxes = ({
 					<SliderWithInput
 						percent={false}
 						sliderValue={
-							property.yAxis.position === "left"
-								? property.yAxis.tickPaddingLeft
-								: property.yAxis.tickPaddingRight
+							yAxisProps.position === "left"
+								? yAxisProps.tickPaddingLeft
+								: yAxisProps.tickPaddingRight
 						}
 						sliderMinMax={{ min: 0, max: 20, step: 1 }}
 						changeValue={(value) => {
-							if (property.yAxis.position === "left") {
-								updateTickPadding(propKey, "yAxis", "tickPaddingLeft", value);
-							} else if (property.yAxis.position === "right") {
-								updateTickPadding(propKey, "yAxis", "tickPaddingRight", value);
+							if (yAxisProps.position === "left") {
+								//CHANGING TICK PADDING OF Y-AXIS WHEN POSITION IS IN LEFT
+								updateAxisOptions(propKey, "yAxis", "tickPaddingLeft", value);
+							} else if (yAxisProps.position === "right") {
+								//CHANGING TICK PADDING OF Y-AXIS WHEN POSITION IS IN RIGHT
+								updateAxisOptions(propKey, "yAxis", "tickPaddingRight", value);
 							}
 						}}
 					/>
@@ -467,16 +477,18 @@ const GridAndAxes = ({
 					<SliderWithInput
 						degree={true}
 						sliderValue={
-							property.yAxis.position === "left"
-								? property.yAxis.tickRotationLeft
-								: property.yAxis.tickRotationRight
+							yAxisProps.position === "left"
+								? yAxisProps.tickRotationLeft
+								: yAxisProps.tickRotationRight
 						}
 						sliderMinMax={{ min: -90, max: 90, step: 1 }}
 						changeValue={(value) => {
-							if (property.yAxis.position === "left") {
-								setLabelAngle(propKey, "yAxis", "tickRotationLeft", value);
-							} else if (property.yAxis.position === "right") {
-								setLabelAngle(propKey, "yAxis", "tickRotationRight", value);
+							if (yAxisProps.position === "left") {
+								// CHANGING ANGLE FOR Y-AXIS LABEL WHEN POSITION IS IN LEFT
+								updateAxisOptions(propKey, "yAxis", "tickRotationLeft", value);
+							} else if (yAxisProps.position === "right") {
+								// CHANGING ANGLE FOR Y-AXIS LABEL WHEN POSITION IS IN RIGHT
+								updateAxisOptions(propKey, "yAxis", "tickRotationRight", value);
 							}
 						}}
 					/>
@@ -496,27 +508,14 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		enableGrids: (propKey, value, show) => dispatch(enableGrid(propKey, value, show)),
-
+		updateGaugeAxisOptions: (propKey, option, value) =>
+			dispatch(updateGaugeAxisOptions(propKey, option, value)),
 		setAxisMinMax: (propKey, axisKey, axisValue) =>
 			dispatch(updateAxisMinMax(propKey, axisKey, axisValue)),
-
 		setReverse: (propKey, value) => dispatch(updateReverse(propKey, value)),
-		updateAxisPosition: (propKey, axis, value) =>
-			dispatch(updateAxisPosition(propKey, axis, value)),
-		toggleOnZeroProp: (propKey, axis, value) =>
-			dispatch(toggleOnZeroProp(propKey, axis, value)),
-		updateTickSize: (propKey, axis, option, value) =>
-			dispatch(updateTickSize(propKey, axis, option, value)),
-
-		updateTickPadding: (propKey, axis, option, value) =>
-			dispatch(updateTickPadding(propKey, axis, option, value)),
-		setLabelAngle: (propKey, axis, option, value) =>
-			dispatch(setLabelAngle(propKey, axis, option, value)),
-		setShowAxisLabel: (propKey, axis, option, value) =>
-			dispatch(setShowAxisLabel(propKey, axis, option, value)),
-		setAxisNameProps: (propKey, axis, option, value) =>
-			dispatch(setAxisNameProps(propKey, axis, option, value)),
+		enableGrids: (propKey, value, show) => dispatch(enableGrid(propKey, value, show)),
+		updateAxisOptions: (propKey, axis, option, value) =>
+			dispatch(updateAxisOptions(propKey, axis, option, value)),
 	};
 };
 

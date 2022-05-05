@@ -32,6 +32,9 @@ const chartControl = {
 			labelOptions: {
 				showLabel: true,
 				labelColor: "#888888",
+				pieLabel: {
+					labelPosition: "outside",
+				},
 				fontSize: 15,
 				fontStyle: "normal",
 				fontWeigth: "normal",
@@ -46,6 +49,15 @@ const chartControl = {
 				xSplitLine: false,
 				ySplitLine: true,
 				inverse: false,
+				gaugeAxisOptions: {
+					startAngle: 225,
+					endAngle: -45,
+					showTick: true,
+					tickSize: 15,
+					tickPadding: 12,
+					showAxisLabel: true,
+					labelPadding: 12,
+				},
 				yAxis: {
 					position: "left",
 					onZero: true,
@@ -129,6 +141,9 @@ const chartControlsReducer = (state = chartControl, action) => {
 						labelOptions: {
 							showLabel: true,
 							labelColor: "#888888",
+							pieLabel: {
+								labelPosition: "outside",
+							},
 							fontSize: 15,
 							fontStyle: "normal",
 							fontWeigth: "normal",
@@ -143,6 +158,15 @@ const chartControlsReducer = (state = chartControl, action) => {
 							xSplitLine: false,
 							ySplitLine: true,
 							inverse: false,
+							gaugeAxisOptions: {
+								startAngle: 225,
+								endAngle: -45,
+								showTick: true,
+								tickSize: 15,
+								tickPadding: 12,
+								showAxisLabel: true,
+								labelPadding: 12,
+							},
 							yAxis: {
 								position: "left",
 								onZero: true,
@@ -232,6 +256,9 @@ const chartControlsReducer = (state = chartControl, action) => {
 						labelOptions: {
 							showLabel: true,
 							labelColor: "#888888",
+							pieLabel: {
+								labelPosition: "outside",
+							},
 							fontSize: 15,
 							fontStyle: "normal",
 							fontWeigth: "normal",
@@ -246,6 +273,15 @@ const chartControlsReducer = (state = chartControl, action) => {
 							xSplitLine: false,
 							ySplitLine: true,
 							inverse: false,
+							gaugeAxisOptions: {
+								startAngle: 225,
+								endAngle: -45,
+								showTick: true,
+								tickSize: 15,
+								tickPadding: 12,
+								showAxisLabel: true,
+								labelPadding: 12,
+							},
 							yAxis: {
 								position: "left",
 								onZero: true,
@@ -451,6 +487,16 @@ const chartControlsReducer = (state = chartControl, action) => {
 					},
 				},
 			});
+		case "UPDATE_LABEL_POSITION":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						labelOptions: {
+							pieLabel: { labelPosition: { $set: action.payload.value } },
+						},
+					},
+				},
+			});
 		case "UPDATE_REVERSE":
 			console.log("updating reverse");
 			return update(state, {
@@ -460,37 +506,7 @@ const chartControlsReducer = (state = chartControl, action) => {
 					},
 				},
 			});
-		case "UPDATE_X_OR_Y_AXIS":
-			return update(state, {
-				properties: {
-					[action.payload.propKey]: {
-						axisOptions: {
-							[action.payload.axis]: {
-								position: {
-									$set: action.payload.value,
-								},
-							},
-						},
-					},
-				},
-			});
-
-		case "TOGGLE_AXIS_ON_ZERO":
-			return update(state, {
-				properties: {
-					[action.payload.propKey]: {
-						axisOptions: {
-							[action.payload.axis]: {
-								onZero: {
-									$set: action.payload.value,
-								},
-							},
-						},
-					},
-				},
-			});
-
-		case "UPDATE_TICK_SIZE":
+		case "UPDATE_AXIS_OPTIONS":
 			return update(state, {
 				properties: {
 					[action.payload.propKey]: {
@@ -504,59 +520,20 @@ const chartControlsReducer = (state = chartControl, action) => {
 					},
 				},
 			});
-
-		case "SET_AXIS_LABEL_MARGIN":
+		case "UPDATE_GAUGE_AXIS_OPTIONS":
 			return update(state, {
 				properties: {
 					[action.payload.propKey]: {
 						axisOptions: {
-							[action.payload.axis]: {
-								[action.payload.option]: { $set: action.payload.value },
+							gaugeAxisOptions: {
+								[action.payload.option]: {
+									$set: action.payload.value,
+								},
 							},
 						},
 					},
 				},
 			});
-
-		case "SET_AXIS_LABEL_ANGLE":
-			return update(state, {
-				properties: {
-					[action.payload.propKey]: {
-						axisOptions: {
-							[action.payload.axis]: {
-								[action.payload.option]: { $set: action.payload.value },
-							},
-						},
-					},
-				},
-			});
-
-		case "SET_AXIS_LABEL_SHOW_OR_HIDE":
-			return update(state, {
-				properties: {
-					[action.payload.propKey]: {
-						axisOptions: {
-							[action.payload.axis]: {
-								[action.payload.option]: { $set: action.payload.value },
-							},
-						},
-					},
-				},
-			});
-
-		case "UPDATE_AXIS_NAME_PROPS":
-			return update(state, {
-				properties: {
-					[action.payload.propKey]: {
-						axisOptions: {
-							[action.payload.axis]: {
-								[action.payload.option]: { $set: action.payload.value },
-							},
-						},
-					},
-				},
-			});
-
 		default:
 			return state;
 	}

@@ -82,7 +82,7 @@ const PieChart = ({
 							{
 								type: "pie",
 								label: {
-									// position: "outSide",
+									position: property.labelOptions.pieLabel.labelPosition,
 									show: property.labelOptions.showLabel,
 									fontSize: property.labelOptions.fontSize,
 									color: property.labelOptions.labelColor,

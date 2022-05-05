@@ -53,6 +53,14 @@ export const updateLabelOption = (propKey, option, value) => {
 		payload: { propKey: propKey, option: option, value: value },
 	};
 };
+
+export const updateLabelPosition = (propKey, value) => {
+	return {
+		type: "UPDATE_LABEL_POSITION",
+		payload: { propKey: propKey, value: value },
+	};
+};
+
 // ==============================
 // Legend
 
@@ -104,29 +112,10 @@ export const updateReverse = (propKey, value) => {
 	return { type: "UPDATE_REVERSE", payload: { propKey, value } };
 };
 
-export const updateAxisPosition = (propKey, axis, value) => {
-	return { type: "UPDATE_X_OR_Y_AXIS", payload: { propKey, axis, value } };
+export const updateAxisOptions = (propKey, axis, option, value) => {
+	return { type: "UPDATE_AXIS_OPTIONS", payload: { propKey, axis, option, value } };
 };
 
-export const toggleOnZeroProp = (propKey, axis, value) => {
-	return { type: "TOGGLE_AXIS_ON_ZERO", payload: { propKey, axis, value } };
-};
-
-export const updateTickSize = (propKey, axis, option, value) => {
-	return { type: "UPDATE_TICK_SIZE", payload: { propKey, axis, option, value } };
-};
-export const updateTickPadding = (propKey, axis, option, value) => {
-	return { type: "SET_AXIS_LABEL_MARGIN", payload: { propKey, axis, option, value } };
-};
-
-export const setLabelAngle = (propKey, axis, option, value) => {
-	return { type: "SET_AXIS_LABEL_ANGLE", payload: { propKey, axis, option, value } };
-};
-
-export const setShowAxisLabel = (propKey, axis, option, value) => {
-	return { type: "SET_AXIS_LABEL_SHOW_OR_HIDE", payload: { propKey, axis, option, value } };
-};
-
-export const setAxisNameProps = (propKey, axis, option, value) => {
-	return { type: "UPDATE_AXIS_NAME_PROPS", payload: { propKey, axis, option, value } };
+export const updateGaugeAxisOptions = (propKey, option, value) => {
+	return { type: "UPDATE_GAUGE_AXIS_OPTIONS", payload: { propKey, option, value } };
 };
