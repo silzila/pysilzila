@@ -2,6 +2,7 @@
 	height: 100vh;
 	display: flex;
 	flex-direction: column;
+	color: #333;
 }
 
 .dataViewerMenu {
@@ -41,29 +42,19 @@
 	transition: 0.2s;
 	background-color: rgb(238, 238, 238);
 }
-.quickSettingsGroup {
-	flex: 1;
-	align-items: center;
+.playbookName {
+	flex: 2;
 	display: flex;
-	/* justify-content: center; */
+	align-items: center;
+	justify-content: center;
+	font-weight: 600;
+	color: #666;
 }
-.quickSetting {
-	box-sizing: content-box;
-	border: 1px solid transparent;
-	width: 1.5rem;
-	height: 1.5rem;
-	margin-right: 4px;
-	cursor: pointer;
-}
-.quickSettingSelected {
-	box-sizing: content-box;
-	border-radius: 4px;
-	background-color: #fff;
-	border: 1px solid gray;
-	width: 1.5rem;
-	height: 1.5rem;
-	margin-right: 4px;
-	cursor: pointer;
+.userInfo {
+	flex: 1;
+	display: flex;
+	justify-content: end;
+	align-items: center;
 }
 
 /* ========================================================================================== */

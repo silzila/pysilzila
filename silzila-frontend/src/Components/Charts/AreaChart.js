@@ -6,6 +6,9 @@ const AreaChart = ({
 	//props
 	propKey,
 	graphDimension,
+	chartArea,
+	graphTileSize,
+
 	//state
 	chartProp,
 	chartControls,
@@ -47,6 +50,11 @@ const AreaChart = ({
 					width: graphDimension.width,
 					height: graphDimension.height,
 					overflow: "hidden",
+					border: chartArea
+						? "none"
+						: graphTileSize
+						? "none"
+						: "1px solid rgb(238,238,238)",
 				}}
 				option={{
 					legend: {},

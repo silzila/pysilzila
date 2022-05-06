@@ -428,6 +428,9 @@ const chartPropertiesState = (state = chartProperties, action) => {
 		case "LOAD_CHART_PROPERTIES":
 			return action.payload;
 
+		case "RESET_CHART_PROPERTY":
+			return chartProperties;
+
 		default:
 			return state;
 	}

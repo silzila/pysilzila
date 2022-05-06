@@ -1,5 +1,6 @@
 import React from "react";
 import DataSetList from "../DataSet/DataSetList";
+import MenuBar from "../DataViewer/MenuBar";
 import DataConnection from "./DataConnection";
 import "./DataSetup.css";
 import PlayBookList from "./PlayBookList";
@@ -10,12 +11,15 @@ import PlayBookList from "./PlayBookList";
 
 const DataHome = () => {
 	return (
-		<div className="dataSetup">
-			<div className="dcds">
-				<DataConnection />
-				<DataSetList />
+		<div className="dataHome">
+			<MenuBar from="dataHome" />
+			<div className="dataSetup">
+				<div className="dcds">
+					<DataConnection />
+					<DataSetList />
+				</div>
+				<PlayBookList />
 			</div>
-			<PlayBookList />
 		</div>
 	);
 };

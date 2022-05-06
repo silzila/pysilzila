@@ -29,8 +29,8 @@ function DataViewer({
 }) {
 	// const [tabTileProps.showDataViewerBottom, setDisplayDatViewBot] = useState(true);
 
-	const [showListofTileMenu, setShowListofTileMenu] = useState(false);
-	const [showFilters, setShowFilters] = useState(false);
+	const [showListofTileMenu, setShowListofTileMenu] = useState(true);
+	// const [showFilters, setShowFilters] = useState(false);
 	const [dashboardResizeColumn, setDashboardResizeColumn] = useState(false);
 
 	const handleTableDisplayToggle = () => {
@@ -63,7 +63,7 @@ function DataViewer({
 
 	return (
 		<div className="dataViewer">
-			<MenuBar />
+			<MenuBar from="dataViewer" />
 			<div className="tabArea">
 				<TabRibbon />
 				{tabTileProps.showDash ? (
@@ -125,7 +125,7 @@ function DataViewer({
 				// <DashBoard showDash={tabTileProps.showDash} />
 				<DashBoard
 					showListofTileMenu={showListofTileMenu}
-					showFilters={showFilters}
+					// showFilters={showFilters}
 					dashboardResizeColumn={dashboardResizeColumn}
 				/>
 			) : (

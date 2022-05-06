@@ -79,14 +79,6 @@ const DashBoard = ({
 		}
 	}, [tabTileProps.dashMode]);
 
-	useEffect(() => {
-		if (tabTileProps.dashMode === "Present") {
-			setdashStyle({ ...dashStyle, background: null });
-		} else {
-			setdashStyle({ ...dashStyle, background: dashbackground });
-		}
-	}, [tabTileProps.dashMode]);
-
 	let movement_timer = null;
 	const RESET_TIMEOUT = 300;
 	const handleResize = () => {
@@ -345,7 +337,7 @@ const DashBoard = ({
 								color: "#999999",
 							}}
 						>
-							<pre style={{ fontFamily: "Monaco", fontSize: "12px" }}>
+							<pre style={{ fontFamily: "Monaco", fontSize: "16px" }}>
 								No graphs selected{"\n\n"} Select tiles from right panel to place
 								graph here
 							</pre>

@@ -1,7 +1,11 @@
+import { VisibilitySharp } from "@mui/icons-material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { Tooltip } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setSelectedDsInTile } from "../../redux/ChartProperties/actionsChartProperties";
+import { updatePlaybookUid } from "../../redux/Playbook/playbookActions";
 import {
 	loadPlaybook,
 	setSelectedDataSetList,
@@ -9,9 +13,10 @@ import {
 } from "../../redux/TabTile/actionsTabTile";
 import FetchData from "../../ServerCall/FetchData";
 import { getChartData } from "../ChartAxes/ChartAxes";
+import { NotificationDialog } from "../CommonFunctions/DialogComponents";
 import DatasetListPopover from "../CommonFunctions/PopOverComponents/DatasetListPopover";
 import LoadingPopover from "../CommonFunctions/PopOverComponents/LoadingPopover";
-import { playBookData } from "../DataViewer/samplePlaybookData";
+import { SelectListItem } from "../CommonFunctions/SelectListItem";
 
 const PlayBookList = ({
 	// state
@@ -22,13 +27,39 @@ const PlayBookList = ({
 	setTablesForDs,
 	setSelectedDs,
 	loadPlayBook,
+	updatePlayBookId,
 }) => {
+	const [playBookList, setPlayBookList] = useState([]);
+
 	const [openPopOver, setOpenPopOver] = useState(false);
 	const [selectedDataset, setSelectedDataset] = useState("");
-
 	const [loading, setLoading] = useState(false);
 
+	const [openAlert, setOpenAlert] = useState(false);
+	const [testMessage, setTestMessage] = useState("");
+	const [severity, setSeverity] = useState("success");
+
 	var navigate = useNavigate();
+
+	useEffect(() => {
+		getInformation();
+		// eslint-disable-next-line
+	}, []);
+
+	const getInformation = async () => {
+		var result = await FetchData({
+			requestType: "noData",
+			method: "GET",
+			url: "pb/get-all-pb",
+			headers: { Authorization: `Bearer ${token}` },
+		});
+
+		if (result.status) {
+			setPlayBookList(result.data);
+		} else {
+			console.log(result.data.detail);
+		}
+	};
 
 	useEffect(async () => {
 		if (selectedDataset !== "") {
@@ -57,29 +88,65 @@ const PlayBookList = ({
 		}
 	};
 
-	const getPlayBookDataFromServer = async () => {
-		console.log("Open Sample Playbook");
+	const getPlayBookDataFromServer = async (pbUid) => {
+		var result = await FetchData({
+			requestType: "noData",
+			method: "GET",
+			url: `pb/get-pb/${pbUid}`,
+			headers: { Authorization: `Bearer ${token}` },
+		});
 
-		var pB = playBookData;
-		var newChartControl = JSON.parse(JSON.stringify(pB.data.chartControl));
+		console.log(result);
 
-		setLoading(true);
+		if (result.status) {
+			var pB = result.data;
+			var newChartControl = JSON.parse(JSON.stringify(pB.content.chartControl));
 
-		await Promise.all(
-			Object.keys(pB.data.chartControl.properties).map(async (property) => {
-				var axesValue = pB.data.chartProperty.properties[property].chartAxes;
-				var data = await getChartData(axesValue, pB.data.chartProperty, property, token);
-				console.log(data);
-				newChartControl.properties[property].chartData = data;
-			})
-		);
+			setLoading(true);
 
-		setLoading(false);
+			await Promise.all(
+				Object.keys(pB.content.chartControl.properties).map(async (property) => {
+					var axesValue = pB.content.chartProperty.properties[property].chartAxes;
+					var data = await getChartData(
+						axesValue,
+						pB.content.chartProperty,
+						property,
+						token
+					);
+					console.log(data);
+					newChartControl.properties[property].chartData = data;
+				})
+			);
 
-		pB.data.chartControl = newChartControl;
-		console.log(JSON.stringify(pB.data, null, 4));
-		loadPlayBook(pB.data);
-		navigate("/dataviewer");
+			setLoading(false);
+
+			pB.content.chartControl = newChartControl;
+			console.log(JSON.stringify(pB.content, null, 4));
+			loadPlayBook(pB.content);
+			updatePlayBookId({ name: pB.name, pb_uid: pB.pb_uid, description: pB.description });
+			navigate("/dataviewer");
+		}
+	};
+
+	const deletePlayBook = async (pbUid) => {
+		var result = await FetchData({
+			requestType: "noData",
+			method: "DELETE",
+			url: "pb/delete-pb/" + pbUid,
+			headers: { Authorization: `Bearer ${token}` },
+		});
+		if (result.status) {
+			setSeverity("success");
+			setOpenAlert(true);
+			setTestMessage("Deleted Successfully!");
+			getInformation();
+			setTimeout(() => {
+				setOpenAlert(false);
+				setTestMessage("");
+			}, 2000);
+		} else {
+			console.log(result.detail);
+		}
 	};
 
 	return (
@@ -103,16 +170,67 @@ const PlayBookList = ({
 				/>
 			</div>
 			<div className="connectionListContainer">
-				<div className="dataConnectionList">
-					<div
-						className="dataConnectionName"
-						onClick={() => {
-							getPlayBookDataFromServer();
-						}}
-					>
-						Sample PlayBook
-					</div>
-				</div>
+				{playBookList &&
+					playBookList.map((pb) => {
+						return (
+							<SelectListItem
+								key={pb.name}
+								render={(xprops) => (
+									<div
+										className={
+											xprops.open
+												? "dataConnectionListSelected"
+												: "dataConnectionList"
+										}
+										onMouseOver={() => xprops.setOpen(true)}
+										onMouseLeave={() => xprops.setOpen(false)}
+										onClick={() => getPlayBookDataFromServer(pb.pb_uid)}
+									>
+										<div className="dataConnectionName">{pb.name}</div>
+										{xprops.open ? (
+											<Tooltip
+												title="Delete playbook"
+												arrow
+												placement="right-start"
+											>
+												<div
+													className="dataHomeDeleteIcon"
+													onClick={(e) => {
+														e.stopPropagation();
+
+														var yes = window.confirm(
+															"Are you sure you want to Delete this Playbook?"
+														);
+														if (yes) {
+															deletePlayBook(pb.pb_uid);
+														}
+													}}
+												>
+													<DeleteIcon
+														style={{
+															width: "1rem",
+															height: "1rem",
+															margin: "auto",
+														}}
+													/>
+												</div>
+											</Tooltip>
+										) : null}
+									</div>
+								)}
+							/>
+						);
+					})}
+
+				<NotificationDialog
+					openAlert={openAlert}
+					severity={severity}
+					testMessage={testMessage}
+					onCloseAlert={() => {
+						setOpenAlert(false);
+						setTestMessage("");
+					}}
+				/>
 			</div>
 
 			{loading ? <LoadingPopover /> : null}
@@ -132,6 +250,7 @@ const mapDispatchToProps = (dispatch) => {
 		setTablesForDs: (tablesObj) => dispatch(setTablesForSelectedDataSets(tablesObj)),
 		setSelectedDs: (selectedDs) => dispatch(setSelectedDsInTile("1.1", selectedDs)),
 		loadPlayBook: (playBook) => dispatch(loadPlaybook(playBook)),
+		updatePlayBookId: (pbUid) => dispatch(updatePlaybookUid(pbUid)),
 	};
 };
 

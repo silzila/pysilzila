@@ -86,3 +86,10 @@ export const updateAxisMinMax = (propKey, axisKey, axisValue) => {
 export const loadChartControls = (chartControls) => {
 	return { type: "LOAD_CHART_CONTROLS", payload: chartControls };
 };
+
+// ==============================
+// Reset state
+
+export const resetChartControls = () => {
+	return { type: "RESET_CHART_CONTROLS" };
+};

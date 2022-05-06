@@ -98,7 +98,12 @@ const DataSetList = ({
 								key={dc.friendly_name}
 								render={(xprops) => (
 									<div
-										className="dataConnectionList"
+										className={
+											xprops.open
+												? "dataConnectionListSelected"
+												: "dataConnectionList"
+										}
+										onClick={() => editDs(dc.ds_uid)}
 										onMouseOver={() => xprops.setOpen(true)}
 										onMouseLeave={() => xprops.setOpen(false)}
 									>
@@ -106,35 +111,31 @@ const DataSetList = ({
 
 										{xprops.open ? (
 											<Tooltip
-												title="Edit Dataset"
+												title="Delete Dataset"
 												arrow
 												placement="right-start"
 											>
-												<>
-													<ModeEditOutlineTwoTone
-														style={{
-															width: "1rem",
-															height: "1rem",
-															margin: "auto",
-														}}
-														onClick={() => editDs(dc.ds_uid)}
-													/>
+												<div
+													className="dataHomeDeleteIcon"
+													onClick={(e) => {
+														e.stopPropagation();
+
+														var yes = window.confirm(
+															"Are you sure you want to Delete this Dataset?"
+														);
+														if (yes) {
+															deleteDs(dc.ds_uid);
+														}
+													}}
+												>
 													<DeleteIcon
 														style={{
 															width: "1rem",
 															height: "1rem",
 															margin: "auto",
 														}}
-														onClick={() => {
-															var yes = window.confirm(
-																"are you sure you want to Delete this Dataset?"
-															);
-															if (yes) {
-																deleteDs(dc.ds_uid);
-															}
-														}}
 													/>
-												</>
+												</div>
 											</Tooltip>
 										) : null}
 									</div>
