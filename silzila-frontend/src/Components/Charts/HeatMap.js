@@ -71,17 +71,99 @@ const HeatMap = ({
 					},
 					xAxis: {
 						type: "category",
+
+						position: property.axisOptions.xAxis.position,
+
+						axisLine: {
+							onZero: property.axisOptions.xAxis.onZero,
+						},
+
+						axisTick: {
+							alignWithLabel: true,
+							length:
+								property.axisOptions.xAxis.position === "top"
+									? property.axisOptions.xAxis.tickSizeTop
+									: property.axisOptions.xAxis.tickSizeBottom,
+						},
+						axisLabel: {
+							rotate:
+								property.axisOptions.xAxis.position === "top"
+									? property.axisOptions.xAxis.tickRotationTop
+									: property.axisOptions.xAxis.tickRotationBottom,
+							margin:
+								property.axisOptions.xAxis.position === "top"
+									? property.axisOptions.xAxis.tickPaddingTop
+									: property.axisOptions.xAxis.tickPaddingBottom,
+						},
+
+						show: property.axisOptions.xAxis.showLabel,
+
+						name: property.axisOptions.xAxis.name,
+						nameLocation: property.axisOptions.xAxis.nameLocation,
+						nameGap: property.axisOptions.xAxis.nameGap,
 					},
 					yAxis: {
 						type: "category",
+
+						inverse: property.axisOptions.inverse,
+
+						position: property.axisOptions.yAxis.position,
+
+						axisLine: {
+							onZero: property.axisOptions.yAxis.onZero,
+						},
+
+						axisTick: {
+							alignWithLabel: true,
+							length:
+								property.axisOptions.yAxis.position === "left"
+									? property.axisOptions.yAxis.tickSizeLeft
+									: property.axisOptions.yAxis.tickSizeRight,
+						},
+
+						axisLabel: {
+							rotate:
+								property.axisOptions.yAxis.position === "left"
+									? property.axisOptions.yAxis.tickRotationLeft
+									: property.axisOptions.yAxis.tickRotationRight,
+							margin:
+								property.axisOptions.yAxis.position === "left"
+									? property.axisOptions.yAxis.tickPaddingLeft
+									: property.axisOptions.yAxis.tickPaddingRight,
+						},
+
+						show: property.axisOptions.yAxis.showLabel,
+
+						name: property.axisOptions.yAxis.name,
+						nameLocation: property.axisOptions.yAxis.nameLocation,
+						nameGap: property.axisOptions.yAxis.nameGap,
 					},
 					visualMap: [
 						{
-							min: 0,
-							max: maxValue,
+							min:
+								property.colorScale.colorScaleType === "Manual"
+									? property.colorScale.min !== ""
+										? parseInt(property.colorScale.min)
+										: 0
+									: 0,
+							max:
+								property.colorScale.colorScaleType === "Manual"
+									? property.colorScale.max !== ""
+										? parseInt(property.colorScale.max)
+										: 0
+									: maxValue,
 						},
 					],
-					series: [{ type: "heatmap" }],
+					series: [
+						{
+							type: "heatmap",
+							label: {
+								show: property.labelOptions.showLabel,
+								fontSize: property.labelOptions.fontSize,
+								color: property.labelOptions.labelColor,
+							},
+						},
+					],
 				}}
 			/>
 		);

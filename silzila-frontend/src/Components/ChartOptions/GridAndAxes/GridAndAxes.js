@@ -1,21 +1,57 @@
+import { FormControl, MenuItem, Select, TextField } from "@mui/material";
 import React from "react";
 import { connect } from "react-redux";
-import { enableGrid, updateAxisMinMax } from "../../../redux/ChartProperties/actionsChartControls";
+import {
+	enableGrid,
+	updateAxisMinMax,
+	updateAxisOptions,
+	updateGaugeAxisOptions,
+	updateReverse,
+} from "../../../redux/ChartProperties/actionsChartControls";
+import SliderWithInput from "../SliderWithInput";
+// import GridControls from "./GridControls";
+// import ControlsForXAxis from "./ControlsForXAxis";
+// import ControlsForYAxis from "./ControlsForYAxis";
 import InputNumber from "../CommonFunctions/InputNumber";
+
+const textFieldStyleProps = {
+	style: {
+		fontSize: "12px",
+		width: "90%",
+		margin: "0 auto 0.5rem auto",
+		backgroundColor: "white",
+		height: "1.5rem",
+		color: "#404040",
+	},
+};
 
 const GridAndAxes = ({
 	// state
 	chartControl,
 	tabTileProps,
+	chartProp,
 
-	// dispatch
-	enableGrids,
+	//dispatch
+	updateGaugeAxisOptions,
 	setAxisMinMax,
+	setReverse,
+	enableGrids,
+	updateAxisOptions,
 }) => {
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
-
 	var property = chartControl.properties[propKey].axisOptions;
 
+	// var selectedChart = chartProp[propKey].chartType;
+	var xAxisProps = property.xAxis;
+	var yAxisProps = property.yAxis;
+
+	const positions = [
+		{ name: "Start", value: "start" },
+		{ name: "Middle", value: "middle" },
+		{ name: "End", value: "end" },
+	];
+
+	// ============================================== GRID =====================================================
 	const gridOptions = [
 		{ type: "Enable X-grid", value: "xSplitLine" },
 		{ type: "Enable Y-grid", value: "ySplitLine" },
@@ -38,12 +74,91 @@ const GridAndAxes = ({
 		});
 	};
 
+	// ============================================ X-Axis ======================================================
+
+	const axisOptionsForX = [
+		{ type: "Bottom", value: "bottom" },
+		{ type: "Top", value: "top" },
+	];
+
+	const renderAxisOptionsForX = () => {
+		return axisOptionsForX.map((item) => {
+			return (
+				<div
+					key={item.value}
+					className={
+						item.value === property.xAxis.position
+							? "radioButtonSelected"
+							: "radioButton"
+					}
+					value={item.value}
+					onClick={(e) => {
+						console.log("SETTING X-AXIS POSITION");
+						updateAxisOptions(propKey, "xAxis", "position", item.value);
+						updateAxisOptions(propKey, "xAxis", "onZero", !property.xAxis.onZero);
+					}}
+				>
+					{item.type}
+				</div>
+			);
+		});
+	};
+
+	// ============================================= Y - AXIS ===================================================
+	const axisOptionsForY = [
+		{ type: "Left", value: "left" },
+		{ type: "Right", value: "right" },
+	];
+
+	const renderAxisOptionsForY = () => {
+		return axisOptionsForY.map((item) => {
+			return (
+				<div
+					key={item.value}
+					className={
+						item.value === yAxisProps.position ? "radioButtonSelected" : "radioButton"
+					}
+					value={item.value}
+					onClick={(e) => {
+						console.log("SETTING Y-AXIS POSITION");
+						updateAxisOptions(propKey, "yAxis", "position", item.value);
+						updateAxisOptions(propKey, "yAxis", "onZero", !yAxisProps.onZero);
+					}}
+				>
+					{item.type}
+				</div>
+			);
+		});
+	};
+
 	return (
 		<div className="optionsInfo">
+			{/* 
+			======================================================================================================
+			                                        GRID PROPS
+			====================================================================================================== */}
 			<React.Fragment>
 				<div className="optionDescription">GRID</div>
-				<div className="radioButtons">{renderGridOptions()}</div>{" "}
+				<div className="radioButtons">{renderGridOptions()}</div>
 			</React.Fragment>
+			{chartProp[propKey].chartType !== "scatterPlot" ? (
+				<>
+					<div className="optionDescription">REVERSE</div>
+					<div className="optionDescription">
+						<input
+							type="checkbox"
+							id="enableDisable"
+							checked={property.inverse}
+							onChange={() => {
+								setReverse(propKey, !property.inverse);
+							}}
+						/>
+						<label for="enableDisable" className="enableDisableLabel">
+							Enable
+						</label>
+					</div>
+				</>
+			) : null}
 
 			<div className="optionDescription">MIN VALUE</div>
 			<div className="optionDescription">
@@ -65,7 +180,6 @@ const GridAndAxes = ({
 					/>
 				) : null}
 			</div>
-
 			<div className="optionDescription">MAX VALUE</div>
 			<div className="optionDescription">
 				<input
@@ -86,6 +200,300 @@ const GridAndAxes = ({
 					/>
 				) : null}
 			</div>
+			{/* ==================================================================================
+                                                 AXIS PROPS
+			================================================================================== */}
+
+			{/* =========================================================================================
+			                                    X - AXIS PROPS
+			========================================================================================= */}
+			<div className="optionDescription">X-AXES</div>
+
+			<div className="optionDescription">
+				<input
+					type="checkbox"
+					id="enableDisable"
+					checked={xAxisProps.showLabel}
+					onChange={(e) => {
+						console.log("SETTING  AXIS LABEL SHOW OR HIDE");
+						updateAxisOptions(propKey, "xAxis", "showLabel", !xAxisProps.showLabel);
+					}}
+				/>
+				<label for="enableDisable" className="enableDisableLabel">
+					show Label
+				</label>
+			</div>
+			{xAxisProps.showLabel ? (
+				<React.Fragment>
+					<div className="radioButtons">{renderAxisOptionsForX()}</div>
+
+					<div className="optionDescription">Axis Name</div>
+					<TextField
+						value={xAxisProps.name}
+						variant="outlined"
+						onChange={(e) => {
+							console.log("SETTING X-AXIS NAME");
+							updateAxisOptions(propKey, "xAxis", "name", e.target.value);
+						}}
+						InputProps={{ ...textFieldStyleProps }}
+					/>
+
+					<div className="optionDescription">Name Position</div>
+					<FormControl
+						fullWidth
+						size="small"
+						style={{ fontSize: "12px", borderRadius: "4px" }}
+					>
+						<Select
+							label=""
+							value={xAxisProps.nameLocation}
+							variant="outlined"
+							onChange={(e) => {
+								console.log("SETTING X-AXIS NAME POSITION");
+								updateAxisOptions(propKey, "xAxis", "nameLocation", e.target.value);
+							}}
+							sx={{
+								fontSize: "12px",
+								width: "90%",
+								margin: "0 auto 0.5rem auto",
+								backgroundColor: "white",
+								height: "1.5rem",
+								color: "#404040",
+							}}
+						>
+							{positions.map((position) => {
+								return (
+									<MenuItem
+										value={position.value}
+										key={position.name}
+										sx={{
+											padding: "2px 10px",
+											fontSize: "12px",
+										}}
+									>
+										{position.name}
+									</MenuItem>
+								);
+							})}
+						</Select>
+					</FormControl>
+					<div className="optionDescription">Name Gap</div>
+
+					<TextField
+						value={xAxisProps.nameGap}
+						variant="outlined"
+						onChange={(e) => {
+							console.log("SETTING X-AXIS NAME MARGIN");
+							updateAxisOptions(propKey, "xAxis", "nameGap", e.target.value);
+						}}
+						InputProps={{ ...textFieldStyleProps }}
+					/>
+
+					<div className="optionDescription">Tick Size</div>
+					<SliderWithInput
+						percent={false}
+						sliderValue={
+							xAxisProps.position === "top"
+								? xAxisProps.tickSizeTop
+								: xAxisProps.tickSizeBottom
+						}
+						sliderMinMax={{ min: 0, max: 20, step: 1 }}
+						changeValue={(value) => {
+							if (xAxisProps.position === "top") {
+								// CHANGING TICK SIZE OF X-AXIS WHEN POSITION IS TOP
+								updateAxisOptions(propKey, "xAxis", "tickSizeTop", value);
+							} else if (xAxisProps.position === "bottom") {
+								// CHANGING TICK SIZE OF X-AXIS WHEN POSITION IS BOTTOM
+								updateAxisOptions(propKey, "xAxis", "tickSizeBottom", value);
+							}
+						}}
+					/>
+					<div className="optionDescription">Tick Padding</div>
+					<SliderWithInput
+						percent={false}
+						sliderValue={
+							xAxisProps.position === "top"
+								? xAxisProps.tickPaddingTop
+								: xAxisProps.tickPaddingBottom
+						}
+						sliderMinMax={{ min: 0, max: 20, step: 1 }}
+						changeValue={(value) => {
+							if (xAxisProps.position === "top") {
+								//CHANGING TICK PADDING OF X-AXIS WHEN POSITION IS IN TOP
+								updateAxisOptions(propKey, "xAxis", "tickPaddingTop", value);
+							} else if (xAxisProps.position === "bottom") {
+								//CHANGING TICK PADDING OF X-AXIS WHEN POSITION IS IN BOTTOM
+								updateAxisOptions(propKey, "xAxis", "tickPaddingBottom", value);
+							}
+						}}
+					/>
+					<div className="optionDescription">Tick Rotation</div>
+					<SliderWithInput
+						degree={true}
+						sliderValue={
+							xAxisProps.position === "top"
+								? xAxisProps.tickRotationTop
+								: xAxisProps.tickRotationBottom
+						}
+						sliderMinMax={{ min: -90, max: 90, step: 1 }}
+						changeValue={(value) => {
+							if (xAxisProps.position === "top") {
+								// SET TICK ROTATION OF X-AXIS WHEN POSITION IS IN TOP
+								updateAxisOptions(propKey, "xAxis", "tickRotationTop", value);
+							} else if (xAxisProps.position === "bottom") {
+								// SET TICK ROTATION OF X-AXIS WHEN POSITION IS IN TOP
+								updateAxisOptions(propKey, "xAxis", "tickRotationBottom", value);
+							}
+						}}
+					/>
+				</React.Fragment>
+			) : null}
+
+			{/* ============================================================================================
+			Y-AXIS PROPS
+			============================================================================================ */}
+			<div className="optionDescription">Y-AXES</div>
+			<div className="optionDescription">
+				<input
+					type="checkbox"
+					id="enableDisable"
+					checked={yAxisProps.showLabel}
+					onChange={(e) => {
+						console.log("SETTING Y-AXIS LABEL SHOW OR HIDE");
+						updateAxisOptions(propKey, "yAxis", "showLabel", !yAxisProps.showLabel);
+					}}
+				/>
+				<label for="enableDisable" className="enableDisableLabel">
+					show Label
+				</label>
+			</div>
+			{yAxisProps.showLabel ? (
+				<React.Fragment>
+					<div className="radioButtons">{renderAxisOptionsForY()}</div>
+
+					<div className="optionDescription">Axis Name</div>
+
+					<TextField
+						value={yAxisProps.name}
+						variant="outlined"
+						onChange={(e) => {
+							console.log("SETTING NAME FOR Y-AXIS ");
+							updateAxisOptions(propKey, "yAxis", "name", e.target.value);
+						}}
+						InputProps={{ ...textFieldStyleProps }}
+					/>
+
+					<div className="optionDescription">Name Position</div>
+					<FormControl
+						fullWidth
+						size="small"
+						style={{ fontSize: "12px", borderRadius: "4px" }}
+					>
+						<Select
+							label=""
+							value={yAxisProps.nameLocation}
+							variant="outlined"
+							onChange={(e) => {
+								console.log("SETTING NAME POSITION OF Y-AXIS");
+								updateAxisOptions(propKey, "yAxis", "nameLocation", e.target.value);
+							}}
+							sx={{
+								fontSize: "12px",
+								width: "90%",
+								margin: "0 auto 0.5rem auto",
+								backgroundColor: "white",
+								height: "1.5rem",
+								color: "#404040",
+							}}
+						>
+							{positions.map((position) => {
+								return (
+									<MenuItem
+										value={position.value}
+										key={position.name}
+										sx={{
+											padding: "2px 10px",
+											fontSize: "12px",
+										}}
+									>
+										{position.name}
+									</MenuItem>
+								);
+							})}
+						</Select>
+					</FormControl>
+					<div className="optionDescription">Name Gap</div>
+
+					<TextField
+						value={yAxisProps.nameGap}
+						variant="outlined"
+						onChange={(e) => {
+							console.log("SETTING Y-AXIS NAME MARGIN");
+							updateAxisOptions(propKey, "yAxis", "nameGap", e.target.value);
+						}}
+						InputProps={{ ...textFieldStyleProps }}
+					/>
+
+					<div className="optionDescription">Tick Size</div>
+					<SliderWithInput
+						percent={false}
+						sliderValue={
+							yAxisProps.position === "left"
+								? yAxisProps.tickSizeLeft
+								: yAxisProps.tickSizeRight
+						}
+						sliderMinMax={{ min: 0, max: 20, step: 1 }}
+						changeValue={(value) => {
+							if (yAxisProps.position === "left") {
+								// CHANGING Y-AXIS TICK SIZE WHEN POSITION IS INN LEFT
+								updateAxisOptions(propKey, "yAxis", "tickSizeLeft", value);
+							} else if (yAxisProps.position === "right") {
+								//CHANGING Y-AXIS TICK SIZE WHEN POSITION IS IN RIGHT
+								updateAxisOptions(propKey, "yAxis", "tickSizeRight", value);
+							}
+						}}
+					/>
+
+					<div className="optionDescription">Tick Padding</div>
+					<SliderWithInput
+						percent={false}
+						sliderValue={
+							yAxisProps.position === "left"
+								? yAxisProps.tickPaddingLeft
+								: yAxisProps.tickPaddingRight
+						}
+						sliderMinMax={{ min: 0, max: 20, step: 1 }}
+						changeValue={(value) => {
+							if (yAxisProps.position === "left") {
+								//CHANGING TICK PADDING OF Y-AXIS WHEN POSITION IS IN LEFT
+								updateAxisOptions(propKey, "yAxis", "tickPaddingLeft", value);
+							} else if (yAxisProps.position === "right") {
+								//CHANGING TICK PADDING OF Y-AXIS WHEN POSITION IS IN RIGHT
+								updateAxisOptions(propKey, "yAxis", "tickPaddingRight", value);
+							}
+						}}
+					/>
+					<div className="optionDescription">Tick Rotation</div>
+					<SliderWithInput
+						degree={true}
+						sliderValue={
+							yAxisProps.position === "left"
+								? yAxisProps.tickRotationLeft
+								: yAxisProps.tickRotationRight
+						}
+						sliderMinMax={{ min: -90, max: 90, step: 1 }}
+						changeValue={(value) => {
+							if (yAxisProps.position === "left") {
+								// CHANGING ANGLE FOR Y-AXIS LABEL WHEN POSITION IS IN LEFT
+								updateAxisOptions(propKey, "yAxis", "tickRotationLeft", value);
+							} else if (yAxisProps.position === "right") {
+								// CHANGING ANGLE FOR Y-AXIS LABEL WHEN POSITION IS IN RIGHT
+								updateAxisOptions(propKey, "yAxis", "tickRotationRight", value);
+							}
+						}}
+					/>
+				</React.Fragment>
+			) : null}
 		</div>
 	);
 };
@@ -94,15 +502,20 @@ const mapStateToProps = (state) => {
 	return {
 		chartControl: state.chartControls,
 		tabTileProps: state.tabTileProps,
+		chartProp: state.chartProperties.properties,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		enableGrids: (propKey, value, show) => dispatch(enableGrid(propKey, value, show)),
+		updateGaugeAxisOptions: (propKey, option, value) =>
+			dispatch(updateGaugeAxisOptions(propKey, option, value)),
 		setAxisMinMax: (propKey, axisKey, axisValue) =>
 			dispatch(updateAxisMinMax(propKey, axisKey, axisValue)),
-		// setReverse: (propKey, reverse) => dispatch(updateReverse(propKey, reverse)),
+		setReverse: (propKey, value) => dispatch(updateReverse(propKey, value)),
+		enableGrids: (propKey, value, show) => dispatch(enableGrid(propKey, value, show)),
+		updateAxisOptions: (propKey, axis, option, value) =>
+			dispatch(updateAxisOptions(propKey, axis, option, value)),
 	};
 };
 

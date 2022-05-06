@@ -16,7 +16,6 @@ const GaugeChart = ({
 	console.log(property, "+++++ PROPERTY +++++");
 	let chartData = property.chartData ? property.chartData.result : "";
 	console.log(chartData, "+++++ chartData +++++");
-
 	const [newData, setNewData] = useState([]);
 
 	useEffect(() => {
@@ -32,6 +31,8 @@ const GaugeChart = ({
 			setNewData(newTempData);
 		}
 	}, [chartData]);
+
+	console.log(newData, "***@@@@***");
 
 	const RenderChart = () => {
 		return (
@@ -92,7 +93,23 @@ const GaugeChart = ({
 					series: [
 						{
 							type: "gauge",
-							max: newData[0] ? newData[0].value * 2 : 0,
+							max:
+								property.colorScale.colorScaleType === "Manual"
+									? property.colorScale.max !== ""
+										? parseInt(property.colorScale.max)
+										: newData[0]
+										? newData[0].value * 2
+										: 0
+									: newData[0]
+									? newData[0].value * 2
+									: 0,
+
+							min:
+								property.colorScale.colorScaleType === "Manual"
+									? property.colorScale.min !== ""
+										? parseInt(property.colorScale.min)
+										: 0
+									: 0,
 							data: newData,
 
 							axisLine: {
@@ -106,6 +123,18 @@ const GaugeChart = ({
 								},
 
 								roundCap: true,
+							},
+							startAngle: property.axisOptions.gaugeAxisOptions.startAngle,
+							endAngle: property.axisOptions.gaugeAxisOptions.endAngle,
+							axisTick: {
+								show: property.axisOptions.gaugeAxisOptions.showTick,
+								length: property.axisOptions.gaugeAxisOptions.tickSize,
+								distance: property.axisOptions.gaugeAxisOptions.tickPadding,
+							},
+
+							axisLabel: {
+								show: property.axisOptions.gaugeAxisOptions.showAxisLabel,
+								distance: property.axisOptions.gaugeAxisOptions.labelPadding,
 							},
 						},
 					],

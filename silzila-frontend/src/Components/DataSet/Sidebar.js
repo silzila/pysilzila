@@ -1,4 +1,4 @@
-import { MenuItem, Select } from "@mui/material";
+import { MenuItem, Select, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import ShortUniqueId from "short-unique-id";
@@ -202,17 +202,21 @@ const Sidebar = ({
 										" ".concat("(" + connection.friendly_name + ")")
 									}
 									sx={{
-										fontSize: "14px",
-										maxWidth: "200px",
-										margin: "4px 8px 4px 0px",
-										whiteSpace: "nowrap",
-										overflow: "hidden",
-										textOverflow: "ellipsis",
+										width: "200px",
 									}}
 									value={connection.dc_uid}
 									key={connection.dc_uid}
 								>
-									{connection.db_name} ({connection.friendly_name})
+									<Typography
+										sx={{
+											width: "auto",
+											overflow: "hidden",
+											textOverflow: "ellipsis",
+											fontSize: "14px",
+										}}
+									>
+										{connection.db_name} ({connection.friendly_name})
+									</Typography>
 								</MenuItem>
 							);
 						})}
@@ -227,18 +231,21 @@ const Sidebar = ({
 							return (
 								<MenuItem
 									sx={{
-										fontSize: "14px",
 										width: "200px",
-										paddingBottom: "4px",
-										paddingTop: "4px",
-										paddingRight: "8px",
-										paddingLeft: "8px",
-										textOverflow: "ellipsis",
 									}}
 									value={schema}
 									key={schema}
 								>
-									{schema}
+									<Typography
+										sx={{
+											width: "auto",
+											overflow: "hidden",
+											textOverflow: "ellipsis",
+											fontSize: "14px",
+										}}
+									>
+										{schema}
+									</Typography>
 								</MenuItem>
 							);
 						})}

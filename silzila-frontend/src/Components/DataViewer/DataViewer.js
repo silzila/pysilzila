@@ -66,7 +66,7 @@ function DataViewer({
 			<MenuBar from="dataViewer" />
 			<div className="tabArea">
 				<TabRibbon />
-				{tabTileProps.showDash ? (
+				{tabTileProps.showDash || tabTileProps.dashMode === "Present" ? (
 					<div style={{ display: "flex", alignItems: "center" }}>
 						{tabTileProps.dashMode === "Edit" ? (
 							<>

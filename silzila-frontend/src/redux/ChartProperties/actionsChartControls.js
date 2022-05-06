@@ -36,6 +36,31 @@ export const removeMultipleChartControls = (tabId) => {
 	return { type: "DELETE_CONTROLS_OF_TAB", payload: tabId };
 };
 
+// ===================================
+// Color Scale
+export const setColorScaleOption = (option, value, propKey) => {
+	return {
+		type: "SET_COLOR_SCALE_OPTION",
+		payload: { option: option, value: value, propKey: propKey },
+	};
+};
+// ===================================
+// Labels
+
+export const updateLabelOption = (propKey, option, value) => {
+	return {
+		type: "UPDATE_LABEL_OPTIONS",
+		payload: { propKey: propKey, option: option, value: value },
+	};
+};
+
+export const updateLabelPosition = (propKey, value) => {
+	return {
+		type: "UPDATE_LABEL_POSITION",
+		payload: { propKey: propKey, value: value },
+	};
+};
+
 // ==============================
 // Legend
 
@@ -92,4 +117,16 @@ export const loadChartControls = (chartControls) => {
 
 export const resetChartControls = () => {
 	return { type: "RESET_CHART_CONTROLS" };
+};
+
+export const updateReverse = (propKey, value) => {
+	return { type: "UPDATE_REVERSE", payload: { propKey, value } };
+};
+
+export const updateAxisOptions = (propKey, axis, option, value) => {
+	return { type: "UPDATE_AXIS_OPTIONS", payload: { propKey, axis, option, value } };
+};
+
+export const updateGaugeAxisOptions = (propKey, option, value) => {
+	return { type: "UPDATE_GAUGE_AXIS_OPTIONS", payload: { propKey, option, value } };
 };
