@@ -11,13 +11,17 @@ import {
 	loadChartControls,
 	removeChartControls,
 	removeMultipleChartControls,
+	resetChartControls,
 } from "../ChartProperties/actionsChartControls";
 import {
 	removeMultipleChartProperties,
 	addProp,
 	removeChartProperties,
 	loadChartProperties,
+	resetChartProperties,
 } from "../ChartProperties/actionsChartProperties";
+import { resetPlayBookData } from "../Playbook/playbookActions";
+import { resetSampleRecords } from "../SampleTableRecords/sampleTableRecordsActions";
 
 //  *************************************************************
 //  to tab state reducer
@@ -444,5 +448,33 @@ export const loadPlaybook = (playbook) => {
 		dispatch(loadTabTileProps(playbook.tabTileProps));
 		dispatch(loadChartControls(playbook.chartControl));
 		dispatch(loadChartProperties(playbook.chartProperty));
+	};
+};
+
+//  *************************************************************
+//  Reset states
+//  *************************************************************
+
+export const resetTabState = () => {
+	return { type: "RESET_TAB_STATE" };
+};
+
+export const resetTileState = () => {
+	return { type: "RESET_TILE_STATE" };
+};
+
+export const resetTabTileState = () => {
+	return { type: "RESET_TABTILE_PROPS" };
+};
+
+export const resetAllStates = () => {
+	return (dispatch) => {
+		dispatch(resetTabState());
+		dispatch(resetTileState());
+		dispatch(resetTabTileState());
+		dispatch(resetChartControls());
+		dispatch(resetChartProperties());
+		dispatch(resetSampleRecords());
+		dispatch(resetPlayBookData());
 	};
 };

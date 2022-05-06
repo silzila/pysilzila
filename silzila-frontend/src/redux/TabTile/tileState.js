@@ -80,6 +80,8 @@ const tileStateReducer = (state = initialTileState, action) => {
 		case "LOAD_TILE_STATE_FROM_PLAYBOOK":
 			return action.payload;
 
+		case "RESET_TILE_STATE":
+			return initialTileState;
 		default:
 			return state;
 	}

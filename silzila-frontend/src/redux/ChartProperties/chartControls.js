@@ -263,6 +263,9 @@ const chartControlsReducer = (state = chartControl, action) => {
 		case "LOAD_CHART_CONTROLS":
 			return action.payload;
 
+		case "RESET_CHART_CONTROLS":
+			return chartControl;
+
 		default:
 			return state;
 	}

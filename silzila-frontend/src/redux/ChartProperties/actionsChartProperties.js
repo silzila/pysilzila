@@ -194,3 +194,10 @@ export const changeChartOptionSelected = (propKey, chartOption) => {
 export const loadChartProperties = (chartProperties) => {
 	return { type: "LOAD_CHART_PROPERTIES", payload: chartProperties };
 };
+
+// ==============================
+// Reset state
+
+export const resetChartProperties = () => {
+	return { type: "RESET_CHART_PROPERTY" };
+};

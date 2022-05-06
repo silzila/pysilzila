@@ -241,7 +241,11 @@ const DataConnection = (props) => {
 								key={dc.friendly_name}
 								render={(xprops) => (
 									<div
-										className="dataConnectionList"
+										className={
+											xprops.open
+												? "dataConnectionListSelected"
+												: "dataConnectionList"
+										}
 										onMouseOver={() => xprops.setOpen(true)}
 										onMouseLeave={() => xprops.setOpen(false)}
 									>

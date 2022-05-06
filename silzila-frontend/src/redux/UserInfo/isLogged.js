@@ -20,6 +20,15 @@ const loggedReducer = (
 
 			return action.payload;
 
+		case "RESET_USER":
+			var resetInfo = {
+				isUserLogged: false,
+				accessToken: "",
+			};
+			localStorage.setItem("accountInfo", JSON.stringify(resetInfo));
+
+			return resetInfo;
+
 		default:
 			return state;
 	}
