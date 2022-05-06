@@ -431,9 +431,6 @@ const GraphArea = ({
 					id="graphFullScreen"
 					className="graphFullScreen"
 					onKeyDown={(e) => {
-						// TODO: Priority 10 - Escape key recognition
-						// Happens only after user clicks anywhere inside this div.
-						// Must happen as soon as this is open. Bring focus here
 						console.log("Key pressed");
 						removeFullScreen(e);
 					}}

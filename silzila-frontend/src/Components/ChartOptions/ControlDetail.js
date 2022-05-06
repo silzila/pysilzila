@@ -39,8 +39,13 @@ const ControlDetail = ({ chartProp, tabTileProps }) => {
 
 			case "Grid/Axes":
 				return <GridAndAxes />;
+
 			case "Labels":
 				return <ChartLabels />;
+
+			// TODO: Priority 1 - Pie chart  & Donut chart axis
+			// Pie chart axis control has a start and end angle now, which doesn't reflect in the graph. Need to fix that
+			// Also the tick size, tick padding & label properties are not functional here
 			case "Axis":
 				return <AxisControls />;
 

@@ -72,6 +72,9 @@ const PieChart = ({
 							top: property.legendOptions?.position?.top,
 							orient: property.legendOptions?.orientation,
 						},
+
+						// TODO: Priorit 5 - Margin doesn't reflect in graph
+						// Margin for a chart changes only the grid line and not the actual graph
 						grid: {
 							left: property.chartMargin.left,
 							right: property.chartMargin.right,
@@ -83,8 +86,7 @@ const PieChart = ({
 							dimensions: Object.keys(chartData[0]),
 							source: chartData,
 						},
-						xAxis: {},
-						yAxis: { type: "category" },
+
 						series: [
 							{
 								type: "pie",

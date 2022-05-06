@@ -12,6 +12,7 @@ const MultiBar = ({
 	//state
 	chartControlState,
 }) => {
+	console.log(graphTileSize);
 	var property = chartControlState.properties[propKey];
 	console.log(property);
 
@@ -163,10 +164,6 @@ const MultiBar = ({
 						name: property.axisOptions.yAxis.name,
 						nameLocation: property.axisOptions.yAxis.nameLocation,
 						nameGap: property.axisOptions.yAxis.nameGap,
-
-						// TODO: Priority 1 - Log scale
-						// type: "log",
-						// logBase: 2,
 					},
 					series: seriesData,
 				}}

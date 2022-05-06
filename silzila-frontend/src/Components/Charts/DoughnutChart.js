@@ -75,8 +75,8 @@ const DoughnutChart = ({
 							dimensions: Object.keys(chartData[0]),
 							source: chartData,
 						},
-						xAxis: { type: "category" },
-						yAxis: {},
+						// xAxis: { type: "category" },
+						// yAxis: {},
 						series: [
 							{
 								type: "pie",

@@ -247,10 +247,10 @@ const chartControlsReducer = (state = chartControl, action) => {
 
 						chartMargin: {
 							selectedMargin: "top",
-							top: 5,
+							top: 30,
 							right: 5,
-							bottom: 5,
-							left: 10,
+							bottom: 25,
+							left: 65,
 						},
 
 						labelOptions: {

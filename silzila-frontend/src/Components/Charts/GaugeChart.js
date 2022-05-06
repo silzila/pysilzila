@@ -69,7 +69,7 @@ const GaugeChart = ({
 					},
 
 					// TODO: Priorit 5 - Margin doesn't reflect in graph
-					// Margin for a Funnel chart changes only the grid line and not the actual funnel graph
+					// Margin for a chart changes only the grid line and not the actual graph
 					grid: {
 						left:
 							chartArea === "dashboard"
