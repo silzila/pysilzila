@@ -86,15 +86,12 @@ const MenuBar = ({
 				setTimeout(() => {
 					setOpenAlert(false);
 					if (fromHome) {
-						// TODO: Reset all states from here
-
-						resetAllStates();
 						navigate("/datahome");
+						resetAllStates();
 					}
 				}, 2000);
 			}
 		} else {
-			// If no, open a popover to get a name for this Playbook
 			setSaveModal(true);
 		}
 	};
@@ -298,10 +295,13 @@ const MenuBar = ({
 						<div className="menuItem">Data</div> */}
 					</div>
 
-					<div className="playbookName">{playBookState.playBookName}</div>
+					<div className="playbookName" title={playBookState.description}>
+						{playBookState.playBookName}
+					</div>
 
 					<div className="userInfo">
-						{tabState.tabs[tabTileProps.selectedTabId].showDash ? (
+						{tabState.tabs[tabTileProps.selectedTabId].showDash ||
+						tabTileProps.showDash ? (
 							<Select
 								size="small"
 								sx={{

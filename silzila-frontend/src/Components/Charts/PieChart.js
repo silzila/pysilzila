@@ -19,7 +19,15 @@ const PieChart = ({
 	let chartData = property.chartData ? property.chartData.result : "";
 	console.log(chartData, "+++++ chartData +++++");
 
-	var seriesObj = { type: "pie" };
+	var seriesObj = {
+		type: "pie",
+		label: {
+			position: "outSide",
+			show: property.labelOptions.showLabel,
+			fontSize: property.labelOptions.fontSize,
+			color: property.labelOptions.labelColor,
+		},
+	};
 
 	const [seriesData, setSeriesData] = useState([]);
 
@@ -64,6 +72,9 @@ const PieChart = ({
 							top: property.legendOptions?.position?.top,
 							orient: property.legendOptions?.orientation,
 						},
+
+						// TODO: Priorit 5 - Margin doesn't reflect in graph
+						// Margin for a chart changes only the grid line and not the actual graph
 						grid: {
 							left: property.chartMargin.left,
 							right: property.chartMargin.right,
@@ -76,7 +87,17 @@ const PieChart = ({
 							source: chartData,
 						},
 
-						series: [{ type: "pie" }],
+						series: [
+							{
+								type: "pie",
+								label: {
+									position: property.labelOptions.pieLabel.labelPosition,
+									show: property.labelOptions.showLabel,
+									fontSize: property.labelOptions.fontSize,
+									color: property.labelOptions.labelColor,
+								},
+							},
+						],
 					}}
 				/>
 			</>

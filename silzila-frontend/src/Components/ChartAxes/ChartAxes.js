@@ -69,8 +69,6 @@ export const getChartData = async (axesValues, chartProp, propKey, token) => {
 		formattedAxes.dims = [];
 	}
 
-	// TODO: Priority 5 - Integrate Filters
-	// Right now no filter is passed to server. Discuss with balu and pass filters
 	formattedAxes.filters = [];
 
 	console.log(formattedAxes);

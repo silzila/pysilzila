@@ -469,12 +469,12 @@ export const resetTabTileState = () => {
 
 export const resetAllStates = () => {
 	return (dispatch) => {
-		dispatch(resetTabState());
-		dispatch(resetTileState());
-		dispatch(resetTabTileState());
 		dispatch(resetChartControls());
 		dispatch(resetChartProperties());
 		dispatch(resetSampleRecords());
 		dispatch(resetPlayBookData());
+		dispatch(resetTabState());
+		dispatch(resetTileState());
+		dispatch(resetTabTileState());
 	};
 };

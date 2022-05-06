@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./SliderWithInput.css";
 
-const SliderWithInput = ({ sliderValue, sliderMinMax, changeValue, percent }) => {
+const SliderWithInput = ({ sliderValue, sliderMinMax, changeValue, percent, degree }) => {
 	// console.log( sliderMinMax);
 	const [showInputText, setShowInputText] = useState(false);
 	return (
@@ -33,7 +33,13 @@ const SliderWithInput = ({ sliderValue, sliderMinMax, changeValue, percent }) =>
 					}}
 					title="Click to edit value"
 				>
-					{percent ? `${sliderValue} %` : `${sliderValue} px`}
+					{percent ? (
+						`${sliderValue} %`
+					) : degree ? (
+						<span>{sliderValue} &#176;</span>
+					) : (
+						`${sliderValue} px`
+					)}
 				</span>
 			)}
 			<input
