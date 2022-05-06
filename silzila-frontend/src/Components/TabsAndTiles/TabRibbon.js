@@ -44,12 +44,20 @@ const TabRibbon = ({
 		// once tabTileprops-> dashmode set to "Edit" then that mode remain same for all tabs that can be selected after this
 		// ...but tabtileProps->showdash will change according to individual tab prop(tabstate->tabs->tabid-> showdash)
 
+		// if(tabObj.showDash === false && tabTileProps.dashMode === "Present"){
+		// 	selectTab(tabName, tabId, true, "Present");
+		// }else if()
+
 		if (tabTileProps.dashMode === "Present") {
 			selectTab(tabName, tabId, true, "Present");
-		} else {
-			selectTab(tabName, tabId, tabObj.showDash, tabTileProps.dashMode);
-			toggleDashModeInTab(tabTileProps.selectedTabId, tabTileProps.dashMode);
 		}
+		// } else if(){
+		else {
+			selectTab(tabName, tabId, tabObj.showDash, tabObj.dashMode);
+		}
+		// selectTab(tabName, tabId, tabObj.showDash, tabObj.dashMode);
+		// // toggleDashModeInTab(tabTileProps.selectedTabId, tabTileProps.dashMode);
+		// }
 
 		let tileName = tabObj.selectedTileName;
 		let tileId = tabObj.selectedTileId;

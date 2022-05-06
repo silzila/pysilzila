@@ -93,9 +93,6 @@ const DisplayTable = ({
 		} else return null;
 	};
 
-	// TODO: Priority 10 - Table scroll bar position
-	// Scroll bar must start from the body of table instead of starting from the table header
-
 	const RenderButtons = () => {
 		if (SampleRecords) {
 			var keys = getKeys(SampleRecords[0]);

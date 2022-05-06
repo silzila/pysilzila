@@ -347,6 +347,9 @@ const GraphArea = ({
 							autoFocus
 							style={{
 								fontSize: chartProperties.properties[propKey].titleOptions.fontSize,
+
+								textAlign:
+									chartProperties.properties[propKey].titleOptions.titleAlign,
 							}}
 							type="text"
 							className="editTitle"
@@ -361,6 +364,11 @@ const GraphArea = ({
 							className="graphTitle"
 							style={{
 								fontSize: chartProperties.properties[propKey].titleOptions.fontSize,
+								textAlign:
+									chartProperties.properties[propKey].titleOptions.titleAlign,
+								paddingLeft:
+									chartProperties.properties[propKey].titleOptions
+										.titleLeftPadding,
 							}}
 							onDoubleClick={() => editTitleText()}
 							title="Double click to set title manually"
@@ -423,9 +431,6 @@ const GraphArea = ({
 					id="graphFullScreen"
 					className="graphFullScreen"
 					onKeyDown={(e) => {
-						// TODO: Priority 10 - Escape key recognition
-						// Happens only after user clicks anywhere inside this div.
-						// Must happen as soon as this is open. Bring focus here
 						console.log("Key pressed");
 						removeFullScreen(e);
 					}}

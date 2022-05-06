@@ -248,6 +248,7 @@ const DataConnection = (props) => {
 										}
 										onMouseOver={() => xprops.setOpen(true)}
 										onMouseLeave={() => xprops.setOpen(false)}
+										onClick={() => ViewOrEditDc(dc.dc_uid)}
 									>
 										<div className="dataConnectionName">
 											{dc.friendly_name} (<i className="">{dc.db_name}</i>){" "}
