@@ -15,6 +15,9 @@ const PlayBookReducer = (state = initialState, action) => {
 				description: { $set: action.payload.description },
 			});
 
+		case "RESET_PLAYBOOK_DATA":
+			return initialState;
+
 		default:
 			return state;
 	}

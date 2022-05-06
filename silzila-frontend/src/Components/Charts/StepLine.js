@@ -12,7 +12,6 @@ const StepLine = ({
 	console.log(property, "+++++ PROPERTY +++++");
 	let chartData = property.chartData ? property.chartData.result : "";
 	console.log(chartData, "+++++ chartData +++++");
-	// const dimension = Object.keys(chartData[0])
 
 	return (
 		<>
@@ -29,20 +28,8 @@ const StepLine = ({
 						yAxis: {},
 						series: [
 							{
-								// name: 'sum(Sales)',
 								type: "line",
-								// step: "start",
 							},
-							// {
-							// 	// name: 'sum(Order)',
-							// 	type: "line",
-							// 	step: "middle",
-							// },
-							// {
-							// 	// name: 'sum(Profit)',
-							// 	type: "line",
-							// 	step: "end",
-							// },
 						],
 					}}
 				/>

@@ -177,45 +177,43 @@ const PlayBookList = ({
 								key={pb.name}
 								render={(xprops) => (
 									<div
-										className="dataConnectionList"
+										className={
+											xprops.open
+												? "dataConnectionListSelected"
+												: "dataConnectionList"
+										}
 										onMouseOver={() => xprops.setOpen(true)}
 										onMouseLeave={() => xprops.setOpen(false)}
+										onClick={() => getPlayBookDataFromServer(pb.pb_uid)}
 									>
 										<div className="dataConnectionName">{pb.name}</div>
 										{xprops.open ? (
 											<Tooltip
-												title="View / Edit Playbook"
+												title="Delete playbook"
 												arrow
 												placement="right-start"
 											>
-												<>
-													<VisibilitySharp
-														style={{
-															width: "1rem",
-															height: "1rem",
-															margin: "auto",
-														}}
-														onClick={() =>
-															getPlayBookDataFromServer(pb.pb_uid)
-														}
-													/>
+												<div
+													className="dataHomeDeleteIcon"
+													onClick={(e) => {
+														e.stopPropagation();
 
+														var yes = window.confirm(
+															"Are you sure you want to Delete this Playbook?"
+														);
+														if (yes) {
+															deletePlayBook(pb.pb_uid);
+														}
+													}}
+												>
 													<DeleteIcon
 														style={{
 															width: "1rem",
 															height: "1rem",
 															margin: "auto",
 														}}
-														onClick={() => {
-															var yes = window.confirm(
-																"Are you sure you want to Delete this Playbook?"
-															);
-															if (yes) {
-																deletePlayBook(pb.pb_uid);
-															}
-														}}
 													/>
-												</>
+												</div>
 											</Tooltip>
 										) : null}
 									</div>

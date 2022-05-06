@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { toggleDashMode, toggleDashModeInTab } from "../../redux/TabTile/actionsTabTile";
+import {
+	resetAllStates,
+	toggleDashMode,
+	toggleDashModeInTab,
+} from "../../redux/TabTile/actionsTabTile";
 import { Button, Dialog, Menu, MenuItem, Select, TextField } from "@mui/material";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import { NotificationDialog } from "../CommonFunctions/DialogComponents";
@@ -8,8 +12,13 @@ import FetchData from "../../ServerCall/FetchData";
 import { useNavigate } from "react-router-dom";
 import { updatePlaybookUid } from "../../redux/Playbook/playbookActions";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import CloseRounded from "@mui/icons-material/CloseRounded";
+import { resetUser } from "../../redux/UserInfo/isLoggedActions";
 
 const MenuBar = ({
+	// props
+	from,
+
 	// state
 	token,
 	tabTileProps,
@@ -23,7 +32,10 @@ const MenuBar = ({
 	toggleDashMode,
 	toggleDashModeInTab,
 	updatePlayBookId,
+	resetAllStates,
+	resetUser,
 }) => {
+	console.log(from);
 	const propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 
 	const menuStyle = { fontSize: "12px", padding: "2px 8px", margin: 0 };
@@ -40,6 +52,9 @@ const MenuBar = ({
 	const [testMessage, setTestMessage] = useState("");
 
 	const [saveFromHomeIcon, setSaveFromHomeIcon] = useState(false);
+
+	const [logoutModal, setLogoutModal] = useState(false);
+	const [logoutAnchor, setLogoutAnchor] = useState(null);
 
 	var navigate = useNavigate();
 
@@ -71,6 +86,9 @@ const MenuBar = ({
 				setTimeout(() => {
 					setOpenAlert(false);
 					if (fromHome) {
+						// TODO: Reset all states from here
+
+						resetAllStates();
 						navigate("/datahome");
 					}
 				}, 2000);
@@ -109,9 +127,6 @@ const MenuBar = ({
 	var fileMenuStyle = { fontSize: "12px", padding: "2px 1rem" };
 
 	const savePlaybook = async () => {
-		// setSaveModal(false);
-		// Get all data from redux store and export it as a JSON file.
-
 		var playBookObj = formatPlayBookData();
 
 		if (playBookName) {
@@ -161,6 +176,39 @@ const MenuBar = ({
 		}
 	};
 
+	const LogOutMenu = () => {
+		return (
+			<Menu
+				open={logoutModal}
+				className="RelPopover"
+				anchorEl={logoutAnchor}
+				anchorOrigin={{
+					vertical: "bottom",
+					horizontal: "left",
+				}}
+				transformOrigin={{
+					vertical: "top",
+					horizontal: "left",
+				}}
+				onClose={() => {
+					setAnchorEl(null);
+					setOpenFileMenu(false);
+				}}
+			>
+				<MenuItem
+					sx={fileMenuStyle}
+					onClick={() => {
+						handleSave();
+						resetUser();
+						navigate("/login");
+					}}
+				>
+					Logout
+				</MenuItem>
+			</Menu>
+		);
+	};
+
 	const FileMenu = () => {
 		return (
 			<Menu
@@ -192,6 +240,7 @@ const MenuBar = ({
 				<MenuItem
 					sx={fileMenuStyle}
 					onClick={() => {
+						setOpenFileMenu(false);
 						setSaveModal(true);
 					}}
 				>
@@ -203,105 +252,148 @@ const MenuBar = ({
 
 	return (
 		<div className="dataViewerMenu">
-			<div
-				className="menuHome"
-				onClick={() => {
-					setSaveFromHomeIcon(true);
-					handleSave(true);
-				}}
-			>
-				<HomeRoundedIcon sx={{ color: "#666" }} />
-			</div>
-			<div className="menuItemsGroup">
-				<div
-					className="menuItem"
-					onClick={(e) => {
-						setOpenFileMenu(!openFileMenu);
-						setAnchorEl(e.currentTarget);
-					}}
-				>
-					File
-				</div>
-				<div className="menuItem">Edit</div>
-				<div className="menuItem">Data</div>
-			</div>
-
-			<div className="playbookName">{playBookState.playBookName}</div>
-
-			<div className="userInfo">
-				{tabState.tabs[tabTileProps.selectedTabId].showDash ? (
-					<Select
-						size="small"
-						sx={{
-							height: "1.5rem",
-							fontSize: "12px",
-							width: "6rem",
-							margin: "auto 0.5rem",
-						}}
-						value={tabTileProps.dashMode}
-						onChange={(e) => {
-							console.log(e.target.value);
-							toggleDashMode(e.target.value);
-							toggleDashModeInTab(tabTileProps.selectedTabId, e.target.value);
+			{from === "dataHome" ? (
+				<>
+					<div className="menuHome">
+						<HomeRoundedIcon sx={{ color: "#666" }} />
+					</div>
+					<div className="menuItemsGroup">&nbsp;</div>
+				</>
+			) : null}
+			{from === "dataSet" ? (
+				<>
+					<div
+						className="menuHome"
+						onClick={() => {
+							navigate("/dataHome");
 						}}
 					>
-						<MenuItem sx={menuStyle} value="Edit">
-							Edit
-						</MenuItem>
-						<MenuItem sx={menuStyle} value="Present">
-							Present
-						</MenuItem>
-					</Select>
-				) : null}
-			</div>
-			<div className="menuHome">
+						<HomeRoundedIcon sx={{ color: "#666" }} />
+					</div>
+					<div className="menuItemsGroup">&nbsp;</div>
+				</>
+			) : null}
+			{from === "dataViewer" ? (
+				<>
+					<div
+						className="menuHome"
+						onClick={() => {
+							setSaveFromHomeIcon(true);
+							handleSave(true);
+						}}
+					>
+						<HomeRoundedIcon sx={{ color: "#666" }} />
+					</div>
+					<div className="menuItemsGroup">
+						<div
+							className="menuItem"
+							onClick={(e) => {
+								setOpenFileMenu(!openFileMenu);
+								setAnchorEl(e.currentTarget);
+							}}
+						>
+							File
+						</div>
+						{/* <div className="menuItem">Edit</div>
+						<div className="menuItem">Data</div> */}
+					</div>
+
+					<div className="playbookName">{playBookState.playBookName}</div>
+
+					<div className="userInfo">
+						{tabState.tabs[tabTileProps.selectedTabId].showDash ? (
+							<Select
+								size="small"
+								sx={{
+									height: "1.5rem",
+									fontSize: "12px",
+									width: "6rem",
+									margin: "auto 0.5rem",
+								}}
+								value={tabTileProps.dashMode}
+								onChange={(e) => {
+									console.log(e.target.value);
+									toggleDashMode(e.target.value);
+									toggleDashModeInTab(tabTileProps.selectedTabId, e.target.value);
+								}}
+							>
+								<MenuItem sx={menuStyle} value="Edit">
+									Edit
+								</MenuItem>
+								<MenuItem sx={menuStyle} value="Present">
+									Present
+								</MenuItem>
+							</Select>
+						) : null}
+					</div>
+				</>
+			) : null}
+			<div
+				className="menuHome"
+				onClick={(e) => {
+					console.log("Logout Clicked");
+					setLogoutAnchor(e.currentTarget);
+					setLogoutModal(!logoutModal);
+				}}
+			>
 				<AccountCircleIcon sx={{ padding: "auto 1rem" }} />
 			</div>
 
 			<FileMenu />
+
+			<LogOutMenu />
 
 			<Dialog open={saveModal}>
 				<div
 					style={{
 						display: "flex",
 						flexDirection: "column",
-						padding: "5px 50px",
+						padding: "8px",
 						width: "400px",
 						height: "auto",
 						justifyContent: "center",
 					}}
 				>
 					<div style={{ fontWeight: "bold", textAlign: "center" }}>
-						Save playbook
+						<div style={{ display: "flex" }}>
+							<span style={{ flex: 1 }}>Save playbook</span>
+
+							<CloseRounded
+								style={{ margin: "0.25rem" }}
+								onClick={() => setSaveModal(false)}
+							/>
+						</div>
 						<p></p>
-						<TextField
-							required
-							size="small"
-							fullWidth
-							id="standard-basic"
-							label="Playbook Name"
-							variant="outlined"
-							onChange={(e) => setPlayBookName(e.target.value)}
-							onKeyDown={(e) => {
-								if (e.key === "Enter") {
-									savePlaybook();
-								}
-							}}
-							value={playBookName}
-						/>
-						<br />
-						<br />
-						<TextField
-							label="Description"
-							size="small"
-							fullWidth
-							onChange={(e) => setPlayBookDescription(e.target.value)}
-							onKeyDown={(e) => {
-								if (e.key === "Enter") {
-									savePlaybook();
-								}
-							}}
-						/>
+						<div style={{ padding: "0 50px" }}>
+							<TextField
+								required
+								size="small"
+								fullWidth
+								id="standard-basic"
+								label="Playbook Name"
+								variant="outlined"
+								onChange={(e) => setPlayBookName(e.target.value)}
+								onKeyDown={(e) => {
+									if (e.key === "Enter") {
+										savePlaybook();
+									}
+								}}
+								value={playBookName}
+							/>
+							<br />
+							<br />
+							<TextField
+								label="Description"
+								size="small"
+								fullWidth
+								onChange={(e) => setPlayBookDescription(e.target.value)}
+								onKeyDown={(e) => {
+									if (e.key === "Enter") {
+										savePlaybook();
+									}
+								}}
+							/>
+						</div>
 					</div>
 					<div
 						style={{ padding: "15px", justifyContent: "space-around", display: "flex" }}
@@ -315,13 +407,7 @@ const MenuBar = ({
 								Discard
 							</Button>
 						) : null}
-						<Button
-							style={{ backgroundColor: "grey", float: "right" }}
-							onClick={() => setSaveModal(false)}
-							variant="contained"
-						>
-							Cancel
-						</Button>
+
 						<Button
 							style={{ backgroundColor: "rgb(0,123,255)" }}
 							variant="contained"
@@ -362,6 +448,8 @@ const mapDispatchToProps = (dispatch) => {
 		toggleDashMode: (dashMode) => dispatch(toggleDashMode(dashMode)),
 		toggleDashModeInTab: (tabId, dashMode) => dispatch(toggleDashModeInTab(tabId, dashMode)),
 		updatePlayBookId: (pbUid) => dispatch(updatePlaybookUid(pbUid)),
+		resetAllStates: () => dispatch(resetAllStates()),
+		resetUser: () => dispatch(resetUser()),
 	};
 };
 

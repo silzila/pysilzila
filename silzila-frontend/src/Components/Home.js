@@ -8,6 +8,7 @@ import DataViewer from "./DataViewer/DataViewer";
 
 import Login from "./LoginSignUp/Login";
 import SignUp from "./LoginSignUp/SignUp";
+import Redirect from "./Redirect";
 
 const Home = (props) => {
 	return (
@@ -34,6 +35,7 @@ const Home = (props) => {
 			) : (
 				<Router>
 					<Routes>
+						<Route path="*" element={<Redirect />} />
 						<Route exact path="/" element={<Login />} />
 						<Route exact path="/login" element={<Login />} />
 						<Route exact path="/signup" element={<SignUp />} />

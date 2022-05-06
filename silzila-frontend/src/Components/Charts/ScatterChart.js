@@ -6,6 +6,7 @@ const ScatterChart = ({
 	propKey,
 	graphDimension,
 	chartArea,
+	graphTileSize,
 
 	//state
 	chartProp,
@@ -50,6 +51,11 @@ const ScatterChart = ({
 						width: graphDimension.width,
 						height: graphDimension.height,
 						margin: "auto",
+						border: chartArea
+							? "none"
+							: graphTileSize
+							? "none"
+							: "1px solid rgb(238,238,238)",
 					}}
 					option={{
 						legend: {

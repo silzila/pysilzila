@@ -4,6 +4,7 @@ import ShortUniqueId from "short-unique-id";
 import { setUserTable, setValuesToState } from "../../redux/Dataset/datasetActions";
 import FetchData from "../../ServerCall/FetchData";
 import { FindShowHeadAndShowTail } from "../CommonFunctions/FindIntegrityAndCordinality";
+import MenuBar from "../DataViewer/MenuBar";
 import Canvas from "./Canvas";
 import Sidebar from "./Sidebar";
 
@@ -233,13 +234,17 @@ const EditDataSet = ({
 	};
 
 	return (
-		<div className="createDatasetPage">
-			{loadPage ? (
-				<>
-					<Sidebar editMode={editMode} />
-					<Canvas editMode={editMode} />
-				</>
-			) : null}
+		<div className="dataHome">
+			<MenuBar from="dataSet" />
+
+			<div className="createDatasetPage">
+				{loadPage ? (
+					<>
+						<Sidebar editMode={editMode} />
+						<Canvas editMode={editMode} />
+					</>
+				) : null}
+			</div>
 		</div>
 	);
 };

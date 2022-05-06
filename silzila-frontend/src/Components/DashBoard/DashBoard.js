@@ -79,14 +79,6 @@ const DashBoard = ({
 		}
 	}, [tabTileProps.dashMode]);
 
-	useEffect(() => {
-		if (tabTileProps.dashMode === "Present") {
-			setdashStyle({ ...dashStyle, background: null });
-		} else {
-			setdashStyle({ ...dashStyle, background: dashbackground });
-		}
-	}, [tabTileProps.dashMode]);
-
 	let movement_timer = null;
 	const RESET_TIMEOUT = 300;
 	const handleResize = () => {
