@@ -337,10 +337,10 @@ const DashBoard = ({
 								color: "#999999",
 							}}
 						>
-							<pre style={{ fontFamily: "Monaco", fontSize: "16px" }}>
+							{/* <pre style={{ fontFamily: "Monaco", fontSize: "16px" }}>
 								No graphs selected{"\n\n"} Select tiles from right panel to place
 								graph here
-							</pre>
+							</pre> */}
 						</div>
 					)}
 				</div>

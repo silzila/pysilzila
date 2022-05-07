@@ -49,6 +49,7 @@ const FunnelChart = ({
 						: "1px solid rgb(238,238,238)",
 				}}
 				option={{
+					animation: chartArea ? false : true,
 					legend: {
 						type: "scroll",
 						show: property.legendOptions?.showLegend,
@@ -92,15 +93,16 @@ const FunnelChart = ({
 					dataset: {
 						source: newData,
 					},
-					xAxis: {},
-					yAxis: {},
+
 					series: [
 						{
 							type: "funnel",
 							label: {
 								show: property.labelOptions.showLabel,
 								fontSize: property.labelOptions.fontSize,
-								color: property.labelOptions.labelColor,
+								color: property.labelOptions.labelColorManual
+									? property.labelOptions.labelColor
+									: null,
 							},
 						},
 					],

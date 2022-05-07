@@ -99,17 +99,17 @@ const PlayBookList = ({
 		console.log(result);
 
 		if (result.status) {
-			var pB = result.data;
-			var newChartControl = JSON.parse(JSON.stringify(pB.content.chartControl));
+			var pb = result.data;
+			var newChartControl = JSON.parse(JSON.stringify(pb.content.chartControl));
 
 			setLoading(true);
 
 			await Promise.all(
-				Object.keys(pB.content.chartControl.properties).map(async (property) => {
-					var axesValue = pB.content.chartProperty.properties[property].chartAxes;
+				Object.keys(pb.content.chartControl.properties).map(async (property) => {
+					var axesValue = pb.content.chartProperty.properties[property].chartAxes;
 					var data = await getChartData(
 						axesValue,
-						pB.content.chartProperty,
+						pb.content.chartProperty,
 						property,
 						token
 					);
@@ -118,12 +118,43 @@ const PlayBookList = ({
 				})
 			);
 
+			// var tableRecords = [];
+
+			// await Promise.all(
+			// 	Object.keys(pb.content.chartProperty.properties).map(async (prop) => {
+			// 		var tableInfo = pb.content.chartProperty.properties[prop];
+			// 		console.log(tableInfo);
+
+			// 		var dc_uid = tableInfo.selectedDs?.dc_uid;
+			// 		var ds_uid = tableInfo.selectedDs?.ds_uid;
+
+			// 		var selectedTableForThisDataset = tableInfo.selectedTable[ds_uid];
+			// 		console.log("Selected Table : ", selectedTableForThisDataset);
+			// 		console.log("DC_UID : ", dc_uid, "\nDS_UID : ", ds_uid);
+			// 		console.log(pb.content.tabTileProps.tablesForSelectedDataSets[ds_uid]);
+			// 		// var tableRecords = await getTableData(
+			// 		// 	dc_uid,
+			// 		// 	table.schema_name,
+			// 		// 	table.table_name,
+			// 		// 	token
+			// 		// );
+			// 		// var recordsType = await getColumnTypes(
+			// 		// 	dc_uid,
+			// 		// 	table.schema_name,
+			// 		// 	table.table_name,
+			// 		// 	token
+			// 		// );
+
+			// 		// addRecords(ds_uid, table.id, tableRecords, recordsType);
+			// 	})
+			// );
+
 			setLoading(false);
 
-			pB.content.chartControl = newChartControl;
-			console.log(JSON.stringify(pB.content, null, 4));
-			loadPlayBook(pB.content);
-			updatePlayBookId({ name: pB.name, pb_uid: pB.pb_uid, description: pB.description });
+			pb.content.chartControl = newChartControl;
+			console.log(JSON.stringify(pb.content, null, 4));
+			loadPlayBook(pb.content);
+			updatePlayBookId({ name: pb.name, pb_uid: pb.pb_uid, description: pb.description });
 			navigate("/dataviewer");
 		}
 	};

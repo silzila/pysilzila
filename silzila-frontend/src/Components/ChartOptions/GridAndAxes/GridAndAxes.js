@@ -170,15 +170,12 @@ const GridAndAxes = ({
 						setAxisMinMax(propKey, "enableMin", !property.axisMinMax.enableMin);
 					}}
 				/>
-				<label for="enableDisable" className="enableDisableLabel">
-					Enable
-				</label>
-				{property.axisMinMax.enableMin ? (
-					<InputNumber
-						value={property.axisMinMax.minValue}
-						updateValue={(value) => setAxisMinMax(propKey, "minValue", value)}
-					/>
-				) : null}
+
+				<InputNumber
+					value={property.axisMinMax.minValue}
+					updateValue={(value) => setAxisMinMax(propKey, "minValue", value)}
+					disabled={property.axisMinMax.enableMin ? false : true}
+				/>
 			</div>
 			<div className="optionDescription">MAX VALUE</div>
 			<div className="optionDescription">
@@ -190,15 +187,12 @@ const GridAndAxes = ({
 						setAxisMinMax(propKey, "enableMax", !property.axisMinMax.enableMax);
 					}}
 				/>
-				<label for="enableDisable" className="enableDisableLabel">
-					Enable
-				</label>
-				{property.axisMinMax.enableMax ? (
-					<InputNumber
-						value={property.axisMinMax.maxValue}
-						updateValue={(value) => setAxisMinMax(propKey, "maxValue", value)}
-					/>
-				) : null}
+
+				<InputNumber
+					value={property.axisMinMax.maxValue}
+					updateValue={(value) => setAxisMinMax(propKey, "maxValue", value)}
+					disabled={property.axisMinMax.enableMax ? false : true}
+				/>
 			</div>
 			{/* ==================================================================================
                                                  AXIS PROPS
@@ -207,8 +201,10 @@ const GridAndAxes = ({
 			{/* =========================================================================================
 			                                    X - AXIS PROPS
 			========================================================================================= */}
+			<div
+				style={{ borderTop: "1px solid rgb(211,211,211)", margin: "0.5rem 6% 1rem" }}
+			></div>
 			<div className="optionDescription">X-AXES</div>
-
 			<div className="optionDescription">
 				<input
 					type="checkbox"
@@ -352,6 +348,9 @@ const GridAndAxes = ({
 			{/* ============================================================================================
 			Y-AXIS PROPS
 			============================================================================================ */}
+			<div
+				style={{ borderTop: "1px solid rgb(211,211,211)", margin: "0.5rem 6% 1rem" }}
+			></div>
 			<div className="optionDescription">Y-AXES</div>
 			<div className="optionDescription">
 				<input

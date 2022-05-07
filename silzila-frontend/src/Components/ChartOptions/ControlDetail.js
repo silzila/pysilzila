@@ -58,11 +58,7 @@ const ControlDetail = ({ chartProp, tabTileProps }) => {
 				);
 		}
 	};
-	return (
-		<div>
-			<RenderControlDetail />
-		</div>
-	);
+	return <RenderControlDetail />;
 };
 const mapStateToProps = (state) => {
 	return {

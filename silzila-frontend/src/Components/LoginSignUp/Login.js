@@ -99,42 +99,11 @@ const Login = (props) => {
 		}
 	}
 
-	const BottomMessage = () => {
-		if (loginStatus) {
-			return (
-				<span className="loginSuccess">
-					<h4>Logged in successfully!</h4>
-					<p>Redirecting....</p>
-				</span>
-			);
-		} else {
-			return (
-				<React.Fragment>
-					{loginError ? <p className="loginFail">{serverErrorMessage}</p> : null}
-					<div className="buttonText">
-						<Button
-							id="loginSignupButton"
-							variant="contained"
-							type="submit"
-							value="Login"
-						>
-							Login
-						</Button>
-						<br />
-						<span id="emailHelp">
-							Dont have an account yet? <Link to="/signup">Sign Up</Link>
-						</span>
-					</div>
-				</React.Fragment>
-			);
-		}
-	};
-
 	return (
 		<div id="container1">
 			<h2>Welcome to Silzila!</h2>
 
-			<form onSubmit={handleSubmit} autoComplete="on">
+			<form onSubmit={(e) => handleSubmit(e)} autoComplete="on">
 				<div id="formElement">
 					<input
 						ref={inputRef}
@@ -189,7 +158,34 @@ const Login = (props) => {
 				</div>
 
 				<div className="buttonSuccess">
-					<BottomMessage />
+					{loginStatus ? (
+						<span className="loginSuccess">
+							<h4>Logged in successfully!</h4>
+							<p>Redirecting....</p>
+						</span>
+					) : (
+						<React.Fragment>
+							{loginError ? <p className="loginFail">{serverErrorMessage}</p> : null}
+							<div className="buttonText">
+								<Button
+									id="loginSignupButton"
+									variant="contained"
+									type="submit"
+									value="Login"
+									onClick={(e) => {
+										console.log("Login button clicked");
+										handleSubmit(e);
+									}}
+								>
+									Login
+								</Button>
+								<br />
+								<span id="emailHelp">
+									Dont have an account yet? <Link to="/signup">Sign Up</Link>
+								</span>
+							</div>
+						</React.Fragment>
+					)}
 				</div>
 			</form>
 		</div>

@@ -25,7 +25,7 @@ const PieChart = ({
 			position: "outSide",
 			show: property.labelOptions.showLabel,
 			fontSize: property.labelOptions.fontSize,
-			color: property.labelOptions.labelColor,
+			color: property.labelOptions.labelColorManual ? property.labelOptions.labelColor : null,
 		},
 	};
 
@@ -61,6 +61,7 @@ const PieChart = ({
 							: "1px solid rgb(238,238,238)",
 					}}
 					option={{
+						animation: chartArea ? false : true,
 						legend: {
 							type: "scroll",
 							show: property.legendOptions?.showLegend,

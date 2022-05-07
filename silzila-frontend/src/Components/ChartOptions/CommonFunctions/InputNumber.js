@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const InputNumber = ({ value, updateValue }) => {
+const InputNumber = ({ value, updateValue, disabled }) => {
 	const [inputValue, setInputValue] = useState(value);
 
 	const checkInput = (inputValue) => {
@@ -25,6 +25,7 @@ const InputNumber = ({ value, updateValue }) => {
 			}}
 		>
 			<input
+				disabled={disabled}
 				autoFocus
 				className="inputValue"
 				type="text"

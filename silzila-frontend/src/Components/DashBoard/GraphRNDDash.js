@@ -28,11 +28,6 @@ const GraphRNDDash = ({
 	const resizeGridX = gridSize.x;
 	const resizeGridY = gridSize.y;
 
-	// const [graphDimension, setGraphDimension] = useState({});
-	// console.log(gridSize);
-	// console.log(boxDetails);
-	// console.log("x:", boxDetails.x * gridSize.x, "y:", boxDetails.y * gridSize.y);
-
 	const [hovering, setHovering] = useState(false);
 
 	useEffect(() => {

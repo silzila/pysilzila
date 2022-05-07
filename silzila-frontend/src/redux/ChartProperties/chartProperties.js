@@ -30,14 +30,8 @@ const chartProperties = {
 			],
 
 			// DataViewerBottom Dataset selected and tables to list
-			selectedDs: {
-				friendly_name: "landmark post",
-				dc_uid: "post",
-				ds_uid: "dspost",
-			},
-			selectedTable: {
-				dspost: "s",
-			},
+			selectedDs: {},
+			selectedTable: {},
 
 			titleOptions: {
 				fontSize: 28,

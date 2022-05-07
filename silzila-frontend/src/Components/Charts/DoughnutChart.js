@@ -53,6 +53,7 @@ const DoughnutChart = ({
 							: "1px solid rgb(238,238,238)",
 					}}
 					option={{
+						animation: chartArea ? false : true,
 						legend: {
 							type: "scroll",
 							show: property.legendOptions?.showLegend,
@@ -75,8 +76,6 @@ const DoughnutChart = ({
 							dimensions: Object.keys(chartData[0]),
 							source: chartData,
 						},
-						// xAxis: { type: "category" },
-						// yAxis: {},
 						series: [
 							{
 								type: "pie",
@@ -84,7 +83,9 @@ const DoughnutChart = ({
 									position: property.labelOptions.pieLabel.labelPosition,
 									show: property.labelOptions.showLabel,
 									fontSize: property.labelOptions.fontSize,
-									color: property.labelOptions.labelColor,
+									color: property.labelOptions.labelColorManual
+										? property.labelOptions.labelColor
+										: null,
 								},
 								radius: ["40%", "70%"],
 							},

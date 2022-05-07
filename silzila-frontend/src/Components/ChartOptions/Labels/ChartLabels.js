@@ -104,25 +104,52 @@ const ChartLabels = ({
 							</React.Fragment>
 						) : null}
 						{/* </div> */}
-						<div style={{ flex: 1, display: "flex" }}>
+						<div
+						// style={{ flex: 1, display: "flex" }}
+						>
 							<div className="optionDescription">LABEL COLOR</div>
-							<div
-								style={{
-									height: "100%",
-									width: "50%",
-									backgroundColor:
-										chartProp.properties[propKey].labelOptions.labelColor,
-									color: chartProp.properties[propKey].labelOptions.labelColor,
-									border: "2px solid darkgray",
-									margin: "0 10px 5px 0",
-								}}
-								onClick={(e) => {
-									console.log("Color clicked");
-									setColorPopOverOpen(!isColorPopoverOpen);
-									setAnchorEl(e.currentTarget);
-								}}
-							>
-								{" c "}
+
+							<div className="optionDescription">
+								<input
+									type="checkbox"
+									id="enableDisable"
+									checked={
+										chartProp.properties[propKey].labelOptions.labelColorManual
+									}
+									onChange={() => {
+										updateLabelOption(
+											propKey,
+											"labelColorManual",
+											!chartProp.properties[propKey].labelOptions
+												.labelColorManual
+										);
+									}}
+								/>
+								<label for="enableDisable" style={{ padding: "5px" }}>
+									Manual
+								</label>
+								{chartProp.properties[propKey].labelOptions.labelColorManual ? (
+									<div
+										style={{
+											height: "100%",
+											width: "50%",
+											backgroundColor:
+												chartProp.properties[propKey].labelOptions
+													.labelColor,
+											color: chartProp.properties[propKey].labelOptions
+												.labelColor,
+											border: "2px solid darkgray",
+											margin: "auto",
+										}}
+										onClick={(e) => {
+											console.log("Color clicked");
+											setColorPopOverOpen(!isColorPopoverOpen);
+											setAnchorEl(e.currentTarget);
+										}}
+									>
+										{" c "}
+									</div>
+								) : null}
 							</div>
 						</div>
 						<div className="optionDescription">FONT SIZE</div>

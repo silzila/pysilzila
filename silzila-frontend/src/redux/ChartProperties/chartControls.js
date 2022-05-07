@@ -24,18 +24,19 @@ const chartControl = {
 			chartMargin: {
 				selectedMargin: "top",
 				top: 30,
-				right: 5,
+				right: 40,
 				bottom: 25,
 				left: 65,
 			},
 
 			labelOptions: {
 				showLabel: true,
-				labelColor: "#888888",
+				labelColorManual: false,
+				labelColor: "#666666",
 				pieLabel: {
 					labelPosition: "outside",
 				},
-				fontSize: 15,
+				fontSize: 12,
 				fontStyle: "normal",
 				fontWeigth: "normal",
 				fontFamily: "sans-serif",
@@ -133,18 +134,19 @@ const chartControlsReducer = (state = chartControl, action) => {
 						chartMargin: {
 							selectedMargin: "top",
 							top: 30,
-							right: 5,
+							right: 40,
 							bottom: 25,
 							left: 65,
 						},
 
 						labelOptions: {
 							showLabel: true,
-							labelColor: "#888888",
+							labelColorManual: false,
+							labelColor: "#666666",
 							pieLabel: {
 								labelPosition: "outside",
 							},
-							fontSize: 15,
+							fontSize: 12,
 							fontStyle: "normal",
 							fontWeigth: "normal",
 							fontFamily: "sans-serif",
@@ -248,18 +250,19 @@ const chartControlsReducer = (state = chartControl, action) => {
 						chartMargin: {
 							selectedMargin: "top",
 							top: 30,
-							right: 5,
+							right: 40,
 							bottom: 25,
 							left: 65,
 						},
 
 						labelOptions: {
 							showLabel: true,
-							labelColor: "#888888",
+							labelColorManual: false,
+							labelColor: "#666666",
 							pieLabel: {
 								labelPosition: "outside",
 							},
-							fontSize: 15,
+							fontSize: 12,
 							fontStyle: "normal",
 							fontWeigth: "normal",
 							fontFamily: "sans-serif",
