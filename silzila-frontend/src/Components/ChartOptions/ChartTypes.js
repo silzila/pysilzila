@@ -16,6 +16,8 @@ import funnelChartIcon from "../../assets/funnel.png";
 import gaugeChartIcon from "../../assets/gauge.png";
 import heatMapIcon from "../../assets/heat_map.png";
 import ChartsInfo from "../ChartAxes/ChartsInfo2";
+import CrossTabIcon	from '../../assets/crosstab.png';
+
 import "./ChartOptions.css";
 
 export const chartTypes = [
@@ -29,6 +31,7 @@ export const chartTypes = [
 	{ name: "funnel", icon: funnelChartIcon, value: "Funnel Chart" },
 	{ name: "gauge", icon: gaugeChartIcon, value: "Gauge Chart" },
 	{ name: "heatmap", icon: heatMapIcon, value: " Heat Map" },
+	{ name: "crossTab", icon: CrossTabIcon, value: " Cross Tab" },
 ];
 
 const ChartTypes = ({
@@ -119,7 +122,7 @@ const ChartTypes = ({
 					return newChartAxes;
 				}
 
-				if (newChart === "heatmap") {
+				if (newChart === "heatmap" || newChart === "crossTab") {
 					if (oldChartAxes[1].fields.length > 0) {
 						newChartAxes[1].fields.push(oldChartAxes[1].fields[0]);
 					}
@@ -134,7 +137,7 @@ const ChartTypes = ({
 
 					return newChartAxes;
 				}
-
+			break;
 			case "scatterPlot":
 				if (newChart === "scatterPlot") {
 					return oldChartAxes;
@@ -161,7 +164,7 @@ const ChartTypes = ({
 				}
 
 				if (newChart === "funnel") {
-					var value = [];
+					let value = [];
 					if (oldChartAxes[2].fields.length > 0)
 						value = value.concat(oldChartAxes[2].fields);
 					if (oldChartAxes[3].fields.length > 0)
@@ -188,7 +191,7 @@ const ChartTypes = ({
 					return newChartAxes;
 				}
 
-				if (newChartAxes === "heatmap") {
+				if (newChartAxes === "heatmap" || newChart === "crossTab") {
 					if (oldChartAxes[1].fields.length > 0)
 						newChartAxes[1].fields.push(oldChartAxes[1].fields[0]);
 
@@ -202,8 +205,9 @@ const ChartTypes = ({
 						newChartAxes[0].fields = oldChartAxes[0].fields;
 
 					return newChartAxes;
-				}
-
+				}				
+				
+			break;
 			case "funnel":
 				if (newChart === "funnel") {
 					return oldChartAxes;
@@ -246,7 +250,7 @@ const ChartTypes = ({
 					return newChartAxes;
 				}
 
-				if (newChart === "heatmap") {
+				if (newChart === "heatmap" || newChart === "crossTab") {
 					if (oldChartAxes[1].fields.length > 0)
 						newChartAxes[3].fields.push(oldChartAxes[1].fields[0]);
 
@@ -257,6 +261,7 @@ const ChartTypes = ({
 					return newChartAxes;
 				}
 
+			break;
 			case "gauge":
 				if (newChart === "gauge") {
 					return oldChartAxes;
@@ -290,7 +295,7 @@ const ChartTypes = ({
 					return oldChartAxes;
 				}
 
-				if (newChart === "heatmap") {
+				if (newChart === "heatmap" || newChart === "crossTab") {
 					if (oldChartAxes[1].fields.length > 0)
 						newChartAxes[3].fields.push(oldChartAxes[1].fields[0]);
 
@@ -301,8 +306,9 @@ const ChartTypes = ({
 					return newChartAxes;
 				}
 
+			break;
 			case "heatmap":
-				if (newChart === "heatmap") return oldChartAxes;
+				if (newChart === "heatmap" || newChart === "crossTab") return oldChartAxes;
 
 				if (["multibar", "stackedBar", "line", "area", "pie", "donut"].includes(newChart)) {
 					// Map filter to Filter
@@ -346,7 +352,7 @@ const ChartTypes = ({
 
 					return newChartAxes;
 				}
-
+			break;
 			default:
 				return oldChartAxes;
 		}
@@ -380,7 +386,7 @@ const ChartTypes = ({
 							// "rose",
 
 							// "calendar",
-							// "crossTab",
+							 "crossTab",
 							// "bubble",
 							// "treeMap",
 						].includes(chart.name)

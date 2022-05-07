@@ -10,6 +10,7 @@ import GaugeChart from "../Charts/GaugeChart";
 import HeatMap from "../Charts/HeatMap";
 import ScatterChart from "../Charts/ScatterChart";
 import StackedBar from "../Charts/StackedBar";
+import CrossTabChart from '../Charts/CrossTab/CrossTabChart';
 
 const DashGraph = ({
 	// props
@@ -41,6 +42,15 @@ const DashGraph = ({
 						graphDimension={dimensions}
 						chartArea="dashboard"
 					/>
+				);
+			
+			case "crossTab":
+				return(
+					<CrossTabChart 
+					propKey={propKey}
+					graphDimension={dimensions}
+					chartArea="dashboard"
+				/>
 				);
 
 			case "stackedBar":
