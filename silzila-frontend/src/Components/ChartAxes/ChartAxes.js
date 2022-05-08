@@ -120,7 +120,7 @@ const ChartAxes = ({
 		dropZones.push(ChartsInfo[chartProp.properties[propKey].chartType].dropZones[i].name);
 	}
 
-	useEffect(async () => {
+	useEffect(() => {
 		console.log("ChartAxes changed");
 		const axesValues = JSON.parse(JSON.stringify(chartProp.properties[propKey].chartAxes));
 
@@ -175,9 +175,10 @@ const ChartAxes = ({
 		if (serverCall) {
 			setLoading(true);
 			console.log("Time for API call");
-			var data = await getChartData(axesValues, chartProp, propKey, token);
-			updateChartData(propKey, data);
-			setLoading(false);
+			getChartData(axesValues, chartProp, propKey, token).then(data=>{
+				updateChartData(propKey, data);
+				setLoading(false);
+				});		
 		}
 	}, [chartProp.properties[propKey].chartAxes]);
 
