@@ -308,6 +308,7 @@ const ChartTypes = ({
 
 			break;
 			case "heatmap":
+			case "crossTab":
 				if (newChart === "heatmap" || newChart === "crossTab") return oldChartAxes;
 
 				if (["multibar", "stackedBar", "line", "area", "pie", "donut"].includes(newChart)) {

@@ -52,13 +52,16 @@ export const BuildTable = ({ crossTabData, dustbinRows, dustbinValues,
     }
   };
 
+  const _hideCellDataPopup = () => {   
+    setShowPopup(false); 
+};
+
   const debouncedMouseEnterHandler = useMemo(() => debounce(_mouseEnterHandler.bind(this), 300), []);
 
-  const hideCellDataPopup = () => {
-    setTimeout(() => {
-      setShowPopup(false);
-    }, 100);
-  };
+  const debouncedMouseLeaveHandler = useMemo(() => debounce(_hideCellDataPopup.bind(this), 300), []);
+
+
+ 
 
   const _getUserClickedColor = (col, rowIndex, colIndex) => {
     let _className = "";
@@ -148,7 +151,10 @@ export const BuildTable = ({ crossTabData, dustbinRows, dustbinValues,
               e.persist();
               debouncedMouseEnterHandler(e);
             }}
-            onMouseLeave={hideCellDataPopup}
+            onMouseLeave={(e) => {
+              e.persist();
+              debouncedMouseLeaveHandler(e);
+            }}
           >
             {col.displayData}
           </td>
