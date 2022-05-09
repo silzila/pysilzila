@@ -27,7 +27,6 @@ const ChartLabels = ({
 
 	const showLabel = chartProp.properties[propKey].labelOptions.showLabel;
 	var labelOptions = chartProp.properties[propKey].labelOptions;
-	console.log(showLabel);
 
 	const labelPositionOptions = [
 		{ name: "Outside", value: "outside" },
@@ -46,6 +45,7 @@ const ChartLabels = ({
 					value={item.value}
 					onClick={(e) => updateLabelOption(propKey, "showLabel", item.value)}
 					className={item.value === showLabel ? "radioButtonSelected" : "radioButton"}
+					key={i}
 				>
 					{item.name}
 				</button>
@@ -125,7 +125,7 @@ const ChartLabels = ({
 										);
 									}}
 								/>
-								<label for="enableDisable" style={{ padding: "5px" }}>
+								<label htmlFor="enableDisable" style={{ padding: "5px" }}>
 									Manual
 								</label>
 								{chartProp.properties[propKey].labelOptions.labelColorManual ? (
@@ -142,7 +142,6 @@ const ChartLabels = ({
 											margin: "auto",
 										}}
 										onClick={(e) => {
-											console.log("Color clicked");
 											setColorPopOverOpen(!isColorPopoverOpen);
 											setAnchorEl(e.currentTarget);
 										}}
@@ -178,7 +177,6 @@ const ChartLabels = ({
 						width="16rem"
 						styles={{ padding: "0" }}
 						onChangeComplete={(color) => {
-							console.log(color);
 							updateLabelOption(propKey, "labelColor", color.hex);
 						}}
 						onChange={(color) => updateLabelOption(propKey, "labelColor", color.hex)}

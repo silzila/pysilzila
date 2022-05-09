@@ -30,7 +30,6 @@ const ChartTitle = ({
 	];
 
 	const setGenerateTitle = (type) => {
-		console.log(type);
 		setGenerateTitleToStore(propKey, type);
 	};
 

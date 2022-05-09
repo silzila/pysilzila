@@ -13,9 +13,7 @@ const GaugeChart = ({
 	chartControl,
 }) => {
 	var property = chartControl.properties[propKey];
-	console.log(property, "+++++ PROPERTY +++++");
 	let chartData = property.chartData ? property.chartData.result : "";
-	console.log(chartData, "+++++ chartData +++++");
 	const [newData, setNewData] = useState([]);
 
 	useEffect(() => {
@@ -26,13 +24,10 @@ const GaugeChart = ({
 					name: key,
 					value: chartData[0][key],
 				});
-				console.log(newTempData);
 			});
 			setNewData(newTempData);
 		}
 	}, [chartData]);
-
-	console.log(newData, "***@@@@***");
 
 	const RenderChart = () => {
 		return (

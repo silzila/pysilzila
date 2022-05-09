@@ -23,7 +23,7 @@ const ChartMouseOver = ({
 						setMouseOver(propKey, !chartControl.properties[propKey].mouseOver.enable);
 					}}
 				/>
-				<label for="enableDisable" style={{ paddingLeft: "5px" }}>
+				<label htmlFor="enableDisable" style={{ paddingLeft: "5px" }}>
 					Enable
 				</label>
 			</div>

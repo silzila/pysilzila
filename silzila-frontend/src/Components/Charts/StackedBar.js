@@ -16,7 +16,6 @@ const StackedBar = ({
 	var property = chartControlState.properties[propKey];
 
 	let chartData = property.chartData ? property.chartData.result : "";
-	console.log(chartData, "+++++ chartData +++++");
 
 	var seriesObj = {
 		type: "bar",
@@ -42,8 +41,6 @@ const StackedBar = ({
 			setSeriesData(seriesDataTemp);
 		}
 	}, [chartData, property]);
-
-	console.log(seriesData);
 
 	const RenderChart = () => {
 		return (

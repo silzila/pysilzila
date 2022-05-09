@@ -6,6 +6,7 @@ import { userAuthentication } from "../../redux/UserInfo/isLoggedActions";
 import FetchData from "../../ServerCall/FetchData";
 import { Button, Input } from "@mui/material";
 import "./LoginSignUp.css";
+import LoadingPopover from "../CommonFunctions/PopOverComponents/LoadingPopover";
 
 const initialState = {
 	email: "",
@@ -20,6 +21,8 @@ const Login = (props) => {
 	const [loginStatus, setLoginStatus] = useState(false);
 	const [loginError, setLoginError] = useState(false);
 	const [serverErrorMessage, setServerErrorMessage] = useState("");
+
+	const [loading, setLoading] = useState(false);
 
 	const inputRef = useRef(null);
 	const navigate = useNavigate();
@@ -54,6 +57,7 @@ const Login = (props) => {
 
 	async function handleSubmit(e) {
 		e.preventDefault();
+		setLoading(true);
 
 		var canLogin = false;
 		if (
@@ -97,6 +101,7 @@ const Login = (props) => {
 			setLoginError(true);
 			setServerErrorMessage("Provide valid credentials");
 		}
+		setLoading(false);
 	}
 
 	return (
@@ -188,6 +193,7 @@ const Login = (props) => {
 					)}
 				</div>
 			</form>
+			{loading ? <LoadingPopover /> : null}
 		</div>
 	);
 };

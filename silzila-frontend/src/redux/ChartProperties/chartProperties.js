@@ -60,7 +60,7 @@ const chartPropertiesState = (state = chartProperties, action) => {
 			(obj) => obj.uId === uId
 		);
 		var card = state.properties[propKey].chartAxes[bIndex].fields[cardIndex];
-		console.log(cardIndex, card);
+
 		return {
 			cardIndex,
 			card,
@@ -216,7 +216,6 @@ const chartPropertiesState = (state = chartProperties, action) => {
 					},
 				});
 			} else {
-				console.log("Exceeded allowed numbers");
 				return update(state, {
 					properties: {
 						[action.payload.propKey]: {
@@ -293,13 +292,6 @@ const chartPropertiesState = (state = chartProperties, action) => {
 			});
 
 		case "UPDATE_AXES_QUERY_PARAM":
-			console.log(
-				action.payload.propKey,
-				action.payload.binIndex,
-				action.payload.itemIndex,
-				action.payload.item
-			);
-
 			return update(state, {
 				properties: {
 					[action.payload.propKey]: {
@@ -329,7 +321,6 @@ const chartPropertiesState = (state = chartProperties, action) => {
 			});
 
 		case "REUSE_DATA":
-			console.log("REUSE_DATA", action.payload.propKey, action.payload.reUseData);
 			return update(state, {
 				properties: {
 					[action.payload.propKey]: { reUseData: { $set: action.payload.reUseData } },
@@ -340,7 +331,6 @@ const chartPropertiesState = (state = chartProperties, action) => {
 		// Title
 
 		case "SET_CHART_TITLE":
-			console.log(action.payload.propKey, action.payload.title);
 			return update(state, {
 				properties: {
 					[action.payload.propKey]: {
@@ -350,7 +340,6 @@ const chartPropertiesState = (state = chartProperties, action) => {
 			});
 
 		case "SET_GENERATE_TITLE":
-			console.log(action.payload.propKey, action.payload.generateTitle);
 			return update(state, {
 				properties: {
 					[action.payload.propKey]: {
@@ -382,8 +371,6 @@ const chartPropertiesState = (state = chartProperties, action) => {
 				action.payload.bIndex,
 				action.payload.dragUId
 			);
-
-			console.log(dragObj);
 
 			return update(state, {
 				properties: {

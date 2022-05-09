@@ -17,6 +17,8 @@ import { NotificationDialog } from "../CommonFunctions/DialogComponents";
 import DatasetListPopover from "../CommonFunctions/PopOverComponents/DatasetListPopover";
 import LoadingPopover from "../CommonFunctions/PopOverComponents/LoadingPopover";
 import { SelectListItem } from "../CommonFunctions/SelectListItem";
+import { getColumnTypes, getTableData } from "../DataViewer/DataViewerBottom";
+import update from "immutability-helper";
 
 const PlayBookList = ({
 	// state
@@ -88,6 +90,11 @@ const PlayBookList = ({
 		}
 	};
 
+	// Retrive all required data for each playbook from server like
+	// 		- Table records and recordTypes, and
+	// 		- create fresh charts with latest data
+	//  	- Update the local store with the new data
+
 	const getPlayBookDataFromServer = async (pbUid) => {
 		var result = await FetchData({
 			requestType: "noData",
@@ -96,13 +103,11 @@ const PlayBookList = ({
 			headers: { Authorization: `Bearer ${token}` },
 		});
 
-		console.log(result);
-
 		if (result.status) {
+			setLoading(true);
+
 			var pb = result.data;
 			var newChartControl = JSON.parse(JSON.stringify(pb.content.chartControl));
-
-			setLoading(true);
 
 			await Promise.all(
 				Object.keys(pb.content.chartControl.properties).map(async (property) => {
@@ -113,46 +118,72 @@ const PlayBookList = ({
 						property,
 						token
 					);
-					console.log(data);
+
 					newChartControl.properties[property].chartData = data;
 				})
 			);
 
-			// var tableRecords = [];
+			var sampleRecords = { recordsColumnType: {} };
+			await Promise.all(
+				Object.keys(pb.content.chartProperty.properties).map(async (prop) => {
+					var tableInfo = pb.content.chartProperty.properties[prop];
 
-			// await Promise.all(
-			// 	Object.keys(pb.content.chartProperty.properties).map(async (prop) => {
-			// 		var tableInfo = pb.content.chartProperty.properties[prop];
-			// 		console.log(tableInfo);
+					var dc_uid = tableInfo.selectedDs?.dc_uid;
+					var ds_uid = tableInfo.selectedDs?.ds_uid;
 
-			// 		var dc_uid = tableInfo.selectedDs?.dc_uid;
-			// 		var ds_uid = tableInfo.selectedDs?.ds_uid;
+					var selectedTableForThisDataset =
+						pb.content.tabTileProps.tablesForSelectedDataSets[ds_uid].filter(
+							(tbl) => tbl.id === tableInfo.selectedTable[ds_uid]
+						)[0];
 
-			// 		var selectedTableForThisDataset = tableInfo.selectedTable[ds_uid];
-			// 		console.log("Selected Table : ", selectedTableForThisDataset);
-			// 		console.log("DC_UID : ", dc_uid, "\nDS_UID : ", ds_uid);
-			// 		console.log(pb.content.tabTileProps.tablesForSelectedDataSets[ds_uid]);
-			// 		// var tableRecords = await getTableData(
-			// 		// 	dc_uid,
-			// 		// 	table.schema_name,
-			// 		// 	table.table_name,
-			// 		// 	token
-			// 		// );
-			// 		// var recordsType = await getColumnTypes(
-			// 		// 	dc_uid,
-			// 		// 	table.schema_name,
-			// 		// 	table.table_name,
-			// 		// 	token
-			// 		// );
+					var tableRecords = await getTableData(
+						dc_uid,
+						selectedTableForThisDataset.schema_name,
+						selectedTableForThisDataset.table_name,
+						token
+					);
 
-			// 		// addRecords(ds_uid, table.id, tableRecords, recordsType);
-			// 	})
-			// );
+					var recordsType = await getColumnTypes(
+						dc_uid,
+						selectedTableForThisDataset.schema_name,
+						selectedTableForThisDataset.table_name,
+						token
+					);
+
+					if (sampleRecords[ds_uid] !== undefined) {
+						sampleRecords = update(sampleRecords, {
+							recordsColumnType: {
+								[ds_uid]: {
+									[selectedTableForThisDataset.id]: { $set: recordsType },
+								},
+							},
+							[ds_uid]: { [selectedTableForThisDataset.id]: { $set: tableRecords } },
+						});
+					} else {
+						var recordsCopy = JSON.parse(JSON.stringify(sampleRecords));
+						var dsObj = { [ds_uid]: {} };
+
+						recordsCopy = update(recordsCopy, {
+							$merge: dsObj,
+							recordsColumnType: { $merge: dsObj },
+						});
+
+						sampleRecords = update(recordsCopy, {
+							recordsColumnType: {
+								[ds_uid]: {
+									[selectedTableForThisDataset.id]: { $set: recordsType },
+								},
+							},
+							[ds_uid]: { [selectedTableForThisDataset.id]: { $set: tableRecords } },
+						});
+					}
+				})
+			);
 
 			setLoading(false);
 
 			pb.content.chartControl = newChartControl;
-			console.log(JSON.stringify(pb.content, null, 4));
+			pb.content.sampleRecords = sampleRecords;
 			loadPlayBook(pb.content);
 			updatePlayBookId({ name: pb.name, pb_uid: pb.pb_uid, description: pb.description });
 			navigate("/dataviewer");

@@ -17,7 +17,6 @@ const DoughnutChart = ({
 	var property = chartControls.properties[propKey];
 
 	let chartData = property.chartData ? property.chartData.result : "";
-	console.log(chartData, "+++++ chartData +++++");
 
 	var seriesObj = { type: "pie", radius: ["40%", "70%"] };
 
@@ -32,8 +31,6 @@ const DoughnutChart = ({
 			setSeriesData(seriesDataTemp);
 		}
 	}, [chartData]);
-
-	console.log(seriesData);
 
 	// TODO: Priority 1 - Data not rendering properly. It shows dimension value instead of measure when dimension is Year
 	const RenderChart = () => {

@@ -26,6 +26,7 @@ const ChartMargin = ({
 					className={item === marginSlider ? "radioButtonSelected" : "radioButton"}
 					value={item}
 					onClick={() => setMargin(propKey, item)}
+					key={item}
 				>
 					{item}
 				</div>

@@ -21,7 +21,10 @@ import {
 	resetChartProperties,
 } from "../ChartProperties/actionsChartProperties";
 import { resetPlayBookData } from "../Playbook/playbookActions";
-import { resetSampleRecords } from "../SampleTableRecords/sampleTableRecordsActions";
+import {
+	loadSampleRecords,
+	resetSampleRecords,
+} from "../SampleTableRecords/sampleTableRecordsActions";
 
 //  *************************************************************
 //  to tab state reducer
@@ -448,6 +451,7 @@ export const loadPlaybook = (playbook) => {
 		dispatch(loadTabTileProps(playbook.tabTileProps));
 		dispatch(loadChartControls(playbook.chartControl));
 		dispatch(loadChartProperties(playbook.chartProperty));
+		dispatch(loadSampleRecords(playbook.sampleRecords));
 	};
 };
 

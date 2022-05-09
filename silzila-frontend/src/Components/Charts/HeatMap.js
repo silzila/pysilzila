@@ -14,9 +14,7 @@ const HeatMap = ({
 	chartProperty,
 }) => {
 	var property = chartControl.properties[propKey];
-	console.log(property, "+++++ PROPERTY +++++");
 	let chartData = property.chartData ? property.chartData.result : "";
-	console.log(chartData, "+++++ chartData +++++");
 
 	const [maxValue, setMaxValue] = useState(0);
 
@@ -31,7 +29,6 @@ const HeatMap = ({
 					max = element[maxFieldName];
 				}
 			});
-			console.log(max);
 			setMaxValue(max);
 		}
 	}, [chartData]);

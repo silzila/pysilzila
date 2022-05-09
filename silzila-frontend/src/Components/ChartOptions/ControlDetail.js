@@ -16,7 +16,6 @@ const ControlDetail = ({ chartProp, tabTileProps }) => {
 	var chartType = chartProp.properties[propKey].chartType;
 
 	const RenderControlDetail = () => {
-		console.log(chartProp.properties[propKey].chartOptionSelected);
 		switch (chartProp.properties[propKey].chartOptionSelected) {
 			case "Title":
 				return <ChartTitle />;

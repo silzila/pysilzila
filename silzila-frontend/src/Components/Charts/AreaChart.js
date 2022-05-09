@@ -13,11 +13,9 @@ const AreaChart = ({
 	chartProp,
 	chartControls,
 }) => {
-	// var property = chartProp.properties[propKey];
 	var property = chartControls.properties[propKey];
 
 	let chartData = property.chartData ? property.chartData.result : "";
-	console.log(chartData, "+++++ chartData +++++");
 
 	var seriesObj = {
 		type: "line",
@@ -43,8 +41,6 @@ const AreaChart = ({
 			setSeriesData(seriesDataTemp);
 		}
 	}, [chartData, property]);
-
-	console.log(seriesData);
 
 	const RenderChart = () => {
 		return (

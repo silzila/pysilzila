@@ -15,7 +15,6 @@ const ScatterChart = ({
 	var property = chartControls.properties[propKey];
 
 	let chartData = property.chartData ? property.chartData.result : "";
-	console.log(chartData, "+++++ chartData +++++");
 
 	var seriesObj = {
 		symbolSize: chartArea === "dashboard" ? 10 : 20,
@@ -45,7 +44,6 @@ const ScatterChart = ({
 		}
 	}, [chartData, property]);
 
-	console.log(seriesData);
 	const RenderChart = () => {
 		return (
 			<>

@@ -66,7 +66,7 @@ const GridControls = ({
 						);
 					}}
 				/>
-				<label for="enableDisable" className="enableDisableLabel">
+				<label htmlFor="enableDisable" className="enableDisableLabel">
 					Show Tick
 				</label>
 			</div>
@@ -106,7 +106,7 @@ const GridControls = ({
 						);
 					}}
 				/>
-				<label for="enableDisable" className="enableDisableLabel">
+				<label htmlFor="enableDisable" className="enableDisableLabel">
 					Show Axis Label
 				</label>
 			</div>

@@ -53,7 +53,7 @@ const Sidebar = ({
 	};
 
 	useEffect(() => {
-		console.log(editMode);
+		// console.log(editMode);
 		if (editMode) {
 			getAllDc();
 			setSelectedConnection(connectionValue);

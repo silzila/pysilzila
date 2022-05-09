@@ -13,9 +13,7 @@ const FunnelChart = ({
 	chartControl,
 }) => {
 	var property = chartControl.properties[propKey];
-	console.log(property, "+++++ PROPERTY +++++");
 	let chartData = property.chartData ? property.chartData.result : "";
-	console.log(chartData, "+++++ chartData +++++");
 
 	const [newData, setNewData] = useState([]);
 
@@ -27,7 +25,6 @@ const FunnelChart = ({
 					name: key,
 					value: chartData[0][key],
 				});
-				console.log(newData);
 			});
 			setNewData(newData);
 		}

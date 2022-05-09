@@ -15,10 +15,8 @@ const ChartColors = ({
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 
 	const [selectedMenu, setSelectedMenu] = useState(chartProp.properties[propKey].colorScheme);
-	console.log(selectedMenu);
 
 	const resetSelection = (data_value) => {
-		console.log(data_value);
 		setSelectedMenu(data_value);
 		setColorScheme(propKey, data_value);
 	};

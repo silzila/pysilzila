@@ -17,7 +17,6 @@ const LineChart = ({
 	var property = chartControls.properties[propKey];
 
 	let chartData = property.chartData ? property.chartData.result : "";
-	console.log(chartData, "+++++ chartData +++++");
 
 	var seriesObj = {
 		type: "line",
@@ -39,8 +38,6 @@ const LineChart = ({
 			setSeriesData(seriesDataTemp);
 		}
 	}, [chartData, property]);
-
-	console.log(seriesData);
 
 	const RenderChart = () => {
 		return (

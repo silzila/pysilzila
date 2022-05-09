@@ -64,9 +64,9 @@ const GridAndAxes = ({
 					className={property[item.value] ? "radioButtonSelected" : "radioButton"}
 					value={item}
 					onClick={() => {
-						console.log("Grid Clicked");
 						enableGrids(propKey, item.value, !property[item.value]);
 					}}
+					key={item.value}
 				>
 					{item.type}
 				</button>
@@ -93,7 +93,6 @@ const GridAndAxes = ({
 					}
 					value={item.value}
 					onClick={(e) => {
-						console.log("SETTING X-AXIS POSITION");
 						updateAxisOptions(propKey, "xAxis", "position", item.value);
 						updateAxisOptions(propKey, "xAxis", "onZero", !property.xAxis.onZero);
 					}}
@@ -120,7 +119,6 @@ const GridAndAxes = ({
 					}
 					value={item.value}
 					onClick={(e) => {
-						console.log("SETTING Y-AXIS POSITION");
 						updateAxisOptions(propKey, "yAxis", "position", item.value);
 						updateAxisOptions(propKey, "yAxis", "onZero", !yAxisProps.onZero);
 					}}
@@ -153,7 +151,7 @@ const GridAndAxes = ({
 								setReverse(propKey, !property.inverse);
 							}}
 						/>
-						<label for="enableDisable" className="enableDisableLabel">
+						<label htmlFor="enableDisable" className="enableDisableLabel">
 							Enable
 						</label>
 					</div>
@@ -211,11 +209,10 @@ const GridAndAxes = ({
 					id="enableDisable"
 					checked={xAxisProps.showLabel}
 					onChange={(e) => {
-						console.log("SETTING  AXIS LABEL SHOW OR HIDE");
 						updateAxisOptions(propKey, "xAxis", "showLabel", !xAxisProps.showLabel);
 					}}
 				/>
-				<label for="enableDisable" className="enableDisableLabel">
+				<label htmlFor="enableDisable" className="enableDisableLabel">
 					show Label
 				</label>
 			</div>
@@ -228,7 +225,6 @@ const GridAndAxes = ({
 						value={xAxisProps.name}
 						variant="outlined"
 						onChange={(e) => {
-							console.log("SETTING X-AXIS NAME");
 							updateAxisOptions(propKey, "xAxis", "name", e.target.value);
 						}}
 						InputProps={{ ...textFieldStyleProps }}
@@ -245,7 +241,6 @@ const GridAndAxes = ({
 							value={xAxisProps.nameLocation}
 							variant="outlined"
 							onChange={(e) => {
-								console.log("SETTING X-AXIS NAME POSITION");
 								updateAxisOptions(propKey, "xAxis", "nameLocation", e.target.value);
 							}}
 							sx={{
@@ -279,7 +274,6 @@ const GridAndAxes = ({
 						value={xAxisProps.nameGap}
 						variant="outlined"
 						onChange={(e) => {
-							console.log("SETTING X-AXIS NAME MARGIN");
 							updateAxisOptions(propKey, "xAxis", "nameGap", e.target.value);
 						}}
 						InputProps={{ ...textFieldStyleProps }}
@@ -358,11 +352,10 @@ const GridAndAxes = ({
 					id="enableDisable"
 					checked={yAxisProps.showLabel}
 					onChange={(e) => {
-						console.log("SETTING Y-AXIS LABEL SHOW OR HIDE");
 						updateAxisOptions(propKey, "yAxis", "showLabel", !yAxisProps.showLabel);
 					}}
 				/>
-				<label for="enableDisable" className="enableDisableLabel">
+				<label htmlFor="enableDisable" className="enableDisableLabel">
 					show Label
 				</label>
 			</div>
@@ -376,7 +369,6 @@ const GridAndAxes = ({
 						value={yAxisProps.name}
 						variant="outlined"
 						onChange={(e) => {
-							console.log("SETTING NAME FOR Y-AXIS ");
 							updateAxisOptions(propKey, "yAxis", "name", e.target.value);
 						}}
 						InputProps={{ ...textFieldStyleProps }}
@@ -393,7 +385,6 @@ const GridAndAxes = ({
 							value={yAxisProps.nameLocation}
 							variant="outlined"
 							onChange={(e) => {
-								console.log("SETTING NAME POSITION OF Y-AXIS");
 								updateAxisOptions(propKey, "yAxis", "nameLocation", e.target.value);
 							}}
 							sx={{
@@ -427,7 +418,6 @@ const GridAndAxes = ({
 						value={yAxisProps.nameGap}
 						variant="outlined"
 						onChange={(e) => {
-							console.log("SETTING Y-AXIS NAME MARGIN");
 							updateAxisOptions(propKey, "yAxis", "nameGap", e.target.value);
 						}}
 						InputProps={{ ...textFieldStyleProps }}

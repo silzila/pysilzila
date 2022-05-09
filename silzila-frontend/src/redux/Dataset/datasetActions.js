@@ -105,7 +105,6 @@ export const setRelationship = (payload) => {
 };
 
 export const setValuesToState = (payload) => {
-	console.log("SETTING VALUES TO STATE", payload.fname);
 	return (dispatch) => {
 		dispatch(setConnectionValue(payload.conId));
 		dispatch(setFriendlyName(payload.fname));

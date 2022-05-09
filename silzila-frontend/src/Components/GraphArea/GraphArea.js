@@ -212,15 +212,12 @@ const GraphArea = ({
 			var title = "";
 			if (chartAxes[2]?.fields.length > 0) {
 				chartAxes[2].fields.forEach((element, index) => {
-					console.log(element, index);
 					if (index === 0) {
 						var titlePart = element.fieldname;
-						console.log(titlePart);
 						title = title + titlePart;
 					}
 					if (index > 0) {
 						var titlePart = `, ${element.fieldname}`;
-						console.log(titlePart);
 						title = title + titlePart;
 					}
 				});
