@@ -1,3 +1,8 @@
+// This component provides following controls in Gauge charts
+// 	- Start/End angles
+// 	- Enable/Disable tick
+// 	- Tick size & padding, label padding
+
 import { TextField } from "@mui/material";
 import React from "react";
 import { connect } from "react-redux";

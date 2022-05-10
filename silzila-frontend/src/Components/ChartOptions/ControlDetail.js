@@ -1,3 +1,5 @@
+// This is a conainer component that renders appropriate chart control component based on user selection
+
 import React from "react";
 import { connect } from "react-redux";
 import ChartColors from "./Color/ChartColors";

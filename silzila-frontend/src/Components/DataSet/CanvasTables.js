@@ -1,3 +1,7 @@
+// This component returns Individual table along with column names to be displayed in Canvas
+// Tables can be given a friendly name by the user
+// These tables are draggable
+
 import React, { useRef, useState } from "react";
 import Draggable from "react-draggable";
 import { connect } from "react-redux";

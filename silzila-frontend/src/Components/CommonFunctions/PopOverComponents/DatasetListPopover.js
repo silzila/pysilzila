@@ -1,3 +1,8 @@
+// This component renders a popover with a list of datasets
+// Used in following places
+// 	- when a new Playbook button is clicked, this popup will allow to select a dataset to work with in that playbook
+// 	- when changing a dataset from within dataviewerbottom component, this list is presented to 'Add Dataset'
+
 import { Popover } from "@mui/material";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import React from "react";

@@ -1,3 +1,5 @@
+// Input component used in many components in chart controls section
+
 import React, { useState } from "react";
 
 const InputNumber = ({ value, updateValue, disabled }) => {

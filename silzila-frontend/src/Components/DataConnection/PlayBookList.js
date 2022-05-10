@@ -1,4 +1,7 @@
-import { VisibilitySharp } from "@mui/icons-material";
+// List of Playbooks created by the user is displayed here.
+// Users can delete any playbook
+// Creating new and editing existing playbook are handled in other child components
+
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Tooltip } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -48,6 +51,7 @@ const PlayBookList = ({
 		// eslint-disable-next-line
 	}, []);
 
+	// Get list of saved playbooks
 	const getInformation = async () => {
 		var result = await FetchData({
 			requestType: "noData",
@@ -63,6 +67,9 @@ const PlayBookList = ({
 		}
 	};
 
+	// Creating new play book requires to select a dataset. On selecting that dataset,
+	// 		tables for that dataset is retrieved & stored
+	// 		Selected dataset is stored
 	useEffect(async () => {
 		if (selectedDataset !== "") {
 			setSelectedDataSetList(selectedDataset);
@@ -75,6 +82,7 @@ const PlayBookList = ({
 		}
 	}, [selectedDataset]);
 
+	// Get tables for a dataset from server
 	const getTables = async (uid) => {
 		var result = await FetchData({
 			requestType: "noData",
@@ -150,6 +158,7 @@ const PlayBookList = ({
 						token
 					);
 
+					// Format the data retrieved to required JSON for saving in store
 					if (sampleRecords[ds_uid] !== undefined) {
 						sampleRecords = update(sampleRecords, {
 							recordsColumnType: {

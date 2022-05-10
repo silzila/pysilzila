@@ -1,3 +1,5 @@
+// This is the container component for graph displayed within dashboard.
+
 import React from "react";
 import { connect } from "react-redux";
 import MultiBarChart from "../Charts/MultiBarChart";
@@ -29,8 +31,6 @@ const DashGraph = ({
 			width:
 				parseInt(tabState.tabs[tabId].dashTilesDetails[propKey].width, 10) * gridSize.x - 4,
 		};
-
-		console.log(dimensions);
 
 		switch (chartProp?.properties[propKey]?.chartType) {
 			// "bar", "stackedBar", "pie", "donut", "line", "area", "heatmap", "table", "calendar", "scatterPlot", "crossTab"

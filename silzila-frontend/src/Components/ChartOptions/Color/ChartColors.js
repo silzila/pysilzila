@@ -1,3 +1,5 @@
+// This component list all color themes available for charts
+
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import React, { useState } from "react";
 import { connect } from "react-redux";

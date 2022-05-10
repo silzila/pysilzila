@@ -1,3 +1,10 @@
+// This component is positioned at the top of every page except Login/SignUp
+// Used for
+// 	- navigating to home
+// 	- logging out from account
+// 	- saving playbooks
+// Some parts from this component are optionally rendered based on the page it is displayed
+
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import {
@@ -59,9 +66,9 @@ const MenuBar = ({
 		setOpenFileMenu(false);
 
 		// check if this playbook already has a name / id
-
+		// 		if Yes, save in the same name
+		// 		if No, open modal to save in a new name
 		if (playBookState.playBookUid !== null) {
-			// if Yes, save in the same name
 			var playBookObj = formatPlayBookData();
 
 			var result = await FetchData({
@@ -99,7 +106,6 @@ const MenuBar = ({
 				tileState,
 				tabTileProps,
 				chartProperty,
-				// chartControl,
 			},
 		};
 
@@ -108,14 +114,13 @@ const MenuBar = ({
 		Object.keys(chartControlCopy.properties).forEach((property) => {
 			chartControlCopy.properties[property].chartData = {};
 		});
-
 		playBookObj.content.chartControl = chartControlCopy;
-
 		return playBookObj;
 	};
 
 	var fileMenuStyle = { fontSize: "12px", padding: "2px 1rem" };
 
+	// Save playbook with a new name
 	const savePlaybook = async () => {
 		if (playBookName) {
 			var playBookObj = formatPlayBookData();
@@ -178,7 +183,7 @@ const MenuBar = ({
 				}}
 				onClose={() => {
 					setAnchorEl(null);
-					setOpenFileMenu(false);
+					setLogoutModal(false);
 				}}
 			>
 				<MenuItem

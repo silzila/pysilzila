@@ -1,3 +1,7 @@
+// This component is used to retrive a specific dataset to be edited
+// The information about this dataset is loaded to store
+// users can update existing dataset / re-define relationships in dataset
+
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import ShortUniqueId from "short-unique-id";

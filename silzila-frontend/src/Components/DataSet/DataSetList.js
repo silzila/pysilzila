@@ -1,4 +1,7 @@
-import ModeEditOutlineTwoTone from "@mui/icons-material/ModeEditOutlineTwoTone";
+// List of Datasets created by the user is displayed here.
+// Users can delete any dataset
+// Creating new and editing existing dataset are handled in other child components
+
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Tooltip } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -29,9 +32,9 @@ const DataSetList = ({
 	useEffect(() => {
 		resetState();
 		getInformation();
-		// eslint-disable-next-line
 	}, []);
 
+	// Get the list of Datasets
 	const getInformation = async () => {
 		var result = await FetchData({
 			requestType: "noData",
@@ -47,6 +50,8 @@ const DataSetList = ({
 			console.log(result.data.detail);
 		}
 	};
+
+	// Selected dataset for editing
 	const editDs = async (dsuid) => {
 		setDsId(dsuid);
 		setTimeout(() => {
@@ -54,6 +59,7 @@ const DataSetList = ({
 		}, 1000);
 	};
 
+	// Deleting a dataset
 	const deleteDs = async (dsUid) => {
 		var result = await FetchData({
 			requestType: "noData",
@@ -144,7 +150,7 @@ const DataSetList = ({
 						);
 					})}
 			</div>
-
+			{/* Alert to display success / failure info */}
 			<NotificationDialog
 				openAlert={openAlert}
 				severity={severity}

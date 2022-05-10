@@ -1,3 +1,8 @@
+// This component provides following controls for label in charts
+// 	- Show/hide label
+// 	- Manual/Automatic label color
+// 	- Change font size for label
+
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import "./chartLabels.css";
@@ -8,7 +13,6 @@ import {
 import { SketchPicker } from "react-color";
 import SliderWithInput from "../SliderWithInput";
 import { FormControl, MenuItem, Popover, Select } from "@mui/material";
-// import FontControls from "../FontControls";
 
 const ChartLabels = ({
 	// state

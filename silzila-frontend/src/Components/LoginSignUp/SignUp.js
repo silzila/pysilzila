@@ -1,3 +1,5 @@
+// Sign up component. Used to create new accounts
+
 import { Button } from "@mui/material";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -71,6 +73,7 @@ const SignUp = () => {
 	const handleSubmit = async () => {
 		var canSignUp = false;
 
+		// Check if there is someinput in all fields
 		if (
 			account.name.length > 0 &&
 			account.email.length > 0 &&

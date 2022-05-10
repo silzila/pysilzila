@@ -1,3 +1,7 @@
+// List of Data connections created by the user is displayed here.
+// Users can delete any connections
+// Creating new and editing existing connections are handled in FormDialog child component
+
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import FetchData from "../../ServerCall/FetchData";
@@ -42,6 +46,7 @@ const DataConnection = (props) => {
 		// eslint-disable-next-line
 	}, []);
 
+	// Get Info on DataConnection from server
 	const getInformation = async () => {
 		var result = await FetchData({
 			requestType: "noData",
@@ -278,6 +283,8 @@ const DataConnection = (props) => {
 					})}
 			</div>
 			<FormDialog {...properties} />
+
+			{/* Alert to display success / failure info */}
 			<NotificationDialog
 				onCloseAlert={() => {
 					setOpenAlert(false);

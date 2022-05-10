@@ -1,3 +1,6 @@
+// This component returns one single tile within the tabRibbon.
+// Each tile has actions to rename the tile & delete the tile
+
 import React, { useState } from "react";
 import "./individualTile.css";
 

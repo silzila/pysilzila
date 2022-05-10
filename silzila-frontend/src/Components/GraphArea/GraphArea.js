@@ -1,3 +1,11 @@
+// This container displays the following
+// 	- Graph title and the actual chart
+// 	- Controls to resize the graph to
+// 		- Fit tile area
+// 		- Match Dashboard size
+// 		- Full screen view
+// 	- Also provides the sql query used to generate data for this graph
+
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { connect } from "react-redux";
 import AreaChart from "../Charts/AreaChart";

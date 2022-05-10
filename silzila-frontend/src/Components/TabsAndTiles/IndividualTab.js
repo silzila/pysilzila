@@ -1,4 +1,6 @@
-import { width } from "@mui/system";
+// This component returns one single tab within the tabRibbon.
+// Each tab has actions to rename the tab & delete the tab
+
 import React, { useState } from "react";
 import "./individualTab.css";
 
@@ -70,7 +72,7 @@ function IndividualTab({
 					{tabName}
 				</span>
 
-				{/* If dashboard in the presentation mode the 'X'(closing tab icon) will be disappear */}
+				{/* If dashboard is in presentation mode, the 'X'(close tab icon) will disappear */}
 
 				<span
 					title="Delete Tab"

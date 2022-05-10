@@ -1,3 +1,10 @@
+// Grid and Axis component used to modify the following properties in charts
+// 	- Enable min & max values
+// 	- For each axes (X & Y)
+// 		- Show/Hide labels
+// 		- Provide a name for Axis
+// 		- Tick size, padding and rotation
+
 import { FormControl, MenuItem, Select, TextField } from "@mui/material";
 import React from "react";
 import { connect } from "react-redux";
@@ -9,9 +16,6 @@ import {
 	updateReverse,
 } from "../../../redux/ChartProperties/actionsChartControls";
 import SliderWithInput from "../SliderWithInput";
-// import GridControls from "./GridControls";
-// import ControlsForXAxis from "./ControlsForXAxis";
-// import ControlsForYAxis from "./ControlsForYAxis";
 import InputNumber from "../CommonFunctions/InputNumber";
 
 const textFieldStyleProps = {
@@ -32,7 +36,6 @@ const GridAndAxes = ({
 	chartProp,
 
 	//dispatch
-	updateGaugeAxisOptions,
 	setAxisMinMax,
 	setReverse,
 	enableGrids,
@@ -41,7 +44,6 @@ const GridAndAxes = ({
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 	var property = chartControl.properties[propKey].axisOptions;
 
-	// var selectedChart = chartProp[propKey].chartType;
 	var xAxisProps = property.xAxis;
 	var yAxisProps = property.yAxis;
 

@@ -1,3 +1,10 @@
+// This component relates with Legend related controls for chart
+// The controls include
+// 	- show / hide legend
+// 	- legend position
+// 	- Orientation
+// 	- legend item size
+
 import { FormControl, MenuItem, Select } from "@mui/material";
 import React from "react";
 import { connect } from "react-redux";

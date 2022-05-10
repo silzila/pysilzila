@@ -1,3 +1,7 @@
+// This component provides individual dropzone
+// Each Dropzone can have allowed number of cards.
+// Cards can be moved between dropzones & also sorted within a dropzone
+
 import React from "react";
 import { useDrop } from "react-dnd";
 import { connect } from "react-redux";

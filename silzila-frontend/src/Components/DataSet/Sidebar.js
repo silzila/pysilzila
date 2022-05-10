@@ -1,3 +1,9 @@
+// This component is a part of Create / Edit Dataset page
+// Functions incluce
+// 	- Select DataConnection
+// 	- Select Schema
+// 	- Select tables in a schema
+
 import { MenuItem, Select, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
@@ -188,9 +194,6 @@ const Sidebar = ({
 					onChange={(e) => {
 						onConnectionChange(e);
 					}}
-					// TODO: Priority 5 - (WARNING) in MUI Select component
-					// You have provided an out-of-range value `post` for the select component.
-					// Consider providing a value that matches one of the available options or ''.The available values are "".
 					value={selectedConnection}
 				>
 					{connectionList &&
