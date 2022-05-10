@@ -12,10 +12,7 @@ const MultiBar = ({
 	//state
 	chartControlState,
 }) => {
-	console.log(graphTileSize);
 	var property = chartControlState.properties[propKey];
-	console.log(property);
-
 	let chartData = property.chartData ? property.chartData.result : "";
 
 	var seriesObj = {
@@ -27,11 +24,9 @@ const MultiBar = ({
 		label: {
 			show: property.labelOptions.showLabel,
 			fontSize: property.labelOptions.fontSize,
-			color: property.labelOptions.labelColor,
+			color: property.labelOptions.labelColorManual ? property.labelOptions.labelColor : null,
 		},
 	};
-
-	console.log(seriesObj);
 
 	const [seriesData, setSeriesData] = useState([]);
 
@@ -62,6 +57,7 @@ const MultiBar = ({
 						: "1px solid rgb(238,238,238)",
 				}}
 				option={{
+					animation: chartArea ? false : true,
 					legend: {
 						type: "scroll",
 						show: property.legendOptions?.showLegend,

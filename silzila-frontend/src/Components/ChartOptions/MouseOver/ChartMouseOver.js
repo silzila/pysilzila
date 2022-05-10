@@ -1,3 +1,5 @@
+// This component is used to enable / disable tooltip option for charts
+
 import React from "react";
 import { connect } from "react-redux";
 import { enableMouseOver } from "../../../redux/ChartProperties/actionsChartControls";
@@ -23,7 +25,7 @@ const ChartMouseOver = ({
 						setMouseOver(propKey, !chartControl.properties[propKey].mouseOver.enable);
 					}}
 				/>
-				<label for="enableDisable" style={{ paddingLeft: "5px" }}>
+				<label htmlFor="enableDisable" style={{ paddingLeft: "5px" }}>
 					Enable
 				</label>
 			</div>

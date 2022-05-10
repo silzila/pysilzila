@@ -1,3 +1,11 @@
+// This container displays the following
+// 	- Graph title and the actual chart
+// 	- Controls to resize the graph to
+// 		- Fit tile area
+// 		- Match Dashboard size
+// 		- Full screen view
+// 	- Also provides the sql query used to generate data for this graph
+
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { connect } from "react-redux";
 import AreaChart from "../Charts/AreaChart";
@@ -7,6 +15,7 @@ import PieChart from "../Charts/PieChart";
 import ScatterChart from "../Charts/ScatterChart";
 import StackedBar from "../Charts/StackedBar";
 import MultiBar from "../Charts/MultiBarChart";
+import CrossTabChart from '../Charts/CrossTab/CrossTabChart';
 import {
 	setChartTitle,
 	setGenerateTitle,
@@ -118,6 +127,14 @@ const GraphArea = ({
 					/>
 				);
 
+			case "crossTab":
+				return (
+					<CrossTabChart
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+					/>
+				);
+
 			case "scatterPlot":
 				return (
 					<ScatterChart
@@ -201,7 +218,7 @@ const GraphArea = ({
 	// Setting title automatically
 	// ############################################
 
-	// TODO: Priority 5 - Setting title for different types of graphs
+	// TODO: Priority 1 - Setting title for different types of graphs
 	// Different graphs have different Dropzones. Setting automatic title must take into account of all these types
 	// Eg., Scatter plot has 2 measures, Funnel has 1 measure and no dimension, Heatmap has 2 dimensions, etc....
 
@@ -212,15 +229,12 @@ const GraphArea = ({
 			var title = "";
 			if (chartAxes[2]?.fields.length > 0) {
 				chartAxes[2].fields.forEach((element, index) => {
-					console.log(element, index);
 					if (index === 0) {
 						var titlePart = element.fieldname;
-						console.log(titlePart);
 						title = title + titlePart;
 					}
 					if (index > 0) {
 						var titlePart = `, ${element.fieldname}`;
-						console.log(titlePart);
 						title = title + titlePart;
 					}
 				});

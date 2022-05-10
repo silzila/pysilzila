@@ -1,3 +1,7 @@
+// This component is used to retrive a specific dataset to be edited
+// The information about this dataset is loaded to store
+// users can update existing dataset / re-define relationships in dataset
+
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import ShortUniqueId from "short-unique-id";
@@ -107,10 +111,8 @@ const EditDataSet = ({
 							id: uid(),
 						};
 					});
-					console.log(userTable, "$$$$$$$$$$$$$ user Table $$$$$$$$$$$$$$$");
+					// console.log(userTable, "$$$$$$$$$$$$$ user Table $$$$$$$$$$$$$$$");
 					setUserTable(userTable);
-				} else {
-					console.log(res1);
 				}
 			};
 
@@ -178,7 +180,7 @@ const EditDataSet = ({
 				});
 
 				// console.log(arrowObj);
-				console.log(arrowsArray);
+				// console.log(arrowsArray);
 				arrowsArray.push(...arrowObj);
 
 				relObject = {
@@ -192,12 +194,6 @@ const EditDataSet = ({
 				};
 				relationshipsArray.push(relObject);
 			});
-
-			console.log(
-				"$$$$$$$$$$$$$$$$$$$$$$ RELATIONSHIPS AND ARROWS $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
-			);
-			console.log(arrowsArray);
-			console.log(relationshipsArray);
 
 			// ====================================================================================
 
@@ -223,13 +219,10 @@ const EditDataSet = ({
 			headers: { Authorization: `Bearer ${token}` },
 		});
 		if (result.status) {
-			console.log(result.data);
 			const arrayWithUid = result.data.map((data) => {
 				return { uid: schema.concat(tableName).concat(data.column_name), ...data };
 			});
 			return arrayWithUid;
-		} else {
-			console.log(result.detail);
 		}
 	};
 

@@ -1,3 +1,6 @@
+// This component is used to set margin for all charts
+// Top, bottom, lift & right margins can be individually changed
+
 import React from "react";
 import { connect } from "react-redux";
 import {
@@ -26,6 +29,7 @@ const ChartMargin = ({
 					className={item === marginSlider ? "radioButtonSelected" : "radioButton"}
 					value={item}
 					onClick={() => setMargin(propKey, item)}
+					key={item}
 				>
 					{item}
 				</div>

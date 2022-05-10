@@ -1,3 +1,16 @@
+// This is the main component where a Playbook with its tabs, tiles and dashboard is rendered
+// The page is further grouped into DataViewerMiddle & DataViewerBottom components
+//
+// 	- DataViewerMiddle holds the following
+// 		- drop zones for table columns,
+// 		- graph area,
+// 		- all the chart control actions
+
+// 	- DataViewerBottom holds the following
+// 		- selectedDataset list to work with this playbook,
+// 		- list of tables for this dataset &
+// 		- Sample records from selected table
+
 import React, { useState } from "react";
 import "./dataViewer.css";
 import { connect } from "react-redux";
@@ -27,16 +40,15 @@ function DataViewer({
 	toggleColumns,
 	toggleDataViewerBottom,
 }) {
-	// const [tabTileProps.showDataViewerBottom, setDisplayDatViewBot] = useState(true);
-
 	const [showListofTileMenu, setShowListofTileMenu] = useState(true);
-	// const [showFilters, setShowFilters] = useState(false);
 	const [dashboardResizeColumn, setDashboardResizeColumn] = useState(false);
 
+	// Whether to show table at the bottom of page or not
 	const handleTableDisplayToggle = () => {
 		toggleDataViewerBottom(!tabTileProps.showDataViewerBottom);
 	};
 
+	// switching between Table with all sample records Or just list the columns of selected table
 	const handleColumnsOnlyDisplay = (col) => {
 		toggleColumns(col);
 	};
@@ -105,27 +117,14 @@ function DataViewer({
 								/>
 							</>
 						) : null}
-						{/* <img
-							key="Filter"
-							style={menuIconStyle}
-							src={filterIcon}
-							alt="Filter"
-							onClick={() => {
-								setDashboardResizeColumn(false);
-								setShowListofTileMenu(false);
-								setShowFilters(!showFilters);
-							}}
-							title="Filter"
-						/> */}
 					</div>
 				) : null}
 			</div>
 
+			{/* Show tile page or Dashboard */}
 			{tabTileProps.showDash ? (
-				// <DashBoard showDash={tabTileProps.showDash} />
 				<DashBoard
 					showListofTileMenu={showListofTileMenu}
-					// showFilters={showFilters}
 					dashboardResizeColumn={dashboardResizeColumn}
 				/>
 			) : (
@@ -139,6 +138,7 @@ function DataViewer({
 				</React.Fragment>
 			)}
 
+			{/* Dashboard present and edit mode related UI */}
 			{tabTileProps.dashMode === "Edit" ? (
 				<div className="tilearea">
 					<div className="tileItems">

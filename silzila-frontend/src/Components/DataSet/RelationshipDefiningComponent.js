@@ -1,3 +1,7 @@
+// This is a popover displayed either during creating or editing an arrow (relationship) between two table columns
+// Allows user to define the cardinality and referential integrity between tables
+// eg: One to many relation, keep all / matching rows between tables
+
 import {
 	CloseOutlined,
 	Delete,

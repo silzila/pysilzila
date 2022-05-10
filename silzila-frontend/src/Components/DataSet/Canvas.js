@@ -1,3 +1,7 @@
+// Canvas component is part of Dataset Create / Edit page
+// List of tables selected in sidebar is displayed here
+// connections can be made between columns of different tables to define relationship in a dataset
+
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import "./Dataset.css";
@@ -18,6 +22,7 @@ const Canvas = ({
 	const [existingArrowProp, setExistingArrowProp] = useState({});
 	const [existingArrow, setExistingArrow] = useState(false);
 
+	// When arrow is clicked, open relationship Popover
 	const clickOnArrowfunc = (index) => {
 		setExistingArrow(true);
 		console.log(index);

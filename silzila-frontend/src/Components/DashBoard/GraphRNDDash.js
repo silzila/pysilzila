@@ -1,3 +1,9 @@
+// container component of Graph within Dashboard.
+// This component contains
+// 	- a graph title portion, which is the drag handle to move the graph around,
+// 	- the graph area where one of the graphtypes (bar, line, etc) is displayed.
+//	- The entire container can also be resized within the confines of dashboard
+
 import React, { useEffect, useState } from "react";
 import { Rnd } from "react-rnd";
 import { connect } from "react-redux";
@@ -28,11 +34,6 @@ const GraphRNDDash = ({
 	const resizeGridX = gridSize.x;
 	const resizeGridY = gridSize.y;
 
-	// const [graphDimension, setGraphDimension] = useState({});
-	// console.log(gridSize);
-	// console.log(boxDetails);
-	// console.log("x:", boxDetails.x * gridSize.x, "y:", boxDetails.y * gridSize.y);
-
 	const [hovering, setHovering] = useState(false);
 
 	useEffect(() => {
@@ -45,7 +46,7 @@ const GraphRNDDash = ({
 			enableResizing={tabTileProps.dashMode === "Edit" ? true : false}
 			onMouseEnter={() => {
 				if (tabTileProps.dashMode === "Edit") {
-					console.log("Mouse Entered in GraphRNDDash component");
+					// console.log("Mouse Entered in GraphRNDDash component");
 					setHovering(true);
 				}
 			}}
@@ -59,14 +60,14 @@ const GraphRNDDash = ({
 			size={{ width: boxDetails.width * gridSize.x, height: boxDetails.height * gridSize.y }}
 			position={{ x: boxDetails.x * gridSize.x, y: boxDetails.y * gridSize.y }}
 			onDragStart={(e, d) => {
-				console.log(d);
+				// console.log(d);
 			}}
 			onDrag={(e, d) => {
-				console.log(d);
+				// console.log(d);
 				setStyle({ ...style, border: "1px solid gray" });
 			}}
 			onDragStop={(e, d) => {
-				console.log(gridSize, d);
+				// console.log(gridSize, d);
 				updateDashGraphPos(
 					tabId,
 					boxDetails.propKey,

@@ -17,14 +17,13 @@ const LineChart = ({
 	var property = chartControls.properties[propKey];
 
 	let chartData = property.chartData ? property.chartData.result : "";
-	console.log(chartData, "+++++ chartData +++++");
 
 	var seriesObj = {
 		type: "line",
 		label: {
 			show: property.labelOptions.showLabel,
 			fontSize: property.labelOptions.fontSize,
-			color: property.labelOptions.labelColor,
+			color: property.labelOptions.labelColorManual ? property.labelOptions.labelColor : null,
 		},
 	};
 
@@ -39,8 +38,6 @@ const LineChart = ({
 			setSeriesData(seriesDataTemp);
 		}
 	}, [chartData, property]);
-
-	console.log(seriesData);
 
 	const RenderChart = () => {
 		return (
@@ -58,6 +55,7 @@ const LineChart = ({
 						: "1px solid rgb(238,238,238)",
 				}}
 				option={{
+					animation: chartArea ? false : true,
 					legend: {
 						type: "scroll",
 						show: property.legendOptions?.showLegend,

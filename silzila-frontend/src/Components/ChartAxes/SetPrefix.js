@@ -1,6 +1,4 @@
 export const setPrefix = (fieldData, binName, chartType) => {
-	console.log(fieldData, binName, chartType);
-
 	if (!fieldData) {
 		return fieldData;
 	}

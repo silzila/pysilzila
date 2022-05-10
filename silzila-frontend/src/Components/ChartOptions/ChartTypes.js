@@ -1,3 +1,8 @@
+// This component list all different charts that a user can create
+// It also handles
+// 	- the differences in dropzones for each specific graphs along,
+// 	- moving table fields into appropriate dropzones for each specific chart type
+
 import React from "react";
 import { connect } from "react-redux";
 import {
@@ -16,6 +21,8 @@ import funnelChartIcon from "../../assets/funnel.png";
 import gaugeChartIcon from "../../assets/gauge.png";
 import heatMapIcon from "../../assets/heat_map.png";
 import ChartsInfo from "../ChartAxes/ChartsInfo2";
+import CrossTabIcon	from '../../assets/crosstab.png';
+
 import "./ChartOptions.css";
 
 export const chartTypes = [
@@ -29,6 +36,7 @@ export const chartTypes = [
 	{ name: "funnel", icon: funnelChartIcon, value: "Funnel Chart" },
 	{ name: "gauge", icon: gaugeChartIcon, value: "Gauge Chart" },
 	{ name: "heatmap", icon: heatMapIcon, value: " Heat Map" },
+	{ name: "crossTab", icon: CrossTabIcon, value: " Cross Tab" },
 ];
 
 const ChartTypes = ({
@@ -45,16 +53,11 @@ const ChartTypes = ({
 	var selectedChart = chartProp.properties[propKey].chartType;
 
 	const switchAxesForCharts = (oldChart, newChart) => {
-		console.log("From ", oldChart, " to ", newChart);
-
 		var oldChartAxes = chartProp.properties[propKey].chartAxes;
 		var newChartAxes = [];
 		for (let i = 0; i < ChartsInfo[newChart].dropZones.length; i++) {
 			newChartAxes.push({ name: ChartsInfo[newChart].dropZones[i].name, fields: [] });
 		}
-
-		console.log("===========================================");
-		console.log(oldChartAxes, newChartAxes);
 
 		switch (oldChart) {
 			case "multibar":
@@ -78,9 +81,7 @@ const ChartTypes = ({
 					// Map Value to X and Y columns if there are more than one values
 					if (oldChartAxes[2].fields.length > 0) {
 						if (oldChartAxes[2].fields.length > 1) {
-							console.log("OldChartAxes: ", oldChartAxes);
 							newChartAxes[2].fields.push(oldChartAxes[2].fields.shift());
-							console.log("OldChartAxes After Shift: ", oldChartAxes);
 							newChartAxes[3].fields.push(oldChartAxes[2].fields.shift());
 						} else {
 							newChartAxes[1].fields = oldChartAxes[2].fields;
@@ -91,7 +92,6 @@ const ChartTypes = ({
 					if (oldChartAxes[0].fields.length > 0)
 						newChartAxes[0].fields = oldChartAxes[0].fields;
 
-					console.log(newChartAxes);
 					return newChartAxes;
 				}
 
@@ -119,7 +119,7 @@ const ChartTypes = ({
 					return newChartAxes;
 				}
 
-				if (newChart === "heatmap") {
+				if (newChart === "heatmap" || newChart === "crossTab") {
 					if (oldChartAxes[1].fields.length > 0) {
 						newChartAxes[1].fields.push(oldChartAxes[1].fields[0]);
 					}
@@ -134,7 +134,7 @@ const ChartTypes = ({
 
 					return newChartAxes;
 				}
-
+			break;
 			case "scatterPlot":
 				if (newChart === "scatterPlot") {
 					return oldChartAxes;
@@ -161,7 +161,7 @@ const ChartTypes = ({
 				}
 
 				if (newChart === "funnel") {
-					var value = [];
+					let value = [];
 					if (oldChartAxes[2].fields.length > 0)
 						value = value.concat(oldChartAxes[2].fields);
 					if (oldChartAxes[3].fields.length > 0)
@@ -188,7 +188,7 @@ const ChartTypes = ({
 					return newChartAxes;
 				}
 
-				if (newChartAxes === "heatmap") {
+				if (newChartAxes === "heatmap" || newChart === "crossTab") {
 					if (oldChartAxes[1].fields.length > 0)
 						newChartAxes[1].fields.push(oldChartAxes[1].fields[0]);
 
@@ -202,8 +202,9 @@ const ChartTypes = ({
 						newChartAxes[0].fields = oldChartAxes[0].fields;
 
 					return newChartAxes;
-				}
-
+				}				
+				
+			break;
 			case "funnel":
 				if (newChart === "funnel") {
 					return oldChartAxes;
@@ -246,7 +247,7 @@ const ChartTypes = ({
 					return newChartAxes;
 				}
 
-				if (newChart === "heatmap") {
+				if (newChart === "heatmap" || newChart === "crossTab") {
 					if (oldChartAxes[1].fields.length > 0)
 						newChartAxes[3].fields.push(oldChartAxes[1].fields[0]);
 
@@ -257,6 +258,7 @@ const ChartTypes = ({
 					return newChartAxes;
 				}
 
+			break;
 			case "gauge":
 				if (newChart === "gauge") {
 					return oldChartAxes;
@@ -290,7 +292,7 @@ const ChartTypes = ({
 					return oldChartAxes;
 				}
 
-				if (newChart === "heatmap") {
+				if (newChart === "heatmap" || newChart === "crossTab") {
 					if (oldChartAxes[1].fields.length > 0)
 						newChartAxes[3].fields.push(oldChartAxes[1].fields[0]);
 
@@ -301,8 +303,10 @@ const ChartTypes = ({
 					return newChartAxes;
 				}
 
+			break;
 			case "heatmap":
-				if (newChart === "heatmap") return oldChartAxes;
+			case "crossTab":
+				if (newChart === "heatmap" || newChart === "crossTab") return oldChartAxes;
 
 				if (["multibar", "stackedBar", "line", "area", "pie", "donut"].includes(newChart)) {
 					// Map filter to Filter
@@ -346,7 +350,7 @@ const ChartTypes = ({
 
 					return newChartAxes;
 				}
-
+			break;
 			default:
 				return oldChartAxes;
 		}
@@ -380,7 +384,7 @@ const ChartTypes = ({
 							// "rose",
 
 							// "calendar",
-							// "crossTab",
+							 "crossTab",
 							// "bubble",
 							// "treeMap",
 						].includes(chart.name)

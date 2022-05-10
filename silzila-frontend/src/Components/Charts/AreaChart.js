@@ -13,11 +13,9 @@ const AreaChart = ({
 	chartProp,
 	chartControls,
 }) => {
-	// var property = chartProp.properties[propKey];
 	var property = chartControls.properties[propKey];
 
 	let chartData = property.chartData ? property.chartData.result : "";
-	console.log(chartData, "+++++ chartData +++++");
 
 	var seriesObj = {
 		type: "line",
@@ -28,7 +26,7 @@ const AreaChart = ({
 		label: {
 			show: property.labelOptions.showLabel,
 			fontSize: property.labelOptions.fontSize,
-			color: property.labelOptions.labelColor,
+			color: property.labelOptions.labelColorManual ? property.labelOptions.labelColor : null,
 		},
 	};
 
@@ -43,8 +41,6 @@ const AreaChart = ({
 			setSeriesData(seriesDataTemp);
 		}
 	}, [chartData, property]);
-
-	console.log(seriesData);
 
 	const RenderChart = () => {
 		return (
@@ -62,6 +58,7 @@ const AreaChart = ({
 						: "1px solid rgb(238,238,238)",
 				}}
 				option={{
+					animation: chartArea ? false : true,
 					legend: {},
 					tooltip: {},
 					dataset: {

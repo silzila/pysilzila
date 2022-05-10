@@ -1,3 +1,5 @@
+// This is the container component for graph displayed within dashboard.
+
 import React from "react";
 import { connect } from "react-redux";
 import MultiBarChart from "../Charts/MultiBarChart";
@@ -10,6 +12,7 @@ import GaugeChart from "../Charts/GaugeChart";
 import HeatMap from "../Charts/HeatMap";
 import ScatterChart from "../Charts/ScatterChart";
 import StackedBar from "../Charts/StackedBar";
+import CrossTabChart from '../Charts/CrossTab/CrossTabChart';
 
 const DashGraph = ({
 	// props
@@ -30,8 +33,6 @@ const DashGraph = ({
 				parseInt(tabState.tabs[tabId].dashTilesDetails[propKey].width, 10) * gridSize.x - 4,
 		};
 
-		console.log(dimensions);
-
 		switch (chartProp?.properties[propKey]?.chartType) {
 			// "bar", "stackedBar", "pie", "donut", "line", "area", "heatmap", "table", "calendar", "scatterPlot", "crossTab"
 			case "multibar":
@@ -41,6 +42,15 @@ const DashGraph = ({
 						graphDimension={dimensions}
 						chartArea="dashboard"
 					/>
+				);
+			
+			case "crossTab":
+				return(
+					<CrossTabChart 
+					propKey={propKey}
+					graphDimension={dimensions}
+					chartArea="dashboard"
+				/>
 				);
 
 			case "stackedBar":

@@ -1,3 +1,8 @@
+// This component provides following controls in Gauge charts
+// 	- Start/End angles
+// 	- Enable/Disable tick
+// 	- Tick size & padding, label padding
+
 import { TextField } from "@mui/material";
 import React from "react";
 import { connect } from "react-redux";
@@ -66,7 +71,7 @@ const GridControls = ({
 						);
 					}}
 				/>
-				<label for="enableDisable" className="enableDisableLabel">
+				<label htmlFor="enableDisable" className="enableDisableLabel">
 					Show Tick
 				</label>
 			</div>
@@ -106,7 +111,7 @@ const GridControls = ({
 						);
 					}}
 				/>
-				<label for="enableDisable" className="enableDisableLabel">
+				<label htmlFor="enableDisable" className="enableDisableLabel">
 					Show Axis Label
 				</label>
 			</div>

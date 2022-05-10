@@ -1,3 +1,5 @@
+// This component provides list of all tiles for a given tab
+
 import React from "react";
 import { connect } from "react-redux";
 import * as actions from "../../redux/TabTile/actionsTabTile";
@@ -18,6 +20,7 @@ const TileRibbon = ({
 	completeRenameTile,
 	removeTile,
 }) => {
+	// adding new tile information to store
 	const handleAddTile = () => {
 		let tabObj = tabState.tabs[tabTileProps.selectedTabId];
 
@@ -51,6 +54,10 @@ const TileRibbon = ({
 		completeRenameTile(tabId, tileId, renameValue, nextTileId, false);
 	};
 
+	// Selecting which tile to highlight next
+	// if we are removing a tile that is currently selected, pick another tile before or after to highlight.
+	// Else no change in highlighting tiles
+
 	const handleRemoveTile = (tabId, tileId) => {
 		let tilesForSelectedTab = tileState.tileList[tabId];
 
@@ -62,7 +69,6 @@ const TileRibbon = ({
 			// handle selecting a new tile
 			let nextTileId = tabTileProps.nextTileId;
 			if (numTiles === 1) {
-				// addTile(tabId, nextTileId);
 				handleAddTile();
 				removeTile(tabId, tileId, tileIndex);
 			} else {
@@ -87,7 +93,6 @@ const TileRibbon = ({
 				}
 				let propKey = `${tabId}.${tileId}`;
 				let chartObj = chartProp.properties[propKey];
-				// let chartObj = chartProp.filter((item) => (item.tabId === tabId) & (item.tileId === tileId))[0];
 				selectTile(
 					tabId,
 					selectedTileName,
