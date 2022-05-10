@@ -15,6 +15,7 @@ import PieChart from "../Charts/PieChart";
 import ScatterChart from "../Charts/ScatterChart";
 import StackedBar from "../Charts/StackedBar";
 import MultiBar from "../Charts/MultiBarChart";
+import CrossTabChart from '../Charts/CrossTab/CrossTabChart';
 import {
 	setChartTitle,
 	setGenerateTitle,
@@ -121,6 +122,14 @@ const GraphArea = ({
 			case "stackedBar":
 				return (
 					<StackedBar
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+					/>
+				);
+
+			case "crossTab":
+				return (
+					<CrossTabChart
 						propKey={propKey}
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
 					/>
