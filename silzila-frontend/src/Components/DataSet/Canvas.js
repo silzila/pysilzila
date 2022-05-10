@@ -22,6 +22,7 @@ const Canvas = ({
 	const [existingArrowProp, setExistingArrowProp] = useState({});
 	const [existingArrow, setExistingArrow] = useState(false);
 
+	// When arrow is clicked, open relationship Popover
 	const clickOnArrowfunc = (index) => {
 		setExistingArrow(true);
 		console.log(index);

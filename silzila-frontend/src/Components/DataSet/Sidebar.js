@@ -46,6 +46,9 @@ const Sidebar = ({
 
 	const [dcToResetTo, setDcToResetTo] = useState("");
 
+	// Actions performed when dataConnection is changed
+	// If user already selected some tables from another dataset
+	// 		to display in canvas, provide a warning to reset data
 	const onConnectionChange = (e) => {
 		if (tempTable.length > 0) {
 			setDcToResetTo(e.target.value);
@@ -59,7 +62,6 @@ const Sidebar = ({
 	};
 
 	useEffect(() => {
-		// console.log(editMode);
 		if (editMode) {
 			getAllDc();
 			setSelectedConnection(connectionValue);
@@ -81,6 +83,7 @@ const Sidebar = ({
 		}
 	}, [resetDataset]);
 
+	// Get all data connection available
 	const getAllDc = async () => {
 		var res = await FetchData({
 			requestType: "noData",
@@ -96,6 +99,7 @@ const Sidebar = ({
 		}
 	};
 
+	// Get all schemas of a particular data connection
 	const getSchemaList = async (uid) => {
 		const dc_uid = uid;
 		if (!editMode) {
@@ -133,6 +137,7 @@ const Sidebar = ({
 		}
 	};
 
+	// Fetch list of tables in a particular schema
 	const getTables = async (e) => {
 		const schema = e.target.value;
 		setSelectedSchema(schema);

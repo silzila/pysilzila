@@ -56,7 +56,7 @@ const ColorScale = ({
 			setOpenAlert(true);
 			setSeverity("error");
 
-			// TODO: Priority 3 - Why can't min be zero?
+			// TODO: Priority 1 - Why can't min be zero?
 			setTestMessage("Min or Max value can't be zero");
 			setTimeout(() => {
 				setOpenAlert(false);

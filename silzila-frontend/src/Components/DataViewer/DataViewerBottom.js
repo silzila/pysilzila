@@ -81,7 +81,7 @@ const DataViewerBottom = ({
 			if (isAlready.length > 0) {
 				window.alert("Dataset already in selected list");
 			} else {
-				// TODO: Priority 5 - When Dataset is changed in dataviewer page, where to load new Dataset
+				// TODO: Priority 1 - When Dataset is changed in dataviewer page, where to load new Dataset
 				// If the page already has any values under filter, measure or dimension, open the newly selected dataset
 				// in a new tile. If not, open in the same tile
 				setSelectedDataSetList(selectedDataset);

@@ -132,7 +132,7 @@ const BottomBar = ({
 			};
 			console.log(options.data);
 
-			// TODO: Priority 5 - Remove axios call from here
+			// TODO: Priority 1 - Remove axios call from here
 			// Use Fetch Data function for getting data from server through axios call
 			axios
 				.request(options)

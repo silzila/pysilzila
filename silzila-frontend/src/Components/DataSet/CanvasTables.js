@@ -50,6 +50,13 @@ const CanvasTables = ({
 
 	var uid = new ShortUniqueId({ length: 8 });
 
+	// when a new arrow is created,check if there is alerady a relation between the two tables of this new arrow
+	// If yes, add arrow & link existing relationId
+	// If no,
+	// 		- open relation popover and get info.
+	// 		- Create new relation id
+	// 		- Save new arrow and new relation
+
 	const checkRelationExists = (newArrowObj) => {
 		console.log(JSON.stringify(newArrowObj, null, 4));
 		if (dataSetState.arrows.length === 0) {
@@ -128,6 +135,7 @@ const CanvasTables = ({
 		addNewRelationship(relObj);
 	};
 
+	// Remove or rename tables in canvas
 	const selectAction = (e) => {
 		console.log(tableId);
 		if (open === true) {

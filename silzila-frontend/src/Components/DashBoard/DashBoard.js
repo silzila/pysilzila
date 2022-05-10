@@ -102,6 +102,9 @@ const DashBoard = ({
 		test_dimensions();
 	}, [tabTileProps.showDash, tabTileProps.dashMode, showListofTileMenu, dashboardResizeColumn]);
 
+	// Given the dimension of dashboard area available,
+	// if Fullscreen option or Aspect ratio option selected,
+	// compute the width and height of available area for graphs
 	const graphArea = () => {
 		var dashLayoutProperty = tabState.tabs[tabTileProps.selectedTabId].dashLayout;
 

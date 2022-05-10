@@ -209,7 +209,7 @@ const GraphArea = ({
 	// Setting title automatically
 	// ############################################
 
-	// TODO: Priority 5 - Setting title for different types of graphs
+	// TODO: Priority 1 - Setting title for different types of graphs
 	// Different graphs have different Dropzones. Setting automatic title must take into account of all these types
 	// Eg., Scatter plot has 2 measures, Funnel has 1 measure and no dimension, Heatmap has 2 dimensions, etc....
 

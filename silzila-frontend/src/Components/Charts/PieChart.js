@@ -71,7 +71,7 @@ const PieChart = ({
 							orient: property.legendOptions?.orientation,
 						},
 
-						// TODO: Priorit 5 - Margin doesn't reflect in graph
+						// TODO: Priority 1 - Margin doesn't reflect in graph
 						// Margin for a chart changes only the grid line and not the actual graph
 						grid: {
 							left: property.chartMargin.left,
