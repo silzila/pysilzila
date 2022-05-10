@@ -1,4 +1,7 @@
-import { height, width } from "@mui/system";
+// Dashboard Component is the place to position all graphs from within a tab
+// graph from each tile can be selected to render here
+// The dimensions of Graph area can be set to Full width or any other custom aspect ratio
+
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import {
@@ -16,7 +19,7 @@ const DashBoard = ({
 	// props
 	showListofTileMenu,
 	dashboardResizeColumn,
-	showFilters,
+
 	// state
 	tabState,
 	tabTileProps,
@@ -82,15 +85,12 @@ const DashBoard = ({
 	let movement_timer = null;
 	const RESET_TIMEOUT = 300;
 	const handleResize = () => {
-		// console.log(`Resize: ${dimensions.width} x ${dimensions.height}`);
 		clearInterval(movement_timer);
 		movement_timer = setTimeout(test_dimensions, RESET_TIMEOUT);
 	};
 
 	const test_dimensions = () => {
-		console.log("Test Dimensions");
 		if (targetRef.current) {
-			console.log("==--==--==", targetRef.current);
 			setDimensions({
 				width: targetRef.current.offsetWidth,
 				height: targetRef.current.offsetHeight,
@@ -102,38 +102,19 @@ const DashBoard = ({
 		test_dimensions();
 	}, [tabTileProps.showDash, tabTileProps.dashMode, showListofTileMenu, dashboardResizeColumn]);
 
+	// Given the dimension of dashboard area available,
+	// if Fullscreen option or Aspect ratio option selected,
+	// compute the width and height of available area for graphs
 	const graphArea = () => {
-		console.log(dimensions.width, dimensions.height);
 		var dashLayoutProperty = tabState.tabs[tabTileProps.selectedTabId].dashLayout;
-		console.log(dashLayoutProperty);
 
 		if (
 			dashLayoutProperty.dashboardLayout === "Auto" &&
 			dashLayoutProperty.selectedOptionForAuto === "Full Screen"
 		) {
-			console.log(dimensions.width / 32, dimensions.height / 18);
-
-			// setinnerDimensions({ width: dimensions.width, height: dimensions.height });
-			// setdashStyle({
-			// 	...dashStyle,
-			// 	width: dimensions.width,
-			// 	height: dimensions.height,
-			// 	backgroundSize: `${dimensions.width / 32}px ${dimensions.height / 18}px,
-			// 	${dimensions.width / 32}px ${dimensions.height / 18}px,
-			// 	${dimensions.width / 2}px ${dimensions.width / 2}px,
-			// 	${dimensions.height / 2}px ${dimensions.height / 2}px`,
-			// });
-			// setGridSize({ x: dimensions.width / 32, y: dimensions.height / 18 });
-
-			console.log(
-				Math.trunc(dimensions.width / 32, 0),
-				Math.trunc(dimensions.height / 18, 0)
-			);
-
 			var fullWidth = Math.trunc(dimensions.width / 32, 0) * 32;
 			var fullHeight = Math.trunc(dimensions.height / 18, 0) * 18;
 
-			console.log(fullWidth, fullHeight);
 			setinnerDimensions({ width: fullWidth, height: fullHeight });
 			setdashStyle({
 				...dashStyle,
@@ -151,21 +132,14 @@ const DashBoard = ({
 			dashLayoutProperty.dashboardLayout === "Auto" &&
 			dashLayoutProperty.selectedOptionForAuto === "Aspect Ratio"
 		) {
-			console.log("_+_+_+_+_+_ Aspect Ratio");
-			console.log(dashLayoutProperty.aspectRatio);
-
 			// ======================================================
 			// For aspect ratio
 
 			var xUnit = dimensions.width / (dashLayoutProperty.aspectRatio.width * 2);
 			var yUnit = dimensions.height / (dashLayoutProperty.aspectRatio.height * 2);
 
-			console.log(xUnit, yUnit);
-
 			if (xUnit * (dashLayoutProperty.aspectRatio.height * 2) > dimensions.height) {
-				console.log("Cant use X unit as base");
 			} else {
-				console.log("Can use X unit as base");
 				var truncatedX = Math.trunc(xUnit, 0);
 				setinnerDimensions({
 					width: truncatedX * (dashLayoutProperty.aspectRatio.width * 2),
@@ -186,9 +160,7 @@ const DashBoard = ({
 			}
 
 			if (yUnit * (dashLayoutProperty.aspectRatio.width * 2) > dimensions.width) {
-				console.log("Cant use Y unit as base");
 			} else {
-				console.log("Can use Y unit as base");
 				var truncatedY = Math.trunc(yUnit, 0);
 				setinnerDimensions({
 					width: truncatedY * (dashLayoutProperty.aspectRatio.width * 2),
@@ -213,14 +185,8 @@ const DashBoard = ({
 	let tilesForSelectedTab = tileState.tileList[tabTileProps.selectedTabId];
 
 	let tileList = tilesForSelectedTab.map((tile, index) => {
-		// console.log("===========================");
-		// console.log("Re-rendering tileList");
-
 		let currentObj = tileState.tiles[tile];
-		// console.log(currentObj);
-
 		var propKey = `${currentObj.tabId}.${currentObj.tileId}`;
-		// console.log("PropKey ", propKey);
 
 		const dashSpecs = {
 			name: currentObj.tileName,
@@ -249,7 +215,6 @@ const DashBoard = ({
 					type="checkbox"
 					className="graphCheckBox"
 					onChange={() => {
-						console.log(propKey, checked, dashSpecs, tabTileProps.selectedTabId);
 						updateDashDetails(
 							checked,
 							propKey,
@@ -305,17 +270,14 @@ const DashBoard = ({
 						(e.target.attributes.class.value === container2) |
 						(e.target.attributes.class.value === container3)
 					) {
-						console.log("Mouse down within graphs");
 						setmouseDownOutsideGraphs(false);
 
-						console.log(e.target.attributes.propkey);
 						graphHighlight(
 							tabTileProps.selectedTabId,
 							e.target.attributes.propkey.value,
 							true
 						);
 					} else {
-						console.log("Mouse down outside graphs");
 						setmouseDownOutsideGraphs(true);
 
 						resetHighlight(tabTileProps.selectedTabId);
@@ -360,21 +322,11 @@ const DashBoard = ({
 								<div className="dashBoardSideBar">
 									<DashBoardLayoutControl />
 								</div>
-							) : // <div className="dashBoardSideBar">
-							// 	<div className="axisTitle">Filters</div>
-							// </div>
-							null}
+							) : null}
 						</>
 					)}
 				</div>
-			) : // <>
-			// 	{showFilters ? (
-			// 		<div className="dashBoardSideBar">
-			// 			<div className="axisTitle">Filters</div>
-			// 		</div>
-			// 	) : null}
-			// </>
-			null}
+			) : null}
 		</div>
 	);
 };

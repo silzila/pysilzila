@@ -1,4 +1,6 @@
-import { Popover } from "@mui/material";
+// Loading spinner used in many components
+// used mainly during wait times when there are server interactions
+
 import React from "react";
 
 const LoadingPopover = () => {

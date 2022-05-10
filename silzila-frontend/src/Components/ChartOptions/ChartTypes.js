@@ -1,3 +1,8 @@
+// This component list all different charts that a user can create
+// It also handles
+// 	- the differences in dropzones for each specific graphs along,
+// 	- moving table fields into appropriate dropzones for each specific chart type
+
 import React from "react";
 import { connect } from "react-redux";
 import {
@@ -48,16 +53,11 @@ const ChartTypes = ({
 	var selectedChart = chartProp.properties[propKey].chartType;
 
 	const switchAxesForCharts = (oldChart, newChart) => {
-		console.log("From ", oldChart, " to ", newChart);
-
 		var oldChartAxes = chartProp.properties[propKey].chartAxes;
 		var newChartAxes = [];
 		for (let i = 0; i < ChartsInfo[newChart].dropZones.length; i++) {
 			newChartAxes.push({ name: ChartsInfo[newChart].dropZones[i].name, fields: [] });
 		}
-
-		console.log("===========================================");
-		console.log(oldChartAxes, newChartAxes);
 
 		switch (oldChart) {
 			case "multibar":
@@ -81,9 +81,7 @@ const ChartTypes = ({
 					// Map Value to X and Y columns if there are more than one values
 					if (oldChartAxes[2].fields.length > 0) {
 						if (oldChartAxes[2].fields.length > 1) {
-							console.log("OldChartAxes: ", oldChartAxes);
 							newChartAxes[2].fields.push(oldChartAxes[2].fields.shift());
-							console.log("OldChartAxes After Shift: ", oldChartAxes);
 							newChartAxes[3].fields.push(oldChartAxes[2].fields.shift());
 						} else {
 							newChartAxes[1].fields = oldChartAxes[2].fields;
@@ -94,7 +92,6 @@ const ChartTypes = ({
 					if (oldChartAxes[0].fields.length > 0)
 						newChartAxes[0].fields = oldChartAxes[0].fields;
 
-					console.log(newChartAxes);
 					return newChartAxes;
 				}
 

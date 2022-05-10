@@ -1,4 +1,7 @@
-import { VisibilitySharp } from "@mui/icons-material";
+// List of Playbooks created by the user is displayed here.
+// Users can delete any playbook
+// Creating new and editing existing playbook are handled in other child components
+
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Tooltip } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -17,6 +20,8 @@ import { NotificationDialog } from "../CommonFunctions/DialogComponents";
 import DatasetListPopover from "../CommonFunctions/PopOverComponents/DatasetListPopover";
 import LoadingPopover from "../CommonFunctions/PopOverComponents/LoadingPopover";
 import { SelectListItem } from "../CommonFunctions/SelectListItem";
+import { getColumnTypes, getTableData } from "../DataViewer/DataViewerBottom";
+import update from "immutability-helper";
 
 const PlayBookList = ({
 	// state
@@ -46,6 +51,7 @@ const PlayBookList = ({
 		// eslint-disable-next-line
 	}, []);
 
+	// Get list of saved playbooks
 	const getInformation = async () => {
 		var result = await FetchData({
 			requestType: "noData",
@@ -61,6 +67,9 @@ const PlayBookList = ({
 		}
 	};
 
+	// Creating new play book requires to select a dataset. On selecting that dataset,
+	// 		tables for that dataset is retrieved & stored
+	// 		Selected dataset is stored
 	useEffect(async () => {
 		if (selectedDataset !== "") {
 			setSelectedDataSetList(selectedDataset);
@@ -73,6 +82,7 @@ const PlayBookList = ({
 		}
 	}, [selectedDataset]);
 
+	// Get tables for a dataset from server
 	const getTables = async (uid) => {
 		var result = await FetchData({
 			requestType: "noData",
@@ -88,6 +98,11 @@ const PlayBookList = ({
 		}
 	};
 
+	// Retrive all required data for each playbook from server like
+	// 		- Table records and recordTypes, and
+	// 		- create fresh charts with latest data
+	//  	- Update the local store with the new data
+
 	const getPlayBookDataFromServer = async (pbUid) => {
 		var result = await FetchData({
 			requestType: "noData",
@@ -96,34 +111,90 @@ const PlayBookList = ({
 			headers: { Authorization: `Bearer ${token}` },
 		});
 
-		console.log(result);
-
 		if (result.status) {
-			var pB = result.data;
-			var newChartControl = JSON.parse(JSON.stringify(pB.content.chartControl));
-
 			setLoading(true);
 
+			var pb = result.data;
+			var newChartControl = JSON.parse(JSON.stringify(pb.content.chartControl));
+
 			await Promise.all(
-				Object.keys(pB.content.chartControl.properties).map(async (property) => {
-					var axesValue = pB.content.chartProperty.properties[property].chartAxes;
+				Object.keys(pb.content.chartControl.properties).map(async (property) => {
+					var axesValue = pb.content.chartProperty.properties[property].chartAxes;
 					var data = await getChartData(
 						axesValue,
-						pB.content.chartProperty,
+						pb.content.chartProperty,
 						property,
 						token
 					);
-					console.log(data);
+
 					newChartControl.properties[property].chartData = data;
+				})
+			);
+
+			var sampleRecords = { recordsColumnType: {} };
+			await Promise.all(
+				Object.keys(pb.content.chartProperty.properties).map(async (prop) => {
+					var tableInfo = pb.content.chartProperty.properties[prop];
+
+					var dc_uid = tableInfo.selectedDs?.dc_uid;
+					var ds_uid = tableInfo.selectedDs?.ds_uid;
+
+					var selectedTableForThisDataset =
+						pb.content.tabTileProps.tablesForSelectedDataSets[ds_uid].filter(
+							(tbl) => tbl.id === tableInfo.selectedTable[ds_uid]
+						)[0];
+
+					var tableRecords = await getTableData(
+						dc_uid,
+						selectedTableForThisDataset.schema_name,
+						selectedTableForThisDataset.table_name,
+						token
+					);
+
+					var recordsType = await getColumnTypes(
+						dc_uid,
+						selectedTableForThisDataset.schema_name,
+						selectedTableForThisDataset.table_name,
+						token
+					);
+
+					// Format the data retrieved to required JSON for saving in store
+					if (sampleRecords[ds_uid] !== undefined) {
+						sampleRecords = update(sampleRecords, {
+							recordsColumnType: {
+								[ds_uid]: {
+									[selectedTableForThisDataset.id]: { $set: recordsType },
+								},
+							},
+							[ds_uid]: { [selectedTableForThisDataset.id]: { $set: tableRecords } },
+						});
+					} else {
+						var recordsCopy = JSON.parse(JSON.stringify(sampleRecords));
+						var dsObj = { [ds_uid]: {} };
+
+						recordsCopy = update(recordsCopy, {
+							$merge: dsObj,
+							recordsColumnType: { $merge: dsObj },
+						});
+
+						sampleRecords = update(recordsCopy, {
+							recordsColumnType: {
+								[ds_uid]: {
+									[selectedTableForThisDataset.id]: { $set: recordsType },
+								},
+							},
+							[ds_uid]: { [selectedTableForThisDataset.id]: { $set: tableRecords } },
+						});
+					}
 				})
 			);
 
 			setLoading(false);
 
-			pB.content.chartControl = newChartControl;
-			console.log(JSON.stringify(pB.content, null, 4));
-			loadPlayBook(pB.content);
-			updatePlayBookId({ name: pB.name, pb_uid: pB.pb_uid, description: pB.description });
+			pb.content.chartControl = newChartControl;
+			pb.content.sampleRecords = sampleRecords;
+			loadPlayBook(pb.content);
+			updatePlayBookId({ name: pb.name, pb_uid: pb.pb_uid, description: pb.description });
 			navigate("/dataviewer");
 		}
 	};

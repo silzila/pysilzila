@@ -1,3 +1,6 @@
+// This component is part of table rows within canvas.
+// This circular point is the start of drag action to create arrow / relationship
+
 import React, { useRef, useState } from "react";
 import Xarrow from "react-xarrows";
 

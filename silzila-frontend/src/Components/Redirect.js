@@ -1,3 +1,5 @@
+// This is a Redirect page displayed when user navigates to any route other than '/' while logged out
+
 import React from "react";
 import { useNavigate } from "react-router-dom";
 

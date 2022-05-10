@@ -17,7 +17,6 @@ const PieChart = ({
 	var property = chartControls.properties[propKey];
 
 	let chartData = property.chartData ? property.chartData.result : "";
-	console.log(chartData, "+++++ chartData +++++");
 
 	var seriesObj = {
 		type: "pie",
@@ -25,7 +24,7 @@ const PieChart = ({
 			position: "outSide",
 			show: property.labelOptions.showLabel,
 			fontSize: property.labelOptions.fontSize,
-			color: property.labelOptions.labelColor,
+			color: property.labelOptions.labelColorManual ? property.labelOptions.labelColor : null,
 		},
 	};
 
@@ -40,8 +39,6 @@ const PieChart = ({
 			setSeriesData(seriesDataTemp);
 		}
 	}, [chartData]);
-
-	console.log(seriesData);
 
 	// TODO: Priority 1 - Data not rendering properly. It shows dimension value instead of measure when dimension is Year
 	const RenderChart = () => {
@@ -61,6 +58,7 @@ const PieChart = ({
 							: "1px solid rgb(238,238,238)",
 					}}
 					option={{
+						animation: chartArea ? false : true,
 						legend: {
 							type: "scroll",
 							show: property.legendOptions?.showLegend,
@@ -73,7 +71,7 @@ const PieChart = ({
 							orient: property.legendOptions?.orientation,
 						},
 
-						// TODO: Priorit 5 - Margin doesn't reflect in graph
+						// TODO: Priority 1 - Margin doesn't reflect in graph
 						// Margin for a chart changes only the grid line and not the actual graph
 						grid: {
 							left: property.chartMargin.left,

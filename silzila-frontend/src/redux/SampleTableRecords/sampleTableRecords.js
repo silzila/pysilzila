@@ -5,10 +5,6 @@ const initialRecords = { recordsColumnType: {} };
 const SampleRecordsReducer = (state = initialRecords, action) => {
 	switch (action.type) {
 		case "ADD_TABLE_RECORDS":
-			console.log(action.payload.ds_uid, action.payload.tableId, action.payload.columnType);
-
-			console.log(state[action.payload.ds_uid] !== undefined);
-
 			if (state[action.payload.ds_uid] !== undefined) {
 				return update(state, {
 					[action.payload.ds_uid]: {
@@ -41,6 +37,9 @@ const SampleRecordsReducer = (state = initialRecords, action) => {
 					},
 				});
 			}
+
+		case "LOAD_SAMPLE_RECORDS_FROM_PLAYBOOK":
+			return action.payload;
 
 		case "RESET_SAMPLE_RECORDS":
 			return initialRecords;

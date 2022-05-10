@@ -1,3 +1,5 @@
+// This component provides list of all tabs for a given playbook
+
 import React from "react";
 import { connect } from "react-redux";
 import IndividualTab from "./IndividualTab";
@@ -18,8 +20,6 @@ const TabRibbon = ({
 	enableRenameTab,
 	completeRenameTab,
 	selectTile,
-	showDashBoard,
-	toggleDashModeInTab,
 }) => {
 	const handleAddTab = () => {
 		let tabId = tabTileProps.nextTabId;
@@ -44,20 +44,11 @@ const TabRibbon = ({
 		// once tabTileprops-> dashmode set to "Edit" then that mode remain same for all tabs that can be selected after this
 		// ...but tabtileProps->showdash will change according to individual tab prop(tabstate->tabs->tabid-> showdash)
 
-		// if(tabObj.showDash === false && tabTileProps.dashMode === "Present"){
-		// 	selectTab(tabName, tabId, true, "Present");
-		// }else if()
-
 		if (tabTileProps.dashMode === "Present") {
 			selectTab(tabName, tabId, true, "Present");
-		}
-		// } else if(){
-		else {
+		} else {
 			selectTab(tabName, tabId, tabObj.showDash, tabObj.dashMode);
 		}
-		// selectTab(tabName, tabId, tabObj.showDash, tabObj.dashMode);
-		// // toggleDashModeInTab(tabTileProps.selectedTabId, tabTileProps.dashMode);
-		// }
 
 		let tileName = tabObj.selectedTileName;
 		let tileId = tabObj.selectedTileId;
@@ -74,7 +65,8 @@ const TabRibbon = ({
 		let selectedTab = tabTileProps.selectedTabId;
 		let addingNewTab = false;
 
-		// Selecting which tab to highlight next if we are removing a tab that is currently selected.
+		// Selecting which tab to highlight next
+		// if we are removing a tab that is currently selected, pick another tab before or after to highlight.
 		// Else no change in highlighting tabs
 		if (tabId === selectedTab) {
 			// choosing next selection, move left
@@ -161,8 +153,6 @@ const mapStateToProps = (state) => {
 	return {
 		tabTileProps: state.tabTileProps,
 		tabState: state.tabState,
-		// tileState: state.tileState,
-		// tableData: state.tableData,
 		chartProp: state.chartProperties,
 	};
 };
@@ -172,7 +162,6 @@ const mapDispatchToProps = (dispatch) => {
 		// ###########################################################
 		// Tab related dispatch methods
 		// ###########################################################
-		showDashBoard: (tabId, showDash) => dispatch(actions.showDashboardInTab(tabId, showDash)),
 
 		addTab: (tabId, table, selectedDs, selectedTablesInDs) =>
 			dispatch(actions.actionsToAddTab({ tabId, table, selectedDs, selectedTablesInDs })),
@@ -188,8 +177,6 @@ const mapDispatchToProps = (dispatch) => {
 
 		completeRenameTab: (renameValue, tabId) =>
 			dispatch(actions.actionsToRenameTab({ renameValue, tabId })),
-		toggleDashModeInTab: (tabId, dashMode) =>
-			dispatch(actions.toggleDashModeInTab(tabId, dashMode)),
 
 		// ###########################################################
 		// Tile related dispatch methods

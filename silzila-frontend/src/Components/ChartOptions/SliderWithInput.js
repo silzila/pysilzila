@@ -1,3 +1,6 @@
+// This is a slider component, with option to input values.
+// Used in many chart control options
+
 import React, { useState } from "react";
 import "./SliderWithInput.css";
 

@@ -1,3 +1,10 @@
+// This component is positioned at the top of every page except Login/SignUp
+// Used for
+// 	- navigating to home
+// 	- logging out from account
+// 	- saving playbooks
+// Some parts from this component are optionally rendered based on the page it is displayed
+
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import {
@@ -35,9 +42,6 @@ const MenuBar = ({
 	resetAllStates,
 	resetUser,
 }) => {
-	console.log(from);
-	const propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
-
 	const menuStyle = { fontSize: "12px", padding: "2px 8px", margin: 0 };
 
 	const [openFileMenu, setOpenFileMenu] = useState(false);
@@ -62,9 +66,9 @@ const MenuBar = ({
 		setOpenFileMenu(false);
 
 		// check if this playbook already has a name / id
-
+		// 		if Yes, save in the same name
+		// 		if No, open modal to save in a new name
 		if (playBookState.playBookUid !== null) {
-			// if Yes, save in the same name
 			var playBookObj = formatPlayBookData();
 
 			var result = await FetchData({
@@ -78,8 +82,6 @@ const MenuBar = ({
 			if (!result.status) {
 				console.log(result.data.detail);
 			} else {
-				console.log(result.data);
-
 				setSeverity("success");
 				setOpenAlert(true);
 				setTestMessage("Successfully saved playbook");
@@ -98,13 +100,12 @@ const MenuBar = ({
 
 	const formatPlayBookData = () => {
 		var playBookObj = {
-			name: playBookName,
+			name: playBookName.trim(),
 			content: {
 				tabState,
 				tileState,
 				tabTileProps,
 				chartProperty,
-				// chartControl,
 			},
 		};
 
@@ -113,21 +114,16 @@ const MenuBar = ({
 		Object.keys(chartControlCopy.properties).forEach((property) => {
 			chartControlCopy.properties[property].chartData = {};
 		});
-
 		playBookObj.content.chartControl = chartControlCopy;
-		// console.log(chartControlCopy);
-
-		console.log(playBookObj);
 		return playBookObj;
 	};
 
 	var fileMenuStyle = { fontSize: "12px", padding: "2px 1rem" };
 
+	// Save playbook with a new name
 	const savePlaybook = async () => {
-		var playBookObj = formatPlayBookData();
-
 		if (playBookName) {
-			console.log("can save now after trimming");
+			var playBookObj = formatPlayBookData();
 
 			var result = await FetchData({
 				requestType: "withData",
@@ -136,8 +132,6 @@ const MenuBar = ({
 				data: playBookObj,
 				headers: { Authorization: `Bearer ${token}` },
 			});
-
-			console.log(result);
 
 			if (result.status) {
 				updatePlayBookId({
@@ -189,7 +183,7 @@ const MenuBar = ({
 				}}
 				onClose={() => {
 					setAnchorEl(null);
-					setOpenFileMenu(false);
+					setLogoutModal(false);
 				}}
 			>
 				<MenuItem
@@ -291,8 +285,6 @@ const MenuBar = ({
 						>
 							File
 						</div>
-						{/* <div className="menuItem">Edit</div>
-						<div className="menuItem">Data</div> */}
 					</div>
 
 					<div className="playbookName" title={playBookState.description}>
@@ -312,7 +304,6 @@ const MenuBar = ({
 								}}
 								value={tabTileProps.dashMode}
 								onChange={(e) => {
-									console.log(e.target.value);
 									toggleDashMode(e.target.value);
 									toggleDashModeInTab(tabTileProps.selectedTabId, e.target.value);
 								}}
@@ -331,7 +322,6 @@ const MenuBar = ({
 			<div
 				className="menuHome"
 				onClick={(e) => {
-					console.log("Logout Clicked");
 					setLogoutAnchor(e.currentTarget);
 					setLogoutModal(!logoutModal);
 				}}

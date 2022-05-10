@@ -1,3 +1,5 @@
+// This component is the draggable table column are then dropped into dropzones
+
 import React from "react";
 import { useDrag } from "react-dnd";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";

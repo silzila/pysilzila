@@ -1,3 +1,6 @@
+// This component returns one single tile within the tabRibbon.
+// Each tile has actions to rename the tile & delete the tile
+
 import React, { useState } from "react";
 import "./individualTile.css";
 
@@ -22,10 +25,6 @@ function IndividualTile({
 	const handleTileNameValue = (e) => {
 		setRenameValue(e.target.value);
 	};
-
-	// TODO: Priority 5 - Tab Max width
-	// 		- Set Tile max width to 250px
-	// 		- Tooltip shows tile name and the text "Double click to edit". Show the latter in next line in a custom tooltip
 
 	if (selectedTile === tileId && editing) {
 		return (

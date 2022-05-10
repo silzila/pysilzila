@@ -1,6 +1,7 @@
+// Sample records of selected table shown in Create / Edit dataset page
+
 import React from "react";
 import {
-	autocompleteClasses,
 	Dialog,
 	DialogContent,
 	DialogTitle,

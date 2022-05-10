@@ -15,7 +15,6 @@ const ScatterChart = ({
 	var property = chartControls.properties[propKey];
 
 	let chartData = property.chartData ? property.chartData.result : "";
-	console.log(chartData, "+++++ chartData +++++");
 
 	var seriesObj = {
 		symbolSize: chartArea === "dashboard" ? 10 : 20,
@@ -29,7 +28,7 @@ const ScatterChart = ({
 		label: {
 			show: property.labelOptions.showLabel,
 			fontSize: property.labelOptions.fontSize,
-			color: property.labelOptions.labelColor,
+			color: property.labelOptions.labelColorManual ? property.labelOptions.labelColor : null,
 		},
 	};
 
@@ -45,7 +44,6 @@ const ScatterChart = ({
 		}
 	}, [chartData, property]);
 
-	console.log(seriesData);
 	const RenderChart = () => {
 		return (
 			<>
@@ -63,6 +61,7 @@ const ScatterChart = ({
 							: "1px solid rgb(238,238,238)",
 					}}
 					option={{
+						animation: chartArea ? false : true,
 						legend: {
 							type: "scroll",
 							show: property.legendOptions?.showLegend,

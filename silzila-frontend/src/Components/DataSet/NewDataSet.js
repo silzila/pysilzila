@@ -1,3 +1,5 @@
+// Components of Create Dataset page
+
 import React from "react";
 import MenuBar from "../DataViewer/MenuBar";
 import Canvas from "./Canvas";

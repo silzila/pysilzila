@@ -1,4 +1,9 @@
-import { Divider, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+// This component houses
+// 	- Option to switch dataset, L
+// 	- List of tables for selected dataset
+// 	- Tablle for sample records
+
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import {
@@ -12,11 +17,39 @@ import {
 } from "../../redux/TabTile/actionsTabTile";
 import FetchData from "../../ServerCall/FetchData";
 import DatasetListPopover from "../CommonFunctions/PopOverComponents/DatasetListPopover";
-
 import LoadingPopover from "../CommonFunctions/PopOverComponents/LoadingPopover";
-
 import "./dataViewerBottom.css";
 import DisplayTable from "./DisplayTable";
+
+export const getTableData = async (dc_uid, schema_name, table_name, token) => {
+	var res = await FetchData({
+		requestType: "noData",
+		method: "GET",
+		url: "dc/sample-records/" + dc_uid + "/" + schema_name + "/" + table_name,
+		headers: { Authorization: `Bearer ${token}` },
+	});
+
+	if (res.status) {
+		return res.data;
+	} else {
+		console.log("Get Table Data Error".res.data.detail);
+	}
+};
+
+export const getColumnTypes = async (dc_uid, schema_name, table_name, token) => {
+	var res = await FetchData({
+		requestType: "noData",
+		method: "GET",
+		url: "dc/columns/" + dc_uid + "/" + schema_name + "/" + table_name,
+		headers: { Authorization: `Bearer ${token}` },
+	});
+
+	if (res.status) {
+		return res.data;
+	} else {
+		console.log("Get Table Columns Error".res.data.detail);
+	}
+};
 
 const DataViewerBottom = ({
 	// state
@@ -48,7 +81,7 @@ const DataViewerBottom = ({
 			if (isAlready.length > 0) {
 				window.alert("Dataset already in selected list");
 			} else {
-				// TODO: Priority 5 - When Dataset is changed in dataviewer page, where to load new Dataset
+				// TODO: Priority 1 - When Dataset is changed in dataviewer page, where to load new Dataset
 				// If the page already has any values under filter, measure or dimension, open the newly selected dataset
 				// in a new tile. If not, open in the same tile
 				setSelectedDataSetList(selectedDataset);
@@ -105,42 +138,22 @@ const DataViewerBottom = ({
 				setLoading(true);
 				var dc_uid = selectedChartProp.selectedDs?.dc_uid;
 				var ds_uid = selectedChartProp.selectedDs?.ds_uid;
-				var tableRecords = await getTableData(dc_uid, table.schema_name, table.table_name);
-				var recordsType = await getColumnTypes(dc_uid, table.schema_name, table.table_name);
+				var tableRecords = await getTableData(
+					dc_uid,
+					table.schema_name,
+					table.table_name,
+					token
+				);
+				var recordsType = await getColumnTypes(
+					dc_uid,
+					table.schema_name,
+					table.table_name,
+					token
+				);
 
 				addRecords(ds_uid, table.id, tableRecords, recordsType);
 				setLoading(false);
 			}
-		}
-	};
-
-	const getTableData = async (dc_uid, schema_name, table_name) => {
-		var res = await FetchData({
-			requestType: "noData",
-			method: "GET",
-			url: "dc/sample-records/" + dc_uid + "/" + schema_name + "/" + table_name,
-			headers: { Authorization: `Bearer ${token}` },
-		});
-
-		if (res.status) {
-			return res.data;
-		} else {
-			console.log("Get Table Data Error".res.data.detail);
-		}
-	};
-
-	const getColumnTypes = async (dc_uid, schema_name, table_name) => {
-		var res = await FetchData({
-			requestType: "noData",
-			method: "GET",
-			url: "dc/columns/" + dc_uid + "/" + schema_name + "/" + table_name,
-			headers: { Authorization: `Bearer ${token}` },
-		});
-
-		if (res.status) {
-			return res.data;
-		} else {
-			console.log("Get Table Columns Error".res.data.detail);
 		}
 	};
 
