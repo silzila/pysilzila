@@ -56,17 +56,20 @@ Select one among the many different types of chart that you want to plot
 
 Select a table from this dataset. A preview of table will be shown to the right
 
-![Table](src/assets/selectTable-ss.png) ![TableDisplay](src/assets/tableDisplay-ss.png)
+![Table](src/assets/selectTable2-ss.png) ![TableDisplay](src/assets/tableDisplay-ss.png)
 
 ### Drop the fields to be plotted in the dropZone
 
 Drag required table fields from the table preview and drop them into the dropzone.
+
 ![Dropzone](src/assets/dropZones-ss.png)
 
 Once the required fields are dropped within dropzone, the values are computed plotted as a chart
+
 ![ChartExample](src/assets/sampleGraph-ss.png)
 
 ## 4. Present multpile plots in dashboard
 
 Charts created in each of the tiles can be then displayed as required in the dashboard
+
 ![Dashboard](src/assets/dashboard-ss.png)
