@@ -326,7 +326,7 @@ const MenuBar = ({
 					setLogoutModal(!logoutModal);
 				}}
 			>
-				<AccountCircleIcon sx={{ padding: "auto 1rem" }} />
+				<AccountCircleIcon sx={{ padding: "auto 1rem", color: "#666" }} />
 			</div>
 
 			<FileMenu />
