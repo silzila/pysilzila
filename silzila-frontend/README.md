@@ -14,7 +14,7 @@ Visit [Silzila](https://silzila.org/) website to learn more
 
 Create connections to the databases which you need
 
-![Connection](assets/dataConnection.png)
+![Connection](src/assets/dataConnection.png)
 
 ### `npm start`
 
