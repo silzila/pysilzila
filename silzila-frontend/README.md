@@ -5,8 +5,12 @@ to create meaningful visual charts in four easy steps
 
 1. Connect to your Database
 2. Define your Dataset
-3. Plot the data
-4. Present multpile plots in dashboard
+3. Visualize the data
+4. Present charts in dashboard
+
+DataConnections and Datasets can be viewed in the home page
+
+![DataHome](src/assets/dataHome-ss.png)
 
 Visit [Silzila](https://silzila.org/) website to learn more
 
@@ -23,15 +27,11 @@ create a dataset
 
 ![Dataset](src/assets/dataSet-ss.png)
 
-DataConnections and Datasets can be viewed in the home page
+## 3. Visualize the data
 
-![DataHome](src/assets/dataHome-ss.png)
+<!-- Once a dataset is created, then graphs can be plotted as follows -->
 
-## 3. Plot the data
-
-Once a dataset is created, then graphs can be plotted as follows
-
-### Start a new playbook
+<!-- ### Start a new playbook
 
 On the Playbooks list container, click on New button
 
@@ -62,13 +62,13 @@ Select a table from this dataset. A preview of table will be shown to the right
 
 Drag required table fields from the table preview and drop them into the dropzone.
 
-![Dropzone](src/assets/dropZones-ss.png)
+![Dropzone](src/assets/dropZones-ss.png) -->
 
-Once the required fields are dropped within dropzone, the values are computed plotted as a chart
+Visualize the data in one of the many charts available
 
 ![ChartExample](src/assets/sampleGraph-ss.png)
 
-## 4. Present multpile plots in dashboard
+## 4. Present charts in dashboard
 
 Charts created in each of the tiles can be then displayed as required in the dashboard
 
