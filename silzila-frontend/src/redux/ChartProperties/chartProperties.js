@@ -10,7 +10,7 @@ const chartProperties = {
 			tabId: 1,
 			tileId: 1,
 
-			chartType: "multibar",
+			chartType: "crossTab",
 
 			// Left Column
 			axesEdited: false,
@@ -20,7 +20,11 @@ const chartProperties = {
 					fields: [],
 				},
 				{
-					name: "Dimension",
+					name: "Row",
+					fields: [],
+				},
+				{
+					name: "Column",
 					fields: [],
 				},
 				{
@@ -88,7 +92,7 @@ const chartPropertiesState = (state = chartProperties, action) => {
 						// General Tab Info
 						tabId: action.payload.tabId,
 						tileId: action.payload.tileId,
-						chartType: "multibar",
+						chartType: "crossTab",
 
 						// Left Column
 						axesEdited: false,
@@ -98,7 +102,11 @@ const chartPropertiesState = (state = chartProperties, action) => {
 								fields: [],
 							},
 							{
-								name: "Dimension",
+								name: "Row",
+								fields: [],
+							},
+							{
+								name: "Column",
 								fields: [],
 							},
 							{
@@ -137,7 +145,7 @@ const chartPropertiesState = (state = chartProperties, action) => {
 						// General Tab Info
 						tabId: action.payload.tabId,
 						tileId: action.payload.tileId,
-						chartType: "multibar",
+						chartType: "crossTab",
 
 						// Left Column
 						axesEdited: false,
@@ -147,7 +155,11 @@ const chartPropertiesState = (state = chartProperties, action) => {
 								fields: [],
 							},
 							{
-								name: "Dimension",
+								name: "Row",
+								fields: [],
+							},
+							{
+								name: "Column",
 								fields: [],
 							},
 							{
