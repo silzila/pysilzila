@@ -193,11 +193,11 @@ const appendRowsFieldsAsColumns = () => {
     let tempRowObj = CrossTab.cloneData(rowObj);
     let columnIndex = 0;
 
-    if (dustbinValues.length > 1 && showAsColumn) {
-      columnIndex = dustbinColumns.length + 1;
-    } else {
+    // if (dustbinValues.length > 1 && showAsColumn) {
+    //   columnIndex = dustbinColumns.length + 1;
+    // } else {
       columnIndex = dustbinColumns.length;
-    }
+    //}
 
     if (crossTabData[columnIndex] && crossTabData[columnIndex].columnItems) {
       crossTabData[columnIndex].columnItems.forEach((item, colIndex) => {

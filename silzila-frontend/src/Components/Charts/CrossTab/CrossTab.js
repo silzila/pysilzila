@@ -8,12 +8,21 @@ export const cloneData = (data) => {
     Get display data from fields with prefix
   */
 export const getKeyWithPrefix = (item) => {
-  if (item && item.agg) {
-    //return `${item.prefix.toLowerCase()}(${item.fieldname})`;
-    return `${item.fieldname}__${item.agg.toLowerCase()}`;
-  } else {
-    return item?.fieldname || "";
+  switch (item.dataType) {
+    case "date":
+      return `${item.fieldname}__${item.time_grain}`;
+    case "decimal":
+      return `${item.fieldname}__${item.agg}`;
+    default:
+      return item?.fieldname || "";
   }
+
+  // if (item && item.agg) {
+  //   //return `${item.prefix.toLowerCase()}(${item.fieldname})`;
+  //   return `${item.fieldname}__${item.agg.toLowerCase()}`;
+  // } else {
+  //   return item?.fieldname || "";
+  // }
 };
 
 /*
