@@ -1,10 +1,3 @@
-// Grid and Axis component used to modify the following properties in charts
-// 	- Enable min & max values
-// 	- For each axes (X & Y)
-// 		- Show/Hide labels
-// 		- Provide a name for Axis
-// 		- Tick size, padding and rotation
-
 import { FormControl, MenuItem, Select, TextField } from "@mui/material";
 import React from "react";
 import { connect } from "react-redux";
@@ -16,6 +9,9 @@ import {
 	updateReverse,
 } from "../../../redux/ChartProperties/actionsChartControls";
 import SliderWithInput from "../SliderWithInput";
+// import GridControls from "./GridControls";
+// import ControlsForXAxis from "./ControlsForXAxis";
+// import ControlsForYAxis from "./ControlsForYAxis";
 import InputNumber from "../CommonFunctions/InputNumber";
 
 const textFieldStyleProps = {
@@ -36,6 +32,7 @@ const GridAndAxes = ({
 	chartProp,
 
 	//dispatch
+	updateGaugeAxisOptions,
 	setAxisMinMax,
 	setReverse,
 	enableGrids,
@@ -44,6 +41,7 @@ const GridAndAxes = ({
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 	var property = chartControl.properties[propKey].axisOptions;
 
+	// var selectedChart = chartProp[propKey].chartType;
 	var xAxisProps = property.xAxis;
 	var yAxisProps = property.yAxis;
 
@@ -66,9 +64,9 @@ const GridAndAxes = ({
 					className={property[item.value] ? "radioButtonSelected" : "radioButton"}
 					value={item}
 					onClick={() => {
+						console.log("Grid Clicked");
 						enableGrids(propKey, item.value, !property[item.value]);
 					}}
-					key={item.value}
 				>
 					{item.type}
 				</button>
@@ -95,6 +93,7 @@ const GridAndAxes = ({
 					}
 					value={item.value}
 					onClick={(e) => {
+						console.log("SETTING X-AXIS POSITION");
 						updateAxisOptions(propKey, "xAxis", "position", item.value);
 						updateAxisOptions(propKey, "xAxis", "onZero", !property.xAxis.onZero);
 					}}
@@ -121,6 +120,7 @@ const GridAndAxes = ({
 					}
 					value={item.value}
 					onClick={(e) => {
+						console.log("SETTING Y-AXIS POSITION");
 						updateAxisOptions(propKey, "yAxis", "position", item.value);
 						updateAxisOptions(propKey, "yAxis", "onZero", !yAxisProps.onZero);
 					}}
@@ -153,7 +153,7 @@ const GridAndAxes = ({
 								setReverse(propKey, !property.inverse);
 							}}
 						/>
-						<label htmlFor="enableDisable" className="enableDisableLabel">
+						<label for="enableDisable" className="enableDisableLabel">
 							Enable
 						</label>
 					</div>
@@ -170,12 +170,15 @@ const GridAndAxes = ({
 						setAxisMinMax(propKey, "enableMin", !property.axisMinMax.enableMin);
 					}}
 				/>
-
-				<InputNumber
-					value={property.axisMinMax.minValue}
-					updateValue={(value) => setAxisMinMax(propKey, "minValue", value)}
-					disabled={property.axisMinMax.enableMin ? false : true}
-				/>
+				<label for="enableDisable" className="enableDisableLabel">
+					Enable
+				</label>
+				{property.axisMinMax.enableMin ? (
+					<InputNumber
+						value={property.axisMinMax.minValue}
+						updateValue={(value) => setAxisMinMax(propKey, "minValue", value)}
+					/>
+				) : null}
 			</div>
 			<div className="optionDescription">MAX VALUE</div>
 			<div className="optionDescription">
@@ -187,12 +190,15 @@ const GridAndAxes = ({
 						setAxisMinMax(propKey, "enableMax", !property.axisMinMax.enableMax);
 					}}
 				/>
-
-				<InputNumber
-					value={property.axisMinMax.maxValue}
-					updateValue={(value) => setAxisMinMax(propKey, "maxValue", value)}
-					disabled={property.axisMinMax.enableMax ? false : true}
-				/>
+				<label for="enableDisable" className="enableDisableLabel">
+					Enable
+				</label>
+				{property.axisMinMax.enableMax ? (
+					<InputNumber
+						value={property.axisMinMax.maxValue}
+						updateValue={(value) => setAxisMinMax(propKey, "maxValue", value)}
+					/>
+				) : null}
 			</div>
 			{/* ==================================================================================
                                                  AXIS PROPS
@@ -201,20 +207,19 @@ const GridAndAxes = ({
 			{/* =========================================================================================
 			                                    X - AXIS PROPS
 			========================================================================================= */}
-			<div
-				style={{ borderTop: "1px solid rgb(211,211,211)", margin: "0.5rem 6% 1rem" }}
-			></div>
 			<div className="optionDescription">X-AXES</div>
+
 			<div className="optionDescription">
 				<input
 					type="checkbox"
 					id="enableDisable"
 					checked={xAxisProps.showLabel}
 					onChange={(e) => {
+						console.log("SETTING  AXIS LABEL SHOW OR HIDE");
 						updateAxisOptions(propKey, "xAxis", "showLabel", !xAxisProps.showLabel);
 					}}
 				/>
-				<label htmlFor="enableDisable" className="enableDisableLabel">
+				<label for="enableDisable" className="enableDisableLabel">
 					show Label
 				</label>
 			</div>
@@ -227,6 +232,7 @@ const GridAndAxes = ({
 						value={xAxisProps.name}
 						variant="outlined"
 						onChange={(e) => {
+							console.log("SETTING X-AXIS NAME");
 							updateAxisOptions(propKey, "xAxis", "name", e.target.value);
 						}}
 						InputProps={{ ...textFieldStyleProps }}
@@ -243,6 +249,7 @@ const GridAndAxes = ({
 							value={xAxisProps.nameLocation}
 							variant="outlined"
 							onChange={(e) => {
+								console.log("SETTING X-AXIS NAME POSITION");
 								updateAxisOptions(propKey, "xAxis", "nameLocation", e.target.value);
 							}}
 							sx={{
@@ -276,6 +283,7 @@ const GridAndAxes = ({
 						value={xAxisProps.nameGap}
 						variant="outlined"
 						onChange={(e) => {
+							console.log("SETTING X-AXIS NAME MARGIN");
 							updateAxisOptions(propKey, "xAxis", "nameGap", e.target.value);
 						}}
 						InputProps={{ ...textFieldStyleProps }}
@@ -294,9 +302,11 @@ const GridAndAxes = ({
 							if (xAxisProps.position === "top") {
 								// CHANGING TICK SIZE OF X-AXIS WHEN POSITION IS TOP
 								updateAxisOptions(propKey, "xAxis", "tickSizeTop", value);
+								// updateAxisOptions(propKey, "xAxis", "tickPaddingTop", value);
 							} else if (xAxisProps.position === "bottom") {
 								// CHANGING TICK SIZE OF X-AXIS WHEN POSITION IS BOTTOM
 								updateAxisOptions(propKey, "xAxis", "tickSizeBottom", value);
+								// updateAxisOptions(propKey, "xAxis", "tickPaddingBottom", value);
 							}
 						}}
 					/>
@@ -344,9 +354,6 @@ const GridAndAxes = ({
 			{/* ============================================================================================
 			Y-AXIS PROPS
 			============================================================================================ */}
-			<div
-				style={{ borderTop: "1px solid rgb(211,211,211)", margin: "0.5rem 6% 1rem" }}
-			></div>
 			<div className="optionDescription">Y-AXES</div>
 			<div className="optionDescription">
 				<input
@@ -354,10 +361,11 @@ const GridAndAxes = ({
 					id="enableDisable"
 					checked={yAxisProps.showLabel}
 					onChange={(e) => {
+						console.log("SETTING Y-AXIS LABEL SHOW OR HIDE");
 						updateAxisOptions(propKey, "yAxis", "showLabel", !yAxisProps.showLabel);
 					}}
 				/>
-				<label htmlFor="enableDisable" className="enableDisableLabel">
+				<label for="enableDisable" className="enableDisableLabel">
 					show Label
 				</label>
 			</div>
@@ -371,6 +379,7 @@ const GridAndAxes = ({
 						value={yAxisProps.name}
 						variant="outlined"
 						onChange={(e) => {
+							console.log("SETTING NAME FOR Y-AXIS ");
 							updateAxisOptions(propKey, "yAxis", "name", e.target.value);
 						}}
 						InputProps={{ ...textFieldStyleProps }}
@@ -387,6 +396,7 @@ const GridAndAxes = ({
 							value={yAxisProps.nameLocation}
 							variant="outlined"
 							onChange={(e) => {
+								console.log("SETTING NAME POSITION OF Y-AXIS");
 								updateAxisOptions(propKey, "yAxis", "nameLocation", e.target.value);
 							}}
 							sx={{
@@ -420,6 +430,7 @@ const GridAndAxes = ({
 						value={yAxisProps.nameGap}
 						variant="outlined"
 						onChange={(e) => {
+							console.log("SETTING Y-AXIS NAME MARGIN");
 							updateAxisOptions(propKey, "yAxis", "nameGap", e.target.value);
 						}}
 						InputProps={{ ...textFieldStyleProps }}
@@ -438,9 +449,11 @@ const GridAndAxes = ({
 							if (yAxisProps.position === "left") {
 								// CHANGING Y-AXIS TICK SIZE WHEN POSITION IS INN LEFT
 								updateAxisOptions(propKey, "yAxis", "tickSizeLeft", value);
+								// updateAxisOptions(propKey, "yAxis", "tickPaddingLeft", value);
 							} else if (yAxisProps.position === "right") {
 								//CHANGING Y-AXIS TICK SIZE WHEN POSITION IS IN RIGHT
 								updateAxisOptions(propKey, "yAxis", "tickSizeRight", value);
+								// updateAxisOptions(propKey, "yAxis", "tickPaddingRight", value);
 							}
 						}}
 					/>

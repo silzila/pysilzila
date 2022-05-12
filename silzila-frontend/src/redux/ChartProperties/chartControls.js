@@ -59,6 +59,13 @@ const chartControl = {
 					showAxisLabel: true,
 					labelPadding: 12,
 				},
+				gaugeChartControls: {
+					stepcolor: [
+						{ percentage: 40, color: "#67e0e3", per: 0.4 },
+						{ percentage: 50, color: "#37a2da", per: 0.9 },
+						{ percentage: 10, color: "#fd666d", per: 1 },
+					],
+				},
 				yAxis: {
 					position: "left",
 					onZero: true,
@@ -167,6 +174,13 @@ const chartControlsReducer = (state = chartControl, action) => {
 								tickPadding: 12,
 								showAxisLabel: true,
 								labelPadding: 12,
+							},
+							gaugeChartControls: {
+								stepcolor: [
+									{ percentage: 40, color: "#67e0e3", per: 0.4 },
+									{ percentage: 50, color: "#37a2da", per: 0.9 },
+									{ percentage: 10, color: "#fd666d", per: 1 },
+								],
 							},
 							yAxis: {
 								position: "left",
@@ -282,6 +296,13 @@ const chartControlsReducer = (state = chartControl, action) => {
 								tickPadding: 12,
 								showAxisLabel: true,
 								labelPadding: 12,
+							},
+							gaugeChartControls: {
+								stepcolor: [
+									{ percentage: 40, color: "#67e0e3", per: 0.4 },
+									{ percentage: 50, color: "#37a2da", per: 0.9 },
+									{ percentage: 10, color: "#fd666d", per: 1 },
+								],
 							},
 							yAxis: {
 								position: "left",
@@ -529,6 +550,33 @@ const chartControlsReducer = (state = chartControl, action) => {
 								[action.payload.option]: {
 									$set: action.payload.value,
 								},
+							},
+						},
+					},
+				},
+			});
+		case "ADDING_NEW_STEP":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						axisOptions: {
+							gaugeChartControls: {
+								stepcolor: {
+									$splice: [[action.payload.index, 0, action.payload.value]],
+								},
+							},
+						},
+					},
+				},
+			});
+
+		case "CHANGING_VALUES_OF_STEPS":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						axisOptions: {
+							gaugeChartControls: {
+								stepcolor: { $set: action.payload.value },
 							},
 						},
 					},

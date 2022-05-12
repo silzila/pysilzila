@@ -7,14 +7,29 @@ const GaugeChart = ({
 	propKey,
 	graphDimension,
 	chartArea,
-	graphTileSize,
 
 	//state
 	chartControl,
 }) => {
 	var property = chartControl.properties[propKey];
+	console.log(property, "+++++ PROPERTY +++++");
 	let chartData = property.chartData ? property.chartData.result : "";
+	console.log(chartData, "+++++ chartData +++++");
 	const [newData, setNewData] = useState([]);
+
+	console.log(property.axisOptions.gaugeChartControls.stepcolor);
+	var carr = [];
+
+	const getColors = () => {
+		for (let i = 0; i < property.axisOptions.gaugeChartControls.stepcolor.length; i++) {
+			carr.push([
+				parseFloat(property.axisOptions.gaugeChartControls.stepcolor[i].per),
+				property.axisOptions.gaugeChartControls.stepcolor[i].color,
+			]);
+		}
+	};
+	getColors();
+	console.log(...carr);
 
 	useEffect(() => {
 		if (chartData) {
@@ -24,10 +39,13 @@ const GaugeChart = ({
 					name: key,
 					value: chartData[0][key],
 				});
+				console.log(newTempData);
 			});
 			setNewData(newTempData);
 		}
 	}, [chartData]);
+
+	console.log(newData, "***@@@@***");
 
 	const RenderChart = () => {
 		return (
@@ -38,14 +56,8 @@ const GaugeChart = ({
 					width: graphDimension.width,
 					height: graphDimension.height,
 					overflow: "hidden",
-					border: chartArea
-						? "none"
-						: graphTileSize
-						? "none"
-						: "1px solid rgb(238,238,238)",
 				}}
 				option={{
-					animation: chartArea ? false : true,
 					legend: {
 						type: "scroll",
 						show: property.legendOptions?.showLegend,
@@ -64,8 +76,8 @@ const GaugeChart = ({
 						orient: property.legendOptions?.orientation,
 					},
 
-					// TODO: Priority 1 - Margin doesn't reflect in graph
-					// Margin for a chart changes only the grid line and not the actual graph
+					// TODO: Priorit 5 - Margin doesn't reflect in graph
+					// Margin for a Funnel chart changes only the grid line and not the actual funnel graph
 					grid: {
 						left:
 							chartArea === "dashboard"
@@ -111,11 +123,7 @@ const GaugeChart = ({
 							axisLine: {
 								lineStyle: {
 									width: 10,
-									color: [
-										[0.3, "#67e0e3"],
-										[0.7, "#37a2da"],
-										[1, "#fd666d"],
-									],
+									color: [...carr],
 								},
 
 								roundCap: true,
