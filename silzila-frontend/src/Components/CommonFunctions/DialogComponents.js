@@ -1,7 +1,12 @@
+// Commonly used notifications / alerts in many components for
+// 	- alerting actions of User interactions
+// 	- Server success / failure message display
+
 import { Alert, Button, Dialog } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { resetState } from "../../redux/Dataset/datasetActions";
 
+// Simple alert to display for 2-3 seconds after a user action like deleting, adding items, server CallSharp, etc
 export const NotificationDialog = ({ openAlert, severity, testMessage, onCloseAlert }) => {
 	return (
 		<>
@@ -19,6 +24,7 @@ export const NotificationDialog = ({ openAlert, severity, testMessage, onCloseAl
 	);
 };
 
+// Alert do display specifically in dataset create / edit page when a new dataConnection is selected
 export const ChangeConnection = ({ open, setOpen, setReset }) => {
 	const dispatch = useDispatch();
 

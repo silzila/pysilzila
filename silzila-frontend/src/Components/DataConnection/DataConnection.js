@@ -1,3 +1,7 @@
+// List of Data connections created by the user is displayed here.
+// Users can delete any connections
+// Creating new and editing existing connections are handled in FormDialog child component
+
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import FetchData from "../../ServerCall/FetchData";
@@ -6,6 +10,7 @@ import { VisibilitySharp } from "@mui/icons-material";
 import { Tooltip } from "@mui/material";
 import FormDialog from "./FormDialog";
 import { NotificationDialog } from "../CommonFunctions/DialogComponents";
+import { resetAllStates } from "../../redux/TabTile/actionsTabTile";
 
 const initialState = {
 	vendor: "",
@@ -36,10 +41,12 @@ const DataConnection = (props) => {
 	const [testMessage, setTestMessage] = useState("Testing alert");
 
 	useEffect(() => {
+		props.resetAllStates();
 		getInformation();
 		// eslint-disable-next-line
 	}, []);
 
+	// Get Info on DataConnection from server
 	const getInformation = async () => {
 		var result = await FetchData({
 			requestType: "noData",
@@ -276,6 +283,8 @@ const DataConnection = (props) => {
 					})}
 			</div>
 			<FormDialog {...properties} />
+
+			{/* Alert to display success / failure info */}
 			<NotificationDialog
 				onCloseAlert={() => {
 					setOpenAlert(false);
@@ -294,4 +303,10 @@ const mapStateToProps = (state) => {
 		token: state.isLogged.accessToken,
 	};
 };
-export default connect(mapStateToProps, null)(DataConnection);
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		resetAllStates: () => dispatch(resetAllStates()),
+	};
+};
+export default connect(mapStateToProps, mapDispatchToProps)(DataConnection);

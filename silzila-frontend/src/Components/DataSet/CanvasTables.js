@@ -1,3 +1,7 @@
+// This component returns Individual table along with column names to be displayed in Canvas
+// Tables can be given a friendly name by the user
+// These tables are draggable
+
 import React, { useRef, useState } from "react";
 import Draggable from "react-draggable";
 import { connect } from "react-redux";
@@ -45,6 +49,13 @@ const CanvasTables = ({
 	const [testMessage, setTestMessage] = useState("");
 
 	var uid = new ShortUniqueId({ length: 8 });
+
+	// when a new arrow is created,check if there is alerady a relation between the two tables of this new arrow
+	// If yes, add arrow & link existing relationId
+	// If no,
+	// 		- open relation popover and get info.
+	// 		- Create new relation id
+	// 		- Save new arrow and new relation
 
 	const checkRelationExists = (newArrowObj) => {
 		console.log(JSON.stringify(newArrowObj, null, 4));
@@ -124,6 +135,7 @@ const CanvasTables = ({
 		addNewRelationship(relObj);
 	};
 
+	// Remove or rename tables in canvas
 	const selectAction = (e) => {
 		console.log(tableId);
 		if (open === true) {

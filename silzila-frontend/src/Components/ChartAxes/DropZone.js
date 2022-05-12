@@ -1,3 +1,7 @@
+// This component provides individual dropzone
+// Each Dropzone can have allowed number of cards.
+// Cards can be moved between dropzones & also sorted within a dropzone
+
 import React from "react";
 import { useDrop } from "react-dnd";
 import { connect } from "react-redux";
@@ -39,14 +43,9 @@ const DropZone = ({
 	var chartType = chartProp.properties[propKey].chartType;
 
 	const handleDrop = (item, bIndex) => {
-		console.log("Item Dropped", item, bIndex);
-
 		var allowedNumbers = ChartsInfo[chartType].dropZones[bIndex].allowedNumbers;
-		console.log("Allowed Numbers", allowedNumbers);
 
 		if (item.bIndex === 99) {
-			console.log("-------moving item from outside------");
-
 			const uID = uIdGenerator();
 			var fieldData = item.fieldData;
 			fieldData.uId = uID;
@@ -60,12 +59,6 @@ const DropZone = ({
 
 			let newFieldData = JSON.parse(JSON.stringify(setPrefix(item, name, chartType)));
 			["type", "bIndex"].forEach((e) => delete newFieldData[e]);
-
-			// if (name == "Filter") {
-			//     setModalData(newFieldData);
-			//     setParams({ type: "moveItemChartProp", propKey, item_bIndex: item.bIndex, uId: item.uId, newFieldData, bIndex, allowedNumbers });
-			// } else {
-			// }
 			moveItemChartProp(propKey, item.bIndex, item.uId, newFieldData, bIndex, allowedNumbers);
 		}
 	};

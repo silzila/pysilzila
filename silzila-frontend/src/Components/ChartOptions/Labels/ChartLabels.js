@@ -1,3 +1,8 @@
+// This component provides following controls for label in charts
+// 	- Show/hide label
+// 	- Manual/Automatic label color
+// 	- Change font size for label
+
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import "./chartLabels.css";
@@ -8,7 +13,6 @@ import {
 import { SketchPicker } from "react-color";
 import SliderWithInput from "../SliderWithInput";
 import { FormControl, MenuItem, Popover, Select } from "@mui/material";
-// import FontControls from "../FontControls";
 
 const ChartLabels = ({
 	// state
@@ -27,7 +31,6 @@ const ChartLabels = ({
 
 	const showLabel = chartProp.properties[propKey].labelOptions.showLabel;
 	var labelOptions = chartProp.properties[propKey].labelOptions;
-	console.log(showLabel);
 
 	const labelPositionOptions = [
 		{ name: "Outside", value: "outside" },
@@ -46,6 +49,7 @@ const ChartLabels = ({
 					value={item.value}
 					onClick={(e) => updateLabelOption(propKey, "showLabel", item.value)}
 					className={item.value === showLabel ? "radioButtonSelected" : "radioButton"}
+					key={i}
 				>
 					{item.name}
 				</button>
@@ -104,25 +108,51 @@ const ChartLabels = ({
 							</React.Fragment>
 						) : null}
 						{/* </div> */}
-						<div style={{ flex: 1, display: "flex" }}>
+						<div
+						// style={{ flex: 1, display: "flex" }}
+						>
 							<div className="optionDescription">LABEL COLOR</div>
-							<div
-								style={{
-									height: "100%",
-									width: "50%",
-									backgroundColor:
-										chartProp.properties[propKey].labelOptions.labelColor,
-									color: chartProp.properties[propKey].labelOptions.labelColor,
-									border: "2px solid darkgray",
-									margin: "0 10px 5px 0",
-								}}
-								onClick={(e) => {
-									console.log("Color clicked");
-									setColorPopOverOpen(!isColorPopoverOpen);
-									setAnchorEl(e.currentTarget);
-								}}
-							>
-								{" c "}
+
+							<div className="optionDescription">
+								<input
+									type="checkbox"
+									id="enableDisable"
+									checked={
+										chartProp.properties[propKey].labelOptions.labelColorManual
+									}
+									onChange={() => {
+										updateLabelOption(
+											propKey,
+											"labelColorManual",
+											!chartProp.properties[propKey].labelOptions
+												.labelColorManual
+										);
+									}}
+								/>
+								<label htmlFor="enableDisable" style={{ padding: "5px" }}>
+									Manual
+								</label>
+								{chartProp.properties[propKey].labelOptions.labelColorManual ? (
+									<div
+										style={{
+											height: "100%",
+											width: "50%",
+											backgroundColor:
+												chartProp.properties[propKey].labelOptions
+													.labelColor,
+											color: chartProp.properties[propKey].labelOptions
+												.labelColor,
+											border: "2px solid darkgray",
+											margin: "auto",
+										}}
+										onClick={(e) => {
+											setColorPopOverOpen(!isColorPopoverOpen);
+											setAnchorEl(e.currentTarget);
+										}}
+									>
+										{" c "}
+									</div>
+								) : null}
 							</div>
 						</div>
 						<div className="optionDescription">FONT SIZE</div>
@@ -151,7 +181,6 @@ const ChartLabels = ({
 						width="16rem"
 						styles={{ padding: "0" }}
 						onChangeComplete={(color) => {
-							console.log(color);
 							updateLabelOption(propKey, "labelColor", color.hex);
 						}}
 						onChange={(color) => updateLabelOption(propKey, "labelColor", color.hex)}

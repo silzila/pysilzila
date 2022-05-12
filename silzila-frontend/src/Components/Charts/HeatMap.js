@@ -14,9 +14,7 @@ const HeatMap = ({
 	chartProperty,
 }) => {
 	var property = chartControl.properties[propKey];
-	console.log(property, "+++++ PROPERTY +++++");
 	let chartData = property.chartData ? property.chartData.result : "";
-	console.log(chartData, "+++++ chartData +++++");
 
 	const [maxValue, setMaxValue] = useState(0);
 
@@ -31,7 +29,6 @@ const HeatMap = ({
 					max = element[maxFieldName];
 				}
 			});
-			console.log(max);
 			setMaxValue(max);
 		}
 	}, [chartData]);
@@ -52,6 +49,7 @@ const HeatMap = ({
 						: "1px solid rgb(238,238,238)",
 				}}
 				option={{
+					animation: chartArea ? false : true,
 					legend: {},
 					grid: {
 						left: property.chartMargin.left,
@@ -60,7 +58,7 @@ const HeatMap = ({
 						bottom: property.chartMargin.bottom,
 					},
 
-					label: { show: true, fontSize: 14 },
+					// label: { show: true, fontSize: 14 },
 					tooltip: { show: property.mouseOver.enable },
 
 					dataset: {
@@ -151,13 +149,17 @@ const HeatMap = ({
 									: maxValue,
 						},
 					],
+
+					// TODO: Priority 1 - HeatMap label doesn't show
 					series: [
 						{
 							type: "heatmap",
 							label: {
 								show: property.labelOptions.showLabel,
 								fontSize: property.labelOptions.fontSize,
-								color: property.labelOptions.labelColor,
+								color: property.labelOptions.labelColorManual
+									? property.labelOptions.labelColor
+									: null,
 							},
 						},
 					],

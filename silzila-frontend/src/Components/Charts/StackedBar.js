@@ -16,7 +16,6 @@ const StackedBar = ({
 	var property = chartControlState.properties[propKey];
 
 	let chartData = property.chartData ? property.chartData.result : "";
-	console.log(chartData, "+++++ chartData +++++");
 
 	var seriesObj = {
 		type: "bar",
@@ -27,7 +26,7 @@ const StackedBar = ({
 		label: {
 			show: property.labelOptions.showLabel,
 			fontSize: property.labelOptions.fontSize,
-			color: property.labelOptions.labelColor,
+			color: property.labelOptions.labelColorManual ? property.labelOptions.labelColor : null,
 		},
 	};
 
@@ -42,8 +41,6 @@ const StackedBar = ({
 			setSeriesData(seriesDataTemp);
 		}
 	}, [chartData, property]);
-
-	console.log(seriesData);
 
 	const RenderChart = () => {
 		return (
@@ -61,6 +58,7 @@ const StackedBar = ({
 						: "1px solid rgb(238,238,238)",
 				}}
 				option={{
+					animation: chartArea ? false : true,
 					legend: {
 						type: "scroll",
 						show: property.legendOptions?.showLegend,

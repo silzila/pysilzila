@@ -1,3 +1,10 @@
+// This component relates with Legend related controls for chart
+// The controls include
+// 	- show / hide legend
+// 	- legend position
+// 	- Orientation
+// 	- legend item size
+
 import { FormControl, MenuItem, Select } from "@mui/material";
 import React from "react";
 import { connect } from "react-redux";
@@ -16,7 +23,6 @@ const ChartLegend = ({
 
 	const showLegend = chartControl.properties[propKey].legendOptions.showLegend;
 	const setLegend = (item) => {
-		console.log(item);
 		updateLegendOption(propKey, "showLegend", item);
 	};
 	const legendOption = [
@@ -38,9 +44,8 @@ const ChartLegend = ({
 	};
 
 	const orientation = chartControl.properties[propKey].legendOptions.orientation;
-	console.log(orientation);
+
 	const setOrient = (item) => {
-		console.log(item);
 		updateLegendOption(propKey, "orientation", item);
 	};
 	const orientOption = [
@@ -73,12 +78,10 @@ const ChartLegend = ({
 		{ pos: "Bottom Right", top: "bottom", left: "right" },
 	];
 	const selectedPosition = chartControl.properties[propKey].legendOptions.position;
-	console.log(selectedPosition);
 
 	const updateSelectedPosition = (selectedValue) => {
-		console.log(selectedValue);
 		var positionSelected = positions.filter((pos) => pos.pos === selectedValue)[0];
-		console.log(positionSelected);
+
 		updateLegendOption(propKey, "position", positionSelected);
 	};
 
@@ -86,9 +89,8 @@ const ChartLegend = ({
 	const itemHeightMinMax = { min: 0, max: 200, step: 1 };
 	const itemSpacingMinMax = { min: 0, max: 60, step: 1 };
 	const moveSlider = chartControl.properties[propKey].legendOptions.moveSlider;
-	console.log(moveSlider);
+
 	const setSlider = (item) => {
-		console.log(item);
 		updateLegendOption(propKey, "moveSlider", item);
 	};
 	const moveSliderToRender = () => {

@@ -1,3 +1,8 @@
+// Control functions related to chart title are handled here
+// Function include
+// 	- Setting title for graph automatically / manually
+// 	- Alignment of graph title
+
 import React from "react";
 import { connect } from "react-redux";
 import {
@@ -30,7 +35,6 @@ const ChartTitle = ({
 	];
 
 	const setGenerateTitle = (type) => {
-		console.log(type);
 		setGenerateTitleToStore(propKey, type);
 	};
 

@@ -44,12 +44,17 @@ const tabStateReducer = (state = initialTabState, action) => {
 						showDash: false,
 						dashMode: "Edit",
 						dashLayout: {
-							dashboardLayout: "auto",
-							selectedOptionForAuto: "full Screen",
-							aspectRatio: { height: 0, width: 0 },
-							selectedOptionForFixed: "",
-							custom: { height: 0, width: 0 },
-							customRange: { minHeight: 0, minWidth: 0, maxHeight: 0, maxWidth: 0 },
+							dashboardLayout: "Auto",
+							selectedOptionForAuto: "Full Screen",
+							aspectRatio: { height: 9, width: 16 },
+							selectedOptionForFixed: "HD",
+							custom: { height: 9, width: 16 },
+							customRange: {
+								minHeight: 9,
+								minWidth: 16,
+								maxHeight: 12,
+								maxWidth: 24,
+							},
 						},
 
 						// properties specific to tiles within this tab

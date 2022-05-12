@@ -24,18 +24,19 @@ const chartControl = {
 			chartMargin: {
 				selectedMargin: "top",
 				top: 30,
-				right: 5,
+				right: 40,
 				bottom: 25,
 				left: 65,
 			},
 
 			labelOptions: {
 				showLabel: true,
-				labelColor: "#888888",
+				labelColorManual: false,
+				labelColor: "#666666",
 				pieLabel: {
 					labelPosition: "outside",
 				},
-				fontSize: 15,
+				fontSize: 12,
 				fontStyle: "normal",
 				fontWeigth: "normal",
 				fontFamily: "sans-serif",
@@ -109,7 +110,6 @@ const chartControl = {
 const chartControlsReducer = (state = chartControl, action) => {
 	switch (action.type) {
 		case "ADD_NEW_CONTROL":
-			console.log("FROM TILE", action.payload);
 			let tileKey = `${action.payload.tabId}.${action.payload.tileId}`;
 			return {
 				properties: {
@@ -133,18 +133,19 @@ const chartControlsReducer = (state = chartControl, action) => {
 						chartMargin: {
 							selectedMargin: "top",
 							top: 30,
-							right: 5,
+							right: 40,
 							bottom: 25,
 							left: 65,
 						},
 
 						labelOptions: {
 							showLabel: true,
-							labelColor: "#888888",
+							labelColorManual: false,
+							labelColor: "#666666",
 							pieLabel: {
 								labelPosition: "outside",
 							},
-							fontSize: 15,
+							fontSize: 12,
 							fontStyle: "normal",
 							fontWeigth: "normal",
 							fontFamily: "sans-serif",
@@ -223,7 +224,6 @@ const chartControlsReducer = (state = chartControl, action) => {
 			};
 
 		case "ADD_NEW_CONTROL_FROM_TAB":
-			console.log("FROM TAB", action.payload);
 			let tileKey2 = `${action.payload.tabId}.${action.payload.tileId}`;
 
 			return {
@@ -248,18 +248,19 @@ const chartControlsReducer = (state = chartControl, action) => {
 						chartMargin: {
 							selectedMargin: "top",
 							top: 30,
-							right: 5,
+							right: 40,
 							bottom: 25,
 							left: 65,
 						},
 
 						labelOptions: {
 							showLabel: true,
-							labelColor: "#888888",
+							labelColorManual: false,
+							labelColor: "#666666",
 							pieLabel: {
 								labelPosition: "outside",
 							},
-							fontSize: 15,
+							fontSize: 12,
 							fontStyle: "normal",
 							fontWeigth: "normal",
 							fontFamily: "sans-serif",
@@ -360,7 +361,6 @@ const chartControlsReducer = (state = chartControl, action) => {
 		// Color theme
 
 		case "CHANGE_COLOR_SCHEME":
-			console.log("color scheme changed", action.payload.propKey, action.payload.color);
 			return update(state, {
 				properties: {
 					[action.payload.propKey]: { colorScheme: { $set: action.payload.color } },
@@ -371,7 +371,6 @@ const chartControlsReducer = (state = chartControl, action) => {
 		// Legend
 
 		case "UPDATE_LEGEND_OPTIONS":
-			console.log(action.payload.propKey, action.payload.option, action.payload.value);
 			return update(state, {
 				properties: {
 					[action.payload.propKey]: {
@@ -427,7 +426,6 @@ const chartControlsReducer = (state = chartControl, action) => {
 		// Grid & Axis
 
 		case "ENABLE_GRID":
-			console.log("enabling grid");
 			switch (action.payload.value) {
 				case "xSplitLine":
 				case "ySplitLine":
@@ -454,7 +452,6 @@ const chartControlsReducer = (state = chartControl, action) => {
 			}
 
 		case "AXIS_MIN_MAX":
-			console.log("Changing axis min and max values");
 			return update(state, {
 				properties: {
 					[action.payload.propKey]: {
@@ -467,7 +464,6 @@ const chartControlsReducer = (state = chartControl, action) => {
 				},
 			});
 		case "SET_COLOR_SCALE_OPTION":
-			console.log("CHANGING COLOR SCALE OPTION");
 			return update(state, {
 				properties: {
 					[action.payload.propKey]: {
@@ -485,7 +481,6 @@ const chartControlsReducer = (state = chartControl, action) => {
 			return chartControl;
 
 		case "UPDATE_LABEL_OPTIONS":
-			// console.log(action.payload.option, action.payload.value);
 			return update(state, {
 				properties: {
 					[action.payload.propKey]: {
@@ -504,7 +499,6 @@ const chartControlsReducer = (state = chartControl, action) => {
 				},
 			});
 		case "UPDATE_REVERSE":
-			console.log("updating reverse");
 			return update(state, {
 				properties: {
 					[action.payload.propKey]: {
