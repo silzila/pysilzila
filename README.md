@@ -20,7 +20,7 @@ Create connections to the databases which you need
 
 <!-- ![Connection](silzila-frontend/src/assets/dataConnection-ss.png) -->
 
-![](silzila-frontend/src/assets/Silzila-New-Data-Connection.gif)
+![](silzila-frontend/src/assets/Silzila-New-Data-Connection-fast.gif)
 
 ## 2. Define your Dataset
 
@@ -29,7 +29,7 @@ create a dataset
 
 <!-- ![Dataset](silzila-frontend/src/assets/dataSet-ss.png) -->
 
-![](silzila-frontend/src/assets/Silzila-New-Dataset.gif)
+![](silzila-frontend/src/assets/Silzila-New-Dataset-fast.gif)
 
 ## 3. Visualize the data
 
@@ -41,4 +41,4 @@ Visualize the data in one of the many charts available
 
 Charts created in each of the tiles can be then displayed as required in the dashboard
 
-![](silzila-frontend/src/assets/Silzila-New-Playbook.gif)
+![](silzila-frontend/src/assets/Silzila-New-Playbook-fast.gif)
