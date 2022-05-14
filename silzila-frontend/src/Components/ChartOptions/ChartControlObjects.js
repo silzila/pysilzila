@@ -25,9 +25,21 @@ const ChartControlObjects = ({
 		"Grid/Axes",
 	];
 
-	const pieOptionsList = ["Title", "Colors", "Legend", "Margin", "Tooltip", "Labels", "Axis"];
-	const funnelOptionList = ["Title", "Colors", "Legend", "Margin", "Tooltip"];
-	const gaugeOptionList = ["Title", "Colors", "Margin", "Tooltip", "Axis"];
+	const pieOptionsList = ["Title", "Colors", "Legend", "Tooltip", "Labels", "Axis"];
+	const funnelOptionList = [
+		"Title",
+		"Colors",
+		"Legend",
+		//  "Margin",
+		"Tooltip",
+	];
+	const gaugeOptionList = [
+		"Title",
+		"Colors",
+		//  "Margin",
+		"Tooltip",
+		"Axis",
+	];
 	const heatmapOptionList = ["Title", "Colors", "Margin", "Tooltip", "Labels", "Grid/Axes"];
 
 	const RenderOptions = () => {

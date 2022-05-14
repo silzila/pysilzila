@@ -64,26 +64,28 @@ const GaugeChart = ({
 						orient: property.legendOptions?.orientation,
 					},
 
-					// TODO: Priority 1 - Margin doesn't reflect in graph
+					// TODO:(pc) Priority 1 - Margin doesn't reflect in graph
 					// Margin for a chart changes only the grid line and not the actual graph
-					grid: {
-						left:
-							chartArea === "dashboard"
-								? `${property.chartMargin.left + 10}%`
-								: `${property.chartMargin.left}%`,
-						right:
-							chartArea === "dashboard"
-								? `${property.chartMargin.right + 0}%`
-								: `${property.chartMargin.right}%`,
-						top:
-							chartArea === "dashboard"
-								? `${property.chartMargin.top + 10}%`
-								: `${property.chartMargin.top}%`,
-						bottom:
-							chartArea === "dashboard"
-								? `${property.chartMargin.bottom + 5}%`
-								: `${property.chartMargin.bottom}%`,
-					},
+
+					// grid: {
+					// 	left:
+					// 		chartArea === "dashboard"
+					// 			? `${property.chartMargin.left + 10}%`
+					// 			: `${property.chartMargin.left}%`,
+					// 	right:
+					// 		chartArea === "dashboard"
+					// 			? `${property.chartMargin.right + 0}%`
+					// 			: `${property.chartMargin.right}%`,
+					// 	top:
+					// 		chartArea === "dashboard"
+					// 			? `${property.chartMargin.top + 10}%`
+					// 			: `${property.chartMargin.top}%`,
+					// 	bottom:
+					// 		chartArea === "dashboard"
+					// 			? `${property.chartMargin.bottom + 5}%`
+					// 			: `${property.chartMargin.bottom}%`,
+					// },
+
 					tooltip: { show: property.mouseOver.enable },
 
 					series: [

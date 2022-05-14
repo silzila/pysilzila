@@ -25,7 +25,14 @@ export const NotificationDialog = ({ openAlert, severity, testMessage, onCloseAl
 };
 
 // Alert do display specifically in dataset create / edit page when a new dataConnection is selected
-export const ChangeConnection = ({ open, setOpen, setReset }) => {
+export const ChangeConnection = ({
+	open,
+	setOpen,
+	setReset,
+	heading,
+	message,
+	onChangeOrAddDataset,
+}) => {
 	const dispatch = useDispatch();
 
 	return (
@@ -41,26 +48,12 @@ export const ChangeConnection = ({ open, setOpen, setReset }) => {
 				}}
 			>
 				<div style={{ fontWeight: "bold", textAlign: "center" }}>
-					RESET DATASET
+					{heading}
 					<br />
 					<br />
-					<p style={{ fontWeight: "normal" }}>
-						Changing connection will reset this dataset creation. Do you want to discard
-						the progress?
-					</p>
+					<p style={{ fontWeight: "normal" }}>{message}</p>
 				</div>
 				<div style={{ padding: "15px", justifyContent: "space-around", display: "flex" }}>
-					<Button
-						style={{ backgroundColor: "red" }}
-						variant="contained"
-						onClick={() => {
-							dispatch(resetState());
-							setOpen(false);
-							setReset(true);
-						}}
-					>
-						Discard
-					</Button>
 					<Button
 						style={{ backgroundColor: "grey", float: "right" }}
 						onClick={() => setOpen(false)}
@@ -68,8 +61,102 @@ export const ChangeConnection = ({ open, setOpen, setReset }) => {
 					>
 						Cancel
 					</Button>
+					{heading === "RESET DATASET" ? (
+						<Button
+							style={{ backgroundColor: "red" }}
+							variant="contained"
+							onClick={() => {
+								dispatch(resetState());
+								setOpen(false);
+								setReset(true);
+							}}
+						>
+							Discard
+						</Button>
+					) : (
+						<Button
+							style={{ backgroundColor: "red" }}
+							variant="contained"
+							onClick={onChangeOrAddDataset}
+						>
+							Ok
+						</Button>
+					)}
 				</div>
 			</div>
 		</Dialog>
 	);
 };
+
+// export const ChangeConnection = ({
+// 	open,
+// 	setOpen,
+// 	setReset,
+// 	heading,
+// 	message,
+// 	onChangeOrAddDataset,
+// }) => {
+// const dispatch = useDispatch();
+
+// return (
+// 	<Dialog open={open}>
+// 		<div
+// 			style={{
+// 				display: "flex",
+// 				flexDirection: "column",
+// 				padding: "5px",
+// 				width: "350px",
+// 				height: "auto",
+// 				justifyContent: "center",
+// 			}}
+// 		>
+// 			<div style={{ fontWeight: "bold", textAlign: "center" }}></div>
+// {heading}
+// 				<br />
+// 				<br />
+// 				<p style={{ fontWeight: "normal" }}></p>
+// {message}
+{
+	/* Changing connection will reset this dataset creation. Do you want to discard
+						the progress? */
+}
+// 	</p>
+// </div>
+// <div style={{ padding: "15px", justifyContent: "space-around", display: "flex" }}></div>
+// 				<Button
+// 						style={{ backgroundColor: "grey", float: "right" }}
+// 						onClick={() => setOpen(false)}
+// 						variant="contained"
+// 					>
+// 						Cancel
+// 					</Button>
+// 					{heading === "RESET DATASET" ? (
+// 						<Button
+// 							style={{ backgroundColor: "red" }}
+// 							variant="contained"
+// 							onClick={() => {
+// 								dispatch(resetState());
+// 								setOpen(false);
+// 								setReset(true);
+// 							}}
+// 						>
+// 							Discard
+// 						</Button>
+// 					) : (
+// 						<Button
+// 							style={{ backgroundColor: "red" }}
+// 							variant="contained"
+// 							onClick={onChangeOrAddDataset}
+// 							// 	dispatch(resetState());
+// 							// 	setOpen(false);
+// 							// 	setReset(true);
+// 							// }}
+// 						>
+// 							Ok
+// 						</Button>
+// 					)}
+// 				</div>
+// 			</div>
+// 		</Dialog>
+// 	);
+// };

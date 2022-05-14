@@ -114,6 +114,14 @@ export const updateReverse = (propKey, value) => {
 	return { type: "UPDATE_REVERSE", payload: { propKey, value } };
 };
 
+export const updatePieStartAngle = (propKey, value) => {
+	return { type: "UPDATE_PIE_STARTANGLE", payload: { propKey, value } };
+};
+
+export const updateDonutStartAngle = (propKey, value) => {
+	return { type: "UPDATE_DONUT_STARTANGLE", payload: { propKey, value } };
+};
+
 export const updateAxisOptions = (propKey, axis, option, value) => {
 	return { type: "UPDATE_AXIS_OPTIONS", payload: { propKey, axis, option, value } };
 };

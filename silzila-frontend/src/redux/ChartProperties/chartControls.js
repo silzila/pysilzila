@@ -59,6 +59,8 @@ const chartControl = {
 					showAxisLabel: true,
 					labelPadding: 12,
 				},
+				pieStartAngle: 90,
+				donutStartAngle: 90,
 				yAxis: {
 					position: "left",
 					onZero: true,
@@ -503,6 +505,22 @@ const chartControlsReducer = (state = chartControl, action) => {
 				properties: {
 					[action.payload.propKey]: {
 						axisOptions: { inverse: { $set: action.payload.value } },
+					},
+				},
+			});
+		case "UPDATE_PIE_STARTANGLE":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						axisOptions: { pieStartAngle: { $set: action.payload.value } },
+					},
+				},
+			});
+		case "UPDATE_DONUT_STARTANGLE":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						axisOptions: { donutStartAngle: { $set: action.payload.value } },
 					},
 				},
 			});

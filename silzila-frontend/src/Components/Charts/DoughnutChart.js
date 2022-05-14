@@ -13,8 +13,21 @@ const DoughnutChart = ({
 	chartProp,
 	chartControls,
 }) => {
-	// var property = chartProp.properties[propKey];
 	var property = chartControls.properties[propKey];
+
+	useEffect(() => {
+		if (property.chartData) {
+			var objKey =
+				chartProp.properties[propKey].chartAxes[1].fields[0].fieldname + "__" + "year";
+			property.chartData.result.map((el) => {
+				if (objKey in el) {
+					let year = el[objKey];
+					el[objKey] = year.toString();
+				}
+				return el;
+			});
+		}
+	});
 
 	let chartData = property.chartData ? property.chartData.result : "";
 
@@ -32,7 +45,7 @@ const DoughnutChart = ({
 		}
 	}, [chartData]);
 
-	// TODO: Priority 1 - Data not rendering properly. It shows dimension value instead of measure when dimension is Year
+	// TODO:(pc) Priority 1 - Data not rendering properly. It shows dimension value instead of measure when dimension is Year
 	const RenderChart = () => {
 		return (
 			<>
@@ -76,6 +89,8 @@ const DoughnutChart = ({
 						series: [
 							{
 								type: "pie",
+								startAngle: property.axisOptions.donutStartAngle,
+
 								label: {
 									position: property.labelOptions.pieLabel.labelPosition,
 									show: property.labelOptions.showLabel,

@@ -13,10 +13,24 @@ const PieChart = ({
 	chartProp,
 	chartControls,
 }) => {
-	// var property = chartProp.properties[propKey];
 	var property = chartControls.properties[propKey];
 
+	useEffect(() => {
+		if (property.chartData) {
+			var objKey =
+				chartProp.properties[propKey].chartAxes[1].fields[0].fieldname + "__" + "year";
+			property.chartData.result.map((el) => {
+				if (objKey in el) {
+					let year = el[objKey];
+					el[objKey] = year.toString();
+				}
+				return el;
+			});
+		}
+	});
+
 	let chartData = property.chartData ? property.chartData.result : "";
+	console.log(chartData);
 
 	var seriesObj = {
 		type: "pie",
@@ -40,7 +54,11 @@ const PieChart = ({
 		}
 	}, [chartData]);
 
-	// TODO: Priority 1 - Data not rendering properly. It shows dimension value instead of measure when dimension is Year
+	//clockWise antiClockWise
+	//text padding
+	//angle of min value
+
+	// TODO:(pc) Priority 1 - Data not rendering properly. It shows dimension value instead of measure when dimension is Year
 	const RenderChart = () => {
 		return (
 			<>
@@ -71,14 +89,15 @@ const PieChart = ({
 							orient: property.legendOptions?.orientation,
 						},
 
-						// TODO: Priority 1 - Margin doesn't reflect in graph
+						// TODO:(pc) Priority 1 - Margin doesn't reflect in graph
 						// Margin for a chart changes only the grid line and not the actual graph
-						grid: {
-							left: property.chartMargin.left,
-							right: property.chartMargin.right,
-							top: property.chartMargin.top,
-							bottom: property.chartMargin.bottom,
-						},
+						// grid: {
+						// 	left: property.chartMargin.left,
+						// 	right: property.chartMargin.right,
+						// 	top: property.chartMargin.top,
+						// 	bottom: property.chartMargin.bottom,
+						// },
+
 						tooltip: { show: property.mouseOver.enable },
 						dataset: {
 							dimensions: Object.keys(chartData[0]),
@@ -88,6 +107,7 @@ const PieChart = ({
 						series: [
 							{
 								type: "pie",
+								startAngle: property.axisOptions.pieStartAngle,
 								label: {
 									position: property.labelOptions.pieLabel.labelPosition,
 									show: property.labelOptions.showLabel,
