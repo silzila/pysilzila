@@ -109,6 +109,8 @@ const ColorScale = ({
 		}
 	};
 
+	// chalculate percentage  value of each step while add or delete steps
+
 	const calculatePercentage = (temp) => {
 		let total = 0;
 		temp.map((el) => {
@@ -124,6 +126,8 @@ const ColorScale = ({
 		}
 	};
 
+	// update calculated  percent value  for ecah step and return in a temprory array, update state with this array
+
 	const updatePercentageValue = (value, index, temp) => {
 		const temp1 = temp.map((el, i) => {
 			if (i === index) {
@@ -134,6 +138,7 @@ const ColorScale = ({
 		changingValuesofSteps(propKey, temp1);
 	};
 
+	// function to remove existing steps
 	const removeStep = (index) => {
 		const temp = stepColor.filter((el, i) => {
 			return i !== index;
@@ -142,6 +147,7 @@ const ColorScale = ({
 		calculatePercentage(temp);
 	};
 
+	// changing value of existing step (edit)
 	const changeStepValue = (value, index) => {
 		const temp = stepColor.map((el, i) => {
 			if (index === i) {
@@ -289,6 +295,7 @@ const ColorScale = ({
 															// borderRight: "1px solid grey",
 														}}
 														onClick={(e) => {
+															// adding a new step While click "+" icon
 															addingNewStep(propKey, index + 1, {
 																percentage: el.percentage,
 																color: "grey",
