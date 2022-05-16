@@ -4,7 +4,7 @@ import ShowDataPopup from "../../ChartOptions/ShowDataPopup";
 import * as CrossTab from "./CrossTab";
 
 export const BuildTable = ({ crossTabData, dustbinRows, dustbinValues, 
-  dustbinColumns, chartPropData, chartProperty, propKey }) => {
+  dustbinColumns, chartPropData, chartProperty, propKey,chartControls }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [popupData, setPopupData] = useState({});
 
@@ -117,7 +117,9 @@ export const BuildTable = ({ crossTabData, dustbinRows, dustbinValues,
   const _getHeaderClassName = (col, rowIndex, colIndex) => {
     let _header = "";
 
-    _header = rowIndex <= dustbinRows.length ? "CrossTabHeader " : "CrossTabLeftColumnHeader";
+    //_header = rowIndex <= dustbinRows.length ? "CrossTabHeader " : "CrossTabLeftColumnHeader"; PRS 14 May 2022
+    //_header = col.isHeaderField ? "CrossTabHeader " : "CrossTabLeftColumnHeader";
+    _header = rowIndex <= dustbinColumns.length ? "CrossTabHeader " : "CrossTabLeftColumnHeader";
 
     return col.displayData ? _header + _getUserClickedColor(col, rowIndex, colIndex) : "EmptyHeaderCell";
   };
@@ -148,8 +150,10 @@ export const BuildTable = ({ crossTabData, dustbinRows, dustbinValues,
             rowSpan={col.rowSpan}
             compareObj={JSON.stringify(col.compareObj)}
             onMouseEnter={(e) => {
-              e.persist();
-              debouncedMouseEnterHandler(e);
+              if(chartControls.properties[propKey].mouseOver.enable){
+                e.persist();
+                debouncedMouseEnterHandler(e);
+              }           
             }}
             onMouseLeave={(e) => {
               e.persist();

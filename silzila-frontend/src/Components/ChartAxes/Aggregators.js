@@ -94,6 +94,11 @@ const Aggregators = {
 	},
 };
 
+Aggregators["Column"] = Aggregators.Dimension;
+Aggregators["Row"] = Aggregators.Dimension;
+Aggregators["X"] = Aggregators.Measure;
+Aggregators["Y"] = Aggregators.Measure;
+
 export const AggregatorKeys = {
 	sum: "Sum",
 	avg: "Avg",

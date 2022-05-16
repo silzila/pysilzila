@@ -145,9 +145,9 @@ export const getUserClickedClassNameForColor = (chartPropData, col, userCellComp
 export const getPreviousRowColumnData = (crossTabData, dustbinColumns, dustbinValues, showAsColumn, rowIndex, colIndex, dontIncrement) => {
   let headerRowCount = dustbinColumns.length;
 
-  if (dustbinValues.length > 1 && showAsColumn && !dontIncrement) {
-    headerRowCount = headerRowCount + 1;
-  }
+  // if (dustbinValues.length > 1 && showAsColumn && !dontIncrement) {
+  //   headerRowCount = headerRowCount + 1;
+  // }
 
   let rowNumber = headerRowCount + rowIndex;
 

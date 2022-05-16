@@ -31,6 +31,7 @@ const ChartControlObjects = ({
 	const funnelOptionList = ["Title", "Colors", "Legend", "Margin", "Tooltip"];
 	const gaugeOptionList = ["Title", "Colors", "Margin", "Tooltip", "Axis"];
 	const heatmapOptionList = ["Title", "Colors", "Margin", "Tooltip", "Labels", "Grid/Axes"];
+	const crossTabOptionList = ["Title", "Tooltip", "Style"];
 
 	const RenderOptions = () => {
 		switch (selectedChart) {
@@ -108,6 +109,23 @@ const ChartControlObjects = ({
 
 			case "heatmap":
 				return heatmapOptionList.map((option) => {
+					return (
+						<div
+							key={option}
+							className={
+								chartProp.properties[propKey].chartOptionSelected === option
+									? "optionImageSelected"
+									: "optionImage"
+							}
+							onClick={() => changeChartOption(propKey, option)}
+						>
+							{option}
+						</div>
+					);
+				});
+
+				case "crossTab":
+				return crossTabOptionList.map((option) => {
 					return (
 						<div
 							key={option}

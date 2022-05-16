@@ -10,25 +10,31 @@
         box-shadow: 5px 5px #adacac;
         overflow-y: auto;
         border: #949393 0.2px solid;
+      
+    }
+
+    .ShowDataPopup div{      
+        display: flex;
+        flex-direction: row;       
     }
 
     .ShowDataPopup span{
-        text-align: left;
-        padding: 3px 5px 2px 20px;   
+        padding: 3px 5px 2px 2px;   
         font-size:11px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
+    }   
 
     .ShowDataPopupKey{
         font-weight: bold;   
         width: 40%;
-        float: left;
+        text-align: right;
     }
 
     .ShowDataPopupValue{
         width: 60%;  
-        float: left;   
+        word-wrap: normal;
+        text-overflow: ellipsis;
+        text-align: left;
+
     }   
 
     .CrossTab{
@@ -42,16 +48,20 @@
         width:max-content;
     }
 
+    /* .CrossTabTable th{
+       width: 2em;
+    } */
+
     .CrossTabHeader ,.CrossTabLeftColumnHeader{
          border: 1px solid rgb(222, 222, 222); 
          background-color : rgb(247, 247, 247) ;
          cursor:default;
          font-weight:bold;
-         font-size:11px; 
+         font-size:12px; 
          white-space: nowrap;
          padding-left: 6px;
          padding-right: 3px;
-      
+         text-align: center;
          text-overflow: ellipsis;
     }
 

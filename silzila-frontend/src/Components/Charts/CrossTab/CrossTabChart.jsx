@@ -9,7 +9,7 @@ import './CrossTab.css';
 const CrossTabChart = ({ propKey, graphDimension, chartProp, 	
 	graphTileSize,
   //state
-chartControl,
+chartControls,
 chartProperty
 
 }) => {
@@ -42,7 +42,7 @@ chartProperty
     dustbinValues = [];
 
   
-    var property = chartControl.properties[propKey];
+    var property = chartControls.properties[propKey];
     var chartPropAxes =  chartProperty.properties[propKey].chartAxes;
 
     console.log(property, "+++++ PROPERTY +++++");
@@ -223,6 +223,8 @@ const appendRowsFieldsAsColumns = () => {
             if (_filteredData) {
               /// let _key = CrossTab.getKeyWithPrefix(item, true);
               tempColumnObj.displayData = _filteredData[item.displayData];
+              compareObj[item.displayData] = tempColumnObj.displayData;
+
             } else {
               tempColumnObj.displayData = "";
             }
@@ -616,6 +618,11 @@ const appendRowsFieldsAsColumns = () => {
       Object.keys(chartPropData[0]).forEach((key, idx) => {
         let tempColumnObj = CrossTab.cloneData(columnObj);
         tempColumnObj.displayData = chartPropData[0][key];
+
+        let _compareObj = {};
+        _compareObj[key] = tempColumnObj.displayData;
+        tempColumnObj.compareObj = _compareObj;
+
         tempRowObj.columnItems.push(tempColumnObj);
       });
 
@@ -687,7 +694,18 @@ const appendRowsFieldsAsColumns = () => {
           }
         }
 
-        compObj[key] = data[key];
+        if(!tempColumnObj.isHeaderField && !tempColumnObj.isRowField){
+
+         dustbinValues.forEach(field=>{
+           delete compObj[field.fieldname+"__"+field.agg]
+         })
+
+          compObj[key] = data[key];
+        }
+        else{
+          compObj[key] = data[key];
+        }
+
         tempColumnObj.compareObj = CrossTab.cloneData(compObj);
         tempColumnObj.rowIndex = index;
         tempRowObj.columnItems.push(tempColumnObj);
@@ -780,7 +798,7 @@ const appendRowsFieldsAsColumns = () => {
             dustbinValues={dustbinValues}
             dustbinColumns={dustbinColumns}
             chartPropData={chartPropData}
-            chartControl={chartControl}
+            chartControls={chartControls}
             chartProperty={chartProperty}
             propKey={propKey}
           ></BuildTable>
@@ -792,7 +810,7 @@ const appendRowsFieldsAsColumns = () => {
 
 const mapStateToProps = (state) => {
 	return {
-		chartControl: state.chartControls,
+		chartControls: state.chartControls,
 		chartProperty: state.chartProperties,
 	};
 };
