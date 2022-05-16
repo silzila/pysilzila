@@ -1,3 +1,7 @@
+// This component is part of Dataset Create / edit page
+// Present in the very bottom of the page
+// Used for naming the dataset & saving it
+
 import { Close } from "@mui/icons-material";
 import { Button, Dialog, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -128,7 +132,7 @@ const BottomBar = ({
 			};
 			console.log(options.data);
 
-			// TODO: Priority 5 - Remove axios call from here
+			// TODO: Priority 1 - Remove axios call from here
 			// Use Fetch Data function for getting data from server through axios call
 			axios
 				.request(options)

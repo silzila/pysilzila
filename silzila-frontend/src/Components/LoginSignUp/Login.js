@@ -1,3 +1,5 @@
+// Login Page. For existing users.This will be the first component to show to users
+
 import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { validateEmail, validatePassword } from "../CommonFunctions/CommonFunctions";
@@ -6,6 +8,7 @@ import { userAuthentication } from "../../redux/UserInfo/isLoggedActions";
 import FetchData from "../../ServerCall/FetchData";
 import { Button, Input } from "@mui/material";
 import "./LoginSignUp.css";
+import LoadingPopover from "../CommonFunctions/PopOverComponents/LoadingPopover";
 
 const initialState = {
 	email: "",
@@ -21,12 +24,13 @@ const Login = (props) => {
 	const [loginError, setLoginError] = useState(false);
 	const [serverErrorMessage, setServerErrorMessage] = useState("");
 
+	const [loading, setLoading] = useState(false);
+
 	const inputRef = useRef(null);
 	const navigate = useNavigate();
 
-	//  **************************************************************************************************************************
+	//  *************************************************************
 	//  Email
-	//  **************************************************************************************************************************
 
 	const resetEmailError = () => {
 		setAccount({
@@ -37,9 +41,8 @@ const Login = (props) => {
 		setLoginError(false);
 	};
 
-	//  **************************************************************************************************************************
+	//  *************************************************************
 	//  Password
-	//  **************************************************************************************************************************
 
 	const resetPwdError = () => {
 		setAccount({
@@ -48,12 +51,12 @@ const Login = (props) => {
 		});
 	};
 
-	//  **************************************************************************************************************************
+	//  *************************************************************
 	//  Submit actions
-	//  **************************************************************************************************************************
 
 	async function handleSubmit(e) {
 		e.preventDefault();
+		setLoading(true);
 
 		var canLogin = false;
 		if (
@@ -97,44 +100,14 @@ const Login = (props) => {
 			setLoginError(true);
 			setServerErrorMessage("Provide valid credentials");
 		}
+		setLoading(false);
 	}
-
-	const BottomMessage = () => {
-		if (loginStatus) {
-			return (
-				<span className="loginSuccess">
-					<h4>Logged in successfully!</h4>
-					<p>Redirecting....</p>
-				</span>
-			);
-		} else {
-			return (
-				<React.Fragment>
-					{loginError ? <p className="loginFail">{serverErrorMessage}</p> : null}
-					<div className="buttonText">
-						<Button
-							id="loginSignupButton"
-							variant="contained"
-							type="submit"
-							value="Login"
-						>
-							Login
-						</Button>
-						<br />
-						<span id="emailHelp">
-							Dont have an account yet? <Link to="/signup">Sign Up</Link>
-						</span>
-					</div>
-				</React.Fragment>
-			);
-		}
-	};
 
 	return (
 		<div id="container1">
 			<h2>Welcome to Silzila!</h2>
 
-			<form onSubmit={handleSubmit} autoComplete="on">
+			<form onSubmit={(e) => handleSubmit(e)} autoComplete="on">
 				<div id="formElement">
 					<input
 						ref={inputRef}
@@ -189,9 +162,37 @@ const Login = (props) => {
 				</div>
 
 				<div className="buttonSuccess">
-					<BottomMessage />
+					{loginStatus ? (
+						<span className="loginSuccess">
+							<h4>Logged in successfully!</h4>
+							<p>Redirecting....</p>
+						</span>
+					) : (
+						<React.Fragment>
+							{loginError ? <p className="loginFail">{serverErrorMessage}</p> : null}
+							<div className="buttonText">
+								<Button
+									id="loginSignupButton"
+									variant="contained"
+									type="submit"
+									value="Login"
+									onClick={(e) => {
+										console.log("Login button clicked");
+										handleSubmit(e);
+									}}
+								>
+									Login
+								</Button>
+								<br />
+								<span id="emailHelp">
+									Dont have an account yet? <Link to="/signup">Sign Up</Link>
+								</span>
+							</div>
+						</React.Fragment>
+					)}
 				</div>
 			</form>
+			{loading ? <LoadingPopover /> : null}
 		</div>
 	);
 };

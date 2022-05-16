@@ -1,3 +1,5 @@
+// This is a conainer component that renders appropriate chart control component based on user selection
+
 import React from "react";
 import { connect } from "react-redux";
 import ChartColors from "./Color/ChartColors";
@@ -16,7 +18,6 @@ const ControlDetail = ({ chartProp, tabTileProps }) => {
 	var chartType = chartProp.properties[propKey].chartType;
 
 	const RenderControlDetail = () => {
-		console.log(chartProp.properties[propKey].chartOptionSelected);
 		switch (chartProp.properties[propKey].chartOptionSelected) {
 			case "Title":
 				return <ChartTitle />;
@@ -58,11 +59,7 @@ const ControlDetail = ({ chartProp, tabTileProps }) => {
 				);
 		}
 	};
-	return (
-		<div>
-			<RenderControlDetail />
-		</div>
-	);
+	return <RenderControlDetail />;
 };
 const mapStateToProps = (state) => {
 	return {

@@ -1,22 +1,10 @@
-import {
-	FormControl,
-	FormControlLabel,
-	InputLabel,
-	MenuItem,
-	Radio,
-	RadioGroup,
-	Select,
-	TextField,
-	Typography,
-} from "@mui/material";
+// Used for setting color scale in Heatmap and gauge chart
+
+import { FormControlLabel, Radio, RadioGroup, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import {
-	setColorScaleOption,
-	setColorScheme,
-} from "../../../redux/ChartProperties/actionsChartControls";
+import { setColorScaleOption } from "../../../redux/ChartProperties/actionsChartControls";
 import { NotificationDialog } from "../../CommonFunctions/DialogComponents";
-import { ColorSchemes } from "./ColorScheme";
 
 const textFieldInputProps = {
 	style: {
@@ -37,9 +25,6 @@ const ColorScale = ({
 	setColorScaleOption,
 }) => {
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
-
-	// const [isManualSelected, setIsManualSelected] = useState(false);
-	// const [isAutoSelected, setIsAutoSelected] = useState(true);
 
 	const [severity, setSeverity] = useState("success");
 	const [openAlert, setOpenAlert] = useState(false);
@@ -70,6 +55,8 @@ const ColorScale = ({
 		if (min === 0 || max === 0) {
 			setOpenAlert(true);
 			setSeverity("error");
+
+			// TODO: Priority 1 - Why can't min be zero?
 			setTestMessage("Min or Max value can't be zero");
 			setTimeout(() => {
 				setOpenAlert(false);

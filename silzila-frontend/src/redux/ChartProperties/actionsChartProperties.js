@@ -105,9 +105,6 @@ export const editChartPropItem = ({ action, details }) => {
 				break;
 
 			case "updateQuery":
-				console.log("Updating query param");
-				console.log(details);
-				console.log(details.propKey, details.binIndex, details.itemIndex, details.item);
 				dispatch(
 					updateAxesQueryParam(
 						details.propKey,
@@ -125,7 +122,6 @@ export const editChartPropItem = ({ action, details }) => {
 };
 
 export const changeChartType = (propKey, chartType) => {
-	console.log("CHANGE_CHART_TYPE", propKey, chartType);
 	return {
 		type: "CHANGE_CHART_TYPE",
 		payload: { propKey, chartType },
@@ -133,7 +129,6 @@ export const changeChartType = (propKey, chartType) => {
 };
 
 export const changeChartAxes = (propKey, newAxes) => {
-	console.log("CHANGE_CHART_AXES", propKey, newAxes);
 	return { type: "CHANGE_CHART_AXES", payload: { propKey, newAxes } };
 };
 
@@ -146,17 +141,14 @@ export const changeChartTypeAndAxes = ({ propKey, chartType, newAxes }) => {
 };
 
 export const canReUseData = (propKey, reUseData) => {
-	console.log("REUSE_DATA", propKey, reUseData);
 	return { type: "REUSE_DATA", payload: { propKey, reUseData } };
 };
 
 export const setChartTitle = (propKey, title) => {
-	console.log("SET_CHART_TITLE");
 	return { type: "SET_CHART_TITLE", payload: { propKey, title } };
 };
 
 export const setGenerateTitle = (propKey, generateTitle) => {
-	console.log("SET_GENERATE_TITLE");
 	return {
 		type: "SET_GENERATE_TITLE",
 		payload: { propKey, generateTitle },
@@ -171,7 +163,6 @@ export const setTitleAlignment = (propKey, align) => {
 };
 
 export const sortAxes = (propKey, bIndex, dragUId, dropUId) => {
-	console.log("SORTING ITEM", propKey, bIndex, dragUId, dropUId);
 	return {
 		type: "SORT_ITEM",
 		payload: { propKey, bIndex, dragUId, dropUId },
@@ -179,7 +170,6 @@ export const sortAxes = (propKey, bIndex, dragUId, dropUId) => {
 };
 
 export const revertAxes = (propKey, bIndex, uId, originalIndex) => {
-	console.log("REVERTING_ITEM", propKey, bIndex, uId, originalIndex);
 	return {
 		type: "REVERT_ITEM",
 		payload: { propKey, bIndex, uId, originalIndex },
@@ -191,7 +181,6 @@ export const revertAxes = (propKey, bIndex, uId, originalIndex) => {
 // ==============================================================
 
 export const changeChartOptionSelected = (propKey, chartOption) => {
-	console.log("CHANGE_CHART_OPTION");
 	return {
 		type: "CHANGE_CHART_OPTION",
 		payload: { propKey, chartOption },

@@ -1,3 +1,8 @@
+// This component list all different charts that a user can create
+// It also handles
+// 	- the differences in dropzones for each specific graphs along,
+// 	- moving table fields into appropriate dropzones for each specific chart type
+
 import React from "react";
 import { connect } from "react-redux";
 import {
@@ -32,7 +37,6 @@ export const chartTypes = [
 	{ name: "funnel", icon: funnelChartIcon, value: "Funnel Chart" },
 	{ name: "gauge", icon: gaugeChartIcon, value: "Gauge Chart" },
 	{ name: "heatmap", icon: heatMapIcon, value: " Heat Map" },
-
 ];
 
 const ChartTypes = ({
@@ -75,16 +79,11 @@ const ChartTypes = ({
 	}
 
 	const switchAxesForCharts = (oldChart, newChart) => {
-		console.log("From ", oldChart, " to ", newChart);
-
 		var oldChartAxes = chartProp.properties[propKey].chartAxes;
 		var newChartAxes = [];
 		for (let i = 0; i < ChartsInfo[newChart].dropZones.length; i++) {
 			newChartAxes.push({ name: ChartsInfo[newChart].dropZones[i].name, fields: [] });
 		}
-
-		console.log("===========================================");
-		console.log(oldChartAxes, newChartAxes);
 
 		switch (oldChart) {
 			case "multibar":
@@ -155,7 +154,7 @@ const ChartTypes = ({
 					return newChartAxes;
 				}
 
-				if (newChart === "heatmap") {
+				if (newChart === "heatmap" || newChart === "crossTab") {
 					if (oldChartAxes[1].fields.length > 0) {
 						newChartAxes[1].fields.push(oldChartAxes[1].fields[0]);
 					}
@@ -209,7 +208,6 @@ const ChartTypes = ({
 
 				if (newChart === "funnel") {					
 					newChartAxes[1].fields = getFieldsToChartAllowedNumbers(newChart, 1, oldChartAxes[2].fields, oldChartAxes[3].fields);
-
 					// Map filter to Filter
 					if (oldChartAxes[0].fields.length > 0)
 						newChartAxes[0].fields = oldChartAxes[0].fields;
@@ -330,7 +328,7 @@ const ChartTypes = ({
 					return oldChartAxes;
 				}
 
-				if (newChart === "heatmap") {
+				if (newChart === "heatmap" || newChart === "crossTab") {
 					if (oldChartAxes[1].fields.length > 0)
 						newChartAxes[3].fields.push(oldChartAxes[1].fields[0]);
 
@@ -341,7 +339,7 @@ const ChartTypes = ({
 					return newChartAxes;
 				}
 
-				if (newChart === "crossTab") {
+        if (newChart === "crossTab") {
 					if (oldChartAxes[1].fields.length > 0)
 						newChartAxes[3].fields = oldChartAxes[1].fields;
 

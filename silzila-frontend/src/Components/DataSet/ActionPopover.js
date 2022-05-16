@@ -1,3 +1,8 @@
+// This component is part of Table header in dataset create / edit page
+// Allows to
+// 	- remove table from canvas
+// 	- rename table
+
 import { Button, Popover } from "@mui/material";
 import data from "../DataSet/Data.json";
 

@@ -14,8 +14,6 @@ const ChartControlObjects = ({
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 	var selectedChart = chartProp.properties[propKey].chartType;
 
-	console.log(propKey, selectedChart, chartProp.properties[propKey].chartOptionSelected);
-
 	const barOptionsList = [
 		"Title",
 		"Colors",

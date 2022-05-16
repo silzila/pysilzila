@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+// Creating new connections &  editing existing connections are handled in this component
+
+import React, { useState } from "react";
 import { Dialog, FormControl, InputLabel, MenuItem, Popover, Select } from "@mui/material";
 import "./DataSetup.css";
-import { TextField, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import FetchData from "../../ServerCall/FetchData";
 import TextFieldComponent from "../../Components/CommonFunctions/TextFieldComponent";
 import CloseIcon from "@mui/icons-material/Close";
