@@ -12,7 +12,7 @@ import {
 } from "../../../redux/ChartProperties/actionsChartControls";
 import { SketchPicker } from "react-color";
 import SliderWithInput from "../SliderWithInput";
-import { FormControl, MenuItem, Popover, Select } from "@mui/material";
+import { FormControl, MenuItem, Popover, Select, Switch } from "@mui/material";
 
 const ChartLabels = ({
 	// state
@@ -114,12 +114,20 @@ const ChartLabels = ({
 							<div className="optionDescription">LABEL COLOR</div>
 
 							<div className="optionDescription">
-								<input
-									type="checkbox"
-									id="enableDisable"
+								{/* <label htmlFor="enableDisable" style={{ padding: "5px" }}> */}
+								<label
+									htmlFor="enableDisable"
+									className="enableDisableLabel"
+									style={{ marginRight: "10px" }}
+								>
+									Manual
+								</label>
+								<Switch
+									size="small"
 									checked={
 										chartProp.properties[propKey].labelOptions.labelColorManual
 									}
+									id="enableDisable"
 									onChange={() => {
 										updateLabelOption(
 											propKey,
@@ -129,14 +137,13 @@ const ChartLabels = ({
 										);
 									}}
 								/>
-								<label htmlFor="enableDisable" style={{ padding: "5px" }}>
-									Manual
-								</label>
+
 								{chartProp.properties[propKey].labelOptions.labelColorManual ? (
 									<div
 										style={{
 											height: "100%",
 											width: "50%",
+											marginLeft: "10px",
 											backgroundColor:
 												chartProp.properties[propKey].labelOptions
 													.labelColor,
@@ -150,7 +157,7 @@ const ChartLabels = ({
 											setAnchorEl(e.currentTarget);
 										}}
 									>
-										{" c "}
+										{"  "}
 									</div>
 								) : null}
 							</div>

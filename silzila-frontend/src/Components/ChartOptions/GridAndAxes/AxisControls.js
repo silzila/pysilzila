@@ -3,13 +3,12 @@
 // 	- Enable/Disable tick
 // 	- Tick size & padding, label padding
 
-import { TextField } from "@mui/material";
+import { Switch, TextField } from "@mui/material";
 import React from "react";
 import { connect } from "react-redux";
 import {
-	updateDonutStartAngle,
 	updateGaugeAxisOptions,
-	updatePieStartAngle,
+	updatePieAxisOptions,
 } from "../../../redux/ChartProperties/actionsChartControls";
 import SliderWithInput from "../SliderWithInput";
 
@@ -32,12 +31,13 @@ const GridControls = ({
 
 	// dispatch
 	updateGaugeAxisOptions,
-	updatePieStartAngle,
-	updateDonutStartAngle,
+	updatePieAxisOptions,
 }) => {
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 
 	var property = chartControl.properties[propKey].axisOptions;
+
+	const label = { inputProps: { "aria-label": "Switch demo" } };
 
 	return (
 		<div className="optionsInfo">
@@ -54,49 +54,65 @@ const GridControls = ({
 				/>
 			) : (
 				<React.Fragment>
-					{chartProps.properties[propKey].chartType === "pie" ? (
-						<TextField
-							value={property.pieStartAngle}
-							variant="outlined"
-							type="number"
-							onChange={(e) => {
-								updatePieStartAngle(propKey, e.target.value);
-							}}
-							InputProps={{ ...textFieldStyleProps }}
-						/>
-					) : (
+					{chartProps.properties[propKey].chartType === "pie" ||
+					chartProps.properties[propKey].chartType === "donut" ? (
 						<React.Fragment>
-							{chartProps.properties[propKey].chartType === "donut" ? (
-								<TextField
-									value={property.donutStartAngle}
-									variant="outlined"
-									type="number"
+							<TextField
+								value={property.pieAxisOptions.pieStartAngle}
+								variant="outlined"
+								type="number"
+								onChange={(e) => {
+									updatePieAxisOptions(propKey, "pieStartAngle", e.target.value);
+								}}
+								InputProps={{ ...textFieldStyleProps }}
+							/>
+							<div
+								className="optionDescription"
+								style={{
+									padding: "0 6% 5px 4%",
+									width: " 88%",
+									textAlign: "left",
+									color: "rgb(96, 96, 96)",
+									fontWeight: "600",
+									display: "flex",
+								}}
+							>
+								<label
+									htmlFor="enableDisable"
+									className="enableDisableLabel"
+									style={{ marginRight: "10px" }}
+								>
+									ClockWise
+								</label>
+								{/* <div className="optionDescription">ClockWise</div> */}
+
+								<Switch
+									size="small"
+									id="enableDisable"
+									checked={property.pieAxisOptions.clockWise}
 									onChange={(e) => {
-										updateDonutStartAngle(propKey, e.target.value);
+										updatePieAxisOptions(
+											propKey,
+											"clockWise",
+											!property.pieAxisOptions.clockWise
+										);
 									}}
-									InputProps={{ ...textFieldStyleProps }}
 								/>
-							) : null}
+							</div>
+							<div className="optionDescription">Label Padding</div>
+							<SliderWithInput
+								percent={false}
+								sliderValue={property.pieAxisOptions.labelPadding}
+								sliderMinMax={{ min: 0, max: 40, step: 1 }}
+								changeValue={(value) => {
+									updatePieAxisOptions(propKey, "labelPadding", value);
+								}}
+							/>
 						</React.Fragment>
-					)}
+					) : null}
 				</React.Fragment>
 			)}
-			{/* <TextField
-				value={property.gaugeAxisOptions.startAngle}
-				variant="outlined"
-				type="number"
-				//  e.target.value);
-				// case "pie":
-				// updatePieStartAngle(propKey, "startAngle", e.target.value);
-				// case 'donut':
-				// 	updateGaugeAxisOptions(propKey, "startAngle", e.target.value);
-				// }
-				// if(chartProps.properties[propKey].chartType === 'gauge'){
-				// 	updateGaugeAxisOptions(propKey, "startAngle", e.target.value);
-				// }
-				// }}
-				InputProps={{ ...textFieldStyleProps }}
-			/> */}
+
 			{chartProps.properties[propKey].chartType === "gauge" ? (
 				<React.Fragment>
 					<div className="optionDescription">End Angle</div>
@@ -200,8 +216,8 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		updateGaugeAxisOptions: (propKey, option, value) =>
 			dispatch(updateGaugeAxisOptions(propKey, option, value)),
-		updatePieStartAngle: (propKey, value) => dispatch(updatePieStartAngle(propKey, value)),
-		updateDonutStartAngle: (propKey, value) => dispatch(updateDonutStartAngle(propKey, value)),
+		updatePieAxisOptions: (propKey, option, value) =>
+			dispatch(updatePieAxisOptions(propKey, option, value)),
 	};
 };
 

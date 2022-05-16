@@ -59,8 +59,12 @@ const chartControl = {
 					showAxisLabel: true,
 					labelPadding: 12,
 				},
-				pieStartAngle: 90,
-				donutStartAngle: 90,
+				pieAxisOptions: {
+					pieStartAngle: 90,
+					clockWise: true,
+					labelPadding: 0,
+				},
+
 				yAxis: {
 					position: "left",
 					onZero: true,
@@ -170,6 +174,12 @@ const chartControlsReducer = (state = chartControl, action) => {
 								showAxisLabel: true,
 								labelPadding: 12,
 							},
+							pieAxisOptions: {
+								pieStartAngle: 90,
+								clockWise: true,
+								labelPadding: 0,
+							},
+
 							yAxis: {
 								position: "left",
 								onZero: true,
@@ -285,6 +295,12 @@ const chartControlsReducer = (state = chartControl, action) => {
 								showAxisLabel: true,
 								labelPadding: 12,
 							},
+							pieAxisOptions: {
+								pieStartAngle: 90,
+								clockWise: true,
+								labelPadding: 0,
+							},
+
 							yAxis: {
 								position: "left",
 								onZero: true,
@@ -508,22 +524,19 @@ const chartControlsReducer = (state = chartControl, action) => {
 					},
 				},
 			});
-		case "UPDATE_PIE_STARTANGLE":
+		case "UPDATE_PIE_AXIS_OPTIONS":
 			return update(state, {
 				properties: {
 					[action.payload.propKey]: {
-						axisOptions: { pieStartAngle: { $set: action.payload.value } },
+						axisOptions: {
+							pieAxisOptions: {
+								[action.payload.option]: { $set: action.payload.value },
+							},
+						},
 					},
 				},
 			});
-		case "UPDATE_DONUT_STARTANGLE":
-			return update(state, {
-				properties: {
-					[action.payload.propKey]: {
-						axisOptions: { donutStartAngle: { $set: action.payload.value } },
-					},
-				},
-			});
+
 		case "UPDATE_AXIS_OPTIONS":
 			return update(state, {
 				properties: {

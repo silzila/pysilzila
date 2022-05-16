@@ -32,7 +32,7 @@ const HeatMap = ({
 			setMaxValue(max);
 		}
 	}, [chartData]);
-
+	console.log(chartData);
 	const RenderChart = () => {
 		return (
 			<ReactEcharts
@@ -150,16 +150,25 @@ const HeatMap = ({
 						},
 					],
 
-					// TODO: Priority 1 - HeatMap label doesn't show
+					// TODO:(c) Priority 1 - HeatMap label doesn't show
 					series: [
 						{
 							type: "heatmap",
 							label: {
-								show: property.labelOptions.showLabel,
-								fontSize: property.labelOptions.fontSize,
-								color: property.labelOptions.labelColorManual
-									? property.labelOptions.labelColor
-									: null,
+								normal: {
+									show: property.labelOptions.showLabel,
+									// formatter helps to show measure values as labels(inside each block)
+									formatter: (param) => {
+										var keyArr = Object.keys(param.data);
+										var valueKey = keyArr[2];
+										return param.data[valueKey];
+									},
+									fontSize: property.labelOptions.fontSize,
+									color: property.labelOptions.labelColorManual
+										? property.labelOptions.labelColor
+										: null,
+								},
+								// show: property.labelOptions.showLabel,
 							},
 						},
 					],
@@ -176,5 +185,4 @@ const mapStateToProps = (state) => {
 		chartProperty: state.chartProperties,
 	};
 };
-
 export default connect(mapStateToProps, null)(HeatMap);

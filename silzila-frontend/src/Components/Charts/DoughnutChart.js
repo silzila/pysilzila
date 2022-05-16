@@ -45,7 +45,7 @@ const DoughnutChart = ({
 		}
 	}, [chartData]);
 
-	// TODO:(pc) Priority 1 - Data not rendering properly. It shows dimension value instead of measure when dimension is Year
+	// TODO:(c) Priority 1 - Data not rendering properly. It shows dimension value instead of measure when dimension is Year
 	const RenderChart = () => {
 		return (
 			<>
@@ -75,12 +75,12 @@ const DoughnutChart = ({
 							top: property.legendOptions?.position?.top,
 							orient: property.legendOptions?.orientation,
 						},
-						grid: {
-							left: property.chartMargin.left,
-							right: property.chartMargin.right,
-							top: property.chartMargin.top,
-							bottom: property.chartMargin.bottom,
-						},
+						// grid: {
+						// 	left: property.chartMargin.left,
+						// 	right: property.chartMargin.right,
+						// 	top: property.chartMargin.top,
+						// 	bottom: property.chartMargin.bottom,
+						// },
 						tooltip: { show: property.mouseOver.enable },
 						dataset: {
 							dimensions: Object.keys(chartData[0]),
@@ -89,7 +89,8 @@ const DoughnutChart = ({
 						series: [
 							{
 								type: "pie",
-								startAngle: property.axisOptions.donutStartAngle,
+								startAngle: property.axisOptions.pieAxisOptions.pieStartAngle,
+								clockWise: property.axisOptions.pieAxisOptions.clockWise,
 
 								label: {
 									position: property.labelOptions.pieLabel.labelPosition,
@@ -98,6 +99,13 @@ const DoughnutChart = ({
 									color: property.labelOptions.labelColorManual
 										? property.labelOptions.labelColor
 										: null,
+									// padding: property.axisOptions.pieAxisOptions.labelPadding,
+									padding: [
+										property.axisOptions.pieAxisOptions.labelPadding,
+										property.axisOptions.pieAxisOptions.labelPadding,
+										property.axisOptions.pieAxisOptions.labelPadding,
+										property.axisOptions.pieAxisOptions.labelPadding,
+									],
 								},
 								radius: ["40%", "70%"],
 							},

@@ -65,7 +65,7 @@ const FunnelChart = ({
 						orient: property.legendOptions?.orientation,
 					},
 
-					// TODO:(pc) Priority 1 - Margin doesn't reflect in graph
+					// TODO:(c) Priority 1 - Margin doesn't reflect in graph
 					// Margin for a Funnel chart changes only the grid line and not the actual funnel graph
 					// grid: {
 					// 	left:
