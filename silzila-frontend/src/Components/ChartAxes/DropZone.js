@@ -50,11 +50,14 @@ const DropZone = ({
 			var fieldData = item.fieldData;
 			fieldData.uId = uID;
 
-			var newFieldData = JSON.parse(JSON.stringify(setPrefix(fieldData, name, chartType)));
+			let newFieldData = JSON.parse(JSON.stringify(setPrefix(fieldData, name, chartType)));
+			console.log(newFieldData);
 
 			updateDropZoneItems(propKey, bIndex, newFieldData, allowedNumbers);
 		} else if (item.bIndex !== bIndex) {
-			var newFieldData = JSON.parse(JSON.stringify(setPrefix(item, name, chartType)));
+			console.log("-------moving item from within------");
+
+			let newFieldData = JSON.parse(JSON.stringify(setPrefix(item, name, chartType)));
 			["type", "bIndex"].forEach((e) => delete newFieldData[e]);
 			moveItemChartProp(propKey, item.bIndex, item.uId, newFieldData, bIndex, allowedNumbers);
 		}
@@ -67,35 +70,43 @@ const DropZone = ({
 			{bIndex === 0 ? (
 				<span className="axisInfo">
 					{" "}
-					Drop (0 - max {ChartsInfo[chartType].dropZones[bIndex].allowedNumbers}) field(s)
+					Drop (0 - max {ChartsInfo[chartType].dropZones[bIndex]?.allowedNumbers}) field(s)
 					here
 				</span>
 			) : null}
-			{bIndex === 1 && ChartsInfo[chartType].dropZones[bIndex].allowedNumbers === 1 ? (
+			{bIndex === 1 && ChartsInfo[chartType]?.dropZones[bIndex]?.allowedNumbers === 1 ? (
 				<span className="axisInfo"> Drop (1) field(s) here</span>
 			) : null}
-			{bIndex === 1 && ChartsInfo[chartType].dropZones[bIndex].allowedNumbers > 1 ? (
+			{bIndex === 1 && ChartsInfo[chartType]?.dropZones[bIndex]?.allowedNumbers > 1 ? (
 				<span className="axisInfo">
 					{" "}
-					Drop (atleast {ChartsInfo[chartType].dropZones[bIndex].min} - max{" "}
-					{ChartsInfo[chartType].dropZones[bIndex].allowedNumbers}) field(s) here
+					Drop (atleast {ChartsInfo[chartType].dropZones[bIndex]?.min} - max{" "}
+					{ChartsInfo[chartType].dropZones[bIndex]?.allowedNumbers}) field(s) here
 				</span>
 			) : null}
-			{bIndex === 2 && ChartsInfo[chartType].dropZones[bIndex].allowedNumbers === 1 ? (
+			{bIndex === 2 && ChartsInfo[chartType]?.dropZones[bIndex]?.allowedNumbers === 1 ? (
 				<span className="axisInfo"> Drop (1) field(s) here</span>
 			) : null}
-			{bIndex === 2 && ChartsInfo[chartType].dropZones[bIndex].allowedNumbers > 1 ? (
+			{bIndex === 2 && ChartsInfo[chartType]?.dropZones[bIndex]?.allowedNumbers > 1 ? (
 				<span className="axisInfo">
 					{" "}
-					Drop (atleast {ChartsInfo[chartType].dropZones[bIndex].min} - max{" "}
-					{ChartsInfo[chartType].dropZones[bIndex].allowedNumbers}) field(s) here
+					Drop (atleast {ChartsInfo[chartType].dropZones[bIndex]?.min} - max{" "}
+					{ChartsInfo[chartType].dropZones[bIndex]?.allowedNumbers}) field(s) here
 				</span>
 			) : null}
-			{bIndex === 3 && ChartsInfo[chartType].dropZones[bIndex].allowedNumbers === 1 ? (
+			{bIndex === 3 && ChartsInfo[chartType].dropZones[bIndex] && ChartsInfo[chartType].dropZones[bIndex].allowedNumbers === 1 ? (
 				<span className="axisInfo"> Drop (1) field(s) here</span>
 			) : null}
 
-			{chartProp.properties[propKey].chartAxes[bIndex].fields.map((field, index) => (
+			{/* ChartsInfo[chartType].dropZones[bIndex].allowedNumbers === 1 && ChartsInfo[chartType].dropZones[bIndex].min === 1 ? (
+				<span className="axisInfo"> Drop (1) field(s) here</span>
+			) : ChartsInfo[chartType].dropZones[bIndex].allowedNumbers > 1 && ChartsInfo[chartType].dropZones[bIndex].min === 1 ? (
+				<span className="axisInfo"> Drop (atleast 1 - max {ChartsInfo[chartType].dropZones[bIndex].allowedNumbers}) field(s) here</span>
+			) : ChartsInfo[chartType].dropZones[bIndex].allowedNumbers > 1 && ChartsInfo[chartType].dropZones[bIndex].min === 0 ? (
+				<span className="axisInfo"> Drop (0 - max {ChartsInfo[chartType].dropZones[bIndex].allowedNumbers}) field(s) here</span>
+			) : null */}
+
+			{chartProp.properties[propKey].chartAxes[bIndex]?.fields?.map((field, index) => (
 				<Card
 					field={field}
 					bIndex={bIndex}
