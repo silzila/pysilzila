@@ -470,39 +470,46 @@ const MenuBar = ({
 
 							<CloseRounded
 								style={{ margin: "0.25rem" }}
-								onClick={() => setSaveModal(false)}
+								onClick={() => {
+									setSaveFromHomeIcon(false);
+									setSaveFromLogoutIcon(false);
+									setSaveModal(false);
+								}}
 							/>
 						</div>
 						<p></p>
-						<div style={{ padding: "0 50px" }}>
-							<TextField
-								required
-								size="small"
-								fullWidth
-								label="Playbook Name"
-								variant="outlined"
-								onChange={(e) => setPlayBookName(e.target.value)}
-								onKeyDown={(e) => {
-									if (e.key === "Enter") {
-										savePlaybook();
-									}
-								}}
-								value={playBookName}
-							/>
-							<br />
-							<br />
-							<TextField
-								label="Description"
-								size="small"
-								fullWidth
-								onChange={(e) => setPlayBookDescription(e.target.value)}
-								onKeyDown={(e) => {
-									if (e.key === "Enter") {
-										savePlaybook();
-									}
-								}}
-							/>
-						</div>
+
+						{saveFromHomeIcon || saveFromLogoutIcon ? null : (
+							<div style={{ padding: "0 50px" }}>
+								<TextField
+									required
+									size="small"
+									fullWidth
+									label="Playbook Name"
+									variant="outlined"
+									onChange={(e) => setPlayBookName(e.target.value)}
+									onKeyDown={(e) => {
+										if (e.key === "Enter") {
+											savePlaybook();
+										}
+									}}
+									value={playBookName}
+								/>
+								<br />
+								<br />
+								<TextField
+									label="Description"
+									size="small"
+									fullWidth
+									onChange={(e) => setPlayBookDescription(e.target.value)}
+									onKeyDown={(e) => {
+										if (e.key === "Enter") {
+											savePlaybook();
+										}
+									}}
+								/>
+							</div>
+						)}
 					</div>
 					<div
 						style={{ padding: "15px", justifyContent: "space-around", display: "flex" }}
