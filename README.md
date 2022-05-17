@@ -29,16 +29,16 @@ create a dataset
 
 <!-- ![Dataset](silzila-frontend/src/assets/dataSet-ss.png) -->
 
-![](silzila-frontend/src/assets/Silzila-New-Dataset-fast.gif)
+![](silzila-frontend/src/assets/Silzila-NewDataset-2-fast.gif)
 
 ## 3. Visualize the data
 
 Visualize the data in one of the many charts available
 
-<!-- ![](silzila-frontend/src/assets/Silzila-New-Dataset.gif) -->
+![](silzila-frontend/src/assets/Silzila-NewPlaybook-Tile-fast.gif)
 
 ## 4. Present charts in dashboard
 
 Charts created in each of the tiles can be then displayed as required in the dashboard
 
-![](silzila-frontend/src/assets/Silzila-New-Playbook-fast.gif)
+![](silzila-frontend/src/assets/Silzila-Dashboard-fast.gif)

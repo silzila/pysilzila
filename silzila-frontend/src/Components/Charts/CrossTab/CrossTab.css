@@ -85,7 +85,7 @@
     }
 
     .UserClickedCell{
-        background-color: red !important;
+        background-color: red;
     }
 
     .UserClickedCellChildren{
