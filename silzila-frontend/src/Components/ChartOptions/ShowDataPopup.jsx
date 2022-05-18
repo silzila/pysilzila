@@ -23,7 +23,7 @@ const ContructPopupBody = (props)=>{
 
  if(_data){
     Object.keys(_data).forEach(key=>{
-        let _pair = <div><span className="ShowDataPopupKey">{key} :</span><span className="ShowDataPopupValue">{_data[key]}</span></div>
+        let _pair = <div><span className="ShowDataPopupKey">{key}</span><span>:</span><span className="ShowDataPopupValue">{_data[key]}</span></div>
         _body.push(_pair);
     });
  }

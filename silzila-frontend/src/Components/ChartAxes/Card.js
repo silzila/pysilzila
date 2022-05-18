@@ -153,7 +153,7 @@ const Card = ({
 			}
 		}
 
-		if (axisTitle === "Dimension" || axisTitle === "Row" || axisTitle === "Column") {
+if (axisTitle === "Dimension" || axisTitle === "Row" || axisTitle === "Column") {
 			if (field.dataType === "date" || field.dataType === "timestamp") {
 				options2 = options2.concat(Aggregators[axisTitle][field.dataType].time_grain);
 			} else {
