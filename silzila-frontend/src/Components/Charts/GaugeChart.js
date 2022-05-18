@@ -10,14 +10,12 @@ const GaugeChart = ({
 
 	//state
 	chartControl,
+	graphTileSize,
 }) => {
 	var property = chartControl.properties[propKey];
-	console.log(property, "+++++ PROPERTY +++++");
 	let chartData = property.chartData ? property.chartData.result : "";
-	console.log(chartData, "+++++ chartData +++++");
 	const [newData, setNewData] = useState([]);
 
-	console.log(property.axisOptions.gaugeChartControls.stepcolor);
 	var carr = [];
 
 	const getColors = () => {
@@ -29,7 +27,6 @@ const GaugeChart = ({
 		}
 	};
 	getColors();
-	console.log(...carr);
 
 	useEffect(() => {
 		if (chartData) {
@@ -39,13 +36,10 @@ const GaugeChart = ({
 					name: key,
 					value: chartData[0][key],
 				});
-				console.log(newTempData);
 			});
 			setNewData(newTempData);
 		}
 	}, [chartData]);
-
-	console.log(newData, "***@@@@***");
 
 	const RenderChart = () => {
 		return (
@@ -56,8 +50,14 @@ const GaugeChart = ({
 					width: graphDimension.width,
 					height: graphDimension.height,
 					overflow: "hidden",
+					border: chartArea
+						? "none"
+						: graphTileSize
+						? "none"
+						: "1px solid rgb(238,238,238)",
 				}}
 				option={{
+					animation: chartArea ? false : true,
 					legend: {
 						type: "scroll",
 						show: property.legendOptions?.showLegend,
@@ -76,7 +76,7 @@ const GaugeChart = ({
 						orient: property.legendOptions?.orientation,
 					},
 
-					// TODO: Priorit 5 - Margin doesn't reflect in graph
+					// TODO: Priorit 1 - Margin doesn't reflect in graph
 					// Margin for a Funnel chart changes only the grid line and not the actual funnel graph
 					grid: {
 						left:
