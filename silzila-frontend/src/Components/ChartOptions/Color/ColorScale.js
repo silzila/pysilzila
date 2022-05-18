@@ -86,12 +86,12 @@ const ColorScale = ({
 	};
 
 	const checkMinMaxValue = () => {
-		if (min === 0 || max === 0) {
+		// if (min === 0 && max === 0) {
+		if (max === 0) {
 			setOpenAlert(true);
 			setSeverity("error");
 
-			// TODO: Priority 1 - Why can't min be zero?
-			setTestMessage("Min or Max value can't be zero");
+			setTestMessage("Max value can't be zero");
 			setTimeout(() => {
 				setOpenAlert(false);
 				setTestMessage("");
