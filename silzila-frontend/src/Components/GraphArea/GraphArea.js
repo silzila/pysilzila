@@ -15,7 +15,7 @@ import PieChart from "../Charts/PieChart";
 import ScatterChart from "../Charts/ScatterChart";
 import StackedBar from "../Charts/StackedBar";
 import MultiBar from "../Charts/MultiBarChart";
-import CrossTabChart from '../Charts/CrossTab/CrossTabChart';
+import CrossTabChart from "../Charts/CrossTab/CrossTabChart";
 import {
 	setChartTitle,
 	setGenerateTitle,
@@ -124,6 +124,7 @@ const GraphArea = ({
 					<StackedBar
 						propKey={propKey}
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
 					/>
 				);
 
@@ -132,6 +133,7 @@ const GraphArea = ({
 					<CrossTabChart
 						propKey={propKey}
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
 					/>
 				);
 
@@ -140,6 +142,7 @@ const GraphArea = ({
 					<ScatterChart
 						propKey={propKey}
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
 					/>
 				);
 			case "area":
@@ -147,6 +150,7 @@ const GraphArea = ({
 					<AreaChart
 						propKey={propKey}
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
 					/>
 				);
 			case "pie":
@@ -154,6 +158,7 @@ const GraphArea = ({
 					<PieChart
 						propKey={propKey}
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
 					/>
 				);
 			case "donut":
@@ -161,6 +166,7 @@ const GraphArea = ({
 					<DoughnutChart
 						propKey={propKey}
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
 					/>
 				);
 			case "line":
@@ -168,6 +174,7 @@ const GraphArea = ({
 					<LineChart
 						propKey={propKey}
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
 					/>
 				);
 			case "funnel":
@@ -175,6 +182,7 @@ const GraphArea = ({
 					<FunnelChart
 						propKey={propKey}
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
 					/>
 				);
 
@@ -183,6 +191,7 @@ const GraphArea = ({
 					<GaugeChart
 						propKey={propKey}
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
 					/>
 				);
 
@@ -191,23 +200,9 @@ const GraphArea = ({
 					<HeatMap
 						propKey={propKey}
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
 					/>
 				);
-
-			// case "rose":
-			// 	return (
-			// 		<RoseChart
-			// 			propKey={propKey}
-			// 			graphDimension={fullScreen ? graphDimension2 : graphDimension}
-			// 		/>
-			// 	);
-			// case "step line":
-			// 	return (
-			// 		<StepLine
-			// 			propKey={propKey}
-			// 			graphDimension={fullScreen ? graphDimension2 : graphDimension}
-			// 		/>
-			// 	);
 
 			default:
 				return <h2>Work in progress</h2>;

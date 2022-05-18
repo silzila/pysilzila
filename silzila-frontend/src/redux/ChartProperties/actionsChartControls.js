@@ -42,6 +42,20 @@ export const setColorScaleOption = (option, value, propKey) => {
 		payload: { option: option, value: value, propKey: propKey },
 	};
 };
+
+export const addingNewStep = (propkey, index, value) => {
+	return {
+		type: "ADDING_NEW_STEP",
+		payload: { propKey: propkey, index: index, value: value },
+	};
+};
+
+export const changingValuesofSteps = (propkey, value) => {
+	return {
+		type: "CHANGING_VALUES_OF_STEPS",
+		payload: { propKey: propkey, value: value },
+	};
+};
 // ===================================
 // Labels
 
@@ -112,6 +126,10 @@ export const resetChartControls = () => {
 
 export const updateReverse = (propKey, value) => {
 	return { type: "UPDATE_REVERSE", payload: { propKey, value } };
+};
+
+export const updatePieAxisOptions = (propKey, option, value) => {
+	return { type: "UPDATE_PIE_AXIS_OPTIONS", payload: { propKey, option, value } };
 };
 
 export const updateAxisOptions = (propKey, axis, option, value) => {
