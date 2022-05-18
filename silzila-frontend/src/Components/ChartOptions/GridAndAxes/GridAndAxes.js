@@ -36,6 +36,7 @@ const GridAndAxes = ({
 	chartProp,
 
 	//dispatch
+	updateGaugeAxisOptions,
 	setAxisMinMax,
 	setReverse,
 	enableGrids,
@@ -170,7 +171,6 @@ const GridAndAxes = ({
 						setAxisMinMax(propKey, "enableMin", !property.axisMinMax.enableMin);
 					}}
 				/>
-
 				<InputNumber
 					value={property.axisMinMax.minValue}
 					updateValue={(value) => setAxisMinMax(propKey, "minValue", value)}
@@ -187,7 +187,6 @@ const GridAndAxes = ({
 						setAxisMinMax(propKey, "enableMax", !property.axisMinMax.enableMax);
 					}}
 				/>
-
 				<InputNumber
 					value={property.axisMinMax.maxValue}
 					updateValue={(value) => setAxisMinMax(propKey, "maxValue", value)}
@@ -201,10 +200,12 @@ const GridAndAxes = ({
 			{/* =========================================================================================
 			                                    X - AXIS PROPS
 			========================================================================================= */}
+
 			<div
 				style={{ borderTop: "1px solid rgb(211,211,211)", margin: "0.5rem 6% 1rem" }}
 			></div>
 			<div className="optionDescription">X-AXES</div>
+
 			<div className="optionDescription">
 				<input
 					type="checkbox"
@@ -294,9 +295,11 @@ const GridAndAxes = ({
 							if (xAxisProps.position === "top") {
 								// CHANGING TICK SIZE OF X-AXIS WHEN POSITION IS TOP
 								updateAxisOptions(propKey, "xAxis", "tickSizeTop", value);
+								// updateAxisOptions(propKey, "xAxis", "tickPaddingTop", value);
 							} else if (xAxisProps.position === "bottom") {
 								// CHANGING TICK SIZE OF X-AXIS WHEN POSITION IS BOTTOM
 								updateAxisOptions(propKey, "xAxis", "tickSizeBottom", value);
+								// updateAxisOptions(propKey, "xAxis", "tickPaddingBottom", value);
 							}
 						}}
 					/>
@@ -344,6 +347,7 @@ const GridAndAxes = ({
 			{/* ============================================================================================
 			Y-AXIS PROPS
 			============================================================================================ */}
+
 			<div
 				style={{ borderTop: "1px solid rgb(211,211,211)", margin: "0.5rem 6% 1rem" }}
 			></div>
@@ -438,9 +442,11 @@ const GridAndAxes = ({
 							if (yAxisProps.position === "left") {
 								// CHANGING Y-AXIS TICK SIZE WHEN POSITION IS INN LEFT
 								updateAxisOptions(propKey, "yAxis", "tickSizeLeft", value);
+								// updateAxisOptions(propKey, "yAxis", "tickPaddingLeft", value);
 							} else if (yAxisProps.position === "right") {
 								//CHANGING Y-AXIS TICK SIZE WHEN POSITION IS IN RIGHT
 								updateAxisOptions(propKey, "yAxis", "tickSizeRight", value);
+								// updateAxisOptions(propKey, "yAxis", "tickPaddingRight", value);
 							}
 						}}
 					/>
