@@ -21,6 +21,15 @@ import { updatePlaybookUid } from "../../redux/Playbook/playbookActions";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CloseRounded from "@mui/icons-material/CloseRounded";
 import { resetUser } from "../../redux/UserInfo/isLoggedActions";
+import LaunchRoundedIcon from "@mui/icons-material/LaunchRounded";
+import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import {
+	githubAddress,
+	githubIssueAddress,
+	websiteAddress,
+} from "../../ServerCall/EnvironmentVariables";
+import AboutPopover from "../CommonFunctions/PopOverComponents/AboutPopover";
 
 const MenuBar = ({
 	// props
@@ -44,24 +53,41 @@ const MenuBar = ({
 }) => {
 	const menuStyle = { fontSize: "12px", padding: "2px 8px", margin: 0 };
 
+	// values for opening file menu and setting its anchor position
 	const [openFileMenu, setOpenFileMenu] = useState(false);
 	const [anchorEl, setAnchorEl] = useState(null);
 
+	// values for opening help menu and setting its anchor position
+	const [openHelpMenu, setOpenHelpMenu] = useState(false);
+	const [helpAnchorEl, setHelpAnchorEl] = useState(null);
+
+	// values for opening Logout menu and setting its anchor position
+	const [logoutModal, setLogoutModal] = useState(false);
+	const [logoutAnchor, setLogoutAnchor] = useState(null);
+
+	// Open / Close about popOver
+	const [aboutPopover, setAboutPopover] = useState(false);
+
+	// Save dataset modal Open / Close , playbook name and description
 	const [saveModal, setSaveModal] = useState(false);
 	const [playBookName, setPlayBookName] = useState(playBookState.playBookName);
 	const [playBookDescription, setPlayBookDescription] = useState(playBookState.description);
 
+	// Success / Failure alert modal
 	const [severity, setSeverity] = useState("success");
 	const [openAlert, setOpenAlert] = useState(false);
 	const [testMessage, setTestMessage] = useState("");
 
+	// value to identify if save action is called because Home icon was clicked
 	const [saveFromHomeIcon, setSaveFromHomeIcon] = useState(false);
-
-	const [logoutModal, setLogoutModal] = useState(false);
-	const [logoutAnchor, setLogoutAnchor] = useState(null);
+	const [saveFromLogoutIcon, setSaveFromLogoutIcon] = useState(false);
 
 	var navigate = useNavigate();
 
+	// The below function can be called from 3 different user actions
+	// 		1. Save playbook
+	// 		2. Home button clicked
+	// 		3. Logout clicked
 	const handleSave = async (fromHome) => {
 		setOpenFileMenu(false);
 
@@ -69,6 +95,7 @@ const MenuBar = ({
 		// 		if Yes, save in the same name
 		// 		if No, open modal to save in a new name
 		if (playBookState.playBookUid !== null) {
+			setSaveModal(false);
 			var playBookObj = formatPlayBookData();
 
 			var result = await FetchData({
@@ -90,6 +117,11 @@ const MenuBar = ({
 					if (fromHome) {
 						navigate("/datahome");
 						resetAllStates();
+					}
+
+					if (saveFromLogoutIcon) {
+						resetUser();
+						navigate("/login");
 					}
 				}, 2000);
 			}
@@ -118,7 +150,8 @@ const MenuBar = ({
 		return playBookObj;
 	};
 
-	var fileMenuStyle = { fontSize: "12px", padding: "2px 1rem" };
+	var fileMenuStyle = { fontSize: "12px", padding: "2px 1rem", display: "flex" };
+	var menuIconStyle = { fontSize: "14px" };
 
 	// Save playbook with a new name
 	const savePlaybook = async () => {
@@ -171,7 +204,7 @@ const MenuBar = ({
 		return (
 			<Menu
 				open={logoutModal}
-				className="RelPopover"
+				className="menuPopover"
 				anchorEl={logoutAnchor}
 				anchorOrigin={{
 					vertical: "bottom",
@@ -189,9 +222,8 @@ const MenuBar = ({
 				<MenuItem
 					sx={fileMenuStyle}
 					onClick={() => {
-						handleSave();
-						resetUser();
-						navigate("/login");
+						setSaveFromLogoutIcon(true);
+						setSaveModal(true);
 					}}
 				>
 					Logout
@@ -204,7 +236,7 @@ const MenuBar = ({
 		return (
 			<Menu
 				open={openFileMenu}
-				className="RelPopover"
+				className="menuPopover"
 				anchorEl={anchorEl}
 				anchorOrigin={{
 					vertical: "bottom",
@@ -241,6 +273,78 @@ const MenuBar = ({
 		);
 	};
 
+	const HelpMenu = () => {
+		return (
+			<Menu
+				open={openHelpMenu}
+				className="menuPopover"
+				anchorEl={helpAnchorEl}
+				anchorOrigin={{
+					vertical: "bottom",
+					horizontal: "left",
+				}}
+				transformOrigin={{
+					vertical: "top",
+					horizontal: "left",
+				}}
+				onClose={() => {
+					setHelpAnchorEl(null);
+					setOpenHelpMenu(false);
+				}}
+			>
+				<MenuItem
+					sx={fileMenuStyle}
+					onClick={() => {
+						window.open(websiteAddress, "_blank");
+					}}
+				>
+					<span style={{ flex: 1, marginRight: "1rem" }}>Visit Silzila</span>
+					<LaunchRoundedIcon sx={menuIconStyle} />
+				</MenuItem>
+				<MenuItem
+					sx={fileMenuStyle}
+					onClick={() => {
+						window.open(githubAddress, "_blank");
+					}}
+				>
+					<span style={{ flex: 1, marginRight: "1rem" }}>View Github</span>
+					<LaunchRoundedIcon sx={menuIconStyle} />
+				</MenuItem>
+				<MenuItem
+					sx={fileMenuStyle}
+					onClick={() => {
+						window.open(githubIssueAddress, "_blank");
+					}}
+				>
+					<span style={{ flex: 1, marginRight: "1rem" }}>Report Bug</span>
+					<LaunchRoundedIcon sx={menuIconStyle} />
+				</MenuItem>
+				<MenuItem
+					sx={fileMenuStyle}
+					onClick={() => {
+						window.open(
+							"mailto:example@silzila.org?subject=Silzila%20Feedback",
+							"_blank"
+						);
+					}}
+				>
+					<span style={{ flex: 1, marginRight: "1rem" }}>Provide Feedback</span>
+					<EmailOutlinedIcon sx={menuIconStyle} />
+				</MenuItem>
+				<MenuItem
+					sx={fileMenuStyle}
+					onClick={() => {
+						setAboutPopover(!aboutPopover);
+						setOpenHelpMenu(!openHelpMenu);
+					}}
+				>
+					<span style={{ flex: 1, marginRight: "1rem" }}>About</span>
+					<InfoOutlinedIcon sx={menuIconStyle} />
+				</MenuItem>
+			</Menu>
+		);
+	};
+
 	return (
 		<div className="dataViewerMenu">
 			{from === "dataHome" ? (
@@ -270,7 +374,7 @@ const MenuBar = ({
 						className="menuHome"
 						onClick={() => {
 							setSaveFromHomeIcon(true);
-							handleSave(true);
+							setSaveModal(true);
 						}}
 					>
 						<HomeRoundedIcon sx={{ color: "#666" }} />
@@ -284,6 +388,15 @@ const MenuBar = ({
 							}}
 						>
 							File
+						</div>
+						<div
+							className="menuItem"
+							onClick={(e) => {
+								setOpenHelpMenu(!openHelpMenu);
+								setHelpAnchorEl(e.currentTarget);
+							}}
+						>
+							Help
 						</div>
 					</div>
 
@@ -326,13 +439,20 @@ const MenuBar = ({
 					setLogoutModal(!logoutModal);
 				}}
 			>
-				<AccountCircleIcon sx={{ padding: "auto 1rem" }} />
+				<AccountCircleIcon sx={{ padding: "auto 1rem", color: "#666" }} />
 			</div>
 
 			<FileMenu />
+			<HelpMenu />
 
 			<LogOutMenu />
 
+			<AboutPopover openAbout={aboutPopover} setOpenAbout={setAboutPopover} />
+
+			{/* A Dialog prompt to save the current playbook. This opens from either of the following actions */}
+			{/* 1. When a user clicks save playbook from file menu for the first time */}
+			{/* 2. When user clicks Home button and chooses to save changes */}
+			{/* 3. When user clicks logout button and chooses to save changes */}
 			<Dialog open={saveModal}>
 				<div
 					style={{
@@ -350,48 +470,69 @@ const MenuBar = ({
 
 							<CloseRounded
 								style={{ margin: "0.25rem" }}
-								onClick={() => setSaveModal(false)}
+								onClick={() => {
+									setSaveFromHomeIcon(false);
+									setSaveFromLogoutIcon(false);
+									setSaveModal(false);
+								}}
 							/>
 						</div>
 						<p></p>
-						<div style={{ padding: "0 50px" }}>
-							<TextField
-								required
-								size="small"
-								fullWidth
-								id="standard-basic"
-								label="Playbook Name"
-								variant="outlined"
-								onChange={(e) => setPlayBookName(e.target.value)}
-								onKeyDown={(e) => {
-									if (e.key === "Enter") {
-										savePlaybook();
-									}
-								}}
-								value={playBookName}
-							/>
-							<br />
-							<br />
-							<TextField
-								label="Description"
-								size="small"
-								fullWidth
-								onChange={(e) => setPlayBookDescription(e.target.value)}
-								onKeyDown={(e) => {
-									if (e.key === "Enter") {
-										savePlaybook();
-									}
-								}}
-							/>
-						</div>
+
+						{saveFromHomeIcon || saveFromLogoutIcon ? null : (
+							<div style={{ padding: "0 50px" }}>
+								<TextField
+									required
+									size="small"
+									fullWidth
+									label="Playbook Name"
+									variant="outlined"
+									onChange={(e) => setPlayBookName(e.target.value)}
+									onKeyDown={(e) => {
+										if (e.key === "Enter") {
+											savePlaybook();
+										}
+									}}
+									value={playBookName}
+								/>
+								<br />
+								<br />
+								<TextField
+									label="Description"
+									size="small"
+									fullWidth
+									onChange={(e) => setPlayBookDescription(e.target.value)}
+									onKeyDown={(e) => {
+										if (e.key === "Enter") {
+											savePlaybook();
+										}
+									}}
+								/>
+							</div>
+						)}
 					</div>
 					<div
 						style={{ padding: "15px", justifyContent: "space-around", display: "flex" }}
 					>
-						{saveFromHomeIcon ? (
+						{saveFromHomeIcon || saveFromLogoutIcon ? (
 							<Button
 								style={{ backgroundColor: "red", float: "right" }}
-								onClick={() => navigate("/datahome")}
+								onClick={() => {
+									// If discard button is clicked after a logout, reset user info and navigate to login page
+									if (saveFromLogoutIcon) {
+										setSaveFromLogoutIcon(false);
+										resetUser();
+										navigate("/login");
+									}
+
+									// If discard button is clicked after clicking on Home icon,
+									// go back to dataHome page and reset all states related to playbooks
+									if (saveFromHomeIcon) {
+										resetAllStates();
+										setSaveFromHomeIcon(false);
+										navigate("/datahome");
+									}
+								}}
 								variant="contained"
 							>
 								Discard
@@ -401,7 +542,18 @@ const MenuBar = ({
 						<Button
 							style={{ backgroundColor: "rgb(0,123,255)" }}
 							variant="contained"
-							onClick={() => savePlaybook()}
+							onClick={() => {
+								if (saveFromLogoutIcon) setLogoutModal(false);
+								// When save button is clicked after a prompt from Home icon or logout action,
+								// 	call handleSave function, which uses the old pb_uid to save the state
+								// 	Else call savePlaybook function which will create a new playbook
+
+								if (playBookState.playBookUid !== null) {
+									handleSave(true);
+								} else {
+									savePlaybook();
+								}
+							}}
 						>
 							Save
 						</Button>

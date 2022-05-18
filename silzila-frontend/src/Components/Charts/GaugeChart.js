@@ -7,14 +7,26 @@ const GaugeChart = ({
 	propKey,
 	graphDimension,
 	chartArea,
-	graphTileSize,
 
 	//state
 	chartControl,
+	graphTileSize,
 }) => {
 	var property = chartControl.properties[propKey];
 	let chartData = property.chartData ? property.chartData.result : "";
 	const [newData, setNewData] = useState([]);
+
+	var carr = [];
+
+	const getColors = () => {
+		for (let i = 0; i < property.axisOptions.gaugeChartControls.stepcolor.length; i++) {
+			carr.push([
+				parseFloat(property.axisOptions.gaugeChartControls.stepcolor[i].per),
+				property.axisOptions.gaugeChartControls.stepcolor[i].color,
+			]);
+		}
+	};
+	getColors();
 
 	useEffect(() => {
 		if (chartData) {
@@ -64,8 +76,8 @@ const GaugeChart = ({
 						orient: property.legendOptions?.orientation,
 					},
 
-					// TODO: Priority 1 - Margin doesn't reflect in graph
-					// Margin for a chart changes only the grid line and not the actual graph
+					// TODO: Priorit 1 - Margin doesn't reflect in graph
+					// Margin for a Funnel chart changes only the grid line and not the actual funnel graph
 					grid: {
 						left:
 							chartArea === "dashboard"
@@ -111,11 +123,7 @@ const GaugeChart = ({
 							axisLine: {
 								lineStyle: {
 									width: 10,
-									color: [
-										[0.3, "#67e0e3"],
-										[0.7, "#37a2da"],
-										[1, "#fd666d"],
-									],
+									color: [...carr],
 								},
 
 								roundCap: true,
