@@ -144,7 +144,7 @@ const Card = ({
 		var options = [];
 		var options2 = [];
 
-		if (["Measure", "X", "Y"].includes(axisTitle)) {
+		if (axisTitle === "Measure" || axisTitle === "X" || axisTitle === "Y") {
 			if (field.dataType === "date" || field.dataType === "timestamp") {
 				options = options.concat(Aggregators[axisTitle][field.dataType].aggr);
 				options2 = options2.concat(Aggregators[axisTitle][field.dataType].time_grain);
@@ -153,7 +153,7 @@ const Card = ({
 			}
 		}
 
-		if (["Dimension", "Row", "Column"].includes(axisTitle)) {
+if (axisTitle === "Dimension" || axisTitle === "Row" || axisTitle === "Column") {
 			if (field.dataType === "date" || field.dataType === "timestamp") {
 				options2 = options2.concat(Aggregators[axisTitle][field.dataType].time_grain);
 			} else {

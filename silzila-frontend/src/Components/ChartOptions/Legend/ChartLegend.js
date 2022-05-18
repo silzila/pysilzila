@@ -93,49 +93,49 @@ const ChartLegend = ({
 	const setSlider = (item) => {
 		updateLegendOption(propKey, "moveSlider", item);
 	};
-	const moveSliderToRender = () => {
-		switch (chartControl.properties[propKey].legendOptions.moveSlider) {
-			case "Width":
-				return (
-					<SliderWithInput
-						sliderValue={chartControl.properties[propKey].legendOptions.symbolWidth}
-						sliderMinMax={itemWidthMinMax}
-						changeValue={(value) => updateLegendOption(propKey, "symbolWidth", value)}
-					/>
-				);
-			case "Height":
-				return (
-					<SliderWithInput
-						sliderValue={chartControl.properties[propKey].legendOptions.symbolHeight}
-						sliderMinMax={itemHeightMinMax}
-						changeValue={(value) => updateLegendOption(propKey, "symbolHeight", value)}
-					/>
-				);
-			case "Item Gap":
-				return (
-					<SliderWithInput
-						sliderValue={chartControl.properties[propKey].legendOptions.itemGap}
-						sliderMinMax={itemSpacingMinMax}
-						changeValue={(value) => updateLegendOption(propKey, "itemGap", value)}
-					/>
-				);
-		}
-	};
+	// const moveSliderToRender = () => {
+	// 	switch (chartControl.properties[propKey].legendOptions.moveSlider) {
+	// 		case "Width":
+	// 			return (
+	// 				<SliderWithInput
+	// 					sliderValue={chartControl.properties[propKey].legendOptions.symbolWidth}
+	// 					sliderMinMax={itemWidthMinMax}
+	// 					changeValue={(value) => updateLegendOption(propKey, "symbolWidth", value)}
+	// 				/>
+	// 			);
+	// 		case "Height":
+	// 			return (
+	// 				<SliderWithInput
+	// 					sliderValue={chartControl.properties[propKey].legendOptions.symbolHeight}
+	// 					sliderMinMax={itemHeightMinMax}
+	// 					changeValue={(value) => updateLegendOption(propKey, "symbolHeight", value)}
+	// 				/>
+	// 			);
+	// 		case "Item Gap":
+	// 			return (
+	// 				<SliderWithInput
+	// 					sliderValue={chartControl.properties[propKey].legendOptions.itemGap}
+	// 					sliderMinMax={itemSpacingMinMax}
+	// 					changeValue={(value) => updateLegendOption(propKey, "itemGap", value)}
+	// 				/>
+	// 			);
+	// 	}
+	// };
 
-	const moveLegend = ["Width", "Height", "Item Gap"];
-	const renderMoveLegend = () => {
-		return moveLegend.map((item) => {
-			return (
-				<div
-					className={item === moveSlider ? "radioButtonSelected2" : "radioButton2"}
-					onClick={() => setSlider(item)}
-					key={item}
-				>
-					{item}
-				</div>
-			);
-		});
-	};
+	// const moveLegend = ["Width", "Height", "Item Gap"];
+	// const renderMoveLegend = () => {
+	// 	return moveLegend.map((item) => {
+	// 		return (
+	// 			<div
+	// 				className={item === moveSlider ? "radioButtonSelected2" : "radioButton2"}
+	// 				onClick={() => setSlider(item)}
+	// 				key={item}
+	// 			>
+	// 				{item}
+	// 			</div>
+	// 		);
+	// 	});
+	// };
 
 	return (
 		<div className="optionsInfo">
@@ -185,8 +185,26 @@ const ChartLegend = ({
 					<div className="optionDescription">ORIENTATION:</div>
 					<div className="radioButtons">{renderOrientation()}</div>
 					<div className="optionDescription">RESIZE:</div>
-					<div className="radioButtons2">{renderMoveLegend()}</div>
-					{moveSliderToRender()}
+					<div className="optionDescription">Width</div>
+					<SliderWithInput
+						sliderValue={chartControl.properties[propKey].legendOptions.symbolWidth}
+						sliderMinMax={itemWidthMinMax}
+						changeValue={(value) => updateLegendOption(propKey, "symbolWidth", value)}
+					/>
+					<div className="optionDescription">Height</div>
+					<SliderWithInput
+						sliderValue={chartControl.properties[propKey].legendOptions.symbolHeight}
+						sliderMinMax={itemHeightMinMax}
+						changeValue={(value) => updateLegendOption(propKey, "symbolHeight", value)}
+					/>
+					<div className="optionDescription">Item Gap</div>
+					<SliderWithInput
+						sliderValue={chartControl.properties[propKey].legendOptions.itemGap}
+						sliderMinMax={itemSpacingMinMax}
+						changeValue={(value) => updateLegendOption(propKey, "itemGap", value)}
+					/>
+					{/* <div className="radioButtons2">{renderMoveLegend()}</div> */}
+					{/* {moveSliderToRender()} */}
 				</React.Fragment>
 			) : null}
 		</div>

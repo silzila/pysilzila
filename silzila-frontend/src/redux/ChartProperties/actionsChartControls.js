@@ -128,6 +128,10 @@ export const updateReverse = (propKey, value) => {
 	return { type: "UPDATE_REVERSE", payload: { propKey, value } };
 };
 
+export const updatePieAxisOptions = (propKey, option, value) => {
+	return { type: "UPDATE_PIE_AXIS_OPTIONS", payload: { propKey, option, value } };
+};
+
 export const updateAxisOptions = (propKey, axis, option, value) => {
 	return { type: "UPDATE_AXIS_OPTIONS", payload: { propKey, axis, option, value } };
 };
