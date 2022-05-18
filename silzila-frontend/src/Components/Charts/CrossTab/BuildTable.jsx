@@ -119,7 +119,8 @@ export const BuildTable = ({ crossTabData, dustbinRows, dustbinValues,
 
     //_header = rowIndex <= dustbinRows.length ? "CrossTabHeader " : "CrossTabLeftColumnHeader"; PRS 14 May 2022
     //_header = col.isHeaderField ? "CrossTabHeader " : "CrossTabLeftColumnHeader";
-    _header = rowIndex <= dustbinColumns.length ? "CrossTabHeader " : "CrossTabLeftColumnHeader";
+   // _header = rowIndex <= dustbinColumns.length ? "CrossTabHeader " : "CrossTabLeftColumnHeader";
+    _header = "CrossTabLeftColumnHeader";
 
     return col.displayData ? _header + _getUserClickedColor(col, rowIndex, colIndex) : "EmptyHeaderCell";
   };

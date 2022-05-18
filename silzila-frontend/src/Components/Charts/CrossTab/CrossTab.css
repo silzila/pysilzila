@@ -27,6 +27,7 @@
         font-weight: bold;   
         width: 40%;
         text-align: right;
+        word-wrap: break-word;
     }
 
     .ShowDataPopupValue{

@@ -160,7 +160,7 @@ const appendRowsFieldsAsColumns = () => {
       let tempColumnObj = CrossTab.cloneData(columnObj);
 
       if (i === crossTabData.length - 1) {
-        tempColumnObj.displayData = CrossTab.getKeyWithPrefix(dustbinRows[row]);
+        tempColumnObj.displayData = CrossTab.getKeyWithPrefix(dustbinRows[row], "row");
       } else {
       //  tempColumnObj.displayData = "";
         if(row == dustbinRows.length -1){
@@ -209,7 +209,7 @@ const appendRowsFieldsAsColumns = () => {
           let _filteredData = CrossTab.getFilteredChartPropDataByCompareObject(chartPropData, compareObj)[0];
 
           if (_filteredData) {
-            let _key = CrossTab.getKeyWithPrefix(dustbinValues[0]);
+            let _key = CrossTab.getKeyWithPrefix(dustbinValues[0], "val");
             tempColumnObj.displayData = _filteredData[_key];
           } else {
             tempColumnObj.displayData = "";
@@ -234,9 +234,9 @@ const appendRowsFieldsAsColumns = () => {
 
             if (_filteredData) {
               // let tempValue = rowValues[chartDataCSV.columns.split(CrossTab.delimiter).length - 2];
-              let valueField = dustbinValues.find((dustVal) => CrossTab.getKeyWithPrefix(dustVal) == item.displayData);
+              let valueField = dustbinValues.find((dustVal) => CrossTab.getKeyWithPrefix(dustVal,"val") == item.displayData);
 
-              let _key = CrossTab.getKeyWithPrefix(valueField);
+              let _key = CrossTab.getKeyWithPrefix(valueField, "val");
               tempColumnObj.displayData = _filteredData[_key];
             } else {
               tempColumnObj.displayData = "";
@@ -262,11 +262,19 @@ const appendRowsFieldsAsColumns = () => {
       let tempRowObj = CrossTab.cloneData(rowObj);
       let columnIndex = 0;
 
-      if (dustbinValues.length > 1 && showAsColumn) {
-        columnIndex = dustbinColumns.length; //+ 1;
-      } else {
+      // if (dustbinValues.length > 1 && showAsColumn) {
+      //   columnIndex = dustbinColumns.length; //+ 1;
+      // } else {
+      //   columnIndex = dustbinColumns.length;
+      // }
+
+      if(noValue){
+        columnIndex = 0;
+      }
+      else{
         columnIndex = dustbinColumns.length;
       }
+
 
       if (crossTabData[columnIndex] && crossTabData[columnIndex].columnItems) {
         crossTabData[columnIndex].columnItems.forEach((item, colIndex) => {
@@ -317,7 +325,7 @@ const appendRowsFieldsAsColumns = () => {
             tempColumnObj.compareObj = compareObj;
           } else {
             for (let i = 0; i < dustbinRows.length; i++) {
-              compareObj[CrossTab.getKeyWithPrefix(dustbinRows[i])] = rowValues[i];
+              compareObj[CrossTab.getKeyWithPrefix(dustbinRows[i], "row")] = rowValues[i];
             }
 
             if (noValue) {
@@ -327,7 +335,7 @@ const appendRowsFieldsAsColumns = () => {
               let _filteredData = CrossTab.getFilteredChartPropDataByCompareObject(chartPropData, compareObj)[0];
 
               if (_filteredData) {
-                let _key = CrossTab.getKeyWithPrefix(dustbinValues[0]);
+                let _key = CrossTab.getKeyWithPrefix(dustbinValues[0], "val");
                 tempColumnObj.displayData = _filteredData[_key];
 
                 let _compareObj = CrossTab.cloneData(compareObj);
@@ -357,9 +365,9 @@ const appendRowsFieldsAsColumns = () => {
 
                 if (_filteredData) {
                   let tempValue = rowValues[row.split(CrossTab.delimiter).length - 2];
-                  let valueField = dustbinValues.find((dustVal) => CrossTab.getKeyWithPrefix(dustVal) == tempValue);
+                  let valueField = dustbinValues.find((dustVal) => CrossTab.getKeyWithPrefix(dustVal, "val") == tempValue);
 
-                  let _key = CrossTab.getKeyWithPrefix(valueField);
+                  let _key = CrossTab.getKeyWithPrefix(valueField, "val");
                   tempColumnObj.displayData = _filteredData[_key];
 
                   let _compareObj = CrossTab.cloneData(compareObj);
@@ -393,7 +401,7 @@ const appendRowsFieldsAsColumns = () => {
       for (let i = 0; i < previousColumnItems.length; i++) {
         dustbinValues.forEach((val) => {
           let tempColumnObj = CrossTab.cloneData(columnObj);
-          tempColumnObj.displayData = CrossTab.getKeyWithPrefix(val);
+          tempColumnObj.displayData = CrossTab.getKeyWithPrefix(val, "val");
           tempColumnObj.agg = val.agg;
           tempColumnObj.compareObj = previousColumnItems[i].compareObj;
           tempColumnObj.isHeaderField = true;
@@ -493,7 +501,7 @@ const appendRowsFieldsAsColumns = () => {
       _headerColumnList.forEach((col) => {
         let tempColumnObj = CrossTab.cloneData(columnObj);
         tempColumnObj.displayData = col;
-        tempColumnObj.compareObj[CrossTab.getKeyWithPrefix(dustbinColumns[i])] = col;
+        tempColumnObj.compareObj[CrossTab.getKeyWithPrefix(dustbinColumns[i], "col")] = col;
         tempColumnObj.isHeaderField = true;
         tempRowObj.columnItems.push(tempColumnObj);
       });
@@ -522,8 +530,8 @@ const appendRowsFieldsAsColumns = () => {
         distinctList.forEach((item) => {
           let tempColumnObj = CrossTab.cloneData(columnObj);
           let tempCompareObj = CrossTab.cloneData(_currentCompObj);
-          tempColumnObj.displayData = item[CrossTab.getKeyWithPrefix(dustbinColumns[i])];
-          tempCompareObj[CrossTab.getKeyWithPrefix(dustbinColumns[i])] = tempColumnObj.displayData;
+          tempColumnObj.displayData = item[CrossTab.getKeyWithPrefix(dustbinColumns[i],"col")];
+          tempCompareObj[CrossTab.getKeyWithPrefix(dustbinColumns[i], "col")] = tempColumnObj.displayData;
           tempColumnObj.compareObj = tempCompareObj;
           tempColumnObj.parentColumnSpan = distinctList.length;
           tempRowObj.columnItems.push(tempColumnObj);
@@ -557,7 +565,7 @@ const appendRowsFieldsAsColumns = () => {
 
     dustbinRows.forEach((rowItem) => {
       let tempColumnObj = CrossTab.cloneData(columnObj);
-      tempColumnObj.displayData = CrossTab.getKeyWithPrefix(rowItem);
+      tempColumnObj.displayData = CrossTab.getKeyWithPrefix(rowItem, "row");
       tempColumnObj.isHeaderField = true;
       tempRowObj1.columnItems.push(tempColumnObj);
     });
@@ -572,7 +580,7 @@ const appendRowsFieldsAsColumns = () => {
       rowItemArray.forEach((val, index) => {
         if (val) {
           let tempColumnObj = CrossTab.cloneData(columnObj);
-          compObj[CrossTab.getKeyWithPrefix(dustbinRows[index])] = val;
+          compObj[CrossTab.getKeyWithPrefix(dustbinRows[index], "row")] = val;
 
           let previousRowData = CrossTab.getPreviousRowColumnData(crossTabData, dustbinColumns, dustbinValues, showAsColumn, i, index);
 
@@ -607,7 +615,7 @@ const appendRowsFieldsAsColumns = () => {
 
       dustbinValues.forEach((rowItem) => {
         let tempColumnObj = CrossTab.cloneData(columnObj);
-        tempColumnObj.displayData = CrossTab.getKeyWithPrefix(rowItem);
+        tempColumnObj.displayData = CrossTab.getKeyWithPrefix(rowItem,"val");
         tempColumnObj.isHeaderField = true;
         tempRowObj1.columnItems.push(tempColumnObj);
       });
@@ -655,10 +663,10 @@ const appendRowsFieldsAsColumns = () => {
     defaultTemplate = false;
   };
 
-  const addColumnItemsFromRowBoj = (dustbinList, tempRowObj1) => {
+  const addColumnItemsFromRowBoj = (dustbinList, tempRowObj1, dusbinName) => {
     dustbinList.forEach((rowItem) => {
       let tempColumnObj = CrossTab.cloneData(columnObj);
-      tempColumnObj.displayData = CrossTab.getKeyWithPrefix(rowItem);
+      tempColumnObj.displayData = CrossTab.getKeyWithPrefix(rowItem, dusbinName);
       tempColumnObj.isHeaderField = true;
       tempRowObj1.columnItems.push(tempColumnObj);
     });
@@ -667,8 +675,8 @@ const appendRowsFieldsAsColumns = () => {
   const showRowsAndValuesChart = () => {
     let tempRowObj1 = CrossTab.cloneData(rowObj);
 
-    addColumnItemsFromRowBoj(dustbinRows, tempRowObj1);
-    addColumnItemsFromRowBoj(dustbinValues, tempRowObj1);
+    addColumnItemsFromRowBoj(dustbinRows, tempRowObj1, "row");
+    addColumnItemsFromRowBoj(dustbinValues, tempRowObj1, "val");
 
     crossTabData.push(tempRowObj1);
 
@@ -752,11 +760,11 @@ const appendRowsFieldsAsColumns = () => {
         _combineColumn = "";
 
       dustbinRows.forEach((rowField) => {
-        _combineRow = _combineRow.concat(data[CrossTab.getKeyWithPrefix(rowField)], CrossTab.delimiter);
+        _combineRow = _combineRow.concat(data[CrossTab.getKeyWithPrefix(rowField, "row")], CrossTab.delimiter);
       });
 
       dustbinColumns.forEach((colField) => {
-        _combineColumn = _combineColumn.concat(data[CrossTab.getKeyWithPrefix(colField)], CrossTab.delimiter);
+        _combineColumn = _combineColumn.concat(data[CrossTab.getKeyWithPrefix(colField, "col")], CrossTab.delimiter);
       });
 
       if (_combineRow && !chartDataCSV.rows.includes(_combineRow)) {

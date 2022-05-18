@@ -7,15 +7,36 @@ export const cloneData = (data) => {
 /*
     Get display data from fields with prefix
   */
-export const getKeyWithPrefix = (item) => {
-  switch (item.dataType) {
-    case "date":
-      return `${item.fieldname}__${item.time_grain}`;
-    case "decimal":
-      return `${item.fieldname}__${item.agg}`;
-    default:
-      return item?.fieldname || "";
+export const getKeyWithPrefix = (item, dustbinName) => {
+  if(dustbinName == "val"){ //val ==> "Measure"
+    switch (item.dataType) {
+      case "date":
+      case "timestamp":
+        return `${item.fieldname}__${item.time_grain}_${item.agg}`;
+      case "decimal":
+      case "integer":   
+        return `${item.fieldname}${item.agg? "__" + item.agg : ""}`;
+      case "text":
+        return `${item.fieldname}${item.agg? "__" + item.agg : ""}`;
+      default:
+        return item?.fieldname || "";
+    }
   }
+  else{
+    switch (item.dataType) {
+      case "date":
+      case "timestamp":
+        return `${item.fieldname}__${item.agg ? item.agg : item.time_grain}`;
+      case "decimal":
+      case "integer":   
+        return `${item.fieldname}${item.agg? "__" + item.agg : ""}`;
+      case "text":
+        return `${item.fieldname}${item.agg? "__" + item.agg : ""}`;
+      default:
+        return item?.fieldname || "";
+    }
+  }
+
 
   // if (item && item.agg) {
   //   //return `${item.prefix.toLowerCase()}(${item.fieldname})`;
