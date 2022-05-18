@@ -93,6 +93,7 @@ const measurePrefixes = {
 	},
 };
 
+
 const Aggregators = {
 	Dimension: dimensionPrefixes,
 	Row: dimensionPrefixes,
@@ -101,6 +102,7 @@ const Aggregators = {
 	X: measurePrefixes,
 	Y: measurePrefixes,
 };
+
 
 export const AggregatorKeys = {
 	sum: "Sum",
