@@ -141,7 +141,6 @@ const Card = ({
 	});
 
 	const RenderMenu = useCallback(() => {
-		console.log(axisTitle);
 		var options = [];
 		var options2 = [];
 
