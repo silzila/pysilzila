@@ -71,7 +71,6 @@ const chartControl = {
 					clockWise: true,
 					labelPadding: 0,
 				},
-
 				yAxis: {
 					position: "left",
 					onZero: true,
@@ -193,7 +192,6 @@ const chartControlsReducer = (state = chartControl, action) => {
 								clockWise: true,
 								labelPadding: 0,
 							},
-
 							yAxis: {
 								position: "left",
 								onZero: true,
@@ -321,7 +319,6 @@ const chartControlsReducer = (state = chartControl, action) => {
 								clockWise: true,
 								labelPadding: 0,
 							},
-
 							yAxis: {
 								position: "left",
 								onZero: true,

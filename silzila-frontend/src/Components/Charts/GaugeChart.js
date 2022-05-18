@@ -75,7 +75,6 @@ const GaugeChart = ({
 						top: property.legendOptions?.position?.top,
 						orient: property.legendOptions?.orientation,
 					},
-
 					// grid: {
 					// 	left:
 					// 		chartArea === "dashboard"
@@ -94,7 +93,6 @@ const GaugeChart = ({
 					// 			? `${property.chartMargin.bottom + 5}%`
 					// 			: `${property.chartMargin.bottom}%`,
 					// },
-
 					tooltip: { show: property.mouseOver.enable },
 
 					series: [
