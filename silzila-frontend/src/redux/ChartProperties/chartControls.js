@@ -66,6 +66,11 @@ const chartControl = {
 						{ percentage: 10, color: "#fd666d", per: 1 },
 					],
 				},
+				pieAxisOptions: {
+					pieStartAngle: 90,
+					clockWise: true,
+					labelPadding: 0,
+				},
 				yAxis: {
 					position: "left",
 					onZero: true,
@@ -181,6 +186,11 @@ const chartControlsReducer = (state = chartControl, action) => {
 									{ percentage: 50, color: "#37a2da", per: 0.9 },
 									{ percentage: 10, color: "#fd666d", per: 1 },
 								],
+							},
+							pieAxisOptions: {
+								pieStartAngle: 90,
+								clockWise: true,
+								labelPadding: 0,
 							},
 							yAxis: {
 								position: "left",
@@ -303,6 +313,11 @@ const chartControlsReducer = (state = chartControl, action) => {
 									{ percentage: 50, color: "#37a2da", per: 0.9 },
 									{ percentage: 10, color: "#fd666d", per: 1 },
 								],
+							},
+							pieAxisOptions: {
+								pieStartAngle: 90,
+								clockWise: true,
+								labelPadding: 0,
 							},
 							yAxis: {
 								position: "left",
@@ -470,6 +485,9 @@ const chartControlsReducer = (state = chartControl, action) => {
 							},
 						},
 					});
+
+				default:
+					return state;
 			}
 
 		case "AXIS_MIN_MAX":
@@ -527,6 +545,19 @@ const chartControlsReducer = (state = chartControl, action) => {
 					},
 				},
 			});
+		case "UPDATE_PIE_AXIS_OPTIONS":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						axisOptions: {
+							pieAxisOptions: {
+								[action.payload.option]: { $set: action.payload.value },
+							},
+						},
+					},
+				},
+			});
+
 		case "UPDATE_AXIS_OPTIONS":
 			return update(state, {
 				properties: {
