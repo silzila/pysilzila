@@ -24,12 +24,14 @@ import { resetUser } from "../../redux/UserInfo/isLoggedActions";
 import LaunchRoundedIcon from "@mui/icons-material/LaunchRounded";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import PrivacyTipOutlinedIcon from "@mui/icons-material/PrivacyTipOutlined";
 import {
 	githubAddress,
 	githubIssueAddress,
 	websiteAddress,
 } from "../../ServerCall/EnvironmentVariables";
 import AboutPopover from "../CommonFunctions/PopOverComponents/AboutPopover";
+import PrivacyPopover from "../CommonFunctions/PopOverComponents/PrivacyPopover";
 
 const MenuBar = ({
 	// props
@@ -68,6 +70,9 @@ const MenuBar = ({
 	// Open / Close about popOver
 	const [aboutPopover, setAboutPopover] = useState(false);
 
+	// Open / Close privacy popOver
+	const [privacyPopover, setPrivacyPopover] = useState(false);
+
 	// Save dataset modal Open / Close , playbook name and description
 	const [saveModal, setSaveModal] = useState(false);
 	const [playBookName, setPlayBookName] = useState(playBookState.playBookName);
@@ -88,7 +93,7 @@ const MenuBar = ({
 	// 		1. Save playbook
 	// 		2. Home button clicked
 	// 		3. Logout clicked
-	const handleSave = async (fromHome) => {
+	const handleSave = async () => {
 		setOpenFileMenu(false);
 
 		// check if this playbook already has a name / id
@@ -114,7 +119,7 @@ const MenuBar = ({
 				setTestMessage("Successfully saved playbook");
 				setTimeout(() => {
 					setOpenAlert(false);
-					if (fromHome) {
+					if (saveFromHomeIcon) {
 						navigate("/datahome");
 						resetAllStates();
 					}
@@ -179,6 +184,14 @@ const MenuBar = ({
 				setOpenAlert(true);
 				setTestMessage("Successfully saved playbook");
 				setTimeout(() => {
+					if (saveFromHomeIcon) {
+						navigate("/datahome");
+						resetAllStates();
+					}
+					if (saveFromLogoutIcon) {
+						navigate("/login");
+						resetUser();
+					}
 					setOpenAlert(false);
 				}, 2000);
 			} else {
@@ -222,8 +235,15 @@ const MenuBar = ({
 				<MenuItem
 					sx={fileMenuStyle}
 					onClick={() => {
-						setSaveFromLogoutIcon(true);
-						setSaveModal(true);
+						if (from === "dataViewer") {
+							setSaveFromLogoutIcon(true);
+							setSaveModal(true);
+						}
+
+						if (from === "dataHome") {
+							resetUser();
+							navigate("/login");
+						}
 					}}
 				>
 					Logout
@@ -296,6 +316,7 @@ const MenuBar = ({
 					sx={fileMenuStyle}
 					onClick={() => {
 						window.open(websiteAddress, "_blank");
+						setOpenHelpMenu(false);
 					}}
 				>
 					<span style={{ flex: 1, marginRight: "1rem" }}>Visit Silzila</span>
@@ -305,6 +326,7 @@ const MenuBar = ({
 					sx={fileMenuStyle}
 					onClick={() => {
 						window.open(githubAddress, "_blank");
+						setOpenHelpMenu(false);
 					}}
 				>
 					<span style={{ flex: 1, marginRight: "1rem" }}>View Github</span>
@@ -314,6 +336,7 @@ const MenuBar = ({
 					sx={fileMenuStyle}
 					onClick={() => {
 						window.open(githubIssueAddress, "_blank");
+						setOpenHelpMenu(false);
 					}}
 				>
 					<span style={{ flex: 1, marginRight: "1rem" }}>Report Bug</span>
@@ -326,6 +349,7 @@ const MenuBar = ({
 							"mailto:example@silzila.org?subject=Silzila%20Feedback",
 							"_blank"
 						);
+						setOpenHelpMenu(false);
 					}}
 				>
 					<span style={{ flex: 1, marginRight: "1rem" }}>Provide Feedback</span>
@@ -335,11 +359,21 @@ const MenuBar = ({
 					sx={fileMenuStyle}
 					onClick={() => {
 						setAboutPopover(!aboutPopover);
-						setOpenHelpMenu(!openHelpMenu);
+						setOpenHelpMenu(false);
 					}}
 				>
 					<span style={{ flex: 1, marginRight: "1rem" }}>About</span>
 					<InfoOutlinedIcon sx={menuIconStyle} />
+				</MenuItem>
+				<MenuItem
+					sx={fileMenuStyle}
+					onClick={() => {
+						setPrivacyPopover(!privacyPopover);
+						setOpenHelpMenu(false);
+					}}
+				>
+					<span style={{ flex: 1, marginRight: "1rem" }}>Privacy</span>
+					<PrivacyTipOutlinedIcon sx={menuIconStyle} />
 				</MenuItem>
 			</Menu>
 		);
@@ -448,6 +482,7 @@ const MenuBar = ({
 			<LogOutMenu />
 
 			<AboutPopover openAbout={aboutPopover} setOpenAbout={setAboutPopover} />
+			<PrivacyPopover openPrivacy={privacyPopover} setOpenPrivacy={setPrivacyPopover} />
 
 			{/* A Dialog prompt to save the current playbook. This opens from either of the following actions */}
 			{/* 1. When a user clicks save playbook from file menu for the first time */}
@@ -479,7 +514,8 @@ const MenuBar = ({
 						</div>
 						<p></p>
 
-						{saveFromHomeIcon || saveFromLogoutIcon ? null : (
+						{(saveFromHomeIcon || saveFromLogoutIcon) &&
+						playBookState.playBookUid !== null ? null : (
 							<div style={{ padding: "0 50px" }}>
 								<TextField
 									required
@@ -549,7 +585,7 @@ const MenuBar = ({
 								// 	Else call savePlaybook function which will create a new playbook
 
 								if (playBookState.playBookUid !== null) {
-									handleSave(true);
+									handleSave();
 								} else {
 									savePlaybook();
 								}

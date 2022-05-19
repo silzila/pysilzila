@@ -30,7 +30,7 @@ const BottomBar = ({
 	resetState,
 }) => {
 	const [fname, setFname] = useState(friendly_name);
-	const [sendOrUpdate, setSendOrUpdate] = useState("Send");
+	const [sendOrUpdate, setSendOrUpdate] = useState("Save");
 	const [open, setOpen] = useState(false);
 
 	const [openAlert, setOpenAlert] = useState(false);
@@ -208,7 +208,7 @@ const BottomBar = ({
 	return (
 		<div className="bottomBar">
 			<Button variant="contained" onClick={onCancelOnDataset} id="cancelButton">
-				Cancel
+				{editMode ? "Back" : "Cancel"}
 			</Button>
 
 			<div>
@@ -266,6 +266,9 @@ const BottomBar = ({
 							onClick={() => {
 								resetState();
 								setOpen(false);
+								if (editMode) {
+									navigate("/dataHome");
+								}
 							}}
 						>
 							Ok
