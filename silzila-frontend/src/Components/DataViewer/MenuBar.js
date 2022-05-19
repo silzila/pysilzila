@@ -55,7 +55,7 @@ const MenuBar = ({
 }) => {
 	var showSaveWarning = false;
 
-	if (from === "dataViewer") {
+	if (from === "dataViewer" && playBookState.oldContent) {
 		if (
 			JSON.stringify(tabState) === JSON.stringify(playBookState.oldContent.tabState) &&
 			JSON.stringify(tileState) === JSON.stringify(playBookState.oldContent.tileState) &&

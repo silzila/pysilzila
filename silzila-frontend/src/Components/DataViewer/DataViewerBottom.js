@@ -253,6 +253,7 @@ const DataViewerBottom = ({
 						<InputLabel
 							id="selectDataSet"
 							sx={{ fontSize: "12px", lineHeight: "1.5rem" }}
+							shrink={true}
 						>
 							DataSet
 						</InputLabel>
@@ -265,6 +266,7 @@ const DataViewerBottom = ({
 								handleDataSetChange(e.target.value);
 							}}
 							sx={{ height: "1.5rem", fontSize: "14px" }}
+							notched={true}
 						>
 							<MenuItem
 								sx={{
