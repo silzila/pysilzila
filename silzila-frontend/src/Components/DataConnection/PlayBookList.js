@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setSelectedDsInTile } from "../../redux/ChartProperties/actionsChartProperties";
-import { updatePlaybookUid } from "../../redux/Playbook/playbookActions";
+import { storePlayBookCopy, updatePlaybookUid } from "../../redux/Playbook/playbookActions";
 import {
 	loadPlaybook,
 	setSelectedDataSetList,
@@ -33,6 +33,7 @@ const PlayBookList = ({
 	setSelectedDs,
 	loadPlayBook,
 	updatePlayBookId,
+	storePlayBookCopy,
 }) => {
 	const [playBookList, setPlayBookList] = useState([]);
 
@@ -195,6 +196,7 @@ const PlayBookList = ({
 			pb.content.sampleRecords = sampleRecords;
 			loadPlayBook(pb.content);
 			updatePlayBookId({ name: pb.name, pb_uid: pb.pb_uid, description: pb.description });
+			storePlayBookCopy(pb.content);
 			navigate("/dataviewer");
 		}
 	};
@@ -322,6 +324,7 @@ const mapDispatchToProps = (dispatch) => {
 		setSelectedDs: (selectedDs) => dispatch(setSelectedDsInTile("1.1", selectedDs)),
 		loadPlayBook: (playBook) => dispatch(loadPlaybook(playBook)),
 		updatePlayBookId: (pbUid) => dispatch(updatePlaybookUid(pbUid)),
+		storePlayBookCopy: (pb) => dispatch(storePlayBookCopy(pb)),
 	};
 };
 

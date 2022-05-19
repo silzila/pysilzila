@@ -53,6 +53,26 @@ const MenuBar = ({
 	resetAllStates,
 	resetUser,
 }) => {
+	var showSaveWarning = false;
+
+	if (from === "dataViewer") {
+		if (
+			JSON.stringify(tabState) === JSON.stringify(playBookState.oldContent.tabState) &&
+			JSON.stringify(tileState) === JSON.stringify(playBookState.oldContent.tileState) &&
+			JSON.stringify(tabTileProps) ===
+				JSON.stringify(playBookState.oldContent.tabTileProps) &&
+			JSON.stringify(chartProperty) ===
+				JSON.stringify(playBookState.oldContent.chartProperty) &&
+			JSON.stringify(chartControl) === JSON.stringify(playBookState.oldContent.chartControl)
+		) {
+			console.log("Same Data. No need to show warning");
+			showSaveWarning = false;
+		} else {
+			console.log("Provide warning about saving data");
+			showSaveWarning = true;
+		}
+	}
+
 	const menuStyle = { fontSize: "12px", padding: "2px 8px", margin: 0 };
 
 	// values for opening file menu and setting its anchor position
@@ -236,8 +256,13 @@ const MenuBar = ({
 					sx={fileMenuStyle}
 					onClick={() => {
 						if (from === "dataViewer") {
-							setSaveFromLogoutIcon(true);
-							setSaveModal(true);
+							if (showSaveWarning) {
+								setSaveFromLogoutIcon(true);
+								setSaveModal(true);
+							} else {
+								resetUser();
+								navigate("/login");
+							}
 						}
 
 						if (from === "dataHome") {
@@ -407,8 +432,13 @@ const MenuBar = ({
 					<div
 						className="menuHome"
 						onClick={() => {
-							setSaveFromHomeIcon(true);
-							setSaveModal(true);
+							if (showSaveWarning) {
+								setSaveFromHomeIcon(true);
+								setSaveModal(true);
+							} else {
+								resetAllStates();
+								navigate("/dataHome");
+							}
 						}}
 					>
 						<HomeRoundedIcon sx={{ color: "#666" }} />
