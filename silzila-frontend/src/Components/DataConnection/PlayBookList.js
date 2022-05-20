@@ -116,7 +116,31 @@ const PlayBookList = ({
 			setLoading(true);
 
 			var pb = result.data;
-			var newChartControl = JSON.parse(JSON.stringify(pb.content.chartControl));
+
+			// Get list of tables for a given dataset and save here
+			var selectedDatasetsInPlaybook = pb.content.tabTileProps.selectedDataSetList;
+			console.log(pb.content.tabTileProps.selectedDataSetList);
+
+			var tablesForSelectedDatasetsCopy = {};
+			await Promise.all(
+				selectedDatasetsInPlaybook.map(async (sampleDs) => {
+					var result2 = await FetchData({
+						requestType: "noData",
+						method: "GET",
+						url: `/ds/get-ds-tables/${sampleDs.ds_uid}`,
+						headers: { Authorization: `Bearer ${token}` },
+					});
+
+					if (result2.status) {
+						tablesForSelectedDatasetsCopy[sampleDs.ds_uid] = result2.data;
+					}
+				})
+			);
+
+			console.log(JSON.stringify(tablesForSelectedDatasetsCopy, null, 2));
+			pb.content.tabTileProps.tablesForSelectedDataSets = tablesForSelectedDatasetsCopy;
+
+			var newChartControl = JSON.parse(JSON.stringify(pb.content?.chartControl));
 
 			await Promise.all(
 				Object.keys(pb.content.chartControl.properties).map(async (property) => {
@@ -145,47 +169,53 @@ const PlayBookList = ({
 							(tbl) => tbl.id === tableInfo.selectedTable[ds_uid]
 						)[0];
 
-					var tableRecords = await getTableData(
-						dc_uid,
-						selectedTableForThisDataset.schema_name,
-						selectedTableForThisDataset.table_name,
-						token
-					);
+					if (selectedTableForThisDataset) {
+						var tableRecords = await getTableData(
+							dc_uid,
+							selectedTableForThisDataset.schema_name,
+							selectedTableForThisDataset.table_name,
+							token
+						);
 
-					var recordsType = await getColumnTypes(
-						dc_uid,
-						selectedTableForThisDataset.schema_name,
-						selectedTableForThisDataset.table_name,
-						token
-					);
+						var recordsType = await getColumnTypes(
+							dc_uid,
+							selectedTableForThisDataset.schema_name,
+							selectedTableForThisDataset.table_name,
+							token
+						);
 
-					// Format the data retrieved to required JSON for saving in store
-					if (sampleRecords[ds_uid] !== undefined) {
-						sampleRecords = update(sampleRecords, {
-							recordsColumnType: {
-								[ds_uid]: {
-									[selectedTableForThisDataset.id]: { $set: recordsType },
+						// Format the data retrieved to required JSON for saving in store
+						if (sampleRecords[ds_uid] !== undefined) {
+							sampleRecords = update(sampleRecords, {
+								recordsColumnType: {
+									[ds_uid]: {
+										[selectedTableForThisDataset.id]: { $set: recordsType },
+									},
 								},
-							},
-							[ds_uid]: { [selectedTableForThisDataset.id]: { $set: tableRecords } },
-						});
-					} else {
-						var recordsCopy = JSON.parse(JSON.stringify(sampleRecords));
-						var dsObj = { [ds_uid]: {} };
-
-						recordsCopy = update(recordsCopy, {
-							$merge: dsObj,
-							recordsColumnType: { $merge: dsObj },
-						});
-
-						sampleRecords = update(recordsCopy, {
-							recordsColumnType: {
 								[ds_uid]: {
-									[selectedTableForThisDataset.id]: { $set: recordsType },
+									[selectedTableForThisDataset.id]: { $set: tableRecords },
 								},
-							},
-							[ds_uid]: { [selectedTableForThisDataset.id]: { $set: tableRecords } },
-						});
+							});
+						} else {
+							var recordsCopy = JSON.parse(JSON.stringify(sampleRecords));
+							var dsObj = { [ds_uid]: {} };
+
+							recordsCopy = update(recordsCopy, {
+								$merge: dsObj,
+								recordsColumnType: { $merge: dsObj },
+							});
+
+							sampleRecords = update(recordsCopy, {
+								recordsColumnType: {
+									[ds_uid]: {
+										[selectedTableForThisDataset.id]: { $set: recordsType },
+									},
+								},
+								[ds_uid]: {
+									[selectedTableForThisDataset.id]: { $set: tableRecords },
+								},
+							});
+						}
 					}
 				})
 			);
@@ -196,7 +226,11 @@ const PlayBookList = ({
 			pb.content.sampleRecords = sampleRecords;
 			loadPlayBook(pb.content);
 			updatePlayBookId({ name: pb.name, pb_uid: pb.pb_uid, description: pb.description });
-			storePlayBookCopy(pb.content);
+
+			var pbCopy = pb.content;
+			delete pbCopy.sampleRecords;
+			storePlayBookCopy(pbCopy);
+
 			navigate("/dataviewer");
 		}
 	};

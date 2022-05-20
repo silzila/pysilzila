@@ -56,6 +56,28 @@ const MenuBar = ({
 	var showSaveWarning = false;
 
 	if (from === "dataViewer" && playBookState.oldContent) {
+		if (JSON.stringify(tabState) !== JSON.stringify(playBookState.oldContent.tabState)) {
+			console.log(tabState, playBookState.oldContent.tabState);
+		}
+		if (JSON.stringify(tileState) !== JSON.stringify(playBookState.oldContent.tileState)) {
+			console.log(tileState, playBookState.oldContent.tileState);
+		}
+		if (
+			JSON.stringify(tabTileProps) !== JSON.stringify(playBookState.oldContent.tabTileProps)
+		) {
+			console.log(tabTileProps, playBookState.oldContent.tabTileProps);
+		}
+		if (
+			JSON.stringify(chartProperty) !== JSON.stringify(playBookState.oldContent.chartProperty)
+		) {
+			console.log(chartProperty, playBookState.oldContent.chartProperty);
+		}
+		if (
+			JSON.stringify(chartControl) !== JSON.stringify(playBookState.oldContent.chartControl)
+		) {
+			console.log(chartControl, playBookState.oldContent.chartControl);
+		}
+
 		if (
 			JSON.stringify(tabState) === JSON.stringify(playBookState.oldContent.tabState) &&
 			JSON.stringify(tileState) === JSON.stringify(playBookState.oldContent.tileState) &&
@@ -137,6 +159,14 @@ const MenuBar = ({
 				setSeverity("success");
 				setOpenAlert(true);
 				setTestMessage("Successfully saved playbook");
+
+				updatePlayBookId({
+					name: result.data.name,
+					pb_uid: result.data.pb_uid,
+					description: result.data.description,
+					oldContent: result.data.content,
+				});
+
 				setTimeout(() => {
 					setOpenAlert(false);
 					if (saveFromHomeIcon) {
@@ -163,15 +193,16 @@ const MenuBar = ({
 				tileState,
 				tabTileProps,
 				chartProperty,
+				chartControl,
 			},
 		};
 
 		if (playBookDescription) playBookObj.description = playBookDescription;
-		var chartControlCopy = JSON.parse(JSON.stringify(chartControl));
-		Object.keys(chartControlCopy.properties).forEach((property) => {
-			chartControlCopy.properties[property].chartData = {};
-		});
-		playBookObj.content.chartControl = chartControlCopy;
+		// var chartControlCopy = JSON.parse(JSON.stringify(chartControl));
+		// Object.keys(chartControlCopy.properties).forEach((property) => {
+		// 	chartControlCopy.properties[property].chartData = {};
+		// });
+		// playBookObj.content.chartControl = chartControlCopy;
 		return playBookObj;
 	};
 
@@ -196,6 +227,7 @@ const MenuBar = ({
 					name: result.data.name,
 					pb_uid: result.data.pb_uid,
 					description: result.data.description,
+					oldContent: result.data.content,
 				});
 
 				setSaveModal(false);

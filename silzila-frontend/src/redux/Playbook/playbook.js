@@ -14,6 +14,7 @@ const PlayBookReducer = (state = initialState, action) => {
 				playBookUid: { $set: action.payload.pb_uid },
 				playBookName: { $set: action.payload.name },
 				description: { $set: action.payload.description },
+				oldContent: { $set: action.payload.oldContent },
 			});
 
 		case "RESET_PLAYBOOK_DATA":
