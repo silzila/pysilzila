@@ -32,8 +32,8 @@ const PrivacyPopover = ({ openPrivacy, setOpenPrivacy }) => {
 				</div>
 				<div>
 					<p>
-						Every data (including login and database credentials) will be encrypted and
-						saved in the machine locally. No user data is sent outside
+						User login and database credentials are encrypted and saved in the user's
+						machine locally. Also, this app doesn't capture any usage data.
 					</p>
 					<p>
 						If you want to provide feedback,{" "}
@@ -46,7 +46,7 @@ const PrivacyPopover = ({ openPrivacy, setOpenPrivacy }) => {
 						.{" "}
 					</p>
 					<p>
-						To report a bug, pease visit our{" "}
+						To report a bug, visit our{" "}
 						<a href={githubAddress} target="_blank">
 							git hub issues
 						</a>{" "}

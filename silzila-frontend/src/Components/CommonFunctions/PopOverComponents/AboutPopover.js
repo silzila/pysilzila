@@ -32,7 +32,8 @@ const AboutPopover = ({ openAbout, setOpenAbout }) => {
 					<CloseRoundedIcon onClick={() => setOpenAbout(false)} />
 				</div>
 				<div>
-					<p>Silzila is an Open Source data viaualization tool.</p>
+					<p>Silzila is an Open Source Data Visualization Tool.</p>
+					{/* TODO: Priority 5 - Include License information & disclaimer (as is,. etc) here  */}
 					<p>Add more text and content to see how it looks</p>
 				</div>
 			</div>
