@@ -288,7 +288,7 @@ const MenuBar = ({
 					sx={fileMenuStyle}
 					onClick={() => {
 						if (from === "dataViewer") {
-							if (showSaveWarning) {
+							if (showSaveWarning || playBookState.playBookUid === null) {
 								setSaveFromLogoutIcon(true);
 								setSaveModal(true);
 							} else {
@@ -464,7 +464,8 @@ const MenuBar = ({
 					<div
 						className="menuHome"
 						onClick={() => {
-							if (showSaveWarning) {
+							console.log(showSaveWarning);
+							if (showSaveWarning || playBookState.playBookUid === null) {
 								setSaveFromHomeIcon(true);
 								setSaveModal(true);
 							} else {
