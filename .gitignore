@@ -1,1 +1,10 @@
 venv/
+/.vscode/
+__pycache__/
+*sqlite3*.*
+*.db
+db_test/
+out/linecounter.json
+out/linecounter.txt
+silzila-frontend/package-lock.json
+logger.log
