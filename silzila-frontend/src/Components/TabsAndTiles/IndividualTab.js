@@ -1,4 +1,6 @@
-import { width } from "@mui/system";
+// This component returns one single tab within the tabRibbon.
+// Each tab has actions to rename the tab & delete the tab
+
 import React, { useState } from "react";
 import "./individualTab.css";
 
@@ -22,12 +24,6 @@ function IndividualTab({
 	const handleTabNameValue = (e) => {
 		setRenameValue(e.target.value);
 	};
-
-	console.log(selectedTab, tabId);
-
-	// TODO: Priority 5 - Tab Max width
-	// 		- Set Tab max width to 250px
-	// 		- Tooltip shows tile name and the text "Double click to edit". Show the latter in next line in a custom tooltip
 
 	if (selectedTab === tabId && editing) {
 		return (
@@ -72,16 +68,20 @@ function IndividualTab({
 					{tabName}
 				</span>
 
-				{/* If dashboard in the presentation mode the 'X'(closing tab icon) will be disappear */}
-				{dashMode !== "Present" ? (
-					<span
-						title="Delete Tab"
-						className="closeTab"
-						onClick={() => removeTab(tabName, tabId)}
-					>
-						X
-					</span>
-				) : null}
+				{/* If dashboard is in presentation mode, the 'X'(close tab icon) will disappear */}
+
+				<span
+					title="Delete Tab"
+					className="closeTab"
+					onClick={() => removeTab(tabName, tabId)}
+					style={
+						dashMode !== "Present"
+							? { visibility: "visible" }
+							: { visibility: "hidden" }
+					}
+				>
+					X
+				</span>
 			</span>
 		);
 	}

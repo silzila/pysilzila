@@ -10,7 +10,7 @@ const chartProperties = {
 			tabId: 1,
 			tileId: 1,
 
-			chartType: "multibar",
+			chartType: "crossTab",
 
 			// Left Column
 			axesEdited: false,
@@ -20,7 +20,11 @@ const chartProperties = {
 					fields: [],
 				},
 				{
-					name: "Dimension",
+					name: "Row",
+					fields: [],
+				},
+				{
+					name: "Column",
 					fields: [],
 				},
 				{
@@ -30,17 +34,13 @@ const chartProperties = {
 			],
 
 			// DataViewerBottom Dataset selected and tables to list
-			selectedDs: {
-				friendly_name: "landmark post",
-				dc_uid: "post",
-				ds_uid: "dspost",
-			},
-			selectedTable: {
-				dspost: "s",
-			},
+			selectedDs: {},
+			selectedTable: {},
 
 			titleOptions: {
 				fontSize: 28,
+				titleLeftPadding: "10px",
+				titleAlign: "center",
 				chartTitle: "",
 				generateTitle: "Auto",
 			},
@@ -64,7 +64,7 @@ const chartPropertiesState = (state = chartProperties, action) => {
 			(obj) => obj.uId === uId
 		);
 		var card = state.properties[propKey].chartAxes[bIndex].fields[cardIndex];
-		console.log(cardIndex, card);
+
 		return {
 			cardIndex,
 			card,
@@ -86,7 +86,7 @@ const chartPropertiesState = (state = chartProperties, action) => {
 						// General Tab Info
 						tabId: action.payload.tabId,
 						tileId: action.payload.tileId,
-						chartType: "multibar",
+						chartType: "crossTab",
 
 						// Left Column
 						axesEdited: false,
@@ -96,7 +96,11 @@ const chartPropertiesState = (state = chartProperties, action) => {
 								fields: [],
 							},
 							{
-								name: "Dimension",
+								name: "Row",
+								fields: [],
+							},
+							{
+								name: "Column",
 								fields: [],
 							},
 							{
@@ -110,6 +114,8 @@ const chartPropertiesState = (state = chartProperties, action) => {
 
 						titleOptions: {
 							fontSize: 28,
+							titleLeftPadding: "20px",
+							titleAlign: "center",
 							chartTitle: "",
 							generateTitle: "Auto",
 						},
@@ -133,7 +139,7 @@ const chartPropertiesState = (state = chartProperties, action) => {
 						// General Tab Info
 						tabId: action.payload.tabId,
 						tileId: action.payload.tileId,
-						chartType: "multibar",
+						chartType: "crossTab",
 
 						// Left Column
 						axesEdited: false,
@@ -143,7 +149,11 @@ const chartPropertiesState = (state = chartProperties, action) => {
 								fields: [],
 							},
 							{
-								name: "Dimension",
+								name: "Row",
+								fields: [],
+							},
+							{
+								name: "Column",
 								fields: [],
 							},
 							{
@@ -156,6 +166,8 @@ const chartPropertiesState = (state = chartProperties, action) => {
 
 						titleOptions: {
 							fontSize: 28,
+							titleLeftPadding: "20px",
+							titleAlign: "center",
 							chartTitle: "",
 							generateTitle: "Auto",
 						},
@@ -216,7 +228,6 @@ const chartPropertiesState = (state = chartProperties, action) => {
 					},
 				});
 			} else {
-				console.log("Exceeded allowed numbers");
 				return update(state, {
 					properties: {
 						[action.payload.propKey]: {
@@ -293,13 +304,6 @@ const chartPropertiesState = (state = chartProperties, action) => {
 			});
 
 		case "UPDATE_AXES_QUERY_PARAM":
-			console.log(
-				action.payload.propKey,
-				action.payload.binIndex,
-				action.payload.itemIndex,
-				action.payload.item
-			);
-
 			return update(state, {
 				properties: {
 					[action.payload.propKey]: {
@@ -329,7 +333,6 @@ const chartPropertiesState = (state = chartProperties, action) => {
 			});
 
 		case "REUSE_DATA":
-			console.log("REUSE_DATA", action.payload.propKey, action.payload.reUseData);
 			return update(state, {
 				properties: {
 					[action.payload.propKey]: { reUseData: { $set: action.payload.reUseData } },
@@ -340,7 +343,6 @@ const chartPropertiesState = (state = chartProperties, action) => {
 		// Title
 
 		case "SET_CHART_TITLE":
-			console.log(action.payload.propKey, action.payload.title);
 			return update(state, {
 				properties: {
 					[action.payload.propKey]: {
@@ -350,11 +352,19 @@ const chartPropertiesState = (state = chartProperties, action) => {
 			});
 
 		case "SET_GENERATE_TITLE":
-			console.log(action.payload.propKey, action.payload.generateTitle);
 			return update(state, {
 				properties: {
 					[action.payload.propKey]: {
 						titleOptions: { generateTitle: { $set: action.payload.generateTitle } },
+					},
+				},
+			});
+
+		case "SET_TITLE_ALIGN":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						titleOptions: { titleAlign: { $set: action.payload.align } },
 					},
 				},
 			});
@@ -373,8 +383,6 @@ const chartPropertiesState = (state = chartProperties, action) => {
 				action.payload.bIndex,
 				action.payload.dragUId
 			);
-
-			console.log(dragObj);
 
 			return update(state, {
 				properties: {
@@ -424,6 +432,12 @@ const chartPropertiesState = (state = chartProperties, action) => {
 					},
 				},
 			});
+
+		case "LOAD_CHART_PROPERTIES":
+			return action.payload;
+
+		case "RESET_CHART_PROPERTY":
+			return chartProperties;
 
 		default:
 			return state;

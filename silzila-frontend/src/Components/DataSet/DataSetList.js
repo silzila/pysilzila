@@ -1,4 +1,7 @@
-import ModeEditOutlineTwoTone from "@mui/icons-material/ModeEditOutlineTwoTone";
+// List of Datasets created by the user is displayed here.
+// Users can delete any dataset
+// Creating new and editing existing dataset are handled in other child components
+
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Tooltip } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -29,9 +32,9 @@ const DataSetList = ({
 	useEffect(() => {
 		resetState();
 		getInformation();
-		// eslint-disable-next-line
 	}, []);
 
+	// Get the list of Datasets
 	const getInformation = async () => {
 		var result = await FetchData({
 			requestType: "noData",
@@ -47,6 +50,8 @@ const DataSetList = ({
 			console.log(result.data.detail);
 		}
 	};
+
+	// Selected dataset for editing
 	const editDs = async (dsuid) => {
 		setDsId(dsuid);
 		setTimeout(() => {
@@ -54,6 +59,7 @@ const DataSetList = ({
 		}, 1000);
 	};
 
+	// Deleting a dataset
 	const deleteDs = async (dsUid) => {
 		var result = await FetchData({
 			requestType: "noData",
@@ -98,7 +104,12 @@ const DataSetList = ({
 								key={dc.friendly_name}
 								render={(xprops) => (
 									<div
-										className="dataConnectionList"
+										className={
+											xprops.open
+												? "dataConnectionListSelected"
+												: "dataConnectionList"
+										}
+										onClick={() => editDs(dc.ds_uid)}
 										onMouseOver={() => xprops.setOpen(true)}
 										onMouseLeave={() => xprops.setOpen(false)}
 									>
@@ -106,35 +117,31 @@ const DataSetList = ({
 
 										{xprops.open ? (
 											<Tooltip
-												title="Edit Dataset"
+												title="Delete Dataset"
 												arrow
 												placement="right-start"
 											>
-												<>
-													<ModeEditOutlineTwoTone
-														style={{
-															width: "1rem",
-															height: "1rem",
-															margin: "auto",
-														}}
-														onClick={() => editDs(dc.ds_uid)}
-													/>
+												<div
+													className="dataHomeDeleteIcon"
+													onClick={(e) => {
+														e.stopPropagation();
+
+														var yes = window.confirm(
+															"Are you sure you want to Delete this Dataset?"
+														);
+														if (yes) {
+															deleteDs(dc.ds_uid);
+														}
+													}}
+												>
 													<DeleteIcon
 														style={{
 															width: "1rem",
 															height: "1rem",
 															margin: "auto",
 														}}
-														onClick={() => {
-															var yes = window.confirm(
-																"are you sure you want to Delete this Dataset?"
-															);
-															if (yes) {
-																deleteDs(dc.ds_uid);
-															}
-														}}
 													/>
-												</>
+												</div>
 											</Tooltip>
 										) : null}
 									</div>
@@ -143,7 +150,7 @@ const DataSetList = ({
 						);
 					})}
 			</div>
-
+			{/* Alert to display success / failure info */}
 			<NotificationDialog
 				openAlert={openAlert}
 				severity={severity}

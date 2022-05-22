@@ -1,3 +1,10 @@
+// This component houses Sample records for selected table from dataset
+// This sample records can be view as
+// 	- Full table with all fields and values
+// 	- Just column names of table
+
+// Table columns are draggable. These dragged table columns are then dropped into dropzones
+
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Box } from "./Box";
@@ -92,9 +99,6 @@ const DisplayTable = ({
 			});
 		} else return null;
 	};
-
-	// TODO: Priority 10 - Table scroll bar position
-	// Scroll bar must start from the body of table instead of starting from the table header
 
 	const RenderButtons = () => {
 		if (SampleRecords) {

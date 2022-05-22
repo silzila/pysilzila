@@ -1,4 +1,10 @@
-import { MenuItem, Select } from "@mui/material";
+// This component is a part of Create / Edit Dataset page
+// Functions incluce
+// 	- Select DataConnection
+// 	- Select Schema
+// 	- Select tables in a schema
+
+import { MenuItem, Select, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import ShortUniqueId from "short-unique-id";
@@ -40,6 +46,9 @@ const Sidebar = ({
 
 	const [dcToResetTo, setDcToResetTo] = useState("");
 
+	// Actions performed when dataConnection is changed
+	// If user already selected some tables from another dataset
+	// 		to display in canvas, provide a warning to reset data
 	const onConnectionChange = (e) => {
 		if (tempTable.length > 0) {
 			setDcToResetTo(e.target.value);
@@ -53,7 +62,6 @@ const Sidebar = ({
 	};
 
 	useEffect(() => {
-		console.log(editMode);
 		if (editMode) {
 			getAllDc();
 			setSelectedConnection(connectionValue);
@@ -75,6 +83,7 @@ const Sidebar = ({
 		}
 	}, [resetDataset]);
 
+	// Get all data connection available
 	const getAllDc = async () => {
 		var res = await FetchData({
 			requestType: "noData",
@@ -90,6 +99,7 @@ const Sidebar = ({
 		}
 	};
 
+	// Get all schemas of a particular data connection
 	const getSchemaList = async (uid) => {
 		const dc_uid = uid;
 		if (!editMode) {
@@ -127,6 +137,7 @@ const Sidebar = ({
 		}
 	};
 
+	// Fetch list of tables in a particular schema
 	const getTables = async (e) => {
 		const schema = e.target.value;
 		setSelectedSchema(schema);
@@ -188,9 +199,6 @@ const Sidebar = ({
 					onChange={(e) => {
 						onConnectionChange(e);
 					}}
-					// TODO: Priority 5 - (WARNING) in MUI Select component
-					// You have provided an out-of-range value `post` for the select component.
-					// Consider providing a value that matches one of the available options or ''.The available values are "".
 					value={selectedConnection}
 				>
 					{connectionList &&
@@ -202,17 +210,21 @@ const Sidebar = ({
 										" ".concat("(" + connection.friendly_name + ")")
 									}
 									sx={{
-										fontSize: "14px",
-										maxWidth: "200px",
-										margin: "4px 8px 4px 0px",
-										whiteSpace: "nowrap",
-										overflow: "hidden",
-										textOverflow: "ellipsis",
+										width: "200px",
 									}}
 									value={connection.dc_uid}
 									key={connection.dc_uid}
 								>
-									{connection.db_name} ({connection.friendly_name})
+									<Typography
+										sx={{
+											width: "auto",
+											overflow: "hidden",
+											textOverflow: "ellipsis",
+											fontSize: "14px",
+										}}
+									>
+										{connection.db_name} ({connection.friendly_name})
+									</Typography>
 								</MenuItem>
 							);
 						})}
@@ -227,18 +239,21 @@ const Sidebar = ({
 							return (
 								<MenuItem
 									sx={{
-										fontSize: "14px",
 										width: "200px",
-										paddingBottom: "4px",
-										paddingTop: "4px",
-										paddingRight: "8px",
-										paddingLeft: "8px",
-										textOverflow: "ellipsis",
 									}}
 									value={schema}
 									key={schema}
 								>
-									{schema}
+									<Typography
+										sx={{
+											width: "auto",
+											overflow: "hidden",
+											textOverflow: "ellipsis",
+											fontSize: "14px",
+										}}
+									>
+										{schema}
+									</Typography>
 								</MenuItem>
 							);
 						})}
@@ -275,7 +290,14 @@ const Sidebar = ({
 				<div style={{ marginTop: "10px", fontStyle: "italic" }}>No Tables</div>
 			)}
 
-			<ChangeConnection open={openDlg} setOpen={setOpenDlg} setReset={setResetDataset} />
+			<ChangeConnection
+				open={openDlg}
+				setOpen={setOpenDlg}
+				setReset={setResetDataset}
+				heading="RESET DATASET"
+				message="Changing connection will reset this dataset creation. Do you want to discard
+						the progress?"
+			/>
 		</div>
 	);
 };

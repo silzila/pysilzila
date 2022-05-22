@@ -1,4 +1,9 @@
-import { Divider, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+// This component houses
+// 	- Option to switch dataset, L
+// 	- List of tables for selected dataset
+// 	- Tablle for sample records
+
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import {
@@ -7,16 +12,46 @@ import {
 } from "../../redux/ChartProperties/actionsChartProperties";
 import { addTableRecords } from "../../redux/SampleTableRecords/sampleTableRecordsActions";
 import {
+	actionsToAddTile,
 	setSelectedDataSetList,
 	setTablesForSelectedDataSets,
 } from "../../redux/TabTile/actionsTabTile";
 import FetchData from "../../ServerCall/FetchData";
+import { ChangeConnection } from "../CommonFunctions/DialogComponents";
 import DatasetListPopover from "../CommonFunctions/PopOverComponents/DatasetListPopover";
-
 import LoadingPopover from "../CommonFunctions/PopOverComponents/LoadingPopover";
-
 import "./dataViewerBottom.css";
 import DisplayTable from "./DisplayTable";
+
+export const getTableData = async (dc_uid, schema_name, table_name, token) => {
+	var res = await FetchData({
+		requestType: "noData",
+		method: "GET",
+		url: "dc/sample-records/" + dc_uid + "/" + schema_name + "/" + table_name,
+		headers: { Authorization: `Bearer ${token}` },
+	});
+
+	if (res.status) {
+		return res.data;
+	} else {
+		console.log("Get Table Data Error".res.data.detail);
+	}
+};
+
+export const getColumnTypes = async (dc_uid, schema_name, table_name, token) => {
+	var res = await FetchData({
+		requestType: "noData",
+		method: "GET",
+		url: "dc/columns/" + dc_uid + "/" + schema_name + "/" + table_name,
+		headers: { Authorization: `Bearer ${token}` },
+	});
+
+	if (res.status) {
+		return res.data;
+	} else {
+		console.log("Get Table Columns Error".res.data.detail);
+	}
+};
 
 const DataViewerBottom = ({
 	// state
@@ -24,6 +59,7 @@ const DataViewerBottom = ({
 	tabTileProps,
 	chartProps,
 	sampleRecords,
+	tabState,
 
 	// dispatch
 	setSelectedDataSetList,
@@ -31,6 +67,7 @@ const DataViewerBottom = ({
 	setSelectedTable,
 	setTablesForDs,
 	addRecords,
+	addTile,
 }) => {
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 	var selectedChartProp = chartProps.properties[propKey];
@@ -40,6 +77,9 @@ const DataViewerBottom = ({
 	const [selectedDataset, setSelectedDataset] = useState("");
 	const [loading, setLoading] = useState(false);
 
+	const [openChangeDatasetDlg, setOpenChangeDatasetDlg] = useState(false);
+	const [addNewOrChooseExistingDS, setAddNewOrChooseExistingDS] = useState("");
+
 	// When a new dataset is added to the tile for work,
 	// set it in SelectedDataSet of tabTileProps
 	useEffect(async () => {
@@ -48,9 +88,6 @@ const DataViewerBottom = ({
 			if (isAlready.length > 0) {
 				window.alert("Dataset already in selected list");
 			} else {
-				// TODO: Priority 5 - When Dataset is changed in dataviewer page, where to load new Dataset
-				// If the page already has any values under filter, measure or dimension, open the newly selected dataset
-				// in a new tile. If not, open in the same tile
 				setSelectedDataSetList(selectedDataset);
 				setSelectedDs(propKey, selectedDataset);
 				setOpen(false);
@@ -87,14 +124,14 @@ const DataViewerBottom = ({
 		}
 	};
 
-	const handleDataSetChange = (value) => {
-		if (value === "addNewDataset") {
-			setOpen(true);
-		} else {
-			var dsObj = tabTileProps.selectedDataSetList.filter((ds) => ds.ds_uid === value)[0];
-			setSelectedDs(propKey, dsObj);
-		}
-	};
+	// const handleDataSetChange = (value) => {
+	// 	if (value === "addNewDataset") {
+	// 		setOpen(true);
+	// 	} else {
+	// 		var dsObj = tabTileProps.selectedDataSetList.filter((ds) => ds.ds_uid === value)[0];
+	// 		setSelectedDs(propKey, dsObj);
+	// 	}
+	// };
 
 	const handleTableChange = async (table, dsUid) => {
 		if (table.id !== selectedChartProp.selectedTable) {
@@ -105,42 +142,22 @@ const DataViewerBottom = ({
 				setLoading(true);
 				var dc_uid = selectedChartProp.selectedDs?.dc_uid;
 				var ds_uid = selectedChartProp.selectedDs?.ds_uid;
-				var tableRecords = await getTableData(dc_uid, table.schema_name, table.table_name);
-				var recordsType = await getColumnTypes(dc_uid, table.schema_name, table.table_name);
+				var tableRecords = await getTableData(
+					dc_uid,
+					table.schema_name,
+					table.table_name,
+					token
+				);
+				var recordsType = await getColumnTypes(
+					dc_uid,
+					table.schema_name,
+					table.table_name,
+					token
+				);
 
 				addRecords(ds_uid, table.id, tableRecords, recordsType);
 				setLoading(false);
 			}
-		}
-	};
-
-	const getTableData = async (dc_uid, schema_name, table_name) => {
-		var res = await FetchData({
-			requestType: "noData",
-			method: "GET",
-			url: "dc/sample-records/" + dc_uid + "/" + schema_name + "/" + table_name,
-			headers: { Authorization: `Bearer ${token}` },
-		});
-
-		if (res.status) {
-			return res.data;
-		} else {
-			console.log("Get Table Data Error".res.data.detail);
-		}
-	};
-
-	const getColumnTypes = async (dc_uid, schema_name, table_name) => {
-		var res = await FetchData({
-			requestType: "noData",
-			method: "GET",
-			url: "dc/columns/" + dc_uid + "/" + schema_name + "/" + table_name,
-			headers: { Authorization: `Bearer ${token}` },
-		});
-
-		if (res.status) {
-			return res.data;
-		} else {
-			console.log("Get Table Columns Error".res.data.detail);
 		}
 	};
 
@@ -169,6 +186,61 @@ const DataViewerBottom = ({
 
 	var selectInput = { fontSize: "12px", padding: "2px 1rem" };
 
+	const handleDataSetChange = (value) => {
+		const axes = chartProps.properties[propKey].chartAxes;
+		setAddNewOrChooseExistingDS(value);
+		if (value === "addNewDataset") {
+			console.log(axes);
+			var count = 0;
+			axes.map((ax) => {
+				if (ax.fields.length > 0) {
+					count = count + 1;
+				}
+			});
+			if (count > 0) {
+				setOpenChangeDatasetDlg(true);
+			} else {
+				setOpen(true);
+			}
+		} else {
+			var count = 0;
+			axes.map((ax) => {
+				if (ax.fields.length > 0) {
+					count = count + 1;
+				}
+			});
+
+			if (count > 0) {
+				setOpenChangeDatasetDlg(true);
+			} else {
+				var dsObj = tabTileProps.selectedDataSetList.filter((ds) => ds.ds_uid === value)[0];
+				setSelectedDs(propKey, dsObj);
+				console.log(dsObj);
+			}
+		}
+	};
+
+	const onChangeOrAddDataset = () => {
+		let tabObj = tabState.tabs[tabTileProps.selectedTabId];
+
+		addTile(
+			tabObj.tabId,
+			tabObj.nextTileId,
+			tabTileProps.selectedTable,
+			chartProps.properties[propKey].selectedDs,
+			chartProps.properties[propKey].selectedTable
+		);
+
+		setOpenChangeDatasetDlg(false);
+		if (addNewOrChooseExistingDS === "addNewDataset") {
+			setOpen(true);
+		} else {
+			var dsObj = tabTileProps.selectedDataSetList.filter(
+				(ds) => ds.ds_uid === addNewOrChooseExistingDS
+			)[0];
+			setSelectedDs(`${tabObj.tabId}.${tabObj.nextTileId}`, dsObj);
+		}
+	};
 	return (
 		<div className="dataViewerBottom">
 			<div className="dataSetAndTableList">
@@ -239,6 +311,13 @@ const DataViewerBottom = ({
 				) : null}
 			</div>
 			{loading ? <LoadingPopover /> : null}
+			<ChangeConnection
+				onChangeOrAddDataset={onChangeOrAddDataset}
+				open={openChangeDatasetDlg}
+				setOpen={setOpenChangeDatasetDlg}
+				heading="CHANGE DATASET"
+				message="Want to open in new tile?"
+			/>
 		</div>
 	);
 };
@@ -249,6 +328,7 @@ const mapStateToProps = (state) => {
 		tabTileProps: state.tabTileProps,
 		chartProps: state.chartProperties,
 		sampleRecords: state.sampleRecords,
+		tabState: state.tabState,
 	};
 };
 
@@ -263,6 +343,17 @@ const mapDispatchToProps = (dispatch) => {
 
 		addRecords: (ds_uid, tableId, tableRecords, columnType) =>
 			dispatch(addTableRecords(ds_uid, tableId, tableRecords, columnType)),
+		addTile: (tabId, nextTileId, table, selectedDataset, selectedTables) =>
+			dispatch(
+				actionsToAddTile({
+					tabId,
+					nextTileId,
+					table,
+					fromTab: false,
+					selectedDs: selectedDataset,
+					selectedTablesInDs: selectedTables,
+				})
+			),
 	};
 };
 

@@ -7,15 +7,14 @@ const HeatMap = ({
 	propKey,
 	graphDimension,
 	chartArea,
+	graphTileSize,
 
 	//state
 	chartControl,
 	chartProperty,
 }) => {
 	var property = chartControl.properties[propKey];
-	console.log(property, "+++++ PROPERTY +++++");
 	let chartData = property.chartData ? property.chartData.result : "";
-	console.log(chartData, "+++++ chartData +++++");
 
 	const [maxValue, setMaxValue] = useState(0);
 
@@ -30,11 +29,10 @@ const HeatMap = ({
 					max = element[maxFieldName];
 				}
 			});
-			console.log(max);
 			setMaxValue(max);
 		}
 	}, [chartData]);
-
+	console.log(chartData);
 	const RenderChart = () => {
 		return (
 			<ReactEcharts
@@ -44,32 +42,23 @@ const HeatMap = ({
 					width: graphDimension.width,
 					height: graphDimension.height,
 					overflow: "hidden",
+					border: chartArea
+						? "none"
+						: graphTileSize
+						? "none"
+						: "1px solid rgb(238,238,238)",
 				}}
 				option={{
+					animation: chartArea ? false : true,
 					legend: {},
-
-					// TODO: Priorit 5 - Margin doesn't reflect in graph
-					// Margin for a Funnel chart changes only the grid line and not the actual funnel graph
 					grid: {
-						left:
-							chartArea === "dashboard"
-								? `${property.chartMargin.left + 10}%`
-								: `${property.chartMargin.left}%`,
-						right:
-							chartArea === "dashboard"
-								? `${property.chartMargin.right + 0}%`
-								: `${property.chartMargin.right}%`,
-						top:
-							chartArea === "dashboard"
-								? `${property.chartMargin.top + 10}%`
-								: `${property.chartMargin.top}%`,
-						bottom:
-							chartArea === "dashboard"
-								? `${property.chartMargin.bottom + 5}%`
-								: `${property.chartMargin.bottom}%`,
+						left: property.chartMargin.left,
+						right: property.chartMargin.right,
+						top: property.chartMargin.top,
+						bottom: property.chartMargin.bottom,
 					},
 
-					label: { show: true, fontSize: 14 },
+					// label: { show: true, fontSize: 14 },
 					tooltip: { show: property.mouseOver.enable },
 
 					dataset: {
@@ -77,17 +66,111 @@ const HeatMap = ({
 					},
 					xAxis: {
 						type: "category",
+
+						position: property.axisOptions.xAxis.position,
+
+						axisLine: {
+							onZero: property.axisOptions.xAxis.onZero,
+						},
+
+						axisTick: {
+							alignWithLabel: true,
+							length:
+								property.axisOptions.xAxis.position === "top"
+									? property.axisOptions.xAxis.tickSizeTop
+									: property.axisOptions.xAxis.tickSizeBottom,
+						},
+						axisLabel: {
+							rotate:
+								property.axisOptions.xAxis.position === "top"
+									? property.axisOptions.xAxis.tickRotationTop
+									: property.axisOptions.xAxis.tickRotationBottom,
+							margin:
+								property.axisOptions.xAxis.position === "top"
+									? property.axisOptions.xAxis.tickPaddingTop
+									: property.axisOptions.xAxis.tickPaddingBottom,
+						},
+
+						show: property.axisOptions.xAxis.showLabel,
+
+						name: property.axisOptions.xAxis.name,
+						nameLocation: property.axisOptions.xAxis.nameLocation,
+						nameGap: property.axisOptions.xAxis.nameGap,
 					},
 					yAxis: {
 						type: "category",
+
+						inverse: property.axisOptions.inverse,
+
+						position: property.axisOptions.yAxis.position,
+
+						axisLine: {
+							onZero: property.axisOptions.yAxis.onZero,
+						},
+
+						axisTick: {
+							alignWithLabel: true,
+							length:
+								property.axisOptions.yAxis.position === "left"
+									? property.axisOptions.yAxis.tickSizeLeft
+									: property.axisOptions.yAxis.tickSizeRight,
+						},
+
+						axisLabel: {
+							rotate:
+								property.axisOptions.yAxis.position === "left"
+									? property.axisOptions.yAxis.tickRotationLeft
+									: property.axisOptions.yAxis.tickRotationRight,
+							margin:
+								property.axisOptions.yAxis.position === "left"
+									? property.axisOptions.yAxis.tickPaddingLeft
+									: property.axisOptions.yAxis.tickPaddingRight,
+						},
+
+						show: property.axisOptions.yAxis.showLabel,
+
+						name: property.axisOptions.yAxis.name,
+						nameLocation: property.axisOptions.yAxis.nameLocation,
+						nameGap: property.axisOptions.yAxis.nameGap,
 					},
 					visualMap: [
 						{
-							min: 0,
-							max: maxValue,
+							min:
+								property.colorScale.colorScaleType === "Manual"
+									? property.colorScale.min !== ""
+										? parseInt(property.colorScale.min)
+										: 0
+									: 0,
+							max:
+								property.colorScale.colorScaleType === "Manual"
+									? property.colorScale.max !== ""
+										? parseInt(property.colorScale.max)
+										: 0
+									: maxValue,
 						},
 					],
-					series: [{ type: "heatmap" }],
+
+					series: [
+						{
+							type: "heatmap",
+							label: {
+								normal: {
+									show: property.labelOptions.showLabel,
+									// formatter helps to show measure values as labels(inside each block)
+									formatter: (param) => {
+										var keyArr = Object.keys(param.data);
+										var valueKey = keyArr[2];
+										return param.data[valueKey];
+									},
+									fontSize: property.labelOptions.fontSize,
+									color: property.labelOptions.labelColorManual
+										? property.labelOptions.labelColor
+										: null,
+								},
+								// show: property.labelOptions.showLabel,
+							},
+						},
+					],
 				}}
 			/>
 		);
@@ -101,5 +184,4 @@ const mapStateToProps = (state) => {
 		chartProperty: state.chartProperties,
 	};
 };
-
 export default connect(mapStateToProps, null)(HeatMap);

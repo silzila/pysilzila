@@ -1,17 +1,14 @@
+// Input component used in many components in chart controls section
+
 import React, { useState } from "react";
 
-const InputNumber = ({ value, updateValue }) => {
+const InputNumber = ({ value, updateValue, disabled }) => {
 	const [inputValue, setInputValue] = useState(value);
 
 	const checkInput = (inputValue) => {
-		console.log(inputValue);
-
-		if (Number.isInteger(20)) console.log("20 is Integer");
 		if (Number.isInteger(Number(inputValue))) {
-			console.log("Update to redux");
 			updateValue(Number(inputValue));
 		} else {
-			console.log("Not a number");
 			setInputValue(" ");
 		}
 	};
@@ -25,6 +22,7 @@ const InputNumber = ({ value, updateValue }) => {
 			}}
 		>
 			<input
+				disabled={disabled}
 				autoFocus
 				className="inputValue"
 				type="text"

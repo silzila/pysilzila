@@ -37,6 +37,7 @@
 }
 .graphFullScreen {
 	display: flex;
+	flex-direction: column;
 	position: absolute;
 	left: 50%;
 	top: 50%;
@@ -59,6 +60,14 @@
 	color: #404040;
 }
 
+.graphAreaIconsSelected {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 5px;
+	color: #404040;
+}
+
 .editTitle {
 	flex: 1;
 	width: 100%;
@@ -74,11 +83,9 @@
 	font-family: "Segoe UI";
 }
 .graphContainer {
-	/* box-sizing: border-box; */
 	flex: 1;
-	overflow: hidden;
+	overflow: auto;
 	background-color: #fff;
-	display: flex;
 	justify-content: center;
 }
 .syntaxHighlight {
@@ -86,10 +93,10 @@
 }
 
 .controlsIcon {
-	padding: 12px;
+	padding: 8px;
 	width: 48px;
 	height: 48px;
-	margin: 0;
+	margin: 0 0 10px 0;
 	border-right: 3px solid transparent;
 	cursor: pointer;
 }
@@ -126,4 +133,6 @@
 	width: 250px;
 	border-right: 1px solid #d3d3d3;
 	border-bottom: 1px solid rgb(211, 211, 211);
+	display: flex;
+	flex-direction: column;
 }

@@ -4,11 +4,21 @@ Data Setup Page
 =================================================== 
 */
 
-.dataSetup {
-	height: 100vh;
+.dataHome {
 	display: flex;
+	height: 100vh;
+	flex-direction: column;
+	background-color: rgb(238, 238, 238);
+}
+
+.dataSetup {
+	width: 100%;
+	flex: 1;
 	padding: 2rem;
 	overflow: hidden;
+	max-width: 1400px;
+	margin: auto;
+	display: flex;
 }
 
 .dcds {
@@ -20,26 +30,30 @@ Data Setup Page
 }
 
 .dataConnectionContainer {
-	flex: 1;
+	flex: 2;
 	padding: 1rem;
 	border-radius: 0.5rem;
-	background-color: #f0f0f0;
+	background-color: #fff;
 	margin-bottom: 2rem;
 	overflow: auto;
+	display: flex;
+	flex-direction: column;
 }
 
 .dataSetContainer {
-	flex: 1;
+	flex: 3;
 	padding: 1rem;
 	border-radius: 0.5rem;
-	background-color: #f0f0f0;
+	background-color: #fff;
 	overflow: auto;
+	display: flex;
+	flex-direction: column;
 }
 
 .connectionListContainer {
 	display: flex;
 	flex-direction: column;
-	overflow: hidden;
+	overflow: auto;
 }
 
 .dashboardsContainer {
@@ -47,11 +61,11 @@ Data Setup Page
 	margin-left: 1rem;
 	padding: 1rem;
 	border-radius: 0.5rem;
-	background-color: #f0f0f0;
+	background-color: #fff;
 }
 
 .containersHead {
-	width: 100%;
+	/* width: 100%; */
 	padding-bottom: 1rem;
 	font-weight: 600;
 	display: flex;
@@ -68,19 +82,22 @@ Data Setup Page
 	flex: 1;
 }
 .containerButton {
-	background-color: #000000;
-	border: none;
+	border: 1px solid rgb(192, 192, 192);
+	background-color: transparent;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	font-weight: 600;
 	border-radius: 3px;
-	color: white;
+	color: #666;
 	height: 35px;
-	width: 60px;
-	font-size: 18px;
+	padding: 0 25px;
+	font-size: 16px;
 	cursor: pointer;
-	/* margin-right: 10px; */
 }
 
 .containerButton:hover {
-	background-color: #055f7a;
+	background-color: #fff;
+	border: 1px solid rgb(0, 123, 255);
+	color: rgb(0, 123, 255);
 }
 
 /* 
@@ -90,11 +107,36 @@ Data Connections
 */
 
 .dataConnectionList {
-	margin: 8px;
+	margin: 8px 5px 0 0;
 	background-color: rgb(250, 250, 250);
-	border-radius: 3px;
+	border-radius: 5px;
 	display: flex;
-	padding: 5px;
+	padding: 5px 20px;
+	border: 1px solid rgb(238, 238, 238);
+}
+
+.dataConnectionListSelected {
+	margin: 8px 5px 0 0;
+	background-color: #fff;
+	border-radius: 5px;
+	display: flex;
+	padding: 5px 20px;
+	border: 1px solid rgb(0, 123, 255);
+	cursor: pointer;
+	color: rgb(0, 123, 255);
+}
+
+.dataHomeDeleteIcon {
+	width: 1.5rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #666;
+}
+
+.dataHomeDeleteIcon:hover {
+	color: red;
+	background-color: rgb(238, 238, 238);
 }
 
 .dataConnectionName {
@@ -105,15 +147,6 @@ Data Connections
 .inputFieldStyle {
 	margin-top: 25px;
 }
-
-/* .MuiPopover-paper {
-    padding: 20px;
-    width: 30rem;
-    display: flex;
-    flex-direction: column;
-    font-size: 18px;
-    letter-spacing: 0.5px;
-} */
 
 .formTF {
 	height: 35px;
@@ -136,13 +169,11 @@ Datasets
 
 .sidebar {
 	width: 16rem;
-	background-color: #f0f0f0;
+	background-color: rgb(238, 238, 238);
 	border-right: 1px solid #e4e4e4;
 	padding: 1rem;
 	overflow-y: auto;
 	overflow-x: hidden;
-	/* resize: horizontal; */
-	/* gridTemplateRows: '15% 15% 70%', rowGap: '5px', overflowY: 'auto' */
 }
 
 .selectBar {
@@ -152,6 +183,7 @@ Datasets
 	background-color: #e8e9eb;
 	padding: 8px;
 	margin: 0.5rem 0 1.5rem 0;
+	text-align: left;
 }
 
 .sidebarHeading {
@@ -160,8 +192,6 @@ Datasets
 
 	margin: 0 0 0 0.5rem;
 	text-align: left;
-
-	/* padding: 1rem 0 0.5rem 0; */
 }
 
 .sidebarHeading::first-child {
@@ -175,12 +205,10 @@ Datasets
 	margin-top: 5px;
 	padding: 2px;
 	font-size: 14px;
-	/* overflow: auto; */
 }
 .tableListStyle:hover {
 	box-shadow: 0 0 2px 2px #c9c9c9;
 	border-radius: 5px;
-	/* font-weight: bold; */
 	background-color: white;
 }
 .selectTableInput {
@@ -221,5 +249,3 @@ TableData
 	padding: 3px;
 	height: 28px;
 }
-
-

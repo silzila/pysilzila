@@ -1,3 +1,6 @@
+// This component is part of Sidebar component
+// List of tables for a selected schema is returned along with option to check or uncheck
+
 import React, { useState } from "react";
 import { Checkbox, Tooltip } from "@mui/material";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";

@@ -1,3 +1,10 @@
+// This component relates with Legend related controls for chart
+// The controls include
+// 	- show / hide legend
+// 	- legend position
+// 	- Orientation
+// 	- legend item size
+
 import { FormControl, MenuItem, Select } from "@mui/material";
 import React from "react";
 import { connect } from "react-redux";
@@ -16,7 +23,6 @@ const ChartLegend = ({
 
 	const showLegend = chartControl.properties[propKey].legendOptions.showLegend;
 	const setLegend = (item) => {
-		console.log(item);
 		updateLegendOption(propKey, "showLegend", item);
 	};
 	const legendOption = [
@@ -38,9 +44,8 @@ const ChartLegend = ({
 	};
 
 	const orientation = chartControl.properties[propKey].legendOptions.orientation;
-	console.log(orientation);
+
 	const setOrient = (item) => {
-		console.log(item);
 		updateLegendOption(propKey, "orientation", item);
 	};
 	const orientOption = [
@@ -73,12 +78,10 @@ const ChartLegend = ({
 		{ pos: "Bottom Right", top: "bottom", left: "right" },
 	];
 	const selectedPosition = chartControl.properties[propKey].legendOptions.position;
-	console.log(selectedPosition);
 
 	const updateSelectedPosition = (selectedValue) => {
-		console.log(selectedValue);
 		var positionSelected = positions.filter((pos) => pos.pos === selectedValue)[0];
-		console.log(positionSelected);
+
 		updateLegendOption(propKey, "position", positionSelected);
 	};
 
@@ -86,54 +89,53 @@ const ChartLegend = ({
 	const itemHeightMinMax = { min: 0, max: 200, step: 1 };
 	const itemSpacingMinMax = { min: 0, max: 60, step: 1 };
 	const moveSlider = chartControl.properties[propKey].legendOptions.moveSlider;
-	console.log(moveSlider);
+
 	const setSlider = (item) => {
-		console.log(item);
 		updateLegendOption(propKey, "moveSlider", item);
 	};
-	const moveSliderToRender = () => {
-		switch (chartControl.properties[propKey].legendOptions.moveSlider) {
-			case "Width":
-				return (
-					<SliderWithInput
-						sliderValue={chartControl.properties[propKey].legendOptions.symbolWidth}
-						sliderMinMax={itemWidthMinMax}
-						changeValue={(value) => updateLegendOption(propKey, "symbolWidth", value)}
-					/>
-				);
-			case "Height":
-				return (
-					<SliderWithInput
-						sliderValue={chartControl.properties[propKey].legendOptions.symbolHeight}
-						sliderMinMax={itemHeightMinMax}
-						changeValue={(value) => updateLegendOption(propKey, "symbolHeight", value)}
-					/>
-				);
-			case "Item Gap":
-				return (
-					<SliderWithInput
-						sliderValue={chartControl.properties[propKey].legendOptions.itemGap}
-						sliderMinMax={itemSpacingMinMax}
-						changeValue={(value) => updateLegendOption(propKey, "itemGap", value)}
-					/>
-				);
-		}
-	};
+	// const moveSliderToRender = () => {
+	// 	switch (chartControl.properties[propKey].legendOptions.moveSlider) {
+	// 		case "Width":
+	// 			return (
+	// 				<SliderWithInput
+	// 					sliderValue={chartControl.properties[propKey].legendOptions.symbolWidth}
+	// 					sliderMinMax={itemWidthMinMax}
+	// 					changeValue={(value) => updateLegendOption(propKey, "symbolWidth", value)}
+	// 				/>
+	// 			);
+	// 		case "Height":
+	// 			return (
+	// 				<SliderWithInput
+	// 					sliderValue={chartControl.properties[propKey].legendOptions.symbolHeight}
+	// 					sliderMinMax={itemHeightMinMax}
+	// 					changeValue={(value) => updateLegendOption(propKey, "symbolHeight", value)}
+	// 				/>
+	// 			);
+	// 		case "Item Gap":
+	// 			return (
+	// 				<SliderWithInput
+	// 					sliderValue={chartControl.properties[propKey].legendOptions.itemGap}
+	// 					sliderMinMax={itemSpacingMinMax}
+	// 					changeValue={(value) => updateLegendOption(propKey, "itemGap", value)}
+	// 				/>
+	// 			);
+	// 	}
+	// };
 
-	const moveLegend = ["Width", "Height", "Item Gap"];
-	const renderMoveLegend = () => {
-		return moveLegend.map((item) => {
-			return (
-				<div
-					className={item === moveSlider ? "radioButtonSelected2" : "radioButton2"}
-					onClick={() => setSlider(item)}
-					key={item}
-				>
-					{item}
-				</div>
-			);
-		});
-	};
+	// const moveLegend = ["Width", "Height", "Item Gap"];
+	// const renderMoveLegend = () => {
+	// 	return moveLegend.map((item) => {
+	// 		return (
+	// 			<div
+	// 				className={item === moveSlider ? "radioButtonSelected2" : "radioButton2"}
+	// 				onClick={() => setSlider(item)}
+	// 				key={item}
+	// 			>
+	// 				{item}
+	// 			</div>
+	// 		);
+	// 	});
+	// };
 
 	return (
 		<div className="optionsInfo">
@@ -183,8 +185,26 @@ const ChartLegend = ({
 					<div className="optionDescription">ORIENTATION:</div>
 					<div className="radioButtons">{renderOrientation()}</div>
 					<div className="optionDescription">RESIZE:</div>
-					<div className="radioButtons2">{renderMoveLegend()}</div>
-					{moveSliderToRender()}
+					<div className="optionDescription">Width</div>
+					<SliderWithInput
+						sliderValue={chartControl.properties[propKey].legendOptions.symbolWidth}
+						sliderMinMax={itemWidthMinMax}
+						changeValue={(value) => updateLegendOption(propKey, "symbolWidth", value)}
+					/>
+					<div className="optionDescription">Height</div>
+					<SliderWithInput
+						sliderValue={chartControl.properties[propKey].legendOptions.symbolHeight}
+						sliderMinMax={itemHeightMinMax}
+						changeValue={(value) => updateLegendOption(propKey, "symbolHeight", value)}
+					/>
+					<div className="optionDescription">Item Gap</div>
+					<SliderWithInput
+						sliderValue={chartControl.properties[propKey].legendOptions.itemGap}
+						sliderMinMax={itemSpacingMinMax}
+						changeValue={(value) => updateLegendOption(propKey, "itemGap", value)}
+					/>
+					{/* <div className="radioButtons2">{renderMoveLegend()}</div> */}
+					{/* {moveSliderToRender()} */}
 				</React.Fragment>
 			) : null}
 		</div>

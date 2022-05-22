@@ -6,6 +6,7 @@ const ScatterChart = ({
 	propKey,
 	graphDimension,
 	chartArea,
+	graphTileSize,
 
 	//state
 	chartProp,
@@ -14,7 +15,6 @@ const ScatterChart = ({
 	var property = chartControls.properties[propKey];
 
 	let chartData = property.chartData ? property.chartData.result : "";
-	console.log(chartData, "+++++ chartData +++++");
 
 	var seriesObj = {
 		symbolSize: chartArea === "dashboard" ? 10 : 20,
@@ -25,6 +25,11 @@ const ScatterChart = ({
 			tooltip: chartData ? Object.keys(chartData[0])[0] : "",
 		},
 		name: chartData ? Object.keys(chartData[0])[0] : "",
+		label: {
+			show: property.labelOptions.showLabel,
+			fontSize: property.labelOptions.fontSize,
+			color: property.labelOptions.labelColorManual ? property.labelOptions.labelColor : null,
+		},
 	};
 
 	const [seriesData, setSeriesData] = useState([]);
@@ -37,9 +42,8 @@ const ScatterChart = ({
 			}
 			setSeriesData(seriesDataTemp);
 		}
-	}, [chartData]);
+	}, [chartData, property]);
 
-	console.log(seriesData);
 	const RenderChart = () => {
 		return (
 			<>
@@ -49,20 +53,20 @@ const ScatterChart = ({
 						padding: "1rem",
 						width: graphDimension.width,
 						height: graphDimension.height,
-						overflow: "hidden",
+						margin: "auto",
+						border: chartArea
+							? "none"
+							: graphTileSize
+							? "none"
+							: "1px solid rgb(238,238,238)",
 					}}
 					option={{
+						animation: chartArea ? false : true,
 						legend: {
 							type: "scroll",
 							show: property.legendOptions?.showLegend,
-							itemHeight:
-								chartArea === "dashboard"
-									? property.legendOptions?.symbolHeight / 2
-									: property.legendOptions?.symbolHeight,
-							itemWidth:
-								chartArea === "dashboard"
-									? property.legendOptions?.symbolWidth / 2
-									: property.legendOptions?.symbolWidth,
+							itemHeight: property.legendOptions?.symbolHeight,
+							itemWidth: property.legendOptions?.symbolWidth,
 							itemGap: property.legendOptions?.itemGap,
 
 							left: property.legendOptions?.position?.left,
@@ -70,30 +74,81 @@ const ScatterChart = ({
 							orient: property.legendOptions?.orientation,
 						},
 						grid: {
-							left:
-								chartArea === "dashboard"
-									? `${property.chartMargin.left + 10}%`
-									: `${property.chartMargin.left}%`,
-							right:
-								chartArea === "dashboard"
-									? `${property.chartMargin.right + 0}%`
-									: `${property.chartMargin.right}%`,
-							top:
-								chartArea === "dashboard"
-									? `${property.chartMargin.top + 10}%`
-									: `${property.chartMargin.top}%`,
-							bottom:
-								chartArea === "dashboard"
-									? `${property.chartMargin.bottom + 5}%`
-									: `${property.chartMargin.bottom}%`,
+							left: property.chartMargin.left,
+							right: property.chartMargin.right,
+							top: property.chartMargin.top,
+							bottom: property.chartMargin.bottom,
 						},
 						tooltip: { show: property.mouseOver.enable },
 						dataset: {
 							dimensions: Object.keys(chartData[0]),
 							source: chartData,
 						},
-						xAxis: {},
-						yAxis: {},
+						xAxis: {
+							position: property.axisOptions.xAxis.position,
+
+							axisLine: {
+								onZero: property.axisOptions.xAxis.onZero,
+							},
+
+							show: property.axisOptions.xAxis.showLabel,
+
+							name: property.axisOptions.xAxis.name,
+							nameLocation: property.axisOptions.xAxis.nameLocation,
+							nameGap: property.axisOptions.xAxis.nameGap,
+
+							axisTick: {
+								alignWithLabel: true,
+								length:
+									property.axisOptions.xAxis.position === "top"
+										? property.axisOptions.xAxis.tickSizeTop
+										: property.axisOptions.xAxis.tickSizeBottom,
+							},
+							axisLabel: {
+								rotate:
+									property.axisOptions.xAxis.position === "top"
+										? property.axisOptions.xAxis.tickRotationTop
+										: property.axisOptions.xAxis.tickRotationBottom,
+								margin:
+									property.axisOptions.xAxis.position === "top"
+										? property.axisOptions.xAxis.tickPaddingTop
+										: property.axisOptions.xAxis.tickPaddingBottom,
+							},
+						},
+						yAxis: {
+							// inverse: property.axisOptions.inverse,
+
+							position: property.axisOptions.yAxis.position,
+
+							axisLine: {
+								onZero: property.axisOptions.yAxis.onZero,
+							},
+
+							axisTick: {
+								alignWithLabel: true,
+								length:
+									property.axisOptions.yAxis.position === "left"
+										? property.axisOptions.yAxis.tickSizeLeft
+										: property.axisOptions.yAxis.tickSizeRight,
+							},
+
+							show: property.axisOptions.yAxis.showLabel,
+
+							name: property.axisOptions.yAxis.name,
+							nameLocation: property.axisOptions.yAxis.nameLocation,
+							nameGap: property.axisOptions.yAxis.nameGap,
+
+							axisLabel: {
+								rotate:
+									property.axisOptions.yAxis.position === "left"
+										? property.axisOptions.yAxis.tickRotationLeft
+										: property.axisOptions.yAxis.tickRotationRight,
+								margin:
+									property.axisOptions.yAxis.position === "left"
+										? property.axisOptions.yAxis.tickPaddingLeft
+										: property.axisOptions.yAxis.tickPaddingRight,
+							},
+						},
 						series: seriesData,
 					}}
 				/>

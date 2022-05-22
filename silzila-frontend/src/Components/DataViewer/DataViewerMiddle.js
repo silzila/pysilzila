@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from "react";
+// This component houses the following
+// 	- Dropzones for table fields
+// 	- Graph section
+// 	- Chart types / Controls selection menu
+
+import React from "react";
 import { connect } from "react-redux";
 import ChartAxes from "../ChartAxes/ChartAxes";
 import GraphArea from "../GraphArea/GraphArea";
 import "./dataViewerMiddle.css";
 import chartControlIcon from "../../assets/chart-control-icon.svg";
 import settingsIcon from "../../assets/charts_theme_settings_icon.svg";
-import FilterIcon from "../../assets/filter_icon.svg";
 import ChartControlObjects from "../ChartOptions/ChartControlObjects";
 import ControlDetail from "../ChartOptions/ControlDetail";
 import ChartTypes from "../ChartOptions/ChartTypes";
@@ -17,7 +21,6 @@ const DataViewerMiddle = ({
 	tileId,
 
 	// state
-	chartProp,
 	tabTileProps,
 
 	// dispatch
@@ -27,10 +30,7 @@ const DataViewerMiddle = ({
 	const rmenu = [
 		{ name: "Charts", icon: chartControlIcon },
 		{ name: "Chart controls", icon: settingsIcon },
-		{ name: "Filter", icon: FilterIcon },
 	];
-
-	// const [tabTileProps.selectedControlMenu, setMenu] = useState("");
 
 	const renderMenu = rmenu.map((rm) => {
 		return (

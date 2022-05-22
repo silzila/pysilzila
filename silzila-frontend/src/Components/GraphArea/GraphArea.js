@@ -1,15 +1,21 @@
+// This container displays the following
+// 	- Graph title and the actual chart
+// 	- Controls to resize the graph to
+// 		- Fit tile area
+// 		- Match Dashboard size
+// 		- Full screen view
+// 	- Also provides the sql query used to generate data for this graph
+
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { connect } from "react-redux";
-import SimpleBar from "../Charts/SimpleBar";
 import AreaChart from "../Charts/AreaChart";
 import DoughnutChart from "../Charts/DoughnutChart";
 import LineChart from "../Charts/LineChart";
 import PieChart from "../Charts/PieChart";
-import RoseChart from "../Charts/RoseChart";
 import ScatterChart from "../Charts/ScatterChart";
 import StackedBar from "../Charts/StackedBar";
 import MultiBar from "../Charts/MultiBarChart";
-import StepLine from "../Charts/StepLine";
+import CrossTabChart from "../Charts/CrossTab/CrossTabChart";
 import {
 	setChartTitle,
 	setGenerateTitle,
@@ -25,6 +31,10 @@ import FunnelChart from "../Charts/FunnelChart";
 import GaugeChart from "../Charts/GaugeChart";
 import HeatMap from "../Charts/HeatMap";
 
+import FullscreenIcon from "@mui/icons-material/Fullscreen";
+import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
+import { toggleGraphSize } from "../../redux/TabTile/actionsTabTile";
+
 const GraphArea = ({
 	// state
 	tileState,
@@ -36,6 +46,7 @@ const GraphArea = ({
 	// dispatch
 	setChartTitle,
 	setGenerateTitleToStore,
+	toggleGraphSize,
 }) => {
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 
@@ -58,10 +69,10 @@ const GraphArea = ({
 			setGraphDimension({
 				height:
 					tabState.tabs[tabTileProps.selectedTabId].dashTilesDetails[propKey].height *
-					tabTileProps.dashGridSize,
+					tabTileProps.dashGridSize.y,
 				width:
 					tabState.tabs[tabTileProps.selectedTabId].dashTilesDetails[propKey].width *
-					tabTileProps.dashGridSize,
+					tabTileProps.dashGridSize.x,
 			});
 		}
 	};
@@ -113,6 +124,16 @@ const GraphArea = ({
 					<StackedBar
 						propKey={propKey}
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
+					/>
+				);
+
+			case "crossTab":
+				return (
+					<CrossTabChart
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
 					/>
 				);
 
@@ -121,6 +142,7 @@ const GraphArea = ({
 					<ScatterChart
 						propKey={propKey}
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
 					/>
 				);
 			case "area":
@@ -128,6 +150,7 @@ const GraphArea = ({
 					<AreaChart
 						propKey={propKey}
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
 					/>
 				);
 			case "pie":
@@ -135,6 +158,7 @@ const GraphArea = ({
 					<PieChart
 						propKey={propKey}
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
 					/>
 				);
 			case "donut":
@@ -142,6 +166,7 @@ const GraphArea = ({
 					<DoughnutChart
 						propKey={propKey}
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
 					/>
 				);
 			case "line":
@@ -149,6 +174,7 @@ const GraphArea = ({
 					<LineChart
 						propKey={propKey}
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
 					/>
 				);
 			case "funnel":
@@ -156,6 +182,7 @@ const GraphArea = ({
 					<FunnelChart
 						propKey={propKey}
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
 					/>
 				);
 
@@ -164,6 +191,7 @@ const GraphArea = ({
 					<GaugeChart
 						propKey={propKey}
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
 					/>
 				);
 
@@ -172,23 +200,9 @@ const GraphArea = ({
 					<HeatMap
 						propKey={propKey}
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
 					/>
 				);
-
-			// case "rose":
-			// 	return (
-			// 		<RoseChart
-			// 			propKey={propKey}
-			// 			graphDimension={fullScreen ? graphDimension2 : graphDimension}
-			// 		/>
-			// 	);
-			// case "step line":
-			// 	return (
-			// 		<StepLine
-			// 			propKey={propKey}
-			// 			graphDimension={fullScreen ? graphDimension2 : graphDimension}
-			// 		/>
-			// 	);
 
 			default:
 				return <h2>Work in progress</h2>;
@@ -199,7 +213,7 @@ const GraphArea = ({
 	// Setting title automatically
 	// ############################################
 
-	// TODO: Priority 5 - Setting title for different types of graphs
+	// TODO: Priority 1 - Setting title for different types of graphs
 	// Different graphs have different Dropzones. Setting automatic title must take into account of all these types
 	// Eg., Scatter plot has 2 measures, Funnel has 1 measure and no dimension, Heatmap has 2 dimensions, etc....
 
@@ -210,15 +224,12 @@ const GraphArea = ({
 			var title = "";
 			if (chartAxes[2]?.fields.length > 0) {
 				chartAxes[2].fields.forEach((element, index) => {
-					console.log(element, index);
 					if (index === 0) {
 						var titlePart = element.fieldname;
-						console.log(titlePart);
 						title = title + titlePart;
 					}
 					if (index > 0) {
 						var titlePart = `, ${element.fieldname}`;
-						console.log(titlePart);
 						title = title + titlePart;
 					}
 				});
@@ -288,6 +299,48 @@ const GraphArea = ({
 		);
 	};
 
+	const RenderScreenOption = () => {
+		return (
+			<>
+				<div
+					className={
+						!tileState.tiles[propKey].graphSizeFull
+							? "graphAreaIconsSelected"
+							: "graphAreaIcons"
+					}
+					title="Match Dashboard Size"
+					style={
+						tabState.tabs[tabTileProps.selectedTabId].tilesInDashboard.includes(propKey)
+							? {}
+							: { cursor: "not-allowed" }
+					}
+					onClick={() => {
+						if (
+							tabState.tabs[tabTileProps.selectedTabId].tilesInDashboard.includes(
+								propKey
+							)
+						)
+							toggleGraphSize(propKey, false);
+					}}
+				>
+					<FullscreenExitIcon />
+				</div>
+
+				<div
+					className={
+						tileState.tiles[propKey].graphSizeFull
+							? "graphAreaIconsSelected"
+							: "graphAreaIcons"
+					}
+					title="Fit Tile Size"
+					onClick={() => toggleGraphSize(propKey, true)}
+				>
+					<FullscreenIcon />
+				</div>
+			</>
+		);
+	};
+
 	return (
 		<div className="centerColumn">
 			<div className="graphTitleAndEdit">
@@ -303,6 +356,9 @@ const GraphArea = ({
 							autoFocus
 							style={{
 								fontSize: chartProperties.properties[propKey].titleOptions.fontSize,
+
+								textAlign:
+									chartProperties.properties[propKey].titleOptions.titleAlign,
 							}}
 							type="text"
 							className="editTitle"
@@ -317,6 +373,11 @@ const GraphArea = ({
 							className="graphTitle"
 							style={{
 								fontSize: chartProperties.properties[propKey].titleOptions.fontSize,
+								textAlign:
+									chartProperties.properties[propKey].titleOptions.titleAlign,
+								paddingLeft:
+									chartProperties.properties[propKey].titleOptions
+										.titleLeftPadding,
 							}}
 							onDoubleClick={() => editTitleText()}
 							title="Double click to set title manually"
@@ -326,24 +387,43 @@ const GraphArea = ({
 					</>
 				)}
 
-				{/* TODO: Priority 5 - Add Tooltip
-				When mouseover, show description of MUI images */}
+				{!showSqlCode ? (
+					tabState.tabs[tabTileProps.selectedTabId].showDash ? null : (
+						<>
+							<RenderScreenOption />
+							<div
+								className="graphAreaIcons"
+								onClick={() => setFullScreen(true)}
+								title="Show full screen"
+							>
+								<OpenInFullIcon />
+							</div>
+						</>
+					)
+				) : null}
+				<div
+					style={{
+						borderRight: "1px solid rgb(211,211,211)",
+						margin: "6px 2px",
+					}}
+				></div>
 				{showSqlCode ? (
-					<div className="graphAreaIcons" onClick={() => setShowSqlCode(false)}>
-						{/* Tooltip: view graph */}
+					<div
+						className="graphAreaIcons"
+						onClick={() => setShowSqlCode(false)}
+						title="View graph"
+					>
 						<BarChartIcon />
 					</div>
 				) : (
-					<div className="graphAreaIcons" onClick={() => setShowSqlCode(true)}>
-						{/* Tooltip: SQL Code */}
+					<div
+						className="graphAreaIcons"
+						onClick={() => setShowSqlCode(true)}
+						title="View SQL Code"
+					>
 						<CodeIcon />
 					</div>
 				)}
-
-				<div className="graphAreaIcons" onClick={() => setFullScreen(true)}>
-					{/* Tooltip: Show full screen */}
-					<OpenInFullIcon />
-				</div>
 			</div>
 
 			<div
@@ -360,18 +440,26 @@ const GraphArea = ({
 					id="graphFullScreen"
 					className="graphFullScreen"
 					onKeyDown={(e) => {
-						// TODO: Priority 10 - Escape key recognition
-						// Happens only after user clicks anywhere inside this div.
-						// Must happen as soon as this is open. Bring focus here
 						console.log("Key pressed");
 						removeFullScreen(e);
 					}}
 				>
+					<div style={{ display: "flex" }}>
+						<span
+							className="graphTitle"
+							style={{
+								fontSize: chartProperties.properties[propKey].titleOptions.fontSize,
+							}}
+							onDoubleClick={() => editTitleText()}
+						>
+							{chartProperties.properties[propKey].titleOptions.chartTitle}
+						</span>
+						<CloseRounded
+							style={{ margin: "0.25rem" }}
+							onClick={() => setFullScreen(false)}
+						/>
+					</div>
 					{chartDisplayed()}
-					<CloseRounded
-						style={{ margin: "0.25rem", display: "inline" }}
-						onClick={() => setFullScreen(false)}
-					/>
 				</div>
 			) : null}
 		</div>
@@ -392,6 +480,7 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		setChartTitle: (propKey, title) => dispatch(setChartTitle(propKey, title)),
 		setGenerateTitleToStore: (propKey, option) => dispatch(setGenerateTitle(propKey, option)),
+		toggleGraphSize: (tileKey, graphSize) => dispatch(toggleGraphSize(tileKey, graphSize)),
 	};
 };
 

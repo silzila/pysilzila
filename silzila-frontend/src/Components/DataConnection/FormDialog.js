@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+// Creating new connections &  editing existing connections are handled in this component
+
+import React, { useState } from "react";
 import { Dialog, FormControl, InputLabel, MenuItem, Popover, Select } from "@mui/material";
 import "./DataSetup.css";
-import { TextField, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import FetchData from "../../ServerCall/FetchData";
 import TextFieldComponent from "../../Components/CommonFunctions/TextFieldComponent";
 import CloseIcon from "@mui/icons-material/Close";
@@ -29,11 +31,6 @@ function FormDialog({
 	//value
 	token,
 }) {
-	// TODO: Priority 10 - Warning about best practice
-	// Fix the warning "A component is changing an uncontrolled input to be controlled"
-	// Looks like this error is coming because one of the values of account is
-	// changing from null to some value
-
 	const [dcDel, setDcDel] = useState(false);
 	const [dcDelMeg, setDcDelMeg] = useState("");
 	let dsList = ["abcd", "efgh", "ijkl"];

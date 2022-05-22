@@ -1,3 +1,7 @@
+// Individual columns within tables displayed in canvas
+// Each column has a drop interaction (used for creating arrows that define relation between tables)
+// Only columns that have same datatype will be used for defining relations
+
 import React, { useRef, useState } from "react";
 import ConnectPointsWrapper from "./ConnectPointsWrapper";
 import { Abc, AccessTime, CalendarToday, PriorityHigh, TagTwoTone } from "@mui/icons-material";

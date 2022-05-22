@@ -34,11 +34,6 @@
 	align-items: center;
 }
 
-/* TODO: Priotity 10 - Remove Icons margin
-	When using MUI icons with onClick operations, a margin / padding from  its surrounding div 
-	makes onClick restricted to small area. Remove the padding of parent div and style the MUI
-	icon itself directly */
-
 .columnClose:hover {
 	color: red;
 	background-color: lightgray;
@@ -72,8 +67,7 @@
 	text-overflow: ellipsis;
 }
 .columnPrefix {
-	font-style: italic;
-	color: #cc6d00;
+	color: #d25e00;
 	padding: 5px 1px;
 	white-space: nowrap;
 

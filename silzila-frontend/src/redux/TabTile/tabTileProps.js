@@ -11,83 +11,18 @@ const initialProperties = {
 	nextTileId: 2,
 	editTileName: false,
 
-	selectedTable: "o48g0uyaqt",
-
 	dragging: false,
 	chartPropUpdated: false,
 	showDash: false,
 	dashMode: "Edit",
-	dashGridSize: null,
+	dashGridSize: { x: null, y: null },
 
 	columnsOnlyDisplay: false,
 	showDataViewerBottom: true,
 	selectedControlMenu: "Charts",
 
-	selectedDataSetList: [
-		{
-			friendly_name: "landmark post",
-			dc_uid: "post",
-			ds_uid: "dspost",
-		},
-	],
-	tablesForSelectedDataSets: {
-		dspost: [
-			{
-				table_name: "point_of_sales",
-				schema_name: "pos",
-				id: "pos",
-				alias: "point_of_sales",
-			},
-			{
-				table_name: "store",
-				schema_name: "pos",
-				id: "s",
-				alias: "store",
-			},
-			{
-				table_name: "payment_method",
-				schema_name: "pos",
-				id: "pm",
-				alias: "payment_method",
-			},
-			{
-				table_name: "customer_type",
-				schema_name: "pos",
-				id: "ct",
-				alias: "customer_type",
-			},
-			{
-				table_name: "delivery_mode",
-				schema_name: "pos",
-				id: "dm",
-				alias: "delivery_mode",
-			},
-			{
-				table_name: "vendor",
-				schema_name: "pos",
-				id: "v",
-				alias: "vendor",
-			},
-			{
-				table_name: "product",
-				schema_name: "pos",
-				id: "p",
-				alias: "product",
-			},
-			{
-				table_name: "category",
-				schema_name: "pos",
-				id: "c",
-				alias: "category",
-			},
-			{
-				table_name: "sub_category",
-				schema_name: "pos",
-				id: "sc",
-				alias: "sub_category",
-			},
-		],
-	},
+	selectedDataSetList: [],
+	tablesForSelectedDataSets: {},
 };
 
 const tabTilePropsReducer = (state = initialProperties, action) => {
@@ -157,6 +92,12 @@ const tabTilePropsReducer = (state = initialProperties, action) => {
 
 		case "SET_SELECTED_CONTROL_MENU":
 			return update(state, { selectedControlMenu: { $set: action.payload } });
+
+		case "LOAD_TAB_TILE_PROPS_FROM_PLAYBOOK":
+			return action.payload;
+
+		case "RESET_TABTILE_PROPS":
+			return initialProperties;
 
 		default:
 			return state;

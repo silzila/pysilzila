@@ -1,13 +1,23 @@
+// This is the main component where a Playbook with its tabs, tiles and dashboard is rendered
+// The page is further grouped into DataViewerMiddle & DataViewerBottom components
+//
+// 	- DataViewerMiddle holds the following
+// 		- drop zones for table columns,
+// 		- graph area,
+// 		- all the chart control actions
+
+// 	- DataViewerBottom holds the following
+// 		- selectedDataset list to work with this playbook,
+// 		- list of tables for this dataset &
+// 		- Sample records from selected table
+
 import React, { useState } from "react";
 import "./dataViewer.css";
 import { connect } from "react-redux";
-import Menu from "./Menu";
 import TabRibbon from "../TabsAndTiles/TabRibbon";
 import {
 	setShowDashBoard,
 	toggleColumnsOnlyDisplay,
-	toggleDashMode,
-	toggleDashModeInTab,
 	toggleShowDataViewerBottom,
 } from "../../redux/TabTile/actionsTabTile";
 import DataViewerMiddle from "./DataViewerMiddle.js";
@@ -17,10 +27,9 @@ import TableRowsIcon from "@mui/icons-material/TableRows";
 import TableChartOutlinedIcon from "@mui/icons-material/TableChartOutlined";
 import TileRibbon from "../TabsAndTiles/TileRibbon";
 import DashBoard from "../DashBoard/DashBoard";
-import { MenuItem, Select } from "@mui/material";
 import listOfTilesIcon from "../../assets/listoftilesIcon.svg";
-import filterIcon from "../../assets/filter_icon.svg";
 import dashbordSizeIcon from "../../assets/screenSize.png";
+import MenuBar from "./MenuBar";
 
 function DataViewer({
 	// state
@@ -29,19 +38,17 @@ function DataViewer({
 	// dispatch
 	showDashBoard,
 	toggleColumns,
-	toggleDashMode,
-	toggleDashModeInTab,
 	toggleDataViewerBottom,
 }) {
-	// const [tabTileProps.showDataViewerBottom, setDisplayDatViewBot] = useState(true);
+	const [showListofTileMenu, setShowListofTileMenu] = useState(true);
+	const [dashboardResizeColumn, setDashboardResizeColumn] = useState(false);
 
-	const [showListofTileMenu, setShowListofTileMenu] = useState(false);
-	const [showFilters, setShowFilters] = useState(false);
-	const [dashbordResizeColumn, setDashbordResizeColumn] = useState(false);
+	// Whether to show table at the bottom of page or not
 	const handleTableDisplayToggle = () => {
 		toggleDataViewerBottom(!tabTileProps.showDataViewerBottom);
 	};
 
+	// switching between Table with all sample records Or just list the columns of selected table
 	const handleColumnsOnlyDisplay = (col) => {
 		toggleColumns(col);
 	};
@@ -50,28 +57,41 @@ function DataViewer({
 	//                                      UI Components
 	// ===========================================================================================
 
-	const menuStyle = { fontSize: "12px", padding: "2px 8px", margin: 0 };
-	const menuIconStyle = { width: "20px", height: "20px", margin: "0px 4px" };
+	const menuIconStyle = {
+		width: "26px",
+		height: "26px",
+		margin: "auto 10px auto 0",
+		padding: "2px",
+		borderBottom: "2px solid transparent",
+	};
+	const menuIconSelectedStyle = {
+		width: "26px",
+		height: "26px",
+		margin: "auto 10px auto 0",
+		padding: "2px",
+		backgroundColor: "#ffffff",
+		borderBottom: "2px solid rgb(0,128,255)",
+	};
 
 	return (
 		<div className="dataViewer">
-			<Menu />
-
+			<MenuBar from="dataViewer" />
 			<div className="tabArea">
 				<TabRibbon />
-				{tabTileProps.showDash ? (
+				{tabTileProps.showDash || tabTileProps.dashMode === "Present" ? (
 					<div style={{ display: "flex", alignItems: "center" }}>
 						{tabTileProps.dashMode === "Edit" ? (
 							<>
 								<img
 									key="List of Tiles"
-									style={menuIconStyle}
+									style={
+										showListofTileMenu ? menuIconSelectedStyle : menuIconStyle
+									}
 									src={listOfTilesIcon}
 									alt="List of Tiles"
 									onClick={() => {
 										if (tabTileProps.dashMode === "Edit") {
-											setDashbordResizeColumn(false);
-											setShowFilters(false);
+											setDashboardResizeColumn(false);
 											setShowListofTileMenu(!showListofTileMenu);
 										}
 									}}
@@ -80,62 +100,32 @@ function DataViewer({
 
 								<img
 									key="dashBoard Size"
-									style={menuIconStyle}
+									style={
+										dashboardResizeColumn
+											? menuIconSelectedStyle
+											: menuIconStyle
+									}
 									src={dashbordSizeIcon}
 									alt="dashBoard Size"
 									onClick={() => {
 										if (tabTileProps.dashMode === "Edit") {
 											setShowListofTileMenu(false);
-											setShowFilters(false);
-											setDashbordResizeColumn(!dashbordResizeColumn);
+											setDashboardResizeColumn(!dashboardResizeColumn);
 										}
 									}}
-									title="dashBoard Size"
+									title="DashBoard Size"
 								/>
 							</>
 						) : null}
-						<img
-							key="Filter"
-							style={menuIconStyle}
-							src={filterIcon}
-							alt="Filter"
-							onClick={() => {
-								setDashbordResizeColumn(false);
-								setShowListofTileMenu(false);
-								setShowFilters(!showFilters);
-							}}
-							title="Filter"
-						/>
-						<Select
-							sx={{
-								height: "1.5rem",
-								fontSize: "12px",
-								width: "6rem",
-							}}
-							value={tabTileProps.dashMode}
-							onChange={(e) => {
-								console.log(e.target.value);
-								toggleDashMode(e.target.value);
-								toggleDashModeInTab(tabTileProps.selectedTabId, e.target.value);
-							}}
-						>
-							<MenuItem sx={menuStyle} value="Edit">
-								Edit
-							</MenuItem>
-							<MenuItem sx={menuStyle} value="Present">
-								Present
-							</MenuItem>
-						</Select>
 					</div>
 				) : null}
 			</div>
 
+			{/* Show tile page or Dashboard */}
 			{tabTileProps.showDash ? (
-				// <DashBoard showDash={tabTileProps.showDash} />
 				<DashBoard
 					showListofTileMenu={showListofTileMenu}
-					showFilters={showFilters}
-					dashbordResizeColumn={dashbordResizeColumn}
+					dashboardResizeColumn={dashboardResizeColumn}
 				/>
 			) : (
 				<React.Fragment>
@@ -148,6 +138,7 @@ function DataViewer({
 				</React.Fragment>
 			)}
 
+			{/* Dashboard present and edit mode related UI */}
 			{tabTileProps.dashMode === "Edit" ? (
 				<div className="tilearea">
 					<div className="tileItems">
@@ -222,8 +213,6 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		showDashBoard: (tabId, showDash) => dispatch(setShowDashBoard(tabId, showDash)),
 		toggleColumns: (columns) => dispatch(toggleColumnsOnlyDisplay(columns)),
-		toggleDashMode: (dashMode) => dispatch(toggleDashMode(dashMode)),
-		toggleDashModeInTab: (tabId, dashMode) => dispatch(toggleDashModeInTab(tabId, dashMode)),
 		toggleDataViewerBottom: (show) => dispatch(toggleShowDataViewerBottom(show)),
 	};
 };

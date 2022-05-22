@@ -1,3 +1,5 @@
+// This component list all color themes available for charts
+
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import React, { useState } from "react";
 import { connect } from "react-redux";
@@ -15,10 +17,8 @@ const ChartColors = ({
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 
 	const [selectedMenu, setSelectedMenu] = useState(chartProp.properties[propKey].colorScheme);
-	console.log(selectedMenu);
 
 	const resetSelection = (data_value) => {
-		console.log(data_value);
 		setSelectedMenu(data_value);
 		setColorScheme(propKey, data_value);
 	};

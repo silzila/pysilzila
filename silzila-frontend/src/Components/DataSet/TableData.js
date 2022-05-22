@@ -1,6 +1,7 @@
+// Sample records of selected table shown in Create / Edit dataset page
+
 import React from "react";
 import {
-	autocompleteClasses,
 	Dialog,
 	DialogContent,
 	DialogTitle,
@@ -29,8 +30,6 @@ function TableData({
 	};
 	return (
 		<>
-			{/* TODO: Priority 10 - Styling Fix
-			 Dialog width have to be increased */}
 			<Dialog open={showTableData}>
 				<DialogTitle
 					sx={{

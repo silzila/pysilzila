@@ -1,5 +1,8 @@
-import React, { useEffect, useState } from "react";
+// This component houses the dropzones for table fields
+// Number of dropzones and its name is returned according to the chart type selected.
+// Once minimum number of fields are met for the given chart type, server call is made to get chart data and saved in store
 
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import ChartsInfo from "./ChartsInfo2";
 import "./ChartAxes.css";
@@ -8,6 +11,90 @@ import FetchData from "../../ServerCall/FetchData";
 import { updateChartData } from "../../redux/ChartProperties/actionsChartControls";
 import LoadingPopover from "../CommonFunctions/PopOverComponents/LoadingPopover";
 import { canReUseData, toggleAxesEdited } from "../../redux/ChartProperties/actionsChartProperties";
+
+export const getChartData = async (axesValues, chartProp, propKey, token) => {
+	var formattedAxes = {};
+	axesValues.forEach((axis) => {
+		var dim = "";
+		switch (axis.name) {
+			case "Filter":
+				dim = "filters";
+				break;
+
+			case "Dimension":
+				dim = "dims";
+				break;
+
+			case "Measure":
+				dim = "measures";
+				break;
+
+			case "X":
+				dim = "measures";
+				break;
+
+			case "Y":
+				dim = "measures";
+				break;
+		}
+
+		var formattedFields = [];
+
+		axis.fields.forEach((field) => {
+			var formattedField = {
+				table_id: field.tableId,
+				display_name: field.displayname,
+				field_name: field.fieldname,
+				data_type: field.dataType,
+			};
+			if (field.dataType === "date" || field.dataType === "timestamp") {
+				formattedField.time_grain = field.time_grain;
+			}
+
+			if (axis.name === "Measure") {
+				formattedField.aggr = field.agg;
+			}
+
+			formattedFields.push(formattedField);
+		});
+		formattedAxes[dim] = formattedFields;
+	});
+
+	formattedAxes.fields = [];
+
+	if (
+		chartProp.properties[propKey].chartType === "funnel" ||
+		chartProp.properties[propKey].chartType === "gauge"
+	) {
+		formattedAxes.dims = [];
+	}
+
+	formattedAxes.filters = [];
+
+	var url =
+		"ds/query/" +
+		chartProp.properties[propKey].selectedDs.dc_uid +
+		"/" +
+		chartProp.properties[propKey].selectedDs.ds_uid;
+
+	var res = await FetchData({
+		requestType: "withData",
+		method: "POST",
+		url:
+			"ds/query/" +
+			chartProp.properties[propKey].selectedDs.dc_uid +
+			"/" +
+			chartProp.properties[propKey].selectedDs.ds_uid,
+		headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+		data: formattedAxes,
+	});
+
+	if (res.status) {
+		return res.data;
+	} else {
+		console.log("Get Table Data Error", res.data.detail);
+	}
+};
 
 const ChartAxes = ({
 	// props
@@ -31,20 +118,22 @@ const ChartAxes = ({
 		dropZones.push(ChartsInfo[chartProp.properties[propKey].chartType].dropZones[i].name);
 	}
 
-	useEffect(async () => {
+	useEffect(() => {
 		console.log("ChartAxes changed");
 		const axesValues = JSON.parse(JSON.stringify(chartProp.properties[propKey].chartAxes));
 
 		let serverCall = false;
 
+		// TODO: Priority 1 - ReUseData udpate error
+		// When table fields are dropped in dropzones or different chart is selected, server call doesn't happen properly.
+		// Verify if reUseData (chartProp.properties[propKey].reUseData) value is properly assigned while changing charts and updating chart axes
+
 		if (chartProp.properties[propKey].axesEdited) {
 			if (chartProp.properties[propKey].reUseData) {
-				console.log("Can reuse old data");
 				serverCall = false;
 				resetStore();
 			} else {
 				var minReq = checkMinRequiredCards();
-				console.log(minReq);
 				if (minReq) {
 					serverCall = true;
 				} else {
@@ -55,40 +144,29 @@ const ChartAxes = ({
 
 		if (chartProp.properties[propKey].chartType === "scatterPlot") {
 			var combinedValues = { name: "Measure", fields: [] };
-
 			var values1 = axesValues[2].fields;
 			var values2 = axesValues[3].fields;
-
 			var allValues = values1.concat(values2);
-
 			combinedValues.fields = allValues;
-			console.log(combinedValues);
-
 			axesValues.splice(2, 2, combinedValues);
-			console.log(axesValues);
 		}
 
-		if (chartProp.properties[propKey].chartType === "heatmap") {
+		if (chartProp.properties[propKey].chartType === "heatmap" || chartProp.properties[propKey].chartType === "crossTab") {
 			var combinedValues = { name: "Dimension", fields: [] };
-
 			var values1 = axesValues[1].fields;
 			var values2 = axesValues[2].fields;
-
 			var allValues = values1.concat(values2);
-
 			combinedValues.fields = allValues;
-			console.log(combinedValues);
-
 			axesValues.splice(1, 2, combinedValues);
-			console.log(axesValues);
 		}
 
 		if (serverCall) {
 			setLoading(true);
 			console.log("Time for API call");
-			var data = await getChartData(axesValues);
-			updateChartData(propKey, data);
-			setLoading(false);
+			getChartData(axesValues, chartProp, propKey, token).then(data=>{
+				updateChartData(propKey, data);
+				setLoading(false);
+				});		
 		}
 	}, [chartProp.properties[propKey].chartAxes]);
 
@@ -96,13 +174,10 @@ const ChartAxes = ({
 		var minReqMet = [];
 
 		ChartsInfo[chartProp.properties[propKey].chartType].dropZones.forEach((zone, zoneI) => {
-			console.log(chartProp.properties[propKey].chartAxes[zoneI].fields.length, zone.min);
 			chartProp.properties[propKey].chartAxes[zoneI].fields.length >= zone.min
 				? minReqMet.push(true)
 				: minReqMet.push(false);
 		});
-
-		console.log(minReqMet);
 
 		if (minReqMet.includes(false)) {
 			return false;
@@ -114,97 +189,6 @@ const ChartAxes = ({
 	const resetStore = () => {
 		toggleAxesEdit(propKey);
 		reUseOldData(propKey);
-	};
-
-	const getChartData = async (axesValues) => {
-		console.log(axesValues);
-
-		var formattedAxes = {};
-		axesValues.forEach((axis) => {
-			var dim = "";
-			switch (axis.name) {
-				case "Filter":
-					dim = "filters";
-					break;
-
-				case "Dimension":
-					dim = "dims";
-					break;
-
-				case "Measure":
-					dim = "measures";
-					break;
-
-				case "X":
-					dim = "measures";
-					break;
-
-				case "Y":
-					dim = "measures";
-					break;
-			}
-
-			var formattedFields = [];
-
-			axis.fields.forEach((field) => {
-				console.log(field);
-				var formattedField = {
-					table_id: field.tableId,
-					display_name: field.displayname,
-					field_name: field.fieldname,
-					data_type: field.dataType,
-				};
-				if (field.dataType === "date" || field.dataType === "timestamp") {
-					formattedField.time_grain = field.time_grain;
-				}
-
-				if (axis.name === "Measure") {
-					formattedField.aggr = field.agg;
-				}
-
-				formattedFields.push(formattedField);
-			});
-			formattedAxes[dim] = formattedFields;
-		});
-
-		formattedAxes.fields = [];
-
-		if (
-			chartProp.properties[propKey].chartType === "funnel" ||
-			chartProp.properties[propKey].chartType === "gauge"
-		) {
-			formattedAxes.dims = [];
-		}
-
-		// TODO: Priority 5 - Integrate Filters
-		// Right now no filter is passed to server. Discuss with balu and pass filters
-		formattedAxes.filters = [];
-
-		console.log(formattedAxes);
-		var url =
-			"ds/query/" +
-			chartProp.properties[propKey].selectedDs.dc_uid +
-			"/" +
-			chartProp.properties[propKey].selectedDs.ds_uid;
-		console.log(url);
-
-		var res = await FetchData({
-			requestType: "withData",
-			method: "POST",
-			url:
-				"ds/query/" +
-				chartProp.properties[propKey].selectedDs.dc_uid +
-				"/" +
-				chartProp.properties[propKey].selectedDs.ds_uid,
-			headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-			data: formattedAxes,
-		});
-
-		if (res.status) {
-			return res.data;
-		} else {
-			console.log("Get Table Data Error", res.data.detail);
-		}
 	};
 
 	return (

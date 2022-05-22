@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { changeChartOptionSelected } from "../../redux/ChartProperties/actionsChartProperties";
+import { chartTypes } from "./ChartTypes";
 
 const ChartControlObjects = ({
 	// state
@@ -13,8 +14,6 @@ const ChartControlObjects = ({
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 	var selectedChart = chartProp.properties[propKey].chartType;
 
-	console.log(propKey, selectedChart, chartProp.properties[propKey].chartOptionSelected);
-
 	const barOptionsList = [
 		"Title",
 		"Colors",
@@ -22,17 +21,27 @@ const ChartControlObjects = ({
 		"Margin",
 		"Tooltip",
 		"Labels",
-		"Style",
+		// "Style",
 		"Grid/Axes",
 	];
 
-	const pieOptionsList = ["Title", "Colors", "Legend", "Margin", "Tooltip", "Labels", "Style"];
-
-	const funnelOptionList = ["Title", "Colors", "Legend", "Margin", "Tooltip"];
-
-	const gaugeOptionList = ["Title", "Colors", "Margin", "Tooltip"];
-
-	const heatmapOptionList = ["Title", "Colors", "Margin", "Tooltip"];
+	const pieOptionsList = ["Title", "Colors", "Legend", "Tooltip", "Labels", "Axis"];
+	const funnelOptionList = [
+		"Title",
+		"Colors",
+		"Legend",
+		//  "Margin",
+		"Tooltip",
+	];
+	const gaugeOptionList = [
+		"Title",
+		"Colors",
+		//  "Margin",
+		"Tooltip",
+		"Axis",
+	];
+	const heatmapOptionList = ["Title", "Colors", "Margin", "Tooltip", "Labels", "Grid/Axes"];
+	const crossTabOptionList = ["Title", "Tooltip", "Style"];
 
 	const RenderOptions = () => {
 		switch (selectedChart) {
@@ -78,7 +87,7 @@ const ChartControlObjects = ({
 				return funnelOptionList.map((option) => {
 					return (
 						<div
-							ley={option}
+							key={option}
 							className={
 								chartProp.properties[propKey].chartOptionSelected === option
 									? "optionImageSelected"
@@ -95,7 +104,7 @@ const ChartControlObjects = ({
 				return gaugeOptionList.map((option) => {
 					return (
 						<div
-							ley={option}
+							key={option}
 							className={
 								chartProp.properties[propKey].chartOptionSelected === option
 									? "optionImageSelected"
@@ -112,7 +121,24 @@ const ChartControlObjects = ({
 				return heatmapOptionList.map((option) => {
 					return (
 						<div
-							ley={option}
+							key={option}
+							className={
+								chartProp.properties[propKey].chartOptionSelected === option
+									? "optionImageSelected"
+									: "optionImage"
+							}
+							onClick={() => changeChartOption(propKey, option)}
+						>
+							{option}
+						</div>
+					);
+				});
+
+				case "crossTab":
+				return crossTabOptionList.map((option) => {
+					return (
+						<div
+							key={option}
 							className={
 								chartProp.properties[propKey].chartOptionSelected === option
 									? "optionImageSelected"
@@ -131,9 +157,14 @@ const ChartControlObjects = ({
 	};
 
 	return (
-		<div className="chartOptionImagesContainer">
-			<RenderOptions />
-		</div>
+		<>
+			<div className="axisInfo">
+				for {chartTypes.filter((chart) => chart.name === selectedChart)[0].value}
+			</div>
+			<div className="chartOptionImagesContainer">
+				<RenderOptions />
+			</div>
+		</>
 	);
 };
 

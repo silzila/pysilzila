@@ -6,16 +6,30 @@ const DoughnutChart = ({
 	//props
 	propKey,
 	graphDimension,
+	chartArea,
+	graphTileSize,
 
 	//state
 	chartProp,
 	chartControls,
 }) => {
-	// var property = chartProp.properties[propKey];
 	var property = chartControls.properties[propKey];
 
+	useEffect(() => {
+		if (property.chartData) {
+			var objKey =
+				chartProp.properties[propKey].chartAxes[1].fields[0].fieldname + "__" + "year";
+			property.chartData.result.map((el) => {
+				if (objKey in el) {
+					let year = el[objKey];
+					el[objKey] = year.toString();
+				}
+				return el;
+			});
+		}
+	});
+
 	let chartData = property.chartData ? property.chartData.result : "";
-	console.log(chartData, "+++++ chartData +++++");
 
 	var seriesObj = { type: "pie", radius: ["40%", "70%"] };
 
@@ -31,9 +45,6 @@ const DoughnutChart = ({
 		}
 	}, [chartData]);
 
-	console.log(seriesData);
-
-	// TODO: Priority 1 - Data not rendering properly. It shows dimension value instead of measure when dimension is Year
 	const RenderChart = () => {
 		return (
 			<>
@@ -44,8 +55,14 @@ const DoughnutChart = ({
 						width: graphDimension.width,
 						height: graphDimension.height,
 						overflow: "hidden",
+						border: chartArea
+							? "none"
+							: graphTileSize
+							? "none"
+							: "1px solid rgb(238,238,238)",
 					}}
 					option={{
+						animation: chartArea ? false : true,
 						legend: {
 							type: "scroll",
 							show: property.legendOptions?.showLegend,
@@ -57,20 +74,41 @@ const DoughnutChart = ({
 							top: property.legendOptions?.position?.top,
 							orient: property.legendOptions?.orientation,
 						},
-						grid: {
-							left: `${property.chartMargin.left}%`,
-							right: `${property.chartMargin.right}%`,
-							top: `${property.chartMargin.top}%`,
-							bottom: `${property.chartMargin.bottom}%`,
-						},
+						// grid: {
+						// 	left: property.chartMargin.left,
+						// 	right: property.chartMargin.right,
+						// 	top: property.chartMargin.top,
+						// 	bottom: property.chartMargin.bottom,
+						// },
 						tooltip: { show: property.mouseOver.enable },
 						dataset: {
 							dimensions: Object.keys(chartData[0]),
 							source: chartData,
 						},
-						xAxis: { type: "category" },
-						yAxis: {},
-						series: [{ type: "pie", radius: ["40%", "70%"] }],
+						series: [
+							{
+								type: "pie",
+								startAngle: property.axisOptions.pieAxisOptions.pieStartAngle,
+								clockWise: property.axisOptions.pieAxisOptions.clockWise,
+
+								label: {
+									position: property.labelOptions.pieLabel.labelPosition,
+									show: property.labelOptions.showLabel,
+									fontSize: property.labelOptions.fontSize,
+									color: property.labelOptions.labelColorManual
+										? property.labelOptions.labelColor
+										: null,
+									// padding: property.axisOptions.pieAxisOptions.labelPadding,
+									padding: [
+										property.axisOptions.pieAxisOptions.labelPadding,
+										property.axisOptions.pieAxisOptions.labelPadding,
+										property.axisOptions.pieAxisOptions.labelPadding,
+										property.axisOptions.pieAxisOptions.labelPadding,
+									],
+								},
+								radius: ["40%", "70%"],
+							},
+						],
 					}}
 				/>
 			</>

@@ -1,3 +1,6 @@
+// This component represent each individual table field dropped inside dropzone
+// Each card has some aggregate values and option to select different aggregate and/or timeGrain values
+
 import React, { useCallback, useState } from "react";
 import "./Card.css";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
@@ -141,7 +144,7 @@ const Card = ({
 		var options = [];
 		var options2 = [];
 
-		if (axisTitle === "Measure") {
+		if (axisTitle === "Measure" || axisTitle === "X" || axisTitle === "Y") {
 			if (field.dataType === "date" || field.dataType === "timestamp") {
 				options = options.concat(Aggregators[axisTitle][field.dataType].aggr);
 				options2 = options2.concat(Aggregators[axisTitle][field.dataType].time_grain);
@@ -150,7 +153,7 @@ const Card = ({
 			}
 		}
 
-		if (axisTitle === "Dimension") {
+if (axisTitle === "Dimension" || axisTitle === "Row" || axisTitle === "Column") {
 			if (field.dataType === "date" || field.dataType === "timestamp") {
 				options2 = options2.concat(Aggregators[axisTitle][field.dataType].time_grain);
 			} else {

@@ -8,10 +8,11 @@ import DataViewer from "./DataViewer/DataViewer";
 
 import Login from "./LoginSignUp/Login";
 import SignUp from "./LoginSignUp/SignUp";
+import Redirect from "./Redirect";
 
 const Home = (props) => {
 	return (
-		// TODO: Priority 1 - Capture Browser's navigation clicks
+		// TODO: Priority 10 - Capture Browser's navigation clicks
 		// Pressing back or forward in browser navigation brings to different Pages.
 		// If the required data is not there in the Pages, they crash
 		// Eg. After going to create / edit Dataset page, come back to dataHome
@@ -34,6 +35,7 @@ const Home = (props) => {
 			) : (
 				<Router>
 					<Routes>
+						<Route path="*" element={<Redirect />} />
 						<Route exact path="/" element={<Login />} />
 						<Route exact path="/login" element={<Login />} />
 						<Route exact path="/signup" element={<SignUp />} />

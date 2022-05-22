@@ -1,3 +1,5 @@
+// Sign up component. Used to create new accounts
+
 import { Button } from "@mui/material";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -71,6 +73,7 @@ const SignUp = () => {
 	const handleSubmit = async () => {
 		var canSignUp = false;
 
+		// Check if there is someinput in all fields
 		if (
 			account.name.length > 0 &&
 			account.email.length > 0 &&
@@ -104,7 +107,7 @@ const SignUp = () => {
 
 				setTimeout(() => {
 					navigate("/login");
-				}, 1000);
+				}, 2000);
 			} else {
 				setSignUpError(true);
 				setServerErrorMessage(response.data.detail);
@@ -112,37 +115,6 @@ const SignUp = () => {
 		} else {
 			setSignUpError(true);
 			setServerErrorMessage("Provide all details above");
-		}
-	};
-
-	const BottomMessage = () => {
-		if (signUpStatus) {
-			return (
-				<span className="loginSuccess">
-					<h4>Signed in successfully!</h4>
-					<p>Redirecting to login page....</p>
-				</span>
-			);
-		} else {
-			return (
-				<React.Fragment>
-					{signUpError ? <p className="loginFail">{serverErrorMessage}</p> : null}
-					<div className="buttonText">
-						<Button
-							id="loginSignupButton"
-							variant="contained"
-							type="submit"
-							value="Sign Up"
-						>
-							sign Up
-						</Button>
-						<br />
-						<span id="emailHelp">
-							Already have an account? <Link to="/login">Login</Link>
-						</span>
-					</div>
-				</React.Fragment>
-			);
 		}
 	};
 
@@ -253,7 +225,30 @@ const SignUp = () => {
 					/>
 					<div id="error">{account.password2Error}</div>
 				</div>
-				<BottomMessage />
+				{signUpStatus ? (
+					<span className="loginSuccess">
+						<h4>Signed in successfully!</h4>
+						<p>Redirecting to login page....</p>
+					</span>
+				) : (
+					<React.Fragment>
+						{signUpError ? <p className="loginFail">{serverErrorMessage}</p> : null}
+						<div className="buttonText">
+							<Button
+								id="loginSignupButton"
+								variant="contained"
+								type="submit"
+								value="Sign Up"
+							>
+								sign Up
+							</Button>
+							<br />
+							<span id="emailHelp">
+								Already have an account? <Link to="/login">Login</Link>
+							</span>
+						</div>
+					</React.Fragment>
+				)}
 			</form>
 		</div>
 	);

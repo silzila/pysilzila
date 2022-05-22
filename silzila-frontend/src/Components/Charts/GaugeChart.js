@@ -10,13 +10,23 @@ const GaugeChart = ({
 
 	//state
 	chartControl,
+	graphTileSize,
 }) => {
 	var property = chartControl.properties[propKey];
-	console.log(property, "+++++ PROPERTY +++++");
 	let chartData = property.chartData ? property.chartData.result : "";
-	console.log(chartData, "+++++ chartData +++++");
-
 	const [newData, setNewData] = useState([]);
+
+	var carr = [];
+
+	const getColors = () => {
+		for (let i = 0; i < property.axisOptions.gaugeChartControls.stepcolor.length; i++) {
+			carr.push([
+				parseFloat(property.axisOptions.gaugeChartControls.stepcolor[i].per),
+				property.axisOptions.gaugeChartControls.stepcolor[i].color,
+			]);
+		}
+	};
+	getColors();
 
 	useEffect(() => {
 		if (chartData) {
@@ -26,7 +36,6 @@ const GaugeChart = ({
 					name: key,
 					value: chartData[0][key],
 				});
-				console.log(newTempData);
 			});
 			setNewData(newTempData);
 		}
@@ -41,8 +50,14 @@ const GaugeChart = ({
 					width: graphDimension.width,
 					height: graphDimension.height,
 					overflow: "hidden",
+					border: chartArea
+						? "none"
+						: graphTileSize
+						? "none"
+						: "1px solid rgb(238,238,238)",
 				}}
 				option={{
+					animation: chartArea ? false : true,
 					legend: {
 						type: "scroll",
 						show: property.legendOptions?.showLegend,
@@ -60,48 +75,67 @@ const GaugeChart = ({
 						top: property.legendOptions?.position?.top,
 						orient: property.legendOptions?.orientation,
 					},
-
-					// TODO: Priorit 5 - Margin doesn't reflect in graph
-					// Margin for a Funnel chart changes only the grid line and not the actual funnel graph
-					grid: {
-						left:
-							chartArea === "dashboard"
-								? `${property.chartMargin.left + 10}%`
-								: `${property.chartMargin.left}%`,
-						right:
-							chartArea === "dashboard"
-								? `${property.chartMargin.right + 0}%`
-								: `${property.chartMargin.right}%`,
-						top:
-							chartArea === "dashboard"
-								? `${property.chartMargin.top + 10}%`
-								: `${property.chartMargin.top}%`,
-						bottom:
-							chartArea === "dashboard"
-								? `${property.chartMargin.bottom + 5}%`
-								: `${property.chartMargin.bottom}%`,
-					},
+					// grid: {
+					// 	left:
+					// 		chartArea === "dashboard"
+					// 			? `${property.chartMargin.left + 10}%`
+					// 			: `${property.chartMargin.left}%`,
+					// 	right:
+					// 		chartArea === "dashboard"
+					// 			? `${property.chartMargin.right + 0}%`
+					// 			: `${property.chartMargin.right}%`,
+					// 	top:
+					// 		chartArea === "dashboard"
+					// 			? `${property.chartMargin.top + 10}%`
+					// 			: `${property.chartMargin.top}%`,
+					// 	bottom:
+					// 		chartArea === "dashboard"
+					// 			? `${property.chartMargin.bottom + 5}%`
+					// 			: `${property.chartMargin.bottom}%`,
+					// },
 					tooltip: { show: property.mouseOver.enable },
 
-					xAxis: {},
-					yAxis: {},
 					series: [
 						{
 							type: "gauge",
-							max: newData[0] ? newData[0].value * 2 : 0,
+							max:
+								property.colorScale.colorScaleType === "Manual"
+									? property.colorScale.max !== ""
+										? parseInt(property.colorScale.max)
+										: newData[0]
+										? newData[0].value * 2
+										: 0
+									: newData[0]
+									? newData[0].value * 2
+									: 0,
+
+							min:
+								property.colorScale.colorScaleType === "Manual"
+									? property.colorScale.min !== ""
+										? parseInt(property.colorScale.min)
+										: 0
+									: 0,
 							data: newData,
 
 							axisLine: {
 								lineStyle: {
 									width: 10,
-									color: [
-										[0.3, "#67e0e3"],
-										[0.7, "#37a2da"],
-										[1, "#fd666d"],
-									],
+									color: [...carr],
 								},
 
 								roundCap: true,
+							},
+							startAngle: property.axisOptions.gaugeAxisOptions.startAngle,
+							endAngle: property.axisOptions.gaugeAxisOptions.endAngle,
+							axisTick: {
+								show: property.axisOptions.gaugeAxisOptions.showTick,
+								length: property.axisOptions.gaugeAxisOptions.tickSize,
+								distance: property.axisOptions.gaugeAxisOptions.tickPadding,
+							},
+
+							axisLabel: {
+								show: property.axisOptions.gaugeAxisOptions.showAxisLabel,
+								distance: property.axisOptions.gaugeAxisOptions.labelPadding,
 							},
 						},
 					],
