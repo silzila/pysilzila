@@ -9,3 +9,4 @@ out/linecounter.txt
 silzila-frontend/package-lock.json
 logger.log
 silzila-frontend/node_modules/
+.env

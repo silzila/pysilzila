@@ -87,18 +87,18 @@ def create_alias_names_for_tables(tables: list) -> list:
             # second time same alias name comes
             # if alias name x is already there and new x also comes,
             # then first x is renamed x1 and second x as x2
-            if alias_name in alias_names:
-                same_alias_name_index = alias_names.index(alias_name)
-                number_suffix = 1
-                alias_names[same_alias_name_index] = f"{alias_name}{number_suffix}"
-                alias_names.append(f"{alias_name}{number_suffix+1}")
-                alias_names_without_suffix_number[alias_name] += 1
-                # print("    else except appended alias name ++++++2= ",
-                #       f"{alias_name}{number_suffix+1}")
-                # print("alias_names =", alias_names)
+            # if alias_name in alias_names:
+            #     same_alias_name_index = alias_names.index(alias_name)
+            #     number_suffix = 1
+            #     # alias_names[same_alias_name_index] = f"{alias_name}{number_suffix}"
+            #     alias_names.append(f"{alias_name}{number_suffix+1}")
+            #     alias_names_without_suffix_number[alias_name] += 1
+            # print("    else except appended alias name ++++++2= ",
+            #       f"{alias_name}{number_suffix+1}")
+            # print("alias_names =", alias_names)
             # if same alias comes from third time onwards
             # from alias_names_without_suffix_number, check how many times already there and add one number
-            else:
+            if alias_name in alias_names:
                 alias_names_without_suffix_number[alias_name] += 1
                 alias_name = f"{alias_name}{alias_names_without_suffix_number[alias_name]}"
                 alias_names.append(alias_name)
