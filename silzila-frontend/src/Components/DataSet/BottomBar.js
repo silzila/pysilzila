@@ -11,6 +11,7 @@ import { resetState } from "../../redux/Dataset/datasetActions";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { NotificationDialog } from "../CommonFunctions/DialogComponents";
+import FetchData from "../../ServerCall/FetchData";
 
 const BottomBar = ({
 	//props
@@ -46,7 +47,7 @@ const BottomBar = ({
 		}
 	}, []);
 
-	const checkTableRelationShip = (tablesSelectedInSidebar, tablesWithRelation) => {
+	const checkTableRelationShip = async (tablesSelectedInSidebar, tablesWithRelation) => {
 		if (tablesSelectedInSidebar.length > 1) {
 			tablesSelectedInSidebar.map((el) => {
 				if (tablesWithRelation.includes(el.table_name)) {
@@ -109,18 +110,17 @@ const BottomBar = ({
 			var apiurl;
 			if (editMode) {
 				meth = "PUT";
-				apiurl = "https://silzila.org/api/ds/update-ds/" + dsId;
+				apiurl = "ds/update-ds/" + dsId;
 			} else {
 				meth = "POST";
-				apiurl = "https://silzila.org/api/ds/create-ds";
+				apiurl = "ds/create-ds";
 			}
-			const options = {
+
+			var options = await FetchData({
+				requestType: "withData",
 				method: meth,
 				url: apiurl,
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`,
-				},
+				headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
 				data: {
 					dc_uid: connection,
 					friendly_name: fname,
@@ -129,34 +129,27 @@ const BottomBar = ({
 						relationships: relationshipServerObj,
 					},
 				},
-			};
-			console.log(options.data);
-
-			// TODO: Priority 1 - Remove axios call from here
-			// Use Fetch Data function for getting data from server through axios call
-			axios
-				.request(options)
-				.then(function (response) {
-					console.log(response.data);
-					setSeverity("success");
-					setOpenAlert(true);
-					setTestMessage("Saved Successfully!");
-					setTimeout(() => {
-						setOpenAlert(false);
-						setTestMessage("");
-						navigate("/datahome");
-					}, 2000);
-				})
-				.catch(function (error) {
-					console.log(error.response.data.detail);
-					setSeverity("error");
-					setOpenAlert(true);
-					setTestMessage(error.response.data.detail);
-					setTimeout(() => {
-						setOpenAlert(false);
-						setTestMessage("");
-					}, 4000);
-				});
+			});
+			if (options.status) {
+				console.log(options.data);
+				setSeverity("success");
+				setOpenAlert(true);
+				setTestMessage("Saved Successfully!");
+				setTimeout(() => {
+					setOpenAlert(false);
+					setTestMessage("");
+					navigate("/datahome");
+				}, 2000);
+			} else {
+				console.log(options.data.detail);
+				setSeverity("error");
+				setOpenAlert(true);
+				setTestMessage(options.data.detail);
+				setTimeout(() => {
+					setOpenAlert(false);
+					setTestMessage("");
+				}, 4000);
+			}
 		}
 
 		if (tablesSelectedInSidebar.length > 1 && relationships.length === 0) {

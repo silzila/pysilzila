@@ -5,7 +5,7 @@
 // 		- Provide a name for Axis
 // 		- Tick size, padding and rotation
 
-import { FormControl, MenuItem, Select, TextField } from "@mui/material";
+import { FormControl, MenuItem, Select, Switch, TextField } from "@mui/material";
 import React from "react";
 import { connect } from "react-redux";
 import {
@@ -146,17 +146,21 @@ const GridAndAxes = ({
 				<>
 					<div className="optionDescription">REVERSE</div>
 					<div className="optionDescription">
-						<input
-							type="checkbox"
+						<label
+							htmlFor="enableDisable"
+							className="enableDisableLabel"
+							style={{ marginRight: "10px" }}
+						>
+							Enable
+						</label>
+						<Switch
+							size="small"
 							id="enableDisable"
 							checked={property.inverse}
-							onChange={() => {
+							onClick={() => {
 								setReverse(propKey, !property.inverse);
 							}}
 						/>
-						<label htmlFor="enableDisable" className="enableDisableLabel">
-							Enable
-						</label>
 					</div>
 				</>
 			) : null}
@@ -207,17 +211,21 @@ const GridAndAxes = ({
 			<div className="optionDescription">X-AXES</div>
 
 			<div className="optionDescription">
-				<input
-					type="checkbox"
+				<label
+					htmlFor="enableDisable"
+					className="enableDisableLabel"
+					style={{ marginRight: "10px" }}
+				>
+					show Label
+				</label>
+				<Switch
+					size="small"
 					id="enableDisable"
 					checked={xAxisProps.showLabel}
-					onChange={(e) => {
+					onClick={(e) => {
 						updateAxisOptions(propKey, "xAxis", "showLabel", !xAxisProps.showLabel);
 					}}
 				/>
-				<label htmlFor="enableDisable" className="enableDisableLabel">
-					show Label
-				</label>
 			</div>
 			{xAxisProps.showLabel ? (
 				<React.Fragment>
@@ -353,17 +361,21 @@ const GridAndAxes = ({
 			></div>
 			<div className="optionDescription">Y-AXES</div>
 			<div className="optionDescription">
-				<input
-					type="checkbox"
+				<label
+					htmlFor="enableDisable"
+					className="enableDisableLabel"
+					style={{ marginRight: "10px" }}
+				>
+					show Label
+				</label>
+				<Switch
+					size="small"
 					id="enableDisable"
 					checked={yAxisProps.showLabel}
-					onChange={(e) => {
+					onClick={(e) => {
 						updateAxisOptions(propKey, "yAxis", "showLabel", !yAxisProps.showLabel);
 					}}
 				/>
-				<label htmlFor="enableDisable" className="enableDisableLabel">
-					show Label
-				</label>
 			</div>
 			{yAxisProps.showLabel ? (
 				<React.Fragment>

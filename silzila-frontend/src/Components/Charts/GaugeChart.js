@@ -75,27 +75,24 @@ const GaugeChart = ({
 						top: property.legendOptions?.position?.top,
 						orient: property.legendOptions?.orientation,
 					},
-
-					// TODO: Priorit 1 - Margin doesn't reflect in graph
-					// Margin for a Funnel chart changes only the grid line and not the actual funnel graph
-					grid: {
-						left:
-							chartArea === "dashboard"
-								? `${property.chartMargin.left + 10}%`
-								: `${property.chartMargin.left}%`,
-						right:
-							chartArea === "dashboard"
-								? `${property.chartMargin.right + 0}%`
-								: `${property.chartMargin.right}%`,
-						top:
-							chartArea === "dashboard"
-								? `${property.chartMargin.top + 10}%`
-								: `${property.chartMargin.top}%`,
-						bottom:
-							chartArea === "dashboard"
-								? `${property.chartMargin.bottom + 5}%`
-								: `${property.chartMargin.bottom}%`,
-					},
+					// grid: {
+					// 	left:
+					// 		chartArea === "dashboard"
+					// 			? `${property.chartMargin.left + 10}%`
+					// 			: `${property.chartMargin.left}%`,
+					// 	right:
+					// 		chartArea === "dashboard"
+					// 			? `${property.chartMargin.right + 0}%`
+					// 			: `${property.chartMargin.right}%`,
+					// 	top:
+					// 		chartArea === "dashboard"
+					// 			? `${property.chartMargin.top + 10}%`
+					// 			: `${property.chartMargin.top}%`,
+					// 	bottom:
+					// 		chartArea === "dashboard"
+					// 			? `${property.chartMargin.bottom + 5}%`
+					// 			: `${property.chartMargin.bottom}%`,
+					// },
 					tooltip: { show: property.mouseOver.enable },
 
 					series: [

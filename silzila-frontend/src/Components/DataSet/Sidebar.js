@@ -290,7 +290,14 @@ const Sidebar = ({
 				<div style={{ marginTop: "10px", fontStyle: "italic" }}>No Tables</div>
 			)}
 
-			<ChangeConnection open={openDlg} setOpen={setOpenDlg} setReset={setResetDataset} />
+			<ChangeConnection
+				open={openDlg}
+				setOpen={setOpenDlg}
+				setReset={setResetDataset}
+				heading="RESET DATASET"
+				message="Changing connection will reset this dataset creation. Do you want to discard
+						the progress?"
+			/>
 		</div>
 	);
 };
