@@ -25,13 +25,13 @@
 
     .ShowDataPopupKey{
         font-weight: bold;   
-        width: 40%;
+        width: 45%;
         text-align: right;
         word-wrap: break-word;
     }
 
     .ShowDataPopupValue{
-        width: 60%;  
+        width: 55%;  
         word-wrap: normal;
         text-overflow: ellipsis;
         text-align: left;
@@ -64,10 +64,10 @@
          padding-right: 3px;
          text-align: center;
          text-overflow: ellipsis;
+         position:sticky !important;
     }
 
     .CrossTabLeftColumnHeader{
-        position:sticky;
         left: 0;
         top: auto;
         text-align: left;

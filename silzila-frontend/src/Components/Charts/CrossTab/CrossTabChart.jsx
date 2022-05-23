@@ -111,15 +111,16 @@ chartProperty
             let colData = crossTabData[hdrRow].columnItems[colIndex];
             let spanSize = 1;
 
-            if (hdrRow + 1 === crossTabData.length) {
+            if (hdrRow - 1  === crossTabData.length) {
               spanSize = 1;
-            } else if (hdrRow === 0) {
-              colData.columnSpan = chartDataCSV.columns.length || 1;
-              continue;
-            } else if (hdrRow - 1 === 0) {
-              let _list = chartDataCSV.columns.filter((item) => item.includes(colData.displayData));
-              spanSize = _list.length;
-            } else {
+            } 
+            
+            // else if (hdrRow === 0) {
+            //   let _list = chartDataCSV.columns.filter((item) => item.includes(colData.displayData));
+            //   spanSize = _list.length;
+            // }
+            
+            else {
               let compObj = "";
 
               Object.keys(colData.compareObj).forEach((key) => {
@@ -269,7 +270,7 @@ const appendRowsFieldsAsColumns = () => {
       // }
 
       if(noValue){
-        columnIndex = 0;
+        columnIndex = dustbinColumns.length - 1;
       }
       else{
         columnIndex = dustbinColumns.length;
@@ -323,15 +324,15 @@ const appendRowsFieldsAsColumns = () => {
             tempColumnObj.isHeaderField = true;
             tempColumnObj.isRowField = true;
             tempColumnObj.compareObj = compareObj;
-          } else {
-            for (let i = 0; i < dustbinRows.length; i++) {
-              compareObj[CrossTab.getKeyWithPrefix(dustbinRows[i], "row")] = rowValues[i];
-            }
-
+          } else {       
             if (noValue) {
               tempColumnObj.displayData = "";
               tempColumnObj.columnSpan = 1;
             } else if (dustbinValues.length === 1) {
+              for (let i = 0; i < dustbinRows.length; i++) {
+                compareObj[CrossTab.getKeyWithPrefix(dustbinRows[i], "row")] = rowValues[i];
+              }
+
               let _filteredData = CrossTab.getFilteredChartPropDataByCompareObject(chartPropData, compareObj)[0];
 
               if (_filteredData) {
@@ -346,6 +347,10 @@ const appendRowsFieldsAsColumns = () => {
               }
               tempColumnObj.columnSpan = item.columnSpan;
             } else {
+              for (let i = 0; i < dustbinRows.length; i++) {
+                compareObj[CrossTab.getKeyWithPrefix(dustbinRows[i], "row")] = rowValues[i];
+              }
+
               if (showAsColumn) {
                 let _filteredData = CrossTab.getFilteredChartPropDataByCompareObject(chartPropData, compareObj)[0];
 
