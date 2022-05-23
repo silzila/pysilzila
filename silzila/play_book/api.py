@@ -64,9 +64,21 @@ async def read_pb(pb_uid: str, db: Session = Depends(get_db)):
 
 @router.get("/get-all-pb", dependencies=[Depends(JWTBearer())])
 async def get_all_pb(request: Request, db: Session = Depends(get_db)):
-    print(request.state.__dict__)
+    # print(request.state.__dict__)
     uid = request.state.uid
     pb_records = await service.get_all_pb(db, uid)
+    if pb_records is None:
+        raise HTTPException(
+            status_code=404, detail="No Play Book available"
+        )
+    return pb_records
+
+
+@router.get("/get-all-pb-by-ds/{ds_uid}", dependencies=[Depends(JWTBearer())])
+async def get_all_pb_by_ds(ds_uid: str, request: Request, db: Session = Depends(get_db)):
+    # print(request.state.__dict__)
+    uid = request.state.uid
+    pb_records = await service.get_all_pb_by_ds(ds_uid, db, uid)
     if pb_records is None:
         raise HTTPException(
             status_code=404, detail="No Play Book available"

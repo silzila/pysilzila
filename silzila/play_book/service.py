@@ -110,7 +110,27 @@ async def get_all_pb(db: Session, user_uid: str):
     return pb_records.scalars().all()
 
 
+# List out names of all PBs which is using a specific DS
+async def get_all_pb_by_ds(ds_uid: str, db: Session, user_uid: str):
+    stmt = select(Bundle("playbook", PlayBook.pb_uid, PlayBook.name, PlayBook.description, PlayBook.content)).join(User).where(
+        User.uid == user_uid
+    )
+    pb_records = await db.execute(stmt)
+    pb_list = pb_records.scalars().all()
+    pbs_containing_ds = []  # will hold the final result
+    # iterating all the PlayBooks
+    for pb in pb_list:
+        # iterating all the data sources in the PB
+        for ds in pb['content']['tabTileProps']['selectedDataSetList']:
+            if ds['ds_uid'] == ds_uid:
+                pbs_containing_ds.append(
+                    {'pb_uid': pb['pb_uid'], 'name': pb['name']})
+    return pbs_containing_ds
+
+
 # Delete PB
+
+
 async def delete_by_pb_uid(db: Session, pb_uid: str):
     pb_item = await get_pb_by_uid(db, pb_uid)
     if pb_item is None:
