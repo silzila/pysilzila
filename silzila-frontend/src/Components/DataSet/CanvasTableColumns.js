@@ -75,27 +75,20 @@ const CanvasTableColumns = ({
 				setupForRelation(e);
 			}
 		} else {
+			var oldRel = false;
 			arrows.map((arr) => {
 				if (
 					(arr.start === e.dataTransfer.getData("connectItemId") && arr.end === itemId) ||
 					(arr.end === e.dataTransfer.getData("connectItemId") && arr.start === itemId)
 				) {
 					console.log("RELATION BETWEEN THESE TWO COLUMNS ARE ALREADY EXIST");
-				} else {
-					if (
-						e.dataTransfer.getData("connectItemId") === itemId ||
-						e.dataTransfer.getData("connectTableName") === tableName
-					) {
-						console.log("same table names");
-						if (e.dataTransfer.getData("schema") !== schema) {
-							console.log("same table Diff schema, new rel");
-							setupForRelation(e);
-						}
-					} else {
-						setupForRelation(e);
-					}
+					oldRel = true;
 				}
 			});
+
+			if (!oldRel) {
+				setupForRelation(e);
+			}
 		}
 	};
 

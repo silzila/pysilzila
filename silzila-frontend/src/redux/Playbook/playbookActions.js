@@ -5,3 +5,7 @@ export const updatePlaybookUid = (playBookObj) => {
 export const resetPlayBookData = () => {
 	return { type: "RESET_PLAYBOOK_DATA" };
 };
+
+export const storePlayBookCopy = (pb) => {
+	return { type: "STORE_PLAYBOOK_COPY", payload: pb };
+};
