@@ -13,6 +13,7 @@ import {
 import { SketchPicker } from "react-color";
 import SliderWithInput from "../SliderWithInput";
 import { FormControl, MenuItem, Popover, Select, Switch } from "@mui/material";
+import LabelFormatting from "./LabelFormatting";
 
 const ChartLabels = ({
 	// state
@@ -162,7 +163,7 @@ const ChartLabels = ({
 								) : null}
 							</div>
 						</div>
-						<div className="optionDescription">FONT SIZE</div>
+						<div className="optionDescription">LABEL SIZE</div>
 						<SliderWithInput
 							percent={false}
 							sliderValue={chartProp.properties[propKey].labelOptions.fontSize}
@@ -171,6 +172,7 @@ const ChartLabels = ({
 								updateLabelOption(propKey, "fontSize", value);
 							}}
 						/>
+						<LabelFormatting />
 					</div>
 				</React.Fragment>
 			) : null}

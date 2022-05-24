@@ -40,6 +40,12 @@ const chartControl = {
 				fontStyle: "normal",
 				fontWeigth: "normal",
 				fontFamily: "sans-serif",
+
+				formatValue: "Number",
+				currencySymbol: "",
+				enableRounding: "false",
+				roundingDigits: 0,
+				numberSeparator: "None",
 			},
 
 			mouseOver: {
@@ -161,6 +167,12 @@ const chartControlsReducer = (state = chartControl, action) => {
 							fontStyle: "normal",
 							fontWeigth: "normal",
 							fontFamily: "sans-serif",
+
+							formatValue: "Number",
+							currencySymbol: "",
+							enableRounding: "false",
+							roundingDigits: 0,
+							numberSeparator: "None",
 						},
 
 						mouseOver: {
@@ -288,6 +300,12 @@ const chartControlsReducer = (state = chartControl, action) => {
 							fontStyle: "normal",
 							fontWeigth: "normal",
 							fontFamily: "sans-serif",
+
+							formatValue: "Number",
+							currencySymbol: "",
+							enableRounding: "false",
+							roundingDigits: 0,
+							numberSeparator: "None",
 						},
 
 						mouseOver: {

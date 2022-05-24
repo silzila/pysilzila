@@ -20,8 +20,8 @@ const AboutPopover = ({ openAbout, setOpenAbout }) => {
 			<div
 				className="datasetListPopover"
 				style={{
-					// backgroundColor: "rgb(255,255,255)",
 					border: "3px solid rgba(0,123,255,0.75)",
+					width: "500px",
 				}}
 			>
 				<div className="datasetListPopoverHeading">
@@ -32,8 +32,9 @@ const AboutPopover = ({ openAbout, setOpenAbout }) => {
 					<CloseRoundedIcon onClick={() => setOpenAbout(false)} />
 				</div>
 				<div>
-					Silzila is an Open Source data viaualization tool.
-					<br /> Add more text and content to see how it looks
+					<p>Silzila is an Open Source Data Visualization Tool.</p>
+					{/* TODO: Priority 5 - Include License information & disclaimer (as is,. etc) here  */}
+					<p>Add more text and content to see how it looks</p>
 				</div>
 			</div>
 		</Popover>

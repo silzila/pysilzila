@@ -139,6 +139,25 @@ const tabStateReducer = (state = initialTabState, action) => {
 				});
 			}
 
+		case "REMOVE_TILES_IN_DASH_DURING_DELETE_TILE":
+			var indexOfDeletedTile = state.tabs[action.payload.tabId].tilesInDashboard.indexOf(
+				action.payload.propKey
+			);
+
+			var dashTilesDetailsCopy = Object.assign(
+				state.tabs[action.payload.tabId].dashTilesDetails
+			);
+			delete dashTilesDetailsCopy[action.payload.propKey];
+
+			return update(state, {
+				tabs: {
+					[action.payload.tabId]: {
+						tilesInDashboard: { $splice: [[indexOfDeletedTile, 1]] },
+						dashTilesDetails: { $set: dashTilesDetailsCopy },
+					},
+				},
+			});
+
 		case "UPDATE_DASH_GRAPH_POSITION":
 			return update(state, {
 				tabs: {

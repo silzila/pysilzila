@@ -156,7 +156,7 @@ const DataSetReducer = (state = initialState, action) => {
 
 			return update(state, {
 				relationships: { $set: oldRelationsArray },
-				arrows: { $set: relArrows },
+				arrows: { $set: oldArrows },
 			});
 
 		// Adding information required to draw an arrow

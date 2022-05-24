@@ -124,6 +124,10 @@ export const setCustomRMinWidth = (tabId, value) => {
 	return { type: "SET_CR_MIN_WIDTH", payload: { tabId, value } };
 };
 
+export const removeTilesInDashDuringDeleteTile = (tabId, propKey) => {
+	return { type: "REMOVE_TILES_IN_DASH_DURING_DELETE_TILE", payload: { tabId, propKey } };
+};
+
 //  *************************************************************
 //  to tile state reducer
 //  *************************************************************
@@ -414,6 +418,7 @@ export const actionsToCompleteRenameTile = ({ tabId, tileId, renameValue, nextTi
 export const actionsToRemoveTile = ({ tabId, tileId, tileIndex }) => {
 	var propKey = `${tabId}.${tileId}`;
 	return (dispatch) => {
+		dispatch(removeTilesInDashDuringDeleteTile(tabId, propKey));
 		dispatch(removeTile(tabId, tileId, tileIndex));
 		dispatch(removeChartProperties(tabId, tileId, propKey, tileIndex));
 		dispatch(removeChartControls(tabId, tileId, propKey, tileIndex));

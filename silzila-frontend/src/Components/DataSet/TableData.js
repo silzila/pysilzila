@@ -44,7 +44,7 @@ function TableData({
 					<p>Rows Displayed: {tableData.length}</p>
 					<CloseOutlined style={{ float: "rigth" }} onClick={handleClose} />
 				</DialogTitle>
-				<DialogContent sx={{ maxWidth: "80vw", overflow: "hidden" }}>
+				<DialogContent>
 					<Table stickyHeader>
 						<TableHead>
 							<TableRow>

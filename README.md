@@ -18,16 +18,12 @@ Visit [Silzila](https://silzila.org/) website to learn more
 
 Create connections to the databases which you need
 
-<!-- ![Connection](silzila-frontend/src/assets/dataConnection-ss.png) -->
-
 ![](silzila-frontend/src/assets/Silzila-New-Data-Connection-fast.gif)
 
 ## 2. Define your Dataset
 
 Select a subset of tables from one of the Data Connections, define relation between tables and
 create a dataset
-
-<!-- ![Dataset](silzila-frontend/src/assets/dataSet-ss.png) -->
 
 ![](silzila-frontend/src/assets/Silzila-NewDataset-2-fast.gif)
 

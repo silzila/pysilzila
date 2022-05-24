@@ -24,12 +24,14 @@ import { resetUser } from "../../redux/UserInfo/isLoggedActions";
 import LaunchRoundedIcon from "@mui/icons-material/LaunchRounded";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import PrivacyTipOutlinedIcon from "@mui/icons-material/PrivacyTipOutlined";
 import {
 	githubAddress,
 	githubIssueAddress,
 	websiteAddress,
 } from "../../ServerCall/EnvironmentVariables";
 import AboutPopover from "../CommonFunctions/PopOverComponents/AboutPopover";
+import PrivacyPopover from "../CommonFunctions/PopOverComponents/PrivacyPopover";
 
 const MenuBar = ({
 	// props
@@ -51,6 +53,48 @@ const MenuBar = ({
 	resetAllStates,
 	resetUser,
 }) => {
+	var showSaveWarning = false;
+
+	if (from === "dataViewer" && playBookState.oldContent) {
+		if (JSON.stringify(tabState) !== JSON.stringify(playBookState.oldContent.tabState)) {
+			console.log(tabState, playBookState.oldContent.tabState);
+		}
+		if (JSON.stringify(tileState) !== JSON.stringify(playBookState.oldContent.tileState)) {
+			console.log(tileState, playBookState.oldContent.tileState);
+		}
+		if (
+			JSON.stringify(tabTileProps) !== JSON.stringify(playBookState.oldContent.tabTileProps)
+		) {
+			console.log(tabTileProps, playBookState.oldContent.tabTileProps);
+		}
+		if (
+			JSON.stringify(chartProperty) !== JSON.stringify(playBookState.oldContent.chartProperty)
+		) {
+			console.log(chartProperty, playBookState.oldContent.chartProperty);
+		}
+		if (
+			JSON.stringify(chartControl) !== JSON.stringify(playBookState.oldContent.chartControl)
+		) {
+			console.log(chartControl, playBookState.oldContent.chartControl);
+		}
+
+		if (
+			JSON.stringify(tabState) === JSON.stringify(playBookState.oldContent.tabState) &&
+			JSON.stringify(tileState) === JSON.stringify(playBookState.oldContent.tileState) &&
+			JSON.stringify(tabTileProps) ===
+				JSON.stringify(playBookState.oldContent.tabTileProps) &&
+			JSON.stringify(chartProperty) ===
+				JSON.stringify(playBookState.oldContent.chartProperty) &&
+			JSON.stringify(chartControl) === JSON.stringify(playBookState.oldContent.chartControl)
+		) {
+			console.log("Same Data. No need to show warning");
+			showSaveWarning = false;
+		} else {
+			console.log("Provide warning about saving data");
+			showSaveWarning = true;
+		}
+	}
+
 	const menuStyle = { fontSize: "12px", padding: "2px 8px", margin: 0 };
 
 	// values for opening file menu and setting its anchor position
@@ -67,6 +111,9 @@ const MenuBar = ({
 
 	// Open / Close about popOver
 	const [aboutPopover, setAboutPopover] = useState(false);
+  
+	// Open / Close privacy popOver
+	const [privacyPopover, setPrivacyPopover] = useState(false);
 
 	// Save dataset modal Open / Close , playbook name and description
 	const [saveModal, setSaveModal] = useState(false);
@@ -88,7 +135,7 @@ const MenuBar = ({
 	// 		1. Save playbook
 	// 		2. Home button clicked
 	// 		3. Logout clicked
-	const handleSave = async (fromHome) => {
+	const handleSave = async () => {
 		setOpenFileMenu(false);
 
 		// check if this playbook already has a name / id
@@ -112,9 +159,17 @@ const MenuBar = ({
 				setSeverity("success");
 				setOpenAlert(true);
 				setTestMessage("Successfully saved playbook");
+
+				updatePlayBookId({
+					name: result.data.name,
+					pb_uid: result.data.pb_uid,
+					description: result.data.description,
+					oldContent: result.data.content,
+				});
+
 				setTimeout(() => {
 					setOpenAlert(false);
-					if (fromHome) {
+					if (saveFromHomeIcon) {
 						navigate("/datahome");
 						resetAllStates();
 					}
@@ -138,15 +193,16 @@ const MenuBar = ({
 				tileState,
 				tabTileProps,
 				chartProperty,
+				chartControl,
 			},
 		};
 
 		if (playBookDescription) playBookObj.description = playBookDescription;
-		var chartControlCopy = JSON.parse(JSON.stringify(chartControl));
-		Object.keys(chartControlCopy.properties).forEach((property) => {
-			chartControlCopy.properties[property].chartData = {};
-		});
-		playBookObj.content.chartControl = chartControlCopy;
+		// var chartControlCopy = JSON.parse(JSON.stringify(chartControl));
+		// Object.keys(chartControlCopy.properties).forEach((property) => {
+		// 	chartControlCopy.properties[property].chartData = {};
+		// });
+		// playBookObj.content.chartControl = chartControlCopy;
 		return playBookObj;
 	};
 
@@ -171,6 +227,7 @@ const MenuBar = ({
 					name: result.data.name,
 					pb_uid: result.data.pb_uid,
 					description: result.data.description,
+					oldContent: result.data.content,
 				});
 
 				setSaveModal(false);
@@ -179,6 +236,14 @@ const MenuBar = ({
 				setOpenAlert(true);
 				setTestMessage("Successfully saved playbook");
 				setTimeout(() => {
+					if (saveFromHomeIcon) {
+						navigate("/datahome");
+						resetAllStates();
+					}
+					if (saveFromLogoutIcon) {
+						navigate("/login");
+						resetUser();
+					}
 					setOpenAlert(false);
 				}, 2000);
 			} else {
@@ -222,8 +287,20 @@ const MenuBar = ({
 				<MenuItem
 					sx={fileMenuStyle}
 					onClick={() => {
-						setSaveFromLogoutIcon(true);
-						setSaveModal(true);
+						if (from === "dataViewer") {
+							if (showSaveWarning || playBookState.playBookUid === null) {
+								setSaveFromLogoutIcon(true);
+								setSaveModal(true);
+							} else {
+								resetUser();
+								navigate("/login");
+							}
+						}
+
+						if (from === "dataHome") {
+							resetUser();
+							navigate("/login");
+						}
 					}}
 				>
 					Logout
@@ -296,6 +373,7 @@ const MenuBar = ({
 					sx={fileMenuStyle}
 					onClick={() => {
 						window.open(websiteAddress, "_blank");
+						setOpenHelpMenu(false);
 					}}
 				>
 					<span style={{ flex: 1, marginRight: "1rem" }}>Visit Silzila</span>
@@ -305,6 +383,7 @@ const MenuBar = ({
 					sx={fileMenuStyle}
 					onClick={() => {
 						window.open(githubAddress, "_blank");
+						setOpenHelpMenu(false);
 					}}
 				>
 					<span style={{ flex: 1, marginRight: "1rem" }}>View Github</span>
@@ -314,6 +393,7 @@ const MenuBar = ({
 					sx={fileMenuStyle}
 					onClick={() => {
 						window.open(githubIssueAddress, "_blank");
+						setOpenHelpMenu(false);
 					}}
 				>
 					<span style={{ flex: 1, marginRight: "1rem" }}>Report Bug</span>
@@ -326,6 +406,7 @@ const MenuBar = ({
 							"mailto:example@silzila.org?subject=Silzila%20Feedback",
 							"_blank"
 						);
+						setOpenHelpMenu(false);
 					}}
 				>
 					<span style={{ flex: 1, marginRight: "1rem" }}>Provide Feedback</span>
@@ -335,11 +416,21 @@ const MenuBar = ({
 					sx={fileMenuStyle}
 					onClick={() => {
 						setAboutPopover(!aboutPopover);
-						setOpenHelpMenu(!openHelpMenu);
+						setOpenHelpMenu(false);
 					}}
 				>
 					<span style={{ flex: 1, marginRight: "1rem" }}>About</span>
 					<InfoOutlinedIcon sx={menuIconStyle} />
+				</MenuItem>
+				<MenuItem
+					sx={fileMenuStyle}
+					onClick={() => {
+						setPrivacyPopover(!privacyPopover);
+						setOpenHelpMenu(false);
+					}}
+				>
+					<span style={{ flex: 1, marginRight: "1rem" }}>Privacy</span>
+					<PrivacyTipOutlinedIcon sx={menuIconStyle} />
 				</MenuItem>
 			</Menu>
 		);
@@ -373,8 +464,14 @@ const MenuBar = ({
 					<div
 						className="menuHome"
 						onClick={() => {
-							setSaveFromHomeIcon(true);
-							setSaveModal(true);
+							console.log(showSaveWarning);
+							if (showSaveWarning || playBookState.playBookUid === null) {
+								setSaveFromHomeIcon(true);
+								setSaveModal(true);
+							} else {
+								resetAllStates();
+								navigate("/dataHome");
+							}
 						}}
 					>
 						<HomeRoundedIcon sx={{ color: "#666" }} />
@@ -448,6 +545,7 @@ const MenuBar = ({
 			<LogOutMenu />
 
 			<AboutPopover openAbout={aboutPopover} setOpenAbout={setAboutPopover} />
+			<PrivacyPopover openPrivacy={privacyPopover} setOpenPrivacy={setPrivacyPopover} />
 
 			{/* A Dialog prompt to save the current playbook. This opens from either of the following actions */}
 			{/* 1. When a user clicks save playbook from file menu for the first time */}
@@ -479,7 +577,8 @@ const MenuBar = ({
 						</div>
 						<p></p>
 
-						{saveFromHomeIcon || saveFromLogoutIcon ? null : (
+						{(saveFromHomeIcon || saveFromLogoutIcon) &&
+						playBookState.playBookUid !== null ? null : (
 							<div style={{ padding: "0 50px" }}>
 								<TextField
 									required
@@ -549,7 +648,7 @@ const MenuBar = ({
 								// 	Else call savePlaybook function which will create a new playbook
 
 								if (playBookState.playBookUid !== null) {
-									handleSave(true);
+									handleSave();
 								} else {
 									savePlaybook();
 								}
