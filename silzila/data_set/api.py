@@ -87,9 +87,10 @@ async def read_ds(ds_uid: str, db: Session = Depends(get_db)):
     return dict(db_ds).get('data_schema').get('tables')
 
 
-@router.delete("/delete-ds/{ds_uid}")
-async def delete_ds(ds_uid: str, db: Session = Depends(get_db)):
-    deleted = await service.delete_ds(db, ds_uid)
+@router.delete("/delete-ds/{ds_uid}", dependencies=[Depends(JWTBearer())])
+async def delete_ds(ds_uid: str, request: Request, db: Session = Depends(get_db)):
+    uid = request.state.uid
+    deleted = await service.delete_ds(db, ds_uid, uid)
     if deleted is None:
         raise HTTPException(
             status_code=500, detail="Something went wrong in server")

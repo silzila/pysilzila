@@ -8,6 +8,7 @@ from . import model, schema
 from .model import DataSet
 # from ..user.model import User
 from ..data_connection.model import DataConnection
+from ..play_book.service import get_all_pb_by_ds
 
 
 async def get_ds_by_friendly_name(db: Session, uid: str, friendly_name: str):
@@ -210,11 +211,19 @@ async def update_data_set(db: Session, ds_uid: str, ds: schema.DataSetIn, uid: s
     return resp
 
 
-async def delete_ds(db: Session, ds_uid: str):
+async def delete_ds(db: Session, ds_uid: str, uid: str):
+    # get the DS record
     ds_item = await get_ds_by_id(db, ds_uid)
+    # if DS record not exists, throw error
     if ds_item is None:
         raise HTTPException(
             status_code=404, detail="Data Set not exists")
+    # if DS is present, then check if any Playbook is dependant on it.
+    # if any dependency on Playbook then can't delete
+    dependant_pb_list = await get_all_pb_by_ds(ds_uid, db, uid)
+    if len(dependant_pb_list) >= 1:
+        raise HTTPException(
+            status_code=401, detail="Cannot delete Datasource. There are dependant Playbook(s)")
     qry_del_ds = DataSet.__table__.delete().where(DataSet.ds_uid == ds_uid)
     await db.execute(qry_del_ds)
     await db.commit()
