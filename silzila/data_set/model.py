@@ -1,5 +1,5 @@
 from sqlalchemy.sql.sqltypes import JSON
-from app.database.config import Base
+from ..database.config import Base
 import shortuuid
 from sqlalchemy import Column, String, Integer, ForeignKey, Boolean
 

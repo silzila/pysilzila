@@ -111,7 +111,7 @@ const MenuBar = ({
 
 	// Open / Close about popOver
 	const [aboutPopover, setAboutPopover] = useState(false);
-
+  
 	// Open / Close privacy popOver
 	const [privacyPopover, setPrivacyPopover] = useState(false);
 

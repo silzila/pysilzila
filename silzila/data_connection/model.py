@@ -1,7 +1,7 @@
 from pydantic.main import BaseModel
 from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship
-from app.database.config import Base
+from ..database.config import Base
 import shortuuid
 # from pydantic.networks import AnyUrl
 

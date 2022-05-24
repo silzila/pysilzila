@@ -410,6 +410,11 @@ export const actionsToCompleteRenameTile = ({ tabId, tileId, renameValue, nextTi
 	};
 };
 
+// TODO: Priority 1 - When removing tile, make sure deleted tile information in dashboard is also removed
+// 		tabState>tabs>[tabId]>tilesInDashboard &
+// 		tabState>tabs>[tabId]>dashTilesDetails
+// 	The above two properties must also be checked and the removing tiles info must be deleted
+
 export const actionsToRemoveTile = ({ tabId, tileId, tileIndex }) => {
 	var propKey = `${tabId}.${tileId}`;
 	return (dispatch) => {

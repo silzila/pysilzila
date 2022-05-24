@@ -1,8 +1,18 @@
+import os
+import pathlib
+
+from ..main.__main__ import root_folder
+
 from decouple import config
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-DATABASE_URL = config("DATABASE_URL")
+DATABASE_URL = config("LOCAL_DB_DRIVER") + \
+    os.path.join(root_folder, config("LOCAL_DB_NAME"))
+
+HERE = pathlib.Path(__file__).resolve().parent
+print('PATHLIB ===============================', HERE)
+
 
 engine = create_async_engine(
     DATABASE_URL,
