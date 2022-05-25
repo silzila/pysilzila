@@ -40,12 +40,16 @@ const chartControl = {
 				fontStyle: "normal",
 				fontWeigth: "normal",
 				fontFamily: "sans-serif",
+			},
 
-				formatValue: "Number",
-				currencySymbol: "",
-				enableRounding: "false",
-				roundingDigits: 0,
-				numberSeparator: "None",
+			formatOptions: {
+				labelFormats: {
+					formatValue: "Number",
+					currencySymbol: "",
+					enableRounding: "false",
+					roundingDigits: 0,
+					numberSeparator: "None",
+				},
 			},
 
 			mouseOver: {
@@ -167,12 +171,16 @@ const chartControlsReducer = (state = chartControl, action) => {
 							fontStyle: "normal",
 							fontWeigth: "normal",
 							fontFamily: "sans-serif",
+						},
 
-							formatValue: "Number",
-							currencySymbol: "",
-							enableRounding: "false",
-							roundingDigits: 0,
-							numberSeparator: "None",
+						formatOptions: {
+							labelFormats: {
+								formatValue: "Number",
+								currencySymbol: "",
+								enableRounding: "false",
+								roundingDigits: 0,
+								numberSeparator: "None",
+							},
 						},
 
 						mouseOver: {
@@ -300,12 +308,16 @@ const chartControlsReducer = (state = chartControl, action) => {
 							fontStyle: "normal",
 							fontWeigth: "normal",
 							fontFamily: "sans-serif",
+						},
 
-							formatValue: "Number",
-							currencySymbol: "",
-							enableRounding: "false",
-							roundingDigits: 0,
-							numberSeparator: "None",
+						formatOptions: {
+							labelFormats: {
+								formatValue: "Number",
+								currencySymbol: "",
+								enableRounding: "false",
+								roundingDigits: 0,
+								numberSeparator: "None",
+							},
 						},
 
 						mouseOver: {
@@ -545,6 +557,20 @@ const chartControlsReducer = (state = chartControl, action) => {
 					},
 				},
 			});
+
+		case "UPDATE_FORMAT_OPTIONS":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						formatOptions: {
+							[action.payload.formatType]: {
+								[action.payload.option]: { $set: action.payload.value },
+							},
+						},
+					},
+				},
+			});
+
 		case "UPDATE_LABEL_POSITION":
 			return update(state, {
 				properties: {

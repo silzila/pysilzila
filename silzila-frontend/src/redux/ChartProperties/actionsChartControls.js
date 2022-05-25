@@ -73,6 +73,17 @@ export const updateLabelPosition = (propKey, value) => {
 	};
 };
 
+// ===================================
+// Format
+
+export const updateFormatOption = (propKey, formatType, option, value) => {
+	console.log("Updating format", propKey, formatType, option, value);
+	return {
+		type: "UPDATE_FORMAT_OPTIONS",
+		payload: { propKey, formatType, option, value },
+	};
+};
+
 // ==============================
 // Legend
 

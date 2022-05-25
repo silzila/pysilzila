@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { updateLabelOption } from "../../../redux/ChartProperties/actionsChartControls";
+import { updateFormatOption } from "../../../redux/ChartProperties/actionsChartControls";
 import InputNumber from "../CommonFunctions/InputNumber";
 import InputSymbol from "../CommonFunctions/InputSymbol";
 
@@ -11,10 +11,10 @@ const LabelFormatting = ({
 	chartControl,
 
 	// dispatch
-	updateLabel,
+	updateFormat,
 }) => {
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
-	let formatObject = chartControl.properties[propKey].labelOptions;
+	let formatObject = chartControl.properties[propKey].formatOptions.labelFormats;
 
 	const formatOptions = [
 		{ type: "Number", value: "Number" },
@@ -35,7 +35,7 @@ const LabelFormatting = ({
 					onClick={(e) => {
 						console.log(item.value);
 
-						updateLabel(propKey, "formatValue", item.value);
+						updateFormat(propKey, "labelFormats", "formatValue", item.value);
 						// setLabelFormat(item.value);
 					}}
 				>
@@ -64,7 +64,7 @@ const LabelFormatting = ({
 					value={formatObject.numberSeparator}
 					onClick={(e) => {
 						console.log(item.value);
-						updateLabel(propKey, "numberSeparator", item.value);
+						updateFormat(propKey, "labelFormats", "numberSeparator", item.value);
 					}}
 				>
 					{item.type}
@@ -75,8 +75,7 @@ const LabelFormatting = ({
 
 	return (
 		<React.Fragment>
-			<div style={{ marginTop: "1rem" }}></div>
-			<div className="optionDescription">FORMAT</div>
+			<div className="optionDescription">LABEL FORMAT</div>
 
 			<div className="optionDescription">
 				<label htmlFor="enableDisable" className="enableDisableLabel">
@@ -92,7 +91,9 @@ const LabelFormatting = ({
 						<span style={{ margin: "auto" }}>Curency Symbol</span>
 						<InputSymbol
 							value={formatObject.currencySymbol}
-							updateValue={(value) => updateLabel(propKey, "currencySymbol", value)}
+							updateValue={(value) =>
+								updateFormat(propKey, "labelFormats", "currencySymbol", value)
+							}
 						/>
 					</>
 				) : null}
@@ -109,7 +110,12 @@ const LabelFormatting = ({
 					id="enableDisable"
 					checked={formatObject.enableRounding}
 					onChange={(e) => {
-						updateLabel(propKey, "enableRounding", !formatObject.enableRounding);
+						updateFormat(
+							propKey,
+							"labelFormats",
+							"enableRounding",
+							!formatObject.enableRounding
+						);
 					}}
 				/>
 				<InputNumber
@@ -117,9 +123,9 @@ const LabelFormatting = ({
 					updateValue={(value) => {
 						console.log(value);
 						if (value >= 0) {
-							updateLabel(propKey, "roundingDigits", value);
+							updateFormat(propKey, "labelFormats", "roundingDigits", value);
 						} else {
-							updateLabel(propKey, "roundingDigits", 0);
+							updateFormat(propKey, "labelFormats", "roundingDigits", 0);
 						}
 					}}
 					disabled={formatObject.enableRounding ? false : true}
@@ -149,8 +155,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		updateLabel: (propKey, option, value) =>
-			dispatch(updateLabelOption(propKey, option, value)),
+		updateFormat: (propKey, formatType, option, value) =>
+			dispatch(updateFormatOption(propKey, formatType, option, value)),
 	};
 };
 

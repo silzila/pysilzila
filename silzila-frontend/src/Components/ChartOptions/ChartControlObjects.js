@@ -19,28 +19,39 @@ const ChartControlObjects = ({
 		"Colors",
 		"Legend",
 		"Margin",
+		"Format",
 		"Tooltip",
 		"Labels",
 		// "Style",
 		"Grid/Axes",
 	];
 
-	const pieOptionsList = ["Title", "Colors", "Legend", "Tooltip", "Labels", "Axis"];
+	const pieOptionsList = ["Title", "Colors", "Legend", "Tooltip", "Labels", "Format", "Axis"];
 	const funnelOptionList = [
 		"Title",
 		"Colors",
 		"Legend",
 		//  "Margin",
+		"Format",
 		"Tooltip",
 	];
 	const gaugeOptionList = [
 		"Title",
 		"Colors",
 		//  "Margin",
+		"Format",
 		"Tooltip",
 		"Axis",
 	];
-	const heatmapOptionList = ["Title", "Colors", "Margin", "Tooltip", "Labels", "Grid/Axes"];
+	const heatmapOptionList = [
+		"Title",
+		"Colors",
+		"Margin",
+		"Format",
+		"Tooltip",
+		"Labels",
+		"Grid/Axes",
+	];
 	const crossTabOptionList = ["Title", "Tooltip", "Style"];
 
 	const RenderOptions = () => {
@@ -134,7 +145,7 @@ const ChartControlObjects = ({
 					);
 				});
 
-				case "crossTab":
+			case "crossTab":
 				return crossTabOptionList.map((option) => {
 					return (
 						<div

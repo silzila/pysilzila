@@ -1,7 +1,7 @@
 import ReactEcharts from "echarts-for-react";
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { formatChartData } from "../CommonFunctions/NumberFormatter";
+import { formatChartData } from "../ChartOptions/Format/NumberFormatter";
 
 const MultiBar = ({
 	// props
@@ -51,7 +51,7 @@ const MultiBar = ({
 				property.chartType,
 				property.chartAxes,
 				JSON.parse(JSON.stringify(chartData)),
-				chartControl.labelOptions
+				chartControl.formatOptions.labelFormats
 			);
 
 			// TODO: Priority 1 - Abbreviation & Percent formatting pending
