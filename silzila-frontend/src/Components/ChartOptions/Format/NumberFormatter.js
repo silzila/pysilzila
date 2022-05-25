@@ -1,4 +1,4 @@
-export const formatChartData = (chartType, chartAxes, chartData, labelOptions) => {
+export const formatChartData = (chartType, chartAxes, chartData, formatOptions) => {
 	var formattedData = chartData;
 
 	// Get which chart axes has measures / X / Y  info for each chart
@@ -34,13 +34,13 @@ export const formatChartData = (chartType, chartAxes, chartData, labelOptions) =
 			if (measureKeys.includes(key)) {
 				console.log("measure present", key);
 
-				if (labelOptions.formatValue === "Currency") {
-					data[key] = `${data[key]} ${labelOptions.currencySymbol}`;
+				if (formatOptions.formatValue === "Currency") {
+					data[key] = `${data[key]} ${formatOptions.currencySymbol}`;
 				}
 
-				console.log(labelOptions.enableRounding);
-				if (labelOptions.enableRounding) {
-					data[key] = Number(data[key]).toFixed(labelOptions.roundingDigits);
+				console.log(formatOptions.enableRounding);
+				if (formatOptions.enableRounding) {
+					data[key] = Number(data[key]).toFixed(formatOptions.roundingDigits);
 				}
 			}
 		});

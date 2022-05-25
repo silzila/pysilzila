@@ -4,6 +4,7 @@ import React from "react";
 import { connect } from "react-redux";
 import ChartColors from "./Color/ChartColors";
 import ColorScale from "./Color/ColorScale";
+import ChartFormat from "./Format/ChartFormat";
 import AxisControls from "./GridAndAxes/AxisControls";
 import GridAndAxes from "./GridAndAxes/GridAndAxes";
 import ChartLabels from "./Labels/ChartLabels";
@@ -46,6 +47,9 @@ const ControlDetail = ({ chartProp, tabTileProps }) => {
 
 			case "Axis":
 				return <AxisControls />;
+
+			case "Format":
+				return <ChartFormat />;
 
 			default:
 				return (
