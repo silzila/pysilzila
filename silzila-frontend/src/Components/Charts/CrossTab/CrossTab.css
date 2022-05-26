@@ -47,6 +47,8 @@
         display: table;
         table-layout: fixed;
         width:max-content;
+        border-collapse: collapse;
+    
     }
 
     /* .CrossTabTable th{
@@ -54,7 +56,8 @@
     } */
 
     .CrossTabHeader ,.CrossTabLeftColumnHeader{
-         border: 1px solid rgb(222, 222, 222); 
+         border-color: rgb(222, 222, 222); 
+         border-style: solid;
          background-color : rgb(247, 247, 247) ;
          cursor:default;
          font-weight:bold;
@@ -64,7 +67,6 @@
          padding-right: 3px;
          text-align: center;
          text-overflow: ellipsis;
-         position:sticky !important;
     }
 
     .CrossTabLeftColumnHeader{
@@ -79,7 +81,8 @@
     }
 
     .CrossTabCell{
-        border: 1px solid rgb(222, 222, 222) ;
+        border-color: rgb(222, 222, 222) ;
+        border-style: solid;
         font-size:11px;
         text-overflow: ellipsis;
         white-space: nowrap;

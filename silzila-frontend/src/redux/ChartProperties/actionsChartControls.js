@@ -59,6 +59,13 @@ export const changingValuesofSteps = (propkey, value) => {
 // ===================================
 // Labels
 
+export const updateCrossTabStyleOptions = (propKey, option, value) => {
+	return {
+		type: "UPDATE_CROSSTAB_STYLE_OPTIONS",
+		payload: { propKey: propKey, option: option, value: value },
+	};
+};
+
 export const updateCrossTabHeaderLabelOptions = (propKey, option, value) => {
 	return {
 		type: "UPDATE_CROSSTAB_HEADER_LABEL_OPTIONS",

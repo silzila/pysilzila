@@ -140,6 +140,7 @@ export const BuildTable = ({ crossTabData, dustbinRows, dustbinValues,
             fontSize : chartControls.properties[propKey].crossTabHeaderLabelOptions.fontSize,
             fontWeight : chartControls.properties[propKey].crossTabHeaderLabelOptions.fontWeight,
             color : chartControls.properties[propKey].crossTabHeaderLabelOptions.labelColor,
+            borderWidth : chartControls.properties[propKey].crossTabStyleOptions.borderWidth
            }}
         >
           {col.displayData}
@@ -156,6 +157,7 @@ export const BuildTable = ({ crossTabData, dustbinRows, dustbinValues,
              fontSize : chartControls.properties[propKey].crossTabCellLabelOptions.fontSize,
              fontWeight : chartControls.properties[propKey].crossTabCellLabelOptions.fontWeight,
              color : chartControls.properties[propKey].crossTabCellLabelOptions.labelColor,
+             borderWidth : chartControls.properties[propKey].crossTabStyleOptions.borderWidth
             }}
             colSpan={col.columnSpan}
             rowSpan={col.rowSpan}
@@ -196,7 +198,7 @@ export const BuildTable = ({ crossTabData, dustbinRows, dustbinValues,
           lineHeight : chartControls.properties[propKey].crossTabHeaderLabelOptions.fontSize >
           chartControls.properties[propKey].crossTabCellLabelOptions.fontSize ? 
           chartControls.properties[propKey].crossTabHeaderLabelOptions.fontSize / 20:
-          chartControls.properties[propKey].crossTabCellLabelOptions.fontSize / 20
+          chartControls.properties[propKey].crossTabCellLabelOptions.fontSize / 20         
         }} key={rowIndex}>
           {_rowContent}
         </tr>
@@ -206,7 +208,9 @@ export const BuildTable = ({ crossTabData, dustbinRows, dustbinValues,
 
   return (
     <div className="CrossTab">
-      <table className="CrossTabTable">{_tableContent}</table>
+      <table className="CrossTabTable" style={{
+        borderWidth : chartControls.properties[propKey].crossTabStyleOptions.borderWidth
+      }}>{_tableContent}</table>
       {showPopup ? <ShowDataPopup show={showPopup} {...popupData}></ShowDataPopup> : null}
     </div>
   );

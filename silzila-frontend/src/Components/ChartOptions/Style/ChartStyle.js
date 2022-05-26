@@ -10,6 +10,7 @@ import "./chartStyle.css";
 import {
 	updateCrossTabHeaderLabelOptions,
 	updateCrossTabCellLabelOptions,
+	updateCrossTabStyleOptions
 } from "../../../redux/ChartProperties/actionsChartControls";
 import { SketchPicker } from "react-color";
 import SliderWithInput from "../SliderWithInput";
@@ -24,6 +25,7 @@ const ChartStyle = ({
 	// dispatch
 	updateCrossTabHeaderLabelOptions,
 	updateCrossTabCellLabelOptions,
+	updateCrossTabStyleOptions
 }) => {
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 
@@ -36,16 +38,13 @@ const ChartStyle = ({
 		{ name: "Header", value: true },
 		{ name: "Cell", value: false },
 	];
-
    
-        if(optionName === "Header"){
-            options = chartProp.properties[propKey].crossTabHeaderLabelOptions;
-        }
-        else{
-            options =  chartProp.properties[propKey].crossTabCellLabelOptions;
-        }
-
-   
+	if(optionName === "Header"){
+		options = chartProp.properties[propKey].crossTabHeaderLabelOptions;
+	}
+	else{
+		options =  chartProp.properties[propKey].crossTabCellLabelOptions;
+	}  
 
     
 	const renderLabels = () => {
@@ -65,6 +64,16 @@ const ChartStyle = ({
 
 	return (
 		<div className="optionsInfo">
+		<div className="optionDescription">BORDER WIDTH</div>
+		<SliderWithInput
+			percent={false}
+			sliderValue={chartProp.properties[propKey].crossTabStyleOptions.borderWidth }
+			sliderMinMax={{ min: 1, max: 15, step: 1 }}
+			changeValue={(value) => {
+					updateCrossTabStyleOptions(propKey, "borderWidth", value);
+			}}  
+		/>
+
 			<div className="radioButtons">{renderLabels()}</div>
 				<React.Fragment>
 					<div style={{ display: "flex", paddingBottom: "8px", flexDirection: "column" }}>					
@@ -203,6 +212,7 @@ const mapDispatchToProps = (dispatch) => {
 		updateCrossTabHeaderLabelOptions: (propKey, option, value) =>
 			dispatch(updateCrossTabHeaderLabelOptions(propKey, option, value)),
             updateCrossTabCellLabelOptions: (propKey, option, value) => dispatch(updateCrossTabCellLabelOptions(propKey, option, value)),
+            updateCrossTabStyleOptions: (propKey, option, value) => dispatch(updateCrossTabStyleOptions(propKey, option, value))
 	};
 };
 

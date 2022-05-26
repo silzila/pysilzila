@@ -29,6 +29,9 @@ const chartControl = {
 				left: 65,
 			},
 
+			crossTabStyleOptions:{
+				borderWidth : 1
+			},
 			crossTabHeaderLabelOptions:{
 				labelColorManual: false,
 				labelColor: "#666666",			
@@ -167,6 +170,9 @@ const chartControlsReducer = (state = chartControl, action) => {
 							right: 40,
 							bottom: 25,
 							left: 65,
+						},
+						crossTabStyleOptions:{
+							borderWidth : 1
 						},
 
 						crossTabHeaderLabelOptions:{
@@ -313,6 +319,10 @@ const chartControlsReducer = (state = chartControl, action) => {
 							right: 40,
 							bottom: 25,
 							left: 65,
+						},
+
+						crossTabStyleOptions:{
+							borderWidth : 1
 						},
 
 						crossTabHeaderLabelOptions:{
@@ -575,6 +585,15 @@ const chartControlsReducer = (state = chartControl, action) => {
 
 		case "RESET_CHART_CONTROLS":
 			return chartControl;
+
+		case "UPDATE_CROSSTAB_STYLE_OPTIONS":
+		return update(state, {
+			properties: {
+				[action.payload.propKey]: {
+					crossTabStyleOptions: { [action.payload.option]: { $set: action.payload.value } },
+				},
+			},
+		});
 
 		case "UPDATE_CROSSTAB_HEADER_LABEL_OPTIONS":
 			return update(state, {
