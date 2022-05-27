@@ -1,6 +1,7 @@
 import ReactEcharts from "echarts-for-react";
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { formatChartLabelValue } from "../ChartOptions/Format/NumberFormatter";
 
 const PieChart = ({
 	//props
@@ -13,13 +14,13 @@ const PieChart = ({
 	chartProp,
 	chartControls,
 }) => {
-	var property = chartControls.properties[propKey];
+	var chartControl = chartControls.properties[propKey];
 
 	useEffect(() => {
-		if (property.chartData) {
+		if (chartControl.chartData) {
 			var objKey =
 				chartProp.properties[propKey].chartAxes[1].fields[0].fieldname + "__" + "year";
-			property.chartData.result.map((el) => {
+			chartControl.chartData.result.map((el) => {
 				if (objKey in el) {
 					let year = el[objKey];
 					el[objKey] = year.toString();
@@ -29,36 +30,15 @@ const PieChart = ({
 		}
 	});
 
-	let chartData = property.chartData ? property.chartData.result : "";
+	let chartData = chartControl.chartData ? chartControl.chartData.result : "";
+	var chartDataKeys = Object.keys(chartData[0]);
 	// console.log(chartData);
-
-	var seriesObj = {
-		type: "pie",
-		label: {
-			position: "outSide",
-			show: property.labelOptions.showLabel,
-			fontSize: property.labelOptions.fontSize,
-			color: property.labelOptions.labelColorManual ? property.labelOptions.labelColor : null,
-		},
-	};
-
-	const [seriesData, setSeriesData] = useState([]);
-
-	useEffect(() => {
-		var seriesDataTemp = [];
-		if (chartData) {
-			for (let i = 0; i < Object.keys(chartData[0]).length - 1; i++) {
-				seriesDataTemp.push(seriesObj);
-			}
-			setSeriesData(seriesDataTemp);
-		}
-	}, [chartData]);
 
 	const RenderChart = () => {
 		return (
 			<>
 				<ReactEcharts
-					theme={property.colorScheme}
+					theme={chartControl.colorScheme}
 					style={{
 						padding: "1rem",
 						width: graphDimension.width,
@@ -71,20 +51,21 @@ const PieChart = ({
 							: "1px solid rgb(238,238,238)",
 					}}
 					option={{
-						animation: chartArea ? false : true,
+						animation: false,
+						//  chartArea ? false : true,
 						legend: {
 							type: "scroll",
-							show: property.legendOptions?.showLegend,
-							itemHeight: property.legendOptions?.symbolHeight,
-							itemWidth: property.legendOptions?.symbolWidth,
-							itemGap: property.legendOptions?.itemGap,
+							show: chartControl.legendOptions?.showLegend,
+							itemHeight: chartControl.legendOptions?.symbolHeight,
+							itemWidth: chartControl.legendOptions?.symbolWidth,
+							itemGap: chartControl.legendOptions?.itemGap,
 
-							left: property.legendOptions?.position?.left,
-							top: property.legendOptions?.position?.top,
-							orient: property.legendOptions?.orientation,
+							left: chartControl.legendOptions?.position?.left,
+							top: chartControl.legendOptions?.position?.top,
+							orient: chartControl.legendOptions?.orientation,
 						},
 
-						tooltip: { show: property.mouseOver.enable },
+						tooltip: { show: chartControl.mouseOver.enable },
 						dataset: {
 							dimensions: Object.keys(chartData[0]),
 							source: chartData,
@@ -93,19 +74,28 @@ const PieChart = ({
 						series: [
 							{
 								type: "pie",
-								startAngle: property.axisOptions.pieAxisOptions.pieStartAngle,
-								clockWise: property.axisOptions.pieAxisOptions.clockWise,
+								startAngle: chartControl.axisOptions.pieAxisOptions.pieStartAngle,
+								clockWise: chartControl.axisOptions.pieAxisOptions.clockWise,
 								label: {
-									position: property.labelOptions.pieLabel.labelPosition,
-									show: property.labelOptions.showLabel,
-									fontSize: property.labelOptions.fontSize,
-									color: property.labelOptions.labelColor,
+									position: chartControl.labelOptions.pieLabel.labelPosition,
+									show: chartControl.labelOptions.showLabel,
+									fontSize: chartControl.labelOptions.fontSize,
+									color: chartControl.labelOptions.labelColor,
 									padding: [
-										property.axisOptions.pieAxisOptions.labelPadding,
-										property.axisOptions.pieAxisOptions.labelPadding,
-										property.axisOptions.pieAxisOptions.labelPadding,
-										property.axisOptions.pieAxisOptions.labelPadding,
+										chartControl.axisOptions.pieAxisOptions.labelPadding,
+										chartControl.axisOptions.pieAxisOptions.labelPadding,
+										chartControl.axisOptions.pieAxisOptions.labelPadding,
+										chartControl.axisOptions.pieAxisOptions.labelPadding,
 									],
+
+									formatter: (value) => {
+										var formattedValue = value.value[chartDataKeys[1]];
+										formattedValue = formatChartLabelValue(
+											chartControl,
+											formattedValue
+										);
+										return formattedValue;
+									},
 								},
 							},
 						],

@@ -1,6 +1,10 @@
 import ReactEcharts from "echarts-for-react";
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import {
+	formatChartLabelValue,
+	formatChartYAxisValue,
+} from "../ChartOptions/Format/NumberFormatter";
 
 const StackedBar = ({
 	//props
@@ -13,39 +17,49 @@ const StackedBar = ({
 	chartControlState,
 	chartProperties,
 }) => {
-	var property = chartControlState.properties[propKey];
+	var chartControl = chartControlState.properties[propKey];
 
-	let chartData = property.chartData ? property.chartData.result : "";
-
-	var seriesObj = {
-		type: "bar",
-		stack: chartProperties.properties[propKey]?.chartAxes[1]?.fields[0]?.fieldname,
-		emphasis: {
-			focus: "series",
-		},
-		label: {
-			show: property.labelOptions.showLabel,
-			fontSize: property.labelOptions.fontSize,
-			color: property.labelOptions.labelColorManual ? property.labelOptions.labelColor : null,
-		},
-	};
+	let chartData = chartControl.chartData ? chartControl.chartData.result : "";
 
 	const [seriesData, setSeriesData] = useState([]);
 
 	useEffect(() => {
 		var seriesDataTemp = [];
 		if (chartData) {
+			var chartDataKeys = Object.keys(chartData[0]);
+
 			for (let i = 0; i < Object.keys(chartData[0]).length - 1; i++) {
+				var seriesObj = {
+					type: "bar",
+					stack: chartProperties.properties[propKey]?.chartAxes[1]?.fields[0]?.fieldname,
+					emphasis: {
+						focus: "series",
+					},
+					label: {
+						show: chartControl.labelOptions.showLabel,
+						fontSize: chartControl.labelOptions.fontSize,
+						color: chartControl.labelOptions.labelColorManual
+							? chartControl.labelOptions.labelColor
+							: null,
+
+						formatter: (value) => {
+							var formattedValue = value.value[chartDataKeys[i + 1]];
+							formattedValue = formatChartLabelValue(chartControl, formattedValue);
+							return formattedValue;
+						},
+					},
+				};
+
 				seriesDataTemp.push(seriesObj);
 			}
 			setSeriesData(seriesDataTemp);
 		}
-	}, [chartData, property]);
+	}, [chartData, chartControl]);
 
 	const RenderChart = () => {
 		return (
 			<ReactEcharts
-				theme={property.colorScheme}
+				theme={chartControl.colorScheme}
 				style={{
 					padding: "1rem",
 					width: graphDimension.width,
@@ -58,26 +72,27 @@ const StackedBar = ({
 						: "1px solid rgb(238,238,238)",
 				}}
 				option={{
-					animation: chartArea ? false : true,
+					animation: false,
+					// chartArea ? false : true,
 					legend: {
 						type: "scroll",
-						show: property.legendOptions?.showLegend,
-						itemHeight: property.legendOptions?.symbolHeight,
-						itemWidth: property.legendOptions?.symbolWidth,
-						itemGap: property.legendOptions?.itemGap,
+						show: chartControl.legendOptions?.showLegend,
+						itemHeight: chartControl.legendOptions?.symbolHeight,
+						itemWidth: chartControl.legendOptions?.symbolWidth,
+						itemGap: chartControl.legendOptions?.itemGap,
 
-						left: property.legendOptions?.position?.left,
-						top: property.legendOptions?.position?.top,
-						orient: property.legendOptions?.orientation,
+						left: chartControl.legendOptions?.position?.left,
+						top: chartControl.legendOptions?.position?.top,
+						orient: chartControl.legendOptions?.orientation,
 					},
 					grid: {
-						left: property.chartMargin.left,
-						right: property.chartMargin.right,
-						top: property.chartMargin.top,
-						bottom: property.chartMargin.bottom,
+						left: chartControl.chartMargin.left,
+						right: chartControl.chartMargin.right,
+						top: chartControl.chartMargin.top,
+						bottom: chartControl.chartMargin.bottom,
 					},
 
-					tooltip: { show: property.mouseOver.enable },
+					tooltip: { show: chartControl.mouseOver.enable },
 
 					dataset: {
 						dimensions: Object.keys(chartData[0]),
@@ -86,74 +101,79 @@ const StackedBar = ({
 
 					xAxis: {
 						splitLine: {
-							show: property.axisOptions?.xSplitLine,
+							show: chartControl.axisOptions?.xSplitLine,
 						},
 						type: "category",
-						position: property.axisOptions.xAxis.position,
-						show: property.axisOptions.xAxis.showLabel,
+						position: chartControl.axisOptions.xAxis.position,
+						show: chartControl.axisOptions.xAxis.showLabel,
 
-						name: property.axisOptions.xAxis.name,
-						nameLocation: property.axisOptions.xAxis.nameLocation,
-						nameGap: property.axisOptions.xAxis.nameGap,
+						name: chartControl.axisOptions.xAxis.name,
+						nameLocation: chartControl.axisOptions.xAxis.nameLocation,
+						nameGap: chartControl.axisOptions.xAxis.nameGap,
 
 						axisLine: {
-							onZero: property.axisOptions.xAxis.onZero,
+							onZero: chartControl.axisOptions.xAxis.onZero,
 						},
 
 						axisTick: {
 							alignWithLabel: true,
 							length:
-								property.axisOptions.xAxis.position === "top"
-									? property.axisOptions.xAxis.tickSizeTop
-									: property.axisOptions.xAxis.tickSizeBottom,
+								chartControl.axisOptions.xAxis.position === "top"
+									? chartControl.axisOptions.xAxis.tickSizeTop
+									: chartControl.axisOptions.xAxis.tickSizeBottom,
 						},
 						axisLabel: {
 							rotate:
-								property.axisOptions.xAxis.position === "top"
-									? property.axisOptions.xAxis.tickRotationTop
-									: property.axisOptions.xAxis.tickRotationBottom,
+								chartControl.axisOptions.xAxis.position === "top"
+									? chartControl.axisOptions.xAxis.tickRotationTop
+									: chartControl.axisOptions.xAxis.tickRotationBottom,
 							margin:
-								property.axisOptions.xAxis.position === "top"
-									? property.axisOptions.xAxis.tickPaddingTop
-									: property.axisOptions.xAxis.tickPaddingBottom,
+								chartControl.axisOptions.xAxis.position === "top"
+									? chartControl.axisOptions.xAxis.tickPaddingTop
+									: chartControl.axisOptions.xAxis.tickPaddingBottom,
 						},
 					},
 
 					yAxis: {
 						splitLine: {
-							show: property.axisOptions?.ySplitLine,
+							show: chartControl.axisOptions?.ySplitLine,
 						},
-						inverse: property.axisOptions.inverse,
+						inverse: chartControl.axisOptions.inverse,
 
-						position: property.axisOptions.yAxis.position,
+						position: chartControl.axisOptions.yAxis.position,
 
-						show: property.axisOptions.yAxis.showLabel,
+						show: chartControl.axisOptions.yAxis.showLabel,
 
-						name: property.axisOptions.yAxis.name,
-						nameLocation: property.axisOptions.yAxis.nameLocation,
-						nameGap: property.axisOptions.yAxis.nameGap,
+						name: chartControl.axisOptions.yAxis.name,
+						nameLocation: chartControl.axisOptions.yAxis.nameLocation,
+						nameGap: chartControl.axisOptions.yAxis.nameGap,
 
 						axisLine: {
-							onZero: property.axisOptions.yAxis.onZero,
+							onZero: chartControl.axisOptions.yAxis.onZero,
 						},
 
 						axisTick: {
 							alignWithLabel: true,
 							length:
-								property.axisOptions.yAxis.position === "left"
-									? property.axisOptions.yAxis.tickSizeLeft
-									: property.axisOptions.yAxis.tickSizeRight,
+								chartControl.axisOptions.yAxis.position === "left"
+									? chartControl.axisOptions.yAxis.tickSizeLeft
+									: chartControl.axisOptions.yAxis.tickSizeRight,
 						},
 
 						axisLabel: {
 							rotate:
-								property.axisOptions.yAxis.position === "left"
-									? property.axisOptions.yAxis.tickRotationLeft
-									: property.axisOptions.yAxis.tickRotationRight,
+								chartControl.axisOptions.yAxis.position === "left"
+									? chartControl.axisOptions.yAxis.tickRotationLeft
+									: chartControl.axisOptions.yAxis.tickRotationRight,
 							margin:
-								property.axisOptions.yAxis.position === "left"
-									? property.axisOptions.yAxis.tickPaddingLeft
-									: property.axisOptions.yAxis.tickPaddingRight,
+								chartControl.axisOptions.yAxis.position === "left"
+									? chartControl.axisOptions.yAxis.tickPaddingLeft
+									: chartControl.axisOptions.yAxis.tickPaddingRight,
+
+							formatter: (value) => {
+								var formattedValue = formatChartYAxisValue(chartControl, value);
+								return formattedValue;
+							},
 						},
 					},
 
