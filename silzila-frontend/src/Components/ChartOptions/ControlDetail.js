@@ -49,7 +49,7 @@ const ControlDetail = ({ chartProp, tabTileProps }) => {
 				return <AxisControls />;
 
 			case "Format":
-				return <ChartFormat />;
+				return <ChartFormat chartType={chartType} />;
 
 			default:
 				return (
