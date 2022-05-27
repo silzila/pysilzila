@@ -45,7 +45,13 @@ const chartControl = {
 			formatOptions: {
 				labelFormats: {
 					formatValue: "Number",
-					currencySymbol: "",
+					currencySymbol: "₹",
+					enableRounding: "false",
+					roundingDigits: 0,
+					numberSeparator: "None",
+				},
+
+				yAxisFormats: {
 					enableRounding: "false",
 					roundingDigits: 0,
 					numberSeparator: "None",
@@ -176,7 +182,13 @@ const chartControlsReducer = (state = chartControl, action) => {
 						formatOptions: {
 							labelFormats: {
 								formatValue: "Number",
-								currencySymbol: "",
+								currencySymbol: "₹",
+								enableRounding: "false",
+								roundingDigits: 0,
+								numberSeparator: "None",
+							},
+
+							yAxisFormats: {
 								enableRounding: "false",
 								roundingDigits: 0,
 								numberSeparator: "None",
@@ -313,7 +325,13 @@ const chartControlsReducer = (state = chartControl, action) => {
 						formatOptions: {
 							labelFormats: {
 								formatValue: "Number",
-								currencySymbol: "",
+								currencySymbol: "₹",
+								enableRounding: "false",
+								roundingDigits: 0,
+								numberSeparator: "None",
+							},
+
+							yAxisFormats: {
 								enableRounding: "false",
 								roundingDigits: 0,
 								numberSeparator: "None",
@@ -559,6 +577,7 @@ const chartControlsReducer = (state = chartControl, action) => {
 			});
 
 		case "UPDATE_FORMAT_OPTIONS":
+			console.log(action.payload);
 			return update(state, {
 				properties: {
 					[action.payload.propKey]: {

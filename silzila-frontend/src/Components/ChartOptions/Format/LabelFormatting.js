@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { updateFormatOption } from "../../../redux/ChartProperties/actionsChartControls";
 import InputNumber from "../CommonFunctions/InputNumber";
 import InputSymbol from "../CommonFunctions/InputSymbol";
+import { FormControl, MenuItem, Select } from "@mui/material";
 
 const LabelFormatting = ({
 	// state
@@ -19,7 +20,47 @@ const LabelFormatting = ({
 	const formatOptions = [
 		{ type: "Number", value: "Number" },
 		{ type: "Currency", value: "Currency" },
+		{ type: "Percent", value: "Percent" },
 	];
+
+	const [measuresList, setMeasuresList] = useState([]);
+
+	useEffect(() => {
+		console.log(chartProperty[propKey].chartType);
+
+		var chartAxes = chartProperty[propKey].chartAxes;
+		console.log(JSON.stringify(chartAxes, null, 2));
+		var measures = [];
+
+		switch (chartProperty[propKey].chartType) {
+			case "multibar":
+			case "stackedBar":
+			case "line":
+			case "area":
+			case "pie":
+			case "donut":
+				measures = chartAxes[2].fields;
+				break;
+
+			case "scatterPlot":
+				measures = chartAxes[2].fields;
+				measures = measures.concat(chartAxes[3].fields);
+				console.log(measures);
+				break;
+
+			case "gauge":
+			case "funnel":
+				measures = chartAxes[1].fields;
+				break;
+
+			case "heatmap":
+				measures = chartAxes[3].fields;
+				break;
+		}
+
+		console.log(JSON.stringify(measures, null, 2));
+		setMeasuresList(measures);
+	}, [chartProperty]);
 
 	const renderFormatOptions = () => {
 		return formatOptions.map((item) => {
@@ -73,9 +114,56 @@ const LabelFormatting = ({
 		});
 	};
 
+	var selectInput = { fontSize: "12px", padding: "2px 0.5rem" };
+
 	return (
 		<React.Fragment>
 			<div className="optionDescription">LABEL FORMAT</div>
+
+			{/* <div className="optionDescription">
+				<label htmlFor="enableDisable" className="enableDisableLabel">
+					Measures
+				</label>
+			</div>
+			<div className="optionDescription">
+				<FormControl
+					fullWidth
+					size="small"
+					style={{ fontSize: "12px", borderRadius: "4px", backgroundColor: "#fff" }}
+				>
+					<Select
+						sx={{ height: "1.5rem", fontSize: "12px", display: "flex" }}
+						value="allMeasures"
+					>
+						<MenuItem
+							sx={{
+								fontSize: "12px",
+								padding: "2px 0.5rem",
+								borderBottom: "1px solid lightgray",
+							}}
+							value="allMeasures"
+						>
+							(All Measures)
+						</MenuItem>
+
+						{measuresList.map((measure) => {
+							console.log(measure);
+							return (
+								<MenuItem sx={selectInput} value={"order_date"}>
+									<div style={{ width: "100%", display: "flex" }}>
+										<span style={{ flex: "1" }}>{measure.fieldname}</span>
+										<span style={{ color: "#d25e00" }}>
+											{measure.time_grain
+												? `${measure.agg}, ${measure.time_grain}`
+												: measure.agg}
+										</span>
+									</div>
+								</MenuItem>
+							);
+						})}
+					</Select>
+				</FormControl>
+			</div> */}
 
 			<div className="optionDescription">
 				<label htmlFor="enableDisable" className="enableDisableLabel">

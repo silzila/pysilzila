@@ -75,24 +75,6 @@ const GaugeChart = ({
 						top: property.legendOptions?.position?.top,
 						orient: property.legendOptions?.orientation,
 					},
-					// grid: {
-					// 	left:
-					// 		chartArea === "dashboard"
-					// 			? `${property.chartMargin.left + 10}%`
-					// 			: `${property.chartMargin.left}%`,
-					// 	right:
-					// 		chartArea === "dashboard"
-					// 			? `${property.chartMargin.right + 0}%`
-					// 			: `${property.chartMargin.right}%`,
-					// 	top:
-					// 		chartArea === "dashboard"
-					// 			? `${property.chartMargin.top + 10}%`
-					// 			: `${property.chartMargin.top}%`,
-					// 	bottom:
-					// 		chartArea === "dashboard"
-					// 			? `${property.chartMargin.bottom + 5}%`
-					// 			: `${property.chartMargin.bottom}%`,
-					// },
 					tooltip: { show: property.mouseOver.enable },
 
 					series: [
@@ -136,6 +118,9 @@ const GaugeChart = ({
 							axisLabel: {
 								show: property.axisOptions.gaugeAxisOptions.showAxisLabel,
 								distance: property.axisOptions.gaugeAxisOptions.labelPadding,
+								formatter: (value) => {
+									return Number(value).toFixed(0);
+								},
 							},
 						},
 					],

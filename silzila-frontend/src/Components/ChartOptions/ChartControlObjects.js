@@ -16,43 +16,28 @@ const ChartControlObjects = ({
 
 	const barOptionsList = [
 		"Title",
-		"Colors",
+		"Labels",
 		"Legend",
 		"Margin",
-		"Format",
 		"Tooltip",
-		"Labels",
-		// "Style",
 		"Grid/Axes",
+		"Colors",
+		"Format",
 	];
 
-	const pieOptionsList = ["Title", "Colors", "Legend", "Tooltip", "Labels", "Format", "Axis"];
-	const funnelOptionList = [
-		"Title",
-		"Colors",
-		"Legend",
-		//  "Margin",
-		"Format",
-		"Tooltip",
-	];
-	const gaugeOptionList = [
-		"Title",
-		"Colors",
-		//  "Margin",
-		"Format",
-		"Tooltip",
-		"Axis",
-	];
+	const pieOptionsList = ["Title", "Labels", "Legend", "Tooltip", "Axis", "Colors", "Format"];
+	const funnelOptionList = ["Title", "Legend", "Tooltip", "Colors", "Format"];
+	const gaugeOptionList = ["Title", "Tooltip", "Axis", "Colors", "Format"];
 	const heatmapOptionList = [
 		"Title",
-		"Colors",
-		"Margin",
-		"Format",
-		"Tooltip",
 		"Labels",
+		"Margin",
+		"Colors",
+		"Tooltip",
 		"Grid/Axes",
+		"Format",
 	];
-	const crossTabOptionList = ["Title", "Tooltip", "Style"];
+	const crossTabOptionList = ["Title", "Tooltip"];
 
 	const RenderOptions = () => {
 		switch (selectedChart) {
