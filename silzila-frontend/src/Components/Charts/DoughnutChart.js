@@ -15,9 +15,12 @@ const DoughnutChart = ({
 	chartControls,
 }) => {
 	var chartControl = chartControls.properties[propKey];
+	let chartData = chartControl.chartData ? chartControl.chartData.result : "";
+	var chartDataKeys;
 
 	useEffect(() => {
 		if (chartControl.chartData) {
+			chartDataKeys = Object.keys(chartData[0]);
 			var objKey =
 				chartProp.properties[propKey].chartAxes[1].fields[0].fieldname + "__" + "year";
 			chartControl.chartData.result.map((el) => {
@@ -29,9 +32,6 @@ const DoughnutChart = ({
 			});
 		}
 	});
-
-	let chartData = chartControl.chartData ? chartControl.chartData.result : "";
-	var chartDataKeys = Object.keys(chartData[0]);
 
 	const RenderChart = () => {
 		return (
@@ -94,14 +94,14 @@ const DoughnutChart = ({
 										chartControl.axisOptions.pieAxisOptions.labelPadding,
 									],
 
-									formatter: (value) => {
-										var formattedValue = value.value[chartDataKeys[1]];
-										formattedValue = formatChartLabelValue(
-											chartControl,
-											formattedValue
-										);
-										return formattedValue;
-									},
+									// formatter: (value) => {
+									// 	var formattedValue = value.value[chartDataKeys[1]];
+									// 	formattedValue = formatChartLabelValue(
+									// 		chartControl,
+									// 		formattedValue
+									// 	);
+									// 	return formattedValue;
+									// },
 								},
 								radius: ["40%", "70%"],
 							},

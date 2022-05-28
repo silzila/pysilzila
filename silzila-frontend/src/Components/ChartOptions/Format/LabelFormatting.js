@@ -117,19 +117,13 @@ const LabelFormatting = ({
 
 	return (
 		<React.Fragment>
-			<div className="optionDescription">LABEL FORMAT</div>
-
-			<div className="optionDescription">
-				<label htmlFor="enableDisable" className="enableDisableLabel">
-					Format Value
-				</label>
-			</div>
+			<div className="optionDescription">FORMAT VALUE</div>
 			<div className="radioButtons" style={{ padding: "0", margin: "auto" }}>
 				{renderFormatOptions()}
 			</div>
-			<div className="optionDescription" style={{ marginTop: "0.5rem" }}>
-				{formatObject.formatValue === "Currency" ? (
-					<>
+			{formatObject.formatValue === "Currency" ? (
+				<>
+					<div className="optionDescription" style={{ marginTop: "0.5rem" }}>
 						<span style={{ margin: "auto" }}>Curency Symbol</span>
 						<InputSymbol
 							value={formatObject.currencySymbol}
@@ -137,8 +131,20 @@ const LabelFormatting = ({
 								updateFormat(propKey, "labelFormats", "currencySymbol", value)
 							}
 						/>
-					</>
-				) : null}
+					</div>
+				</>
+			) : null}
+
+			<div style={{ borderTop: "1px solid rgb(211,211,211)", margin: "1rem 6% 1rem" }}></div>
+			<div className="optionDescription">LABEL FORMAT</div>
+
+			<div className="optionDescription">
+				<label htmlFor="enableDisable" className="enableDisableLabel">
+					Separator
+				</label>
+			</div>
+			<div className="radioButtons" style={{ padding: "0", margin: "auto auto 0.5rem" }}>
+				{renderSeparatorOptions()}
 			</div>
 
 			<div className="optionDescription">
@@ -173,15 +179,6 @@ const LabelFormatting = ({
 					disabled={formatObject.enableRounding ? false : true}
 				/>
 				<span style={{ margin: "auto 0px" }}>decimal</span>
-			</div>
-
-			<div className="optionDescription">
-				<label htmlFor="enableDisable" className="enableDisableLabel">
-					Separator
-				</label>
-			</div>
-			<div className="radioButtons" style={{ padding: "0", margin: "auto" }}>
-				{renderSeparatorOptions()}
 			</div>
 		</React.Fragment>
 	);
