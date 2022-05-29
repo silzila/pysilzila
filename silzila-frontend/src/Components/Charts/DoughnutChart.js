@@ -16,11 +16,12 @@ const DoughnutChart = ({
 }) => {
 	var chartControl = chartControls.properties[propKey];
 	let chartData = chartControl.chartData ? chartControl.chartData.result : "";
-	var chartDataKeys;
+
+	const [chartDataKeys, setchartDataKeys] = useState([]);
 
 	useEffect(() => {
 		if (chartControl.chartData) {
-			chartDataKeys = Object.keys(chartData[0]);
+			setchartDataKeys(Object.keys(chartData[0]));
 			var objKey =
 				chartProp.properties[propKey].chartAxes[1].fields[0].fieldname + "__" + "year";
 			chartControl.chartData.result.map((el) => {
@@ -31,7 +32,7 @@ const DoughnutChart = ({
 				return el;
 			});
 		}
-	});
+	}, [chartData, chartControl]);
 
 	const RenderChart = () => {
 		return (
@@ -62,12 +63,7 @@ const DoughnutChart = ({
 							top: chartControl.legendOptions?.position?.top,
 							orient: chartControl.legendOptions?.orientation,
 						},
-						// grid: {
-						// 	left: chartControl.chartMargin.left,
-						// 	right: chartControl.chartMargin.right,
-						// 	top: chartControl.chartMargin.top,
-						// 	bottom: chartControl.chartMargin.bottom,
-						// },
+
 						tooltip: { show: chartControl.mouseOver.enable },
 						dataset: {
 							dimensions: Object.keys(chartData[0]),
@@ -86,7 +82,6 @@ const DoughnutChart = ({
 									color: chartControl.labelOptions.labelColorManual
 										? chartControl.labelOptions.labelColor
 										: null,
-									// padding: chartControl.axisOptions.pieAxisOptions.labelPadding,
 									padding: [
 										chartControl.axisOptions.pieAxisOptions.labelPadding,
 										chartControl.axisOptions.pieAxisOptions.labelPadding,
@@ -94,14 +89,16 @@ const DoughnutChart = ({
 										chartControl.axisOptions.pieAxisOptions.labelPadding,
 									],
 
-									// formatter: (value) => {
-									// 	var formattedValue = value.value[chartDataKeys[1]];
-									// 	formattedValue = formatChartLabelValue(
-									// 		chartControl,
-									// 		formattedValue
-									// 	);
-									// 	return formattedValue;
-									// },
+									formatter: (value) => {
+										if (chartDataKeys) {
+											var formattedValue = value.value[chartDataKeys[1]];
+											formattedValue = formatChartLabelValue(
+												chartControl,
+												formattedValue
+											);
+											return formattedValue;
+										}
+									},
 								},
 								radius: ["40%", "70%"],
 							},
