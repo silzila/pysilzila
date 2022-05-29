@@ -43,6 +43,8 @@ const ChartControlObjects = ({
 		switch (selectedChart) {
 			case "multibar":
 			case "stackedBar":
+			case "horizontalBar":
+			case "horizontalStacked":
 			case "line":
 			case "area":
 			case "scatterPlot":
