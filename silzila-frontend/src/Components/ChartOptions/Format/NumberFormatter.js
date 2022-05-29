@@ -16,7 +16,6 @@ export const formatNumberWithComma = (value) => {
 };
 
 export const formatChartLabelValue = (chartControl, value) => {
-	console.log(value);
 	if (chartControl.formatOptions.labelFormats.enableRounding) {
 		value = Number(value).toFixed(chartControl.formatOptions.labelFormats.roundingDigits);
 	}

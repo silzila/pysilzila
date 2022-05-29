@@ -104,7 +104,6 @@ const LabelFormatting = ({
 					}
 					value={formatObject.numberSeparator}
 					onClick={(e) => {
-						console.log(item.value);
 						updateFormat(propKey, "labelFormats", "numberSeparator", item.value);
 					}}
 				>
@@ -118,64 +117,13 @@ const LabelFormatting = ({
 
 	return (
 		<React.Fragment>
-			<div className="optionDescription">LABEL FORMAT</div>
-
-			{/* <div className="optionDescription">
-				<label htmlFor="enableDisable" className="enableDisableLabel">
-					Measures
-				</label>
-			</div>
-			<div className="optionDescription">
-				<FormControl
-					fullWidth
-					size="small"
-					style={{ fontSize: "12px", borderRadius: "4px", backgroundColor: "#fff" }}
-				>
-					<Select
-						sx={{ height: "1.5rem", fontSize: "12px", display: "flex" }}
-						value="allMeasures"
-					>
-						<MenuItem
-							sx={{
-								fontSize: "12px",
-								padding: "2px 0.5rem",
-								borderBottom: "1px solid lightgray",
-							}}
-							value="allMeasures"
-						>
-							(All Measures)
-						</MenuItem>
-
-						{measuresList.map((measure) => {
-							console.log(measure);
-							return (
-								<MenuItem sx={selectInput} value={"order_date"}>
-									<div style={{ width: "100%", display: "flex" }}>
-										<span style={{ flex: "1" }}>{measure.fieldname}</span>
-										<span style={{ color: "#d25e00" }}>
-											{measure.time_grain
-												? `${measure.agg}, ${measure.time_grain}`
-												: measure.agg}
-										</span>
-									</div>
-								</MenuItem>
-							);
-						})}
-					</Select>
-				</FormControl>
-			</div> */}
-
-			<div className="optionDescription">
-				<label htmlFor="enableDisable" className="enableDisableLabel">
-					Format Value
-				</label>
-			</div>
+			<div className="optionDescription">FORMAT VALUE</div>
 			<div className="radioButtons" style={{ padding: "0", margin: "auto" }}>
 				{renderFormatOptions()}
 			</div>
-			<div className="optionDescription" style={{ marginTop: "0.5rem" }}>
-				{formatObject.formatValue === "Currency" ? (
-					<>
+			{formatObject.formatValue === "Currency" ? (
+				<>
+					<div className="optionDescription" style={{ marginTop: "0.5rem" }}>
 						<span style={{ margin: "auto" }}>Curency Symbol</span>
 						<InputSymbol
 							value={formatObject.currencySymbol}
@@ -183,8 +131,20 @@ const LabelFormatting = ({
 								updateFormat(propKey, "labelFormats", "currencySymbol", value)
 							}
 						/>
-					</>
-				) : null}
+					</div>
+				</>
+			) : null}
+
+			<div style={{ borderTop: "1px solid rgb(211,211,211)", margin: "1rem 6% 1rem" }}></div>
+			<div className="optionDescription">LABEL FORMAT</div>
+
+			<div className="optionDescription">
+				<label htmlFor="enableDisable" className="enableDisableLabel">
+					Separator
+				</label>
+			</div>
+			<div className="radioButtons" style={{ padding: "0", margin: "auto auto 0.5rem" }}>
+				{renderSeparatorOptions()}
 			</div>
 
 			<div className="optionDescription">
@@ -219,15 +179,6 @@ const LabelFormatting = ({
 					disabled={formatObject.enableRounding ? false : true}
 				/>
 				<span style={{ margin: "auto 0px" }}>decimal</span>
-			</div>
-
-			<div className="optionDescription">
-				<label htmlFor="enableDisable" className="enableDisableLabel">
-					Separator
-				</label>
-			</div>
-			<div className="radioButtons" style={{ padding: "0", margin: "auto" }}>
-				{renderSeparatorOptions()}
 			</div>
 		</React.Fragment>
 	);

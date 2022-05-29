@@ -47,13 +47,13 @@ const chartControl = {
 					formatValue: "Number",
 					currencySymbol: "₹",
 					enableRounding: "false",
-					roundingDigits: 0,
+					roundingDigits: 1,
 					numberSeparator: "None",
 				},
 
 				yAxisFormats: {
 					enableRounding: "false",
-					roundingDigits: 0,
+					roundingDigits: 1,
 					numberSeparator: "None",
 				},
 			},
@@ -184,13 +184,13 @@ const chartControlsReducer = (state = chartControl, action) => {
 								formatValue: "Number",
 								currencySymbol: "₹",
 								enableRounding: "false",
-								roundingDigits: 0,
+								roundingDigits: 1,
 								numberSeparator: "None",
 							},
 
 							yAxisFormats: {
 								enableRounding: "false",
-								roundingDigits: 0,
+								roundingDigits: 1,
 								numberSeparator: "None",
 							},
 						},
@@ -327,13 +327,13 @@ const chartControlsReducer = (state = chartControl, action) => {
 								formatValue: "Number",
 								currencySymbol: "₹",
 								enableRounding: "false",
-								roundingDigits: 0,
+								roundingDigits: 1,
 								numberSeparator: "None",
 							},
 
 							yAxisFormats: {
 								enableRounding: "false",
-								roundingDigits: 0,
+								roundingDigits: 1,
 								numberSeparator: "None",
 							},
 						},

@@ -25,9 +25,9 @@ const MultiBar = ({
 	useEffect(() => {
 		var seriesDataTemp = [];
 		if (chartData) {
+			var chartDataKeys = Object.keys(chartData[0]);
+			console.log(chartDataKeys);
 			for (let i = 0; i < Object.keys(chartData[0]).length - 1; i++) {
-				var chartDataKeys = Object.keys(chartData[0]);
-				console.log(chartDataKeys);
 				var seriesObj = {
 					type: "bar",
 					stack: "",
@@ -42,13 +42,7 @@ const MultiBar = ({
 							: null,
 
 						formatter: (value) => {
-							console.log(value.value, i);
-							console.log(value.value[chartDataKeys[i + 1]]);
 							var formattedValue = value.value[chartDataKeys[i + 1]];
-							console.log(chartControl.formatOptions);
-
-							console.log(formattedValue);
-
 							var formattedValue = formatChartLabelValue(
 								chartControl,
 								formattedValue

@@ -101,6 +101,14 @@ const YAxisFormat = ({
 
 			<div className="optionDescription">
 				<label htmlFor="enableDisable" className="enableDisableLabel">
+					Separator
+				</label>
+			</div>
+			<div className="radioButtons" style={{ padding: "0", margin: "auto auto 0.5rem" }}>
+				{renderSeparatorOptions()}
+			</div>
+			<div className="optionDescription">
+				<label htmlFor="enableDisable" className="enableDisableLabel">
 					Round Off
 				</label>
 			</div>
@@ -131,15 +139,6 @@ const YAxisFormat = ({
 					disabled={formatObject.enableRounding ? false : true}
 				/>
 				<span style={{ margin: "auto 0px" }}>decimal</span>
-			</div>
-
-			<div className="optionDescription">
-				<label htmlFor="enableDisable" className="enableDisableLabel">
-					Separator
-				</label>
-			</div>
-			<div className="radioButtons" style={{ padding: "0", margin: "auto" }}>
-				{renderSeparatorOptions()}
 			</div>
 		</React.Fragment>
 	);
