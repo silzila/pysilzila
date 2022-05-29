@@ -1,6 +1,7 @@
 import ReactEcharts from "echarts-for-react";
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { formatChartLabelValue } from "../ChartOptions/Format/NumberFormatter";
 
 const HeatMap = ({
 	//props
@@ -10,16 +11,19 @@ const HeatMap = ({
 	graphTileSize,
 
 	//state
-	chartControl,
+	chartControls,
 	chartProperty,
 }) => {
-	var property = chartControl.properties[propKey];
-	let chartData = property.chartData ? property.chartData.result : "";
+	var chartControl = chartControls.properties[propKey];
+	let chartData = chartControl.chartData ? chartControl.chartData.result : "";
+	const [chartDataKeys, setChartDataKeys] = useState([]);
 
 	const [maxValue, setMaxValue] = useState(0);
 
 	useEffect(() => {
 		if (chartData) {
+			setChartDataKeys(Object.keys(chartData[0]));
+
 			var measureField = chartProperty.properties[propKey].chartAxes[3].fields[0];
 			var maxFieldName = `${measureField.fieldname}__${measureField.agg}`;
 
@@ -36,7 +40,7 @@ const HeatMap = ({
 	const RenderChart = () => {
 		return (
 			<ReactEcharts
-				theme={property.colorScheme}
+				theme={chartControl.colorScheme}
 				style={{
 					padding: "1rem",
 					width: graphDimension.width,
@@ -52,14 +56,14 @@ const HeatMap = ({
 					animation: chartArea ? false : true,
 					legend: {},
 					grid: {
-						left: property.chartMargin.left,
-						right: property.chartMargin.right,
-						top: property.chartMargin.top,
-						bottom: property.chartMargin.bottom,
+						left: chartControl.chartMargin.left,
+						right: chartControl.chartMargin.right,
+						top: chartControl.chartMargin.top,
+						bottom: chartControl.chartMargin.bottom,
 					},
 
 					// label: { show: true, fontSize: 14 },
-					tooltip: { show: property.mouseOver.enable },
+					tooltip: { show: chartControl.mouseOver.enable },
 
 					dataset: {
 						source: chartData,
@@ -67,84 +71,84 @@ const HeatMap = ({
 					xAxis: {
 						type: "category",
 
-						position: property.axisOptions.xAxis.position,
+						position: chartControl.axisOptions.xAxis.position,
 
 						axisLine: {
-							onZero: property.axisOptions.xAxis.onZero,
+							onZero: chartControl.axisOptions.xAxis.onZero,
 						},
 
 						axisTick: {
 							alignWithLabel: true,
 							length:
-								property.axisOptions.xAxis.position === "top"
-									? property.axisOptions.xAxis.tickSizeTop
-									: property.axisOptions.xAxis.tickSizeBottom,
+								chartControl.axisOptions.xAxis.position === "top"
+									? chartControl.axisOptions.xAxis.tickSizeTop
+									: chartControl.axisOptions.xAxis.tickSizeBottom,
 						},
 						axisLabel: {
 							rotate:
-								property.axisOptions.xAxis.position === "top"
-									? property.axisOptions.xAxis.tickRotationTop
-									: property.axisOptions.xAxis.tickRotationBottom,
+								chartControl.axisOptions.xAxis.position === "top"
+									? chartControl.axisOptions.xAxis.tickRotationTop
+									: chartControl.axisOptions.xAxis.tickRotationBottom,
 							margin:
-								property.axisOptions.xAxis.position === "top"
-									? property.axisOptions.xAxis.tickPaddingTop
-									: property.axisOptions.xAxis.tickPaddingBottom,
+								chartControl.axisOptions.xAxis.position === "top"
+									? chartControl.axisOptions.xAxis.tickPaddingTop
+									: chartControl.axisOptions.xAxis.tickPaddingBottom,
 						},
 
-						show: property.axisOptions.xAxis.showLabel,
+						show: chartControl.axisOptions.xAxis.showLabel,
 
-						name: property.axisOptions.xAxis.name,
-						nameLocation: property.axisOptions.xAxis.nameLocation,
-						nameGap: property.axisOptions.xAxis.nameGap,
+						name: chartControl.axisOptions.xAxis.name,
+						nameLocation: chartControl.axisOptions.xAxis.nameLocation,
+						nameGap: chartControl.axisOptions.xAxis.nameGap,
 					},
 					yAxis: {
 						type: "category",
 
-						inverse: property.axisOptions.inverse,
+						inverse: chartControl.axisOptions.inverse,
 
-						position: property.axisOptions.yAxis.position,
+						position: chartControl.axisOptions.yAxis.position,
 
 						axisLine: {
-							onZero: property.axisOptions.yAxis.onZero,
+							onZero: chartControl.axisOptions.yAxis.onZero,
 						},
 
 						axisTick: {
 							alignWithLabel: true,
 							length:
-								property.axisOptions.yAxis.position === "left"
-									? property.axisOptions.yAxis.tickSizeLeft
-									: property.axisOptions.yAxis.tickSizeRight,
+								chartControl.axisOptions.yAxis.position === "left"
+									? chartControl.axisOptions.yAxis.tickSizeLeft
+									: chartControl.axisOptions.yAxis.tickSizeRight,
 						},
 
 						axisLabel: {
 							rotate:
-								property.axisOptions.yAxis.position === "left"
-									? property.axisOptions.yAxis.tickRotationLeft
-									: property.axisOptions.yAxis.tickRotationRight,
+								chartControl.axisOptions.yAxis.position === "left"
+									? chartControl.axisOptions.yAxis.tickRotationLeft
+									: chartControl.axisOptions.yAxis.tickRotationRight,
 							margin:
-								property.axisOptions.yAxis.position === "left"
-									? property.axisOptions.yAxis.tickPaddingLeft
-									: property.axisOptions.yAxis.tickPaddingRight,
+								chartControl.axisOptions.yAxis.position === "left"
+									? chartControl.axisOptions.yAxis.tickPaddingLeft
+									: chartControl.axisOptions.yAxis.tickPaddingRight,
 						},
 
-						show: property.axisOptions.yAxis.showLabel,
+						show: chartControl.axisOptions.yAxis.showLabel,
 
-						name: property.axisOptions.yAxis.name,
-						nameLocation: property.axisOptions.yAxis.nameLocation,
-						nameGap: property.axisOptions.yAxis.nameGap,
+						name: chartControl.axisOptions.yAxis.name,
+						nameLocation: chartControl.axisOptions.yAxis.nameLocation,
+						nameGap: chartControl.axisOptions.yAxis.nameGap,
 					},
 					visualMap: [
 						{
 							min:
-								property.colorScale.colorScaleType === "Manual"
-									? property.colorScale.min !== ""
-										? parseInt(property.colorScale.min)
+								chartControl.colorScale.colorScaleType === "Manual"
+									? chartControl.colorScale.min !== ""
+										? parseInt(chartControl.colorScale.min)
 										: 0
 									: 0,
 							max:
-								property.colorScale.colorScaleType === "Manual"
-									? property.colorScale.max !== ""
-										? parseInt(property.colorScale.max)
+								chartControl.colorScale.colorScaleType === "Manual"
+									? chartControl.colorScale.max !== ""
+										? parseInt(chartControl.colorScale.max)
 										: 0
 									: maxValue,
 						},
@@ -155,19 +159,26 @@ const HeatMap = ({
 							type: "heatmap",
 							label: {
 								normal: {
-									show: property.labelOptions.showLabel,
+									show: chartControl.labelOptions.showLabel,
 									// formatter helps to show measure values as labels(inside each block)
-									formatter: (param) => {
-										var keyArr = Object.keys(param.data);
-										var valueKey = keyArr[2];
-										return param.data[valueKey];
+									formatter: (value) => {
+										console.log(value, chartDataKeys);
+
+										if (chartDataKeys) {
+											var formattedValue = value.value[chartDataKeys[2]];
+											formattedValue = formatChartLabelValue(
+												chartControl,
+												formattedValue
+											);
+											return formattedValue;
+										}
 									},
-									fontSize: property.labelOptions.fontSize,
-									color: property.labelOptions.labelColorManual
-										? property.labelOptions.labelColor
+									fontSize: chartControl.labelOptions.fontSize,
+									color: chartControl.labelOptions.labelColorManual
+										? chartControl.labelOptions.labelColor
 										: null,
 								},
-								// show: property.labelOptions.showLabel,
+								// show: chartControl.labelOptions.showLabel,
 							},
 						},
 					],
@@ -180,7 +191,7 @@ const HeatMap = ({
 };
 const mapStateToProps = (state) => {
 	return {
-		chartControl: state.chartControls,
+		chartControls: state.chartControls,
 		chartProperty: state.chartProperties,
 	};
 };
