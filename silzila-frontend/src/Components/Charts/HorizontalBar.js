@@ -6,19 +6,17 @@ import {
 	formatChartYAxisValue,
 } from "../ChartOptions/Format/NumberFormatter";
 
-const AreaChart = ({
-	//props
+const HorizontalBar = ({
+	// props
 	propKey,
 	graphDimension,
 	chartArea,
 	graphTileSize,
 
 	//state
-	chartProp,
-	chartControls,
+	chartControlState,
 }) => {
-	var chartControl = chartControls.properties[propKey];
-
+	var chartControl = chartControlState.properties[propKey];
 	let chartData = chartControl.chartData ? chartControl.chartData.result : "";
 
 	const [seriesData, setSeriesData] = useState([]);
@@ -27,12 +25,13 @@ const AreaChart = ({
 		var seriesDataTemp = [];
 		if (chartData) {
 			var chartDataKeys = Object.keys(chartData[0]);
+			console.log(chartDataKeys);
 			for (let i = 0; i < Object.keys(chartData[0]).length - 1; i++) {
 				var seriesObj = {
-					type: "line",
-					areaStyle: {
-						color: "#ff0",
-						opacity: 0.5,
+					type: "bar",
+					stack: "",
+					emphasis: {
+						focus: "series",
 					},
 					label: {
 						show: chartControl.labelOptions.showLabel,
@@ -53,6 +52,7 @@ const AreaChart = ({
 						},
 					},
 				};
+
 				seriesDataTemp.push(seriesObj);
 			}
 			setSeriesData(seriesDataTemp);
@@ -60,11 +60,12 @@ const AreaChart = ({
 	}, [chartData, chartControl]);
 
 	const RenderChart = () => {
-		return (
+		return chartData ? (
 			<ReactEcharts
+				opts={{ renderer: "svg" }}
 				theme={chartControl.colorScheme}
 				style={{
-					padding: "1rem",
+					padding: "5px",
 					width: graphDimension.width,
 					height: graphDimension.height,
 					overflow: "hidden",
@@ -75,20 +76,48 @@ const AreaChart = ({
 						: "1px solid rgb(238,238,238)",
 				}}
 				option={{
-					animation: chartArea ? false : true,
-					legend: {},
-					tooltip: {},
+					animation: false,
+					// chartArea ? false : true,
+					legend: {
+						type: "scroll",
+						show: chartControl.legendOptions?.showLegend,
+						itemHeight: chartControl.legendOptions?.symbolHeight,
+						itemWidth: chartControl.legendOptions?.symbolWidth,
+						itemGap: chartControl.legendOptions?.itemGap,
+
+						left: chartControl.legendOptions?.position?.left,
+						top: chartControl.legendOptions?.position?.top,
+						orient: chartControl.legendOptions?.orientation,
+					},
+					grid: {
+						left: chartControl.chartMargin.left,
+						right: chartControl.chartMargin.right,
+						top: chartControl.chartMargin.top,
+						bottom: chartControl.chartMargin.bottom,
+					},
+
+					tooltip: { show: chartControl.mouseOver.enable },
+
 					dataset: {
 						dimensions: Object.keys(chartData[0]),
 						source: chartData,
 					},
 					xAxis: {
-						type: "category",
+						splitLine: {
+							show: chartControl.axisOptions?.xSplitLine,
+						},
+
 						position: chartControl.axisOptions.xAxis.position,
 
 						axisLine: {
 							onZero: chartControl.axisOptions.xAxis.onZero,
 						},
+
+						show: chartControl.axisOptions.xAxis.showLabel,
+
+						name: chartControl.axisOptions.xAxis.name,
+						nameLocation: chartControl.axisOptions.xAxis.nameLocation,
+						nameGap: chartControl.axisOptions.xAxis.nameGap,
 
 						axisTick: {
 							alignWithLabel: true,
@@ -106,14 +135,25 @@ const AreaChart = ({
 								chartControl.axisOptions.xAxis.position === "top"
 									? chartControl.axisOptions.xAxis.tickPaddingTop
 									: chartControl.axisOptions.xAxis.tickPaddingBottom,
-						},
-						show: chartControl.axisOptions.xAxis.showLabel,
 
-						name: chartControl.axisOptions.xAxis.name,
-						nameLocation: chartControl.axisOptions.xAxis.nameLocation,
-						nameGap: chartControl.axisOptions.xAxis.nameGap,
+							formatter: (value) => {
+								var formattedValue = formatChartYAxisValue(chartControl, value);
+								return formattedValue;
+							},
+						},
 					},
 					yAxis: {
+						type: "category",
+						splitLine: {
+							show: chartControl.axisOptions?.ySplitLine,
+						},
+						min: chartControl.axisOptions.axisMinMax.enableMin
+							? chartControl.axisOptions.axisMinMax.minValue
+							: null,
+						max: chartControl.axisOptions.axisMinMax.enableMax
+							? chartControl.axisOptions.axisMinMax.maxValue
+							: null,
+
 						inverse: chartControl.axisOptions.inverse,
 
 						position: chartControl.axisOptions.yAxis.position,
@@ -139,14 +179,10 @@ const AreaChart = ({
 								chartControl.axisOptions.yAxis.position === "left"
 									? chartControl.axisOptions.yAxis.tickPaddingLeft
 									: chartControl.axisOptions.yAxis.tickPaddingRight,
-
-							formatter: (value) => {
-								var formattedValue = formatChartYAxisValue(chartControl, value);
-								return formattedValue;
-							},
 						},
 
 						show: chartControl.axisOptions.yAxis.showLabel,
+
 						name: chartControl.axisOptions.yAxis.name,
 						nameLocation: chartControl.axisOptions.yAxis.nameLocation,
 						nameGap: chartControl.axisOptions.yAxis.nameGap,
@@ -154,16 +190,17 @@ const AreaChart = ({
 					series: seriesData,
 				}}
 			/>
-		);
+		) : null;
 	};
 
 	return <>{chartData ? <RenderChart /> : ""}</>;
 };
+
 const mapStateToProps = (state) => {
 	return {
-		chartProp: state.chartProperties,
-		chartControls: state.chartControls,
+		chartControlState: state.chartControls,
+		chartProperty: state.chartProperties,
 	};
 };
 
-export default connect(mapStateToProps, null)(AreaChart);
+export default connect(mapStateToProps, null)(HorizontalBar);

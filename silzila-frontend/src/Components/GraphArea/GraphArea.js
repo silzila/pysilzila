@@ -34,6 +34,8 @@ import HeatMap from "../Charts/HeatMap";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
 import { toggleGraphSize } from "../../redux/TabTile/actionsTabTile";
+import HorizontalBar from "../Charts/HorizontalBar";
+import Horizontalstacked from "../Charts/Horizontalstacked";
 
 const GraphArea = ({
 	// state
@@ -122,6 +124,24 @@ const GraphArea = ({
 			case "stackedBar":
 				return (
 					<StackedBar
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
+					/>
+				);
+
+			case "horizontalBar":
+				return (
+					<HorizontalBar
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
+					/>
+				);
+
+			case "horizontalStacked":
+				return (
+					<Horizontalstacked
 						propKey={propKey}
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
 						graphTileSize={tileState.tiles[propKey].graphSizeFull}
