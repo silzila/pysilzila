@@ -1,9 +1,12 @@
 import ReactEcharts from "echarts-for-react";
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { formatChartLabelValue } from "../ChartOptions/Format/NumberFormatter";
+import {
+	formatChartLabelValue,
+	formatChartYAxisValue,
+} from "../ChartOptions/Format/NumberFormatter";
 
-const HeatMap = ({
+const Horizontalstacked = ({
 	//props
 	propKey,
 	graphDimension,
@@ -11,32 +14,48 @@ const HeatMap = ({
 	graphTileSize,
 
 	//state
-	chartControls,
-	chartProperty,
+	chartControlState,
+	chartProperties,
 }) => {
-	var chartControl = chartControls.properties[propKey];
-	let chartData = chartControl.chartData ? chartControl.chartData.result : "";
-	const [chartDataKeys, setChartDataKeys] = useState([]);
+	var chartControl = chartControlState.properties[propKey];
 
-	const [maxValue, setMaxValue] = useState(0);
+	let chartData = chartControl.chartData ? chartControl.chartData.result : "";
+
+	const [seriesData, setSeriesData] = useState([]);
 
 	useEffect(() => {
+		var seriesDataTemp = [];
 		if (chartData) {
-			setChartDataKeys(Object.keys(chartData[0]));
+			var chartDataKeys = Object.keys(chartData[0]);
 
-			var measureField = chartProperty.properties[propKey].chartAxes[3].fields[0];
-			var maxFieldName = `${measureField.fieldname}__${measureField.agg}`;
+			for (let i = 0; i < Object.keys(chartData[0]).length - 1; i++) {
+				var seriesObj = {
+					type: "bar",
+					stack: chartProperties.properties[propKey]?.chartAxes[1]?.fields[0]?.fieldname,
+					emphasis: {
+						focus: "series",
+					},
+					label: {
+						show: chartControl.labelOptions.showLabel,
+						fontSize: chartControl.labelOptions.fontSize,
+						color: chartControl.labelOptions.labelColorManual
+							? chartControl.labelOptions.labelColor
+							: null,
 
-			var max = 0;
-			chartData.forEach((element) => {
-				if (element[maxFieldName] > max) {
-					max = element[maxFieldName];
-				}
-			});
-			setMaxValue(max);
+						formatter: (value) => {
+							var formattedValue = value.value[chartDataKeys[i + 1]];
+							formattedValue = formatChartLabelValue(chartControl, formattedValue);
+							return formattedValue;
+						},
+					},
+				};
+
+				seriesDataTemp.push(seriesObj);
+			}
+			setSeriesData(seriesDataTemp);
 		}
-	}, [chartData]);
-	console.log(chartData);
+	}, [chartData, chartControl]);
+
 	const RenderChart = () => {
 		return (
 			<ReactEcharts
@@ -53,8 +72,19 @@ const HeatMap = ({
 						: "1px solid rgb(238,238,238)",
 				}}
 				option={{
-					animation: chartArea ? false : true,
-					legend: {},
+					animation: false,
+					// chartArea ? false : true,
+					legend: {
+						type: "scroll",
+						show: chartControl.legendOptions?.showLegend,
+						itemHeight: chartControl.legendOptions?.symbolHeight,
+						itemWidth: chartControl.legendOptions?.symbolWidth,
+						itemGap: chartControl.legendOptions?.itemGap,
+
+						left: chartControl.legendOptions?.position?.left,
+						top: chartControl.legendOptions?.position?.top,
+						orient: chartControl.legendOptions?.orientation,
+					},
 					grid: {
 						left: chartControl.chartMargin.left,
 						right: chartControl.chartMargin.right,
@@ -62,16 +92,23 @@ const HeatMap = ({
 						bottom: chartControl.chartMargin.bottom,
 					},
 
-					// label: { show: true, fontSize: 14 },
 					tooltip: { show: chartControl.mouseOver.enable },
 
 					dataset: {
+						dimensions: Object.keys(chartData[0]),
 						source: chartData,
 					},
-					xAxis: {
-						type: "category",
 
+					xAxis: {
+						splitLine: {
+							show: chartControl.axisOptions?.xSplitLine,
+						},
 						position: chartControl.axisOptions.xAxis.position,
+						show: chartControl.axisOptions.xAxis.showLabel,
+
+						name: chartControl.axisOptions.xAxis.name,
+						nameLocation: chartControl.axisOptions.xAxis.nameLocation,
+						nameGap: chartControl.axisOptions.xAxis.nameGap,
 
 						axisLine: {
 							onZero: chartControl.axisOptions.xAxis.onZero,
@@ -93,20 +130,28 @@ const HeatMap = ({
 								chartControl.axisOptions.xAxis.position === "top"
 									? chartControl.axisOptions.xAxis.tickPaddingTop
 									: chartControl.axisOptions.xAxis.tickPaddingBottom,
+
+							formatter: (value) => {
+								var formattedValue = formatChartYAxisValue(chartControl, value);
+								return formattedValue;
+							},
 						},
-
-						show: chartControl.axisOptions.xAxis.showLabel,
-
-						name: chartControl.axisOptions.xAxis.name,
-						nameLocation: chartControl.axisOptions.xAxis.nameLocation,
-						nameGap: chartControl.axisOptions.xAxis.nameGap,
 					},
+
 					yAxis: {
 						type: "category",
-
+						splitLine: {
+							show: chartControl.axisOptions?.ySplitLine,
+						},
 						inverse: chartControl.axisOptions.inverse,
 
 						position: chartControl.axisOptions.yAxis.position,
+
+						show: chartControl.axisOptions.yAxis.showLabel,
+
+						name: chartControl.axisOptions.yAxis.name,
+						nameLocation: chartControl.axisOptions.yAxis.nameLocation,
+						nameGap: chartControl.axisOptions.yAxis.nameGap,
 
 						axisLine: {
 							onZero: chartControl.axisOptions.yAxis.onZero,
@@ -130,69 +175,21 @@ const HeatMap = ({
 									? chartControl.axisOptions.yAxis.tickPaddingLeft
 									: chartControl.axisOptions.yAxis.tickPaddingRight,
 						},
-
-						show: chartControl.axisOptions.yAxis.showLabel,
-
-						name: chartControl.axisOptions.yAxis.name,
-						nameLocation: chartControl.axisOptions.yAxis.nameLocation,
-						nameGap: chartControl.axisOptions.yAxis.nameGap,
 					},
-					visualMap: [
-						{
-							min:
-								chartControl.colorScale.colorScaleType === "Manual"
-									? chartControl.colorScale.min !== ""
-										? parseInt(chartControl.colorScale.min)
-										: 0
-									: 0,
-							max:
-								chartControl.colorScale.colorScaleType === "Manual"
-									? chartControl.colorScale.max !== ""
-										? parseInt(chartControl.colorScale.max)
-										: 0
-									: maxValue,
-						},
-					],
 
-					series: [
-						{
-							type: "heatmap",
-							label: {
-								normal: {
-									show: chartControl.labelOptions.showLabel,
-									// formatter helps to show measure values as labels(inside each block)
-									formatter: (value) => {
-										console.log(value, chartDataKeys);
-
-										if (chartDataKeys) {
-											var formattedValue = value.value[chartDataKeys[2]];
-											formattedValue = formatChartLabelValue(
-												chartControl,
-												formattedValue
-											);
-											return formattedValue;
-										}
-									},
-									fontSize: chartControl.labelOptions.fontSize,
-									color: chartControl.labelOptions.labelColorManual
-										? chartControl.labelOptions.labelColor
-										: null,
-								},
-								// show: chartControl.labelOptions.showLabel,
-							},
-						},
-					],
+					series: seriesData,
 				}}
 			/>
 		);
 	};
 
-	return chartData ? <RenderChart /> : null;
+	return <>{chartData ? <RenderChart /> : ""}</>;
 };
+
 const mapStateToProps = (state) => {
 	return {
-		chartControls: state.chartControls,
-		chartProperty: state.chartProperties,
+		chartProperties: state.chartProperties,
+		chartControlState: state.chartControls,
 	};
 };
-export default connect(mapStateToProps, null)(HeatMap);
+export default connect(mapStateToProps, null)(Horizontalstacked);

@@ -1,6 +1,7 @@
 import ReactEcharts from "echarts-for-react";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { formatChartLabelValue } from "../ChartOptions/Format/NumberFormatter";
 
 const GaugeChart = ({
 	//props
@@ -9,20 +10,20 @@ const GaugeChart = ({
 	chartArea,
 
 	//state
-	chartControl,
+	chartControls,
 	graphTileSize,
 }) => {
-	var property = chartControl.properties[propKey];
-	let chartData = property.chartData ? property.chartData.result : "";
+	var chartControl = chartControls.properties[propKey];
+	let chartData = chartControl.chartData ? chartControl.chartData.result : "";
 	const [newData, setNewData] = useState([]);
 
 	var carr = [];
 
 	const getColors = () => {
-		for (let i = 0; i < property.axisOptions.gaugeChartControls.stepcolor.length; i++) {
+		for (let i = 0; i < chartControl.axisOptions.gaugeChartControls.stepcolor.length; i++) {
 			carr.push([
-				parseFloat(property.axisOptions.gaugeChartControls.stepcolor[i].per),
-				property.axisOptions.gaugeChartControls.stepcolor[i].color,
+				parseFloat(chartControl.axisOptions.gaugeChartControls.stepcolor[i].per),
+				chartControl.axisOptions.gaugeChartControls.stepcolor[i].color,
 			]);
 		}
 	};
@@ -44,7 +45,7 @@ const GaugeChart = ({
 	const RenderChart = () => {
 		return (
 			<ReactEcharts
-				theme={property.colorScheme}
+				theme={chartControl.colorScheme}
 				style={{
 					padding: "1rem",
 					width: graphDimension.width,
@@ -60,30 +61,30 @@ const GaugeChart = ({
 					animation: chartArea ? false : true,
 					legend: {
 						type: "scroll",
-						show: property.legendOptions?.showLegend,
+						show: chartControl.legendOptions?.showLegend,
 						itemHeight:
 							chartArea === "dashboard"
-								? property.legendOptions?.symbolHeight / 2
-								: property.legendOptions?.symbolHeight,
+								? chartControl.legendOptions?.symbolHeight / 2
+								: chartControl.legendOptions?.symbolHeight,
 						itemWidth:
 							chartArea === "dashboard"
-								? property.legendOptions?.symbolWidth / 2
-								: property.legendOptions?.symbolWidth,
-						itemGap: property.legendOptions?.itemGap,
+								? chartControl.legendOptions?.symbolWidth / 2
+								: chartControl.legendOptions?.symbolWidth,
+						itemGap: chartControl.legendOptions?.itemGap,
 
-						left: property.legendOptions?.position?.left,
-						top: property.legendOptions?.position?.top,
-						orient: property.legendOptions?.orientation,
+						left: chartControl.legendOptions?.position?.left,
+						top: chartControl.legendOptions?.position?.top,
+						orient: chartControl.legendOptions?.orientation,
 					},
-					tooltip: { show: property.mouseOver.enable },
+					tooltip: { show: chartControl.mouseOver.enable },
 
 					series: [
 						{
 							type: "gauge",
 							max:
-								property.colorScale.colorScaleType === "Manual"
-									? property.colorScale.max !== ""
-										? parseInt(property.colorScale.max)
+								chartControl.colorScale.colorScaleType === "Manual"
+									? chartControl.colorScale.max !== ""
+										? parseInt(chartControl.colorScale.max)
 										: newData[0]
 										? newData[0].value * 2
 										: 0
@@ -92,9 +93,9 @@ const GaugeChart = ({
 									: 0,
 
 							min:
-								property.colorScale.colorScaleType === "Manual"
-									? property.colorScale.min !== ""
-										? parseInt(property.colorScale.min)
+								chartControl.colorScale.colorScaleType === "Manual"
+									? chartControl.colorScale.min !== ""
+										? parseInt(chartControl.colorScale.min)
 										: 0
 									: 0,
 							data: newData,
@@ -107,19 +108,37 @@ const GaugeChart = ({
 
 								roundCap: true,
 							},
-							startAngle: property.axisOptions.gaugeAxisOptions.startAngle,
-							endAngle: property.axisOptions.gaugeAxisOptions.endAngle,
+							startAngle: chartControl.axisOptions.gaugeAxisOptions.startAngle,
+							endAngle: chartControl.axisOptions.gaugeAxisOptions.endAngle,
 							axisTick: {
-								show: property.axisOptions.gaugeAxisOptions.showTick,
-								length: property.axisOptions.gaugeAxisOptions.tickSize,
-								distance: property.axisOptions.gaugeAxisOptions.tickPadding,
+								show: chartControl.axisOptions.gaugeAxisOptions.showTick,
+								length: chartControl.axisOptions.gaugeAxisOptions.tickSize,
+								distance: chartControl.axisOptions.gaugeAxisOptions.tickPadding,
 							},
-
-							axisLabel: {
-								show: property.axisOptions.gaugeAxisOptions.showAxisLabel,
-								distance: property.axisOptions.gaugeAxisOptions.labelPadding,
+							detail: {
 								formatter: (value) => {
-									return Number(value).toFixed(0);
+									console.log(value);
+
+									var formattedValue = value;
+									formattedValue = formatChartLabelValue(
+										chartControl,
+										formattedValue
+									);
+									return formattedValue;
+								},
+							},
+							axisLabel: {
+								show: chartControl.axisOptions.gaugeAxisOptions.showAxisLabel,
+								distance: chartControl.axisOptions.gaugeAxisOptions.labelPadding,
+								formatter: (value) => {
+									console.log(value);
+
+									var formattedValue = value;
+									formattedValue = formatChartLabelValue(
+										chartControl,
+										formattedValue
+									);
+									return formattedValue;
 								},
 							},
 						},
@@ -134,7 +153,7 @@ const GaugeChart = ({
 
 const mapStateToProps = (state) => {
 	return {
-		chartControl: state.chartControls,
+		chartControls: state.chartControls,
 	};
 };
 

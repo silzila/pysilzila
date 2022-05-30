@@ -15,7 +15,8 @@ const ChartFormat = ({ chartType }) => {
 			chartType !== "donut" &&
 			chartType !== "gauge" &&
 			chartType !== "rose" &&
-			chartType !== "funnel" ? (
+			chartType !== "funnel" &&
+			chartType !== "heatmap" ? (
 				<>
 					<div
 						style={{ borderTop: "1px solid rgb(211,211,211)", margin: "1rem 6% 1rem" }}
