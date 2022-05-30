@@ -12,6 +12,7 @@ import ChartLegend from "./Legend/ChartLegend";
 import ChartMargin from "./Margin/ChartMargin";
 import ChartMouseOver from "./MouseOver/ChartMouseOver";
 import ChartTitle from "./Title/ChartTitle";
+import ChartStyle from './Style/ChartStyle'
 
 const ControlDetail = ({ chartProp, tabTileProps }) => {
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
@@ -47,6 +48,10 @@ const ControlDetail = ({ chartProp, tabTileProps }) => {
 
 			case "Axis":
 				return <AxisControls />;
+        
+        	case "Style":
+			return <ChartStyle />;
+
 
 			case "Format":
 				return <ChartFormat chartType={chartType} />;

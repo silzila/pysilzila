@@ -71,9 +71,9 @@ export const BuildTable = ({ crossTabData, dustbinRows, dustbinValues,
       userClickedCell.id &&
       userClickedCell.compare &&
       col &&
-      col.displayData != undefined &&
-      col.displayData != null &&
-      col.displayData != ""
+      col.displayData !== undefined &&
+      col.displayData !== null &&
+      col.displayData !== ""
     ) {
       ////TODO:: Need a generic function to check null. i.e. col.displayData
 
@@ -119,8 +119,8 @@ export const BuildTable = ({ crossTabData, dustbinRows, dustbinValues,
 
     //_header = rowIndex <= dustbinRows.length ? "CrossTabHeader " : "CrossTabLeftColumnHeader"; PRS 14 May 2022
     //_header = col.isHeaderField ? "CrossTabHeader " : "CrossTabLeftColumnHeader";
-   // _header = rowIndex <= dustbinColumns.length ? "CrossTabHeader " : "CrossTabLeftColumnHeader";
-    _header = "CrossTabLeftColumnHeader";
+    _header = rowIndex < dustbinColumns.length ? "CrossTabHeader " : "CrossTabLeftColumnHeader";
+   // _header = "CrossTabLeftColumnHeader";
 
     return col.displayData ? _header + _getUserClickedColor(col, rowIndex, colIndex) : "EmptyHeaderCell";
   };
@@ -136,6 +136,12 @@ export const BuildTable = ({ crossTabData, dustbinRows, dustbinValues,
           key={colIndex}
           colSpan={col.columnSpan}
           rowSpan={col.rowSpan}
+          style={{
+            fontSize : chartControls.properties[propKey].crossTabHeaderLabelOptions.fontSize,
+            fontWeight : chartControls.properties[propKey].crossTabHeaderLabelOptions.fontWeight,
+            color : chartControls.properties[propKey].crossTabHeaderLabelOptions.labelColor,
+            borderWidth : chartControls.properties[propKey].crossTabStyleOptions.borderWidth
+           }}
         >
           {col.displayData}
         </th>
@@ -147,6 +153,12 @@ export const BuildTable = ({ crossTabData, dustbinRows, dustbinValues,
             id={rowIndex + "_" + colIndex + "_" + col.isHeaderField}
             className={"CrossTabCell " + _getUserClickedColor(col, rowIndex, colIndex)}
             key={colIndex}
+            style={{
+             fontSize : chartControls.properties[propKey].crossTabCellLabelOptions.fontSize,
+             fontWeight : chartControls.properties[propKey].crossTabCellLabelOptions.fontWeight,
+             color : chartControls.properties[propKey].crossTabCellLabelOptions.labelColor,
+             borderWidth : chartControls.properties[propKey].crossTabStyleOptions.borderWidth
+            }}
             colSpan={col.columnSpan}
             rowSpan={col.rowSpan}
             compareObj={JSON.stringify(col.compareObj)}
@@ -182,7 +194,12 @@ export const BuildTable = ({ crossTabData, dustbinRows, dustbinValues,
       );
 
       return (
-        <tr className="CrossTabRow" key={rowIndex}>
+        <tr className="CrossTabRow" style={{
+          lineHeight : chartControls.properties[propKey].crossTabHeaderLabelOptions.fontSize >
+          chartControls.properties[propKey].crossTabCellLabelOptions.fontSize ? 
+          chartControls.properties[propKey].crossTabHeaderLabelOptions.fontSize / 20:
+          chartControls.properties[propKey].crossTabCellLabelOptions.fontSize / 20         
+        }} key={rowIndex}>
           {_rowContent}
         </tr>
       );
@@ -191,7 +208,9 @@ export const BuildTable = ({ crossTabData, dustbinRows, dustbinValues,
 
   return (
     <div className="CrossTab">
-      <table className="CrossTabTable">{_tableContent}</table>
+      <table className="CrossTabTable" style={{
+        borderWidth : chartControls.properties[propKey].crossTabStyleOptions.borderWidth
+      }}>{_tableContent}</table>
       {showPopup ? <ShowDataPopup show={showPopup} {...popupData}></ShowDataPopup> : null}
     </div>
   );

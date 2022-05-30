@@ -58,7 +58,7 @@ const MultiBar = ({
 			}
 			setSeriesData(seriesDataTemp);
 		}
-	}, [chartData, chartControl]);
+	}, [chartData, chartControl.formatOptions]);
 
 	const RenderChart = () => {
 		return chartData ? (
