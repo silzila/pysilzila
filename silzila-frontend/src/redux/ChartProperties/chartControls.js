@@ -577,7 +577,6 @@ const chartControlsReducer = (state = chartControl, action) => {
 			});
 
 		case "UPDATE_FORMAT_OPTIONS":
-			console.log(action.payload);
 			return update(state, {
 				properties: {
 					[action.payload.propKey]: {

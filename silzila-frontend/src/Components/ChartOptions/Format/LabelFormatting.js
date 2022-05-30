@@ -26,10 +26,7 @@ const LabelFormatting = ({
 	const [measuresList, setMeasuresList] = useState([]);
 
 	useEffect(() => {
-		console.log(chartProperty[propKey].chartType);
-
 		var chartAxes = chartProperty[propKey].chartAxes;
-		console.log(JSON.stringify(chartAxes, null, 2));
 		var measures = [];
 
 		switch (chartProperty[propKey].chartType) {
@@ -45,7 +42,6 @@ const LabelFormatting = ({
 			case "scatterPlot":
 				measures = chartAxes[2].fields;
 				measures = measures.concat(chartAxes[3].fields);
-				console.log(measures);
 				break;
 
 			case "gauge":
@@ -58,7 +54,6 @@ const LabelFormatting = ({
 				break;
 		}
 
-		console.log(JSON.stringify(measures, null, 2));
 		setMeasuresList(measures);
 	}, [chartProperty]);
 
@@ -74,8 +69,6 @@ const LabelFormatting = ({
 					}
 					value={formatObject.formatValue}
 					onClick={(e) => {
-						console.log(item.value);
-
 						updateFormat(propKey, "labelFormats", "formatValue", item.value);
 						// setLabelFormat(item.value);
 					}}
@@ -169,7 +162,6 @@ const LabelFormatting = ({
 				<InputNumber
 					value={formatObject.roundingDigits}
 					updateValue={(value) => {
-						console.log(value);
 						if (value >= 0) {
 							updateFormat(propKey, "labelFormats", "roundingDigits", value);
 						} else {

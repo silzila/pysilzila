@@ -49,7 +49,6 @@ const ScatterChart = ({
 								chartControl,
 								formattedValue
 							);
-							console.log(formattedValue);
 
 							return formattedValue;
 						},

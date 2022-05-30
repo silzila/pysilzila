@@ -36,7 +36,7 @@ const HeatMap = ({
 			setMaxValue(max);
 		}
 	}, [chartData]);
-	console.log(chartData);
+
 	const RenderChart = () => {
 		return (
 			<ReactEcharts

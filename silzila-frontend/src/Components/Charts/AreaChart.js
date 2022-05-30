@@ -47,7 +47,6 @@ const AreaChart = ({
 								chartControl,
 								formattedValue
 							);
-							console.log(formattedValue);
 
 							return formattedValue;
 						},

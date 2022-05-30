@@ -21,15 +21,17 @@ const PieChart = ({
 	useEffect(() => {
 		if (chartControl.chartData) {
 			setChartDataKeys(Object.keys(chartData[0]));
-			var objKey =
-				chartProp.properties[propKey].chartAxes[1].fields[0].fieldname + "__" + "year";
-			chartControl.chartData.result.map((el) => {
-				if (objKey in el) {
-					let year = el[objKey];
-					el[objKey] = year.toString();
-				}
-				return el;
-			});
+			if (chartProp.properties[propKey].chartAxes[1].fields[0]) {
+				var objKey =
+					chartProp.properties[propKey].chartAxes[1].fields[0].fieldname + "__" + "year";
+				chartControl.chartData.result.map((el) => {
+					if (objKey in el) {
+						let year = el[objKey];
+						el[objKey] = year.toString();
+					}
+					return el;
+				});
+			}
 		}
 	}, [chartData, chartControl]);
 

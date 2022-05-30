@@ -117,8 +117,6 @@ const GaugeChart = ({
 							},
 							detail: {
 								formatter: (value) => {
-									console.log(value);
-
 									var formattedValue = value;
 									formattedValue = formatChartLabelValue(
 										chartControl,
@@ -131,8 +129,6 @@ const GaugeChart = ({
 								show: chartControl.axisOptions.gaugeAxisOptions.showAxisLabel,
 								distance: chartControl.axisOptions.gaugeAxisOptions.labelPadding,
 								formatter: (value) => {
-									console.log(value);
-
 									var formattedValue = value;
 									formattedValue = formatChartLabelValue(
 										chartControl,
