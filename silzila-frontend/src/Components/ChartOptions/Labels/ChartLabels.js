@@ -13,7 +13,6 @@ import {
 import { SketchPicker } from "react-color";
 import SliderWithInput from "../SliderWithInput";
 import { FormControl, MenuItem, Popover, Select, Switch } from "@mui/material";
-import LabelFormatting from "./LabelFormatting";
 
 const ChartLabels = ({
 	// state
@@ -172,7 +171,6 @@ const ChartLabels = ({
 								updateLabelOption(propKey, "fontSize", value);
 							}}
 						/>
-						<LabelFormatting />
 					</div>
 				</React.Fragment>
 			) : null}

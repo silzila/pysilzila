@@ -151,7 +151,10 @@ const ChartAxes = ({
 			axesValues.splice(2, 2, combinedValues);
 		}
 
-		if (chartProp.properties[propKey].chartType === "heatmap" || chartProp.properties[propKey].chartType === "crossTab") {
+		if (
+			chartProp.properties[propKey].chartType === "heatmap" ||
+			chartProp.properties[propKey].chartType === "crossTab"
+		) {
 			var combinedValues = { name: "Dimension", fields: [] };
 			var values1 = axesValues[1].fields;
 			var values2 = axesValues[2].fields;
@@ -163,10 +166,10 @@ const ChartAxes = ({
 		if (serverCall) {
 			setLoading(true);
 			console.log("Time for API call");
-			getChartData(axesValues, chartProp, propKey, token).then(data=>{
+			getChartData(axesValues, chartProp, propKey, token).then((data) => {
 				updateChartData(propKey, data);
 				setLoading(false);
-				});		
+			});
 		}
 	}, [chartProp.properties[propKey].chartAxes]);
 

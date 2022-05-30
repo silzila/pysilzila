@@ -16,37 +16,35 @@ const ChartControlObjects = ({
 
 	const barOptionsList = [
 		"Title",
-		"Colors",
+		"Labels",
 		"Legend",
 		"Margin",
 		"Tooltip",
-		"Labels",
-		// "Style",
 		"Grid/Axes",
+		"Colors",
+		"Format",
 	];
 
-	const pieOptionsList = ["Title", "Colors", "Legend", "Tooltip", "Labels", "Axis"];
-	const funnelOptionList = [
+	const pieOptionsList = ["Title", "Labels", "Legend", "Tooltip", "Axis", "Colors", "Format"];
+	const funnelOptionList = ["Title", "Legend", "Tooltip", "Colors", "Format"];
+	const gaugeOptionList = ["Title", "Tooltip", "Axis", "Colors", "Format"];
+	const heatmapOptionList = [
 		"Title",
+		"Labels",
+		"Margin",
 		"Colors",
-		"Legend",
-		//  "Margin",
 		"Tooltip",
+		"Grid/Axes",
+		"Format",
 	];
-	const gaugeOptionList = [
-		"Title",
-		"Colors",
-		//  "Margin",
-		"Tooltip",
-		"Axis",
-	];
-	const heatmapOptionList = ["Title", "Colors", "Margin", "Tooltip", "Labels", "Grid/Axes"];
-	const crossTabOptionList = ["Title", "Tooltip", "Style"];
+	const crossTabOptionList = ["Title", "Tooltip", "Style", "Format"];
 
 	const RenderOptions = () => {
 		switch (selectedChart) {
 			case "multibar":
 			case "stackedBar":
+			case "horizontalBar":
+			case "horizontalStacked":
 			case "line":
 			case "area":
 			case "scatterPlot":
@@ -134,7 +132,7 @@ const ChartControlObjects = ({
 					);
 				});
 
-				case "crossTab":
+			case "crossTab":
 				return crossTabOptionList.map((option) => {
 					return (
 						<div

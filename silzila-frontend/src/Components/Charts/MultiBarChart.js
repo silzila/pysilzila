@@ -1,7 +1,10 @@
 import ReactEcharts from "echarts-for-react";
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { formatChartData } from "../CommonFunctions/NumberFormatter";
+import {
+	formatChartLabelValue,
+	formatChartYAxisValue,
+} from "../ChartOptions/Format/NumberFormatter";
 
 const MultiBar = ({
 	// props
@@ -17,52 +20,48 @@ const MultiBar = ({
 	var chartControl = chartControlState.properties[propKey];
 	let chartData = chartControl.chartData ? chartControl.chartData.result : "";
 
-	const [formattedDataToPresent, setFormattedDataToPresent] = useState("");
-
-	var seriesObj = {
-		type: "bar",
-		stack: "",
-		emphasis: {
-			focus: "series",
-		},
-		label: {
-			show: chartControl.labelOptions.showLabel,
-			fontSize: chartControl.labelOptions.fontSize,
-			color: chartControl.labelOptions.labelColorManual
-				? chartControl.labelOptions.labelColor
-				: null,
-		},
-	};
-
 	const [seriesData, setSeriesData] = useState([]);
 
 	useEffect(() => {
 		var seriesDataTemp = [];
 		if (chartData) {
+			var chartDataKeys = Object.keys(chartData[0]);
+			console.log(chartDataKeys);
 			for (let i = 0; i < Object.keys(chartData[0]).length - 1; i++) {
+				var seriesObj = {
+					type: "bar",
+					stack: "",
+					emphasis: {
+						focus: "series",
+					},
+					label: {
+						show: chartControl.labelOptions.showLabel,
+						fontSize: chartControl.labelOptions.fontSize,
+						color: chartControl.labelOptions.labelColorManual
+							? chartControl.labelOptions.labelColor
+							: null,
+
+						formatter: (value) => {
+							var formattedValue = value.value[chartDataKeys[i + 1]];
+							var formattedValue = formatChartLabelValue(
+								chartControl,
+								formattedValue
+							);
+							console.log(formattedValue);
+
+							return formattedValue;
+						},
+					},
+				};
+
 				seriesDataTemp.push(seriesObj);
 			}
 			setSeriesData(seriesDataTemp);
-
-			var property = chartProperty.properties[propKey];
-			console.log(JSON.stringify(chartData, null, 2));
-
-			var formattedData = formatChartData(
-				property.chartType,
-				property.chartAxes,
-				JSON.parse(JSON.stringify(chartData)),
-				chartControl.labelOptions
-			);
-
-			// TODO: Priority 1 - Abbreviation & Percent formatting pending
-
-			console.log(formattedData);
-			setFormattedDataToPresent(formattedData);
 		}
-	}, [chartData, chartControl]);
+	}, [chartData, chartControl.formatOptions]);
 
 	const RenderChart = () => {
-		return formattedDataToPresent ? (
+		return chartData ? (
 			<ReactEcharts
 				opts={{ renderer: "svg" }}
 				theme={chartControl.colorScheme}
@@ -78,7 +77,8 @@ const MultiBar = ({
 						: "1px solid rgb(238,238,238)",
 				}}
 				option={{
-					animation: chartArea ? false : true,
+					animation: false,
+					// chartArea ? false : true,
 					legend: {
 						type: "scroll",
 						show: chartControl.legendOptions?.showLegend,
@@ -100,8 +100,8 @@ const MultiBar = ({
 					tooltip: { show: chartControl.mouseOver.enable },
 
 					dataset: {
-						dimensions: Object.keys(formattedDataToPresent[0]),
-						source: formattedDataToPresent,
+						dimensions: Object.keys(chartData[0]),
+						source: chartData,
 					},
 					xAxis: {
 						splitLine: {
@@ -174,6 +174,11 @@ const MultiBar = ({
 								chartControl.axisOptions.yAxis.position === "left"
 									? chartControl.axisOptions.yAxis.tickPaddingLeft
 									: chartControl.axisOptions.yAxis.tickPaddingRight,
+
+							formatter: (value) => {
+								var formattedValue = formatChartYAxisValue(chartControl, value);
+								return formattedValue;
+							},
 						},
 
 						show: chartControl.axisOptions.yAxis.showLabel,

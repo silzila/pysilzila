@@ -4,6 +4,7 @@ import React from "react";
 import { connect } from "react-redux";
 import ChartColors from "./Color/ChartColors";
 import ColorScale from "./Color/ColorScale";
+import ChartFormat from "./Format/ChartFormat";
 import AxisControls from "./GridAndAxes/AxisControls";
 import GridAndAxes from "./GridAndAxes/GridAndAxes";
 import ChartLabels from "./Labels/ChartLabels";
@@ -11,6 +12,7 @@ import ChartLegend from "./Legend/ChartLegend";
 import ChartMargin from "./Margin/ChartMargin";
 import ChartMouseOver from "./MouseOver/ChartMouseOver";
 import ChartTitle from "./Title/ChartTitle";
+import ChartStyle from './Style/ChartStyle'
 
 const ControlDetail = ({ chartProp, tabTileProps }) => {
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
@@ -46,6 +48,13 @@ const ControlDetail = ({ chartProp, tabTileProps }) => {
 
 			case "Axis":
 				return <AxisControls />;
+        
+        	case "Style":
+			return <ChartStyle />;
+
+
+			case "Format":
+				return <ChartFormat chartType={chartType} />;
 
 			default:
 				return (
