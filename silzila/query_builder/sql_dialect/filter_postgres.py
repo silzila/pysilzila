@@ -1,11 +1,11 @@
 from fastapi import HTTPException
 
 
-# This function is used to to show filter options when a user drags and drops a field into filter
-# req parameter is the request object - contains only one field
-# FROM_TBL parameter = schema_name.table_name.column_name as alias_name
-
 async def get_filter_values_pg(req, FROM_TBL):
+    """This function is used to to show filter options when a user drags and drops a field into filter.
+    req parameter is the request object - contains only one field
+    FROM_TBL parameter = schema_name.table_name.column_name as alias_name
+    """
     ##############################################
     # get distinct values - binary, text & number fields
     ##############################################
@@ -139,6 +139,6 @@ async def get_filter_values_pg(req, FROM_TBL):
         raise HTTPException(
             status_code=400, detail="Data Type or Filter Type is wrong")
 
-    print(" =============== Filter Options QUERY ==================================")
-    print(QUERY)
+    # print(" =============== Filter Options QUERY ==================================")
+    # print(QUERY)
     return QUERY

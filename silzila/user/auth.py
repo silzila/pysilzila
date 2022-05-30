@@ -6,13 +6,13 @@ from fastapi import Request, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from typing import Dict
 
+# variables loaded from .env file
 JWT_SECRET = config("JWT_SECRET")
 ACCESS_TOKEN_EXPIRE_MINUTES = config("ACCESS_TOKEN_EXPIRE_MINUTES")
 JWT_ALGORITHM = config("JWT_ALGORITHM")
 
+
 # user for the class method
-
-
 def decode_JWT(token: str) -> dict:
     try:
         payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
@@ -31,7 +31,6 @@ class JWTBearer(HTTPBearer):
 
     async def __call__(self, request: Request):
         credentials: HTTPAuthorizationCredentials = await super(JWTBearer, self).__call__(request)
-        # print("credentials = ", str(credentials))
         if credentials:
             if not credentials.scheme == "Bearer":
                 raise HTTPException(
@@ -52,7 +51,6 @@ class JWTBearer(HTTPBearer):
         except:
             payload = None
         if payload:
-            # print("payload =========", payload)
             is_token_valid = True
         return is_token_valid
 

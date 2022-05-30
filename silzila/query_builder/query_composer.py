@@ -1,26 +1,34 @@
+from fastapi import HTTPException
+
 from ..data_set import schema
 from ..data_connection import engine
 from .sql_dialect import common_where, select_postgres, select_mysql, select_mssql
-# from .schema_recursive_search import schema_recursive_search
 from .relationship import build_relationship
 
 
 async def compose_query(req: schema.Query, dc_uid: str, ds_uid: str, vendor_name: str) -> str:
+    """Builds query based on Dimensions and Measures of user selection.
+
+    Query building is split into many sections:
+    like Select clause, Join clause, Where clause, Group By clause & Order By clause
+    Different dialects will have different syntaxes.
+    """
     req = req.dict()
-    print("------------Query -----------\n", req)
+    # get data set (Tables & it's relatonships) for building query
     data_schema = await engine.get_data_schema(dc_uid, ds_uid)
-    # print("------------Schema -----------\n", data_schema)
-
+    # builds JOIN Clause of SQL - same for all dialects
     FROM_TBL = await build_relationship(req, data_schema)
-
+    # empty list to get populated by added columns
     select_dim_list = []
     group_by_dim_list = []
     order_by_dim_list = []
-    print("===============WHERE =================")
+    # builds WHERE Clause of SQL
     WHERE = common_where.build_where_clause(req['filters'], vendor_name)
-    print(WHERE)
 
-    print("===============SELECT =================")
+    # builds SELECT Clause of SQL
+    # SELECT clause is the most varying of all clauses, different for each dialect
+    # select_dim_list columns are used in group_by_dim_list & order_by_dim_list except that
+    # select_dim_list has column alias and group_by_dim_list & order_by_dim_list don't have alias
     SELECT = ""
     if vendor_name == 'postgresql':
         SELECT = select_postgres.build_select_clause(
@@ -32,44 +40,20 @@ async def compose_query(req: schema.Query, dc_uid: str, ds_uid: str, vendor_name
         SELECT = select_mssql.build_select_clause(
             req, select_dim_list, group_by_dim_list, order_by_dim_list)
     else:
-        print("--------------- vendor name is wrong!")
-    # print("===============GROUP BY=================")
-    '''
-    GROUP BY SECTION
-    '''
-    # _group_by = []
-    # for i in range(len(group_by_dim_list)):
-    #     _group_by.append(group_by_dim_list[i])
+        raise HTTPException(
+            status_code=500, detail="Vendor name is wrong")
+
+    # builds GROUP BY Clause of SQL
     GROUP_BY = "\n\t" + ",\n\t".join(group_by_dim_list)
-    # _group_by = []
-    # for i in range(len(select_dim_list)):
-    #     if vendor_name == 'mssql':
-    #         _group_by.append(group_by_dim_list[i])
-    #         GROUP_BY = "\n\t" + ",\n\t".join(_group_by)
-    #     else:
-    #         _group_by.append(str(i+1))
-    #         GROUP_BY = "\n\t" + ",".join(_group_by)
 
-    '''
-    ORDER BY SECTION
-    '''
-    # _order_by = []
-    # for i in range(len(group_by_dim_list)):
-    #     if i >= 1 and group_by_dim_list[i-1][:6] == '__sort':
-    #         pass
-    #     else:
-    #         _order_by.append(group_by_dim_list[i])
+    # builds ORDER BY Clause of SQL
     ORDER_BY = "\n\t" + ",\n\t".join(order_by_dim_list)
-    # _order_by = []
-    # for i in range(len(select_dim_list)):
-    #     _order_by.append(str(i+1))
-    # ORDER_BY = "\n\t" + ",".join(_order_by)
 
-    print("\n===============QUERY=========================================")
+    # if request has dimensions then add group by and order by clause
     if req["dims"]:
         QUERY = f"SELECT {SELECT}\nFROM{FROM_TBL}{WHERE}\nGROUP BY{GROUP_BY}\nORDER BY{ORDER_BY}"
+    # if request has only measures then no need of group by and order by clause
     elif req["measures"]:
         QUERY = f"SELECT {SELECT}\nFROM\n{FROM_TBL}{WHERE}"
-    # print(QUERY)
 
     return QUERY

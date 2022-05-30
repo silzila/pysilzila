@@ -2,7 +2,15 @@ from .schema_recursive_search import schema_recursive_search
 
 
 async def build_relationship(req, data_schema) -> str:
-    print("running build relationship function----------------------")
+    """constructs JOIN clause of the query
+    Same for all sql dialects.
+    For now, it doesn't handle the following scenarios:
+        1. self join (same table joined multiple times)
+        2. more than one possibility of join between 2 tables
+            eg: a, b, c tables, a to b, b to c relationship.
+            if we add a to c then there are two ways of joining a to c.
+            a to c directly and via b. 
+    """
 
     # unique_tables will hold all unique requested tables
     unique_tables = {
@@ -11,7 +19,6 @@ async def build_relationship(req, data_schema) -> str:
         "fields": [],
         "filters": [],
         "all": []  # to contain all tables used in the query
-
     }
 
     # populate unique_tables
@@ -22,7 +29,7 @@ async def build_relationship(req, data_schema) -> str:
     unique_tables["all"].extend(unique_tables["dims"] + unique_tables["fields"] +
                                 unique_tables["filters"] + unique_tables["measures"])
     unique_tables["all"] = list(set(unique_tables["all"]))
-    print("unique_tables ========== \n", unique_tables, "\n")
+    # print("unique_tables ========== \n", unique_tables, "\n")
 
     FROM_TBL = ""
     relationships = []  # holds all required relations
@@ -31,9 +38,7 @@ async def build_relationship(req, data_schema) -> str:
     if len(unique_tables["all"]) == 1:
         table1 = list(filter(
             lambda obj: obj["id"] == unique_tables["all"][0], data_schema["tables"]))[0]
-        # print("table1 ===", table1)
         FROM_TBL = f"\n\t{table1['schema_name']}.{table1['table_name']} AS {table1['id']}"
-        # print("FROM_TBL ===", FROM_TBL)
 
     # Build relationship - when many tables in qry
     elif len(unique_tables["all"]) > 1:
@@ -116,14 +121,16 @@ async def build_relationship(req, data_schema) -> str:
                             relationships2.append(v)
                             break
 
-    print("--------------------------------------")
-    for val in relationships2:
-        print(val["table1"], " ", val["table2"])
+    # print("--------------------------------------")
+    # for val in relationships2:
+    #     print(val["table1"], " ", val["table2"])
 
-    print("======================================")
-    '''
-    RELATIONSHIP SECTION
-    '''
+    # print("======================================")
+
+    # RELATIONSHIP SECTION
+    # eg. a left join b.
+    # if we traverse a first then b, use joins (left: Left outer join, a left join b)
+    # if we traverse b first then a, use mirror_joins (left: Right outer join, b right join a)
     joins = {
         "inner": "INNER JOIN",
         "left": "LEFT OUTER JOIN",
@@ -156,7 +163,7 @@ async def build_relationship(req, data_schema) -> str:
                 FROM_TBL += f"\n\t{joins[val['ref_integrity']]} {_to['schema_name']}.{_to['table_name']} AS {_to['id']} ON \n\t\t{_join}"
 
             elif val["table2"] == relationships2[i-1]["table1"] or val["table2"] == relationships2[i-1]["table2"]:
-                print("&&&&&&&&&&&&&&& Mirror join 1 &&&&&&&&&&&&&&&&&")
+                # print("&&&&&&&&&&&&&&& Mirror join 1 &&&&&&&&&&&&&&&&&")
                 FROM_TBL += f"\n\t{mirror_joins[val['ref_integrity']]} {_from['schema_name']}.{_from['table_name']} AS {_from['id']} ON \n\t\t{_join}"
             # when not matching with one level above - need to check the whole list
             else:
@@ -174,7 +181,7 @@ async def build_relationship(req, data_schema) -> str:
                 elif val['table2'] in existing_tables:
                     _from = list(
                         filter(lambda obj: obj["id"] == val["table1"], data_schema["tables"]))[0]
-                    print("&&&&&&&&&&&&&&& Mirror join 2 &&&&&&&&&&&&&&&&&")
+                    # print("&&&&&&&&&&&&&&& Mirror join 2 &&&&&&&&&&&&&&&&&")
                     FROM_TBL += f"\n\t{mirror_joins[val['ref_integrity']]} {_from['schema_name']}.{_from['table_name']} AS {_from['id']} ON \n\t\t{_join}"
     # print(FROM_TBL)
     return FROM_TBL

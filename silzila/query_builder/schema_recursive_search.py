@@ -1,22 +1,19 @@
-'''
-************************ Recursive Function *******************************
-this function traverses in Relationship Network (list of object) and finds
-if the path is needed or not.
-
-tbls = user given table list for which we need to fing relationships
-rlss = contains all relationships - ref node diagram
-x = table to be searched iteratively till the breadh and depth
-i = current index where x is starting to travel
-ok = dict holds if both node in a relationship is valid
-fs_no_match = flag - indicating both tables in this relationship
-    don't have initial match
-fs = flag - first or second table in relationship. This helps
-tracking if origin X table is table1 or table2 and helps to mark
-in ok dict as complete
-'''
-
-
 def schema_recursive_search(tbls: list, rlss: list, x: str, i: int, ok: dict, fs_no_match: bool, fs: str):
+    """ Recursively searches relationships to build network of tabels & joins
+    this function traverses in Relationship Network (list of object) and finds
+    if the path is needed or not.
+
+    tbls = user given table list for which we need to fing relationships
+    rlss = contains all relationships - ref node diagram
+    x = table to be searched iteratively till the breadh and depth
+    i = current index where x is starting to travel
+    ok = dict holds if both node in a relationship is valid
+    fs_no_match = flag - indicating both tables in this relationship
+        don't have initial match
+    fs = flag - first or second table in relationship. This helps
+    tracking if origin X table is table1 or table2 and helps to mark
+    in ok dict as complete
+    """
     # print("\tRecursive Fn ( ",  x, ", Indx = ",  i,  " )")
     for j, v in enumerate(rlss):
         if j != i:
