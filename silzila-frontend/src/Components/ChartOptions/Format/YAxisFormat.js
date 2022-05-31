@@ -35,7 +35,6 @@ const YAxisFormat = ({
 					}
 					value={formatObject.numberSeparator}
 					onClick={(e) => {
-						console.log(item.value);
 						updateFormat(propKey, "yAxisFormats", "numberSeparator", item.value);
 					}}
 				>

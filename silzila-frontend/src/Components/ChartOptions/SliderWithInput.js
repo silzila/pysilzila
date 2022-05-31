@@ -31,7 +31,7 @@ const SliderWithInput = ({ sliderValue, sliderMinMax, changeValue, percent, degr
 				<span
 					className="textValue"
 					onClick={(e) => {
-						console.log(e.target);
+						// console.log(e.target);
 						setShowInputText(true);
 					}}
 					title="Click to edit value"

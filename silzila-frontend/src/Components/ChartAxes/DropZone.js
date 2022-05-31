@@ -51,11 +51,11 @@ const DropZone = ({
 			fieldData.uId = uID;
 
 			let newFieldData = JSON.parse(JSON.stringify(setPrefix(fieldData, name, chartType)));
-			console.log(newFieldData);
+			// console.log(newFieldData);
 
 			updateDropZoneItems(propKey, bIndex, newFieldData, allowedNumbers);
 		} else if (item.bIndex !== bIndex) {
-			console.log("-------moving item from within------");
+			// console.log("-------moving item from within------");
 
 			let newFieldData = JSON.parse(JSON.stringify(setPrefix(item, name, chartType)));
 			["type", "bIndex"].forEach((e) => delete newFieldData[e]);

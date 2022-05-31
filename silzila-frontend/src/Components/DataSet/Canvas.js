@@ -25,11 +25,11 @@ const Canvas = ({
 	// When arrow is clicked, open relationship Popover
 	const clickOnArrowfunc = (index) => {
 		setExistingArrow(true);
-		console.log(index);
+		//console.log(index);
 		const temp = arrows.filter((el, i) => {
 			return i === index;
 		})[0];
-		console.log(temp);
+		//console.log(temp);
 		setExistingArrowProp(temp);
 		setShowRelationCard(true);
 	};
