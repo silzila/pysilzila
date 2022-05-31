@@ -17,8 +17,6 @@ const DropZone = ({
 	propKey,
 
 	// state
-	token,
-	tabTileProps,
 	chartProp,
 
 	// dispatch
@@ -134,9 +132,7 @@ const DropZone = ({
 
 const mapStateToProps = (state) => {
 	return {
-		tabTileProps: state.tabTileProps,
 		chartProp: state.chartProperties,
-		token: state.isLogged.access_token,
 	};
 };
 

@@ -90,6 +90,33 @@ export const getChartData = async (axesValues, chartProp, propKey, token) => {
 	}
 };
 
+export const checkMinRequiredCards = (chartProp, propKey) => {
+	var minReqMet = [];
+	ChartsInfo[chartProp.properties[propKey].chartType].dropZones.forEach((zone, zoneI) => {
+		chartProp.properties[propKey].chartAxes[zoneI].fields.length >= zone.min
+			? minReqMet.push(true)
+			: minReqMet.push(false);
+	});
+
+	if (chartProp.properties[propKey].chartType === "crossTab") {
+		if (
+			chartProp.properties[propKey].chartAxes[1].fields.length > 0 ||
+			chartProp.properties[propKey].chartAxes[2].fields.length > 0 ||
+			chartProp.properties[propKey].chartAxes[3].fields.length > 0
+		) {
+			minReqMet.push(true);
+		} else {
+			minReqMet.push(false);
+		}
+	}
+
+	if (minReqMet.includes(false)) {
+		return false;
+	} else {
+		return true;
+	}
+};
+
 const ChartAxes = ({
 	// props
 	tabId,
@@ -113,7 +140,6 @@ const ChartAxes = ({
 	}
 
 	useEffect(() => {
-		console.log("ChartAxes changed");
 		const axesValues = JSON.parse(JSON.stringify(chartProp.properties[propKey].chartAxes));
 
 		let serverCall = false;
@@ -127,7 +153,7 @@ const ChartAxes = ({
 				serverCall = false;
 				resetStore();
 			} else {
-				var minReq = checkMinRequiredCards();
+				var minReq = checkMinRequiredCards(chartProp, propKey);
 				if (minReq) {
 					serverCall = true;
 				} else {
@@ -166,34 +192,6 @@ const ChartAxes = ({
 		}
 	}, [chartProp.properties[propKey].chartAxes]);
 
-	const checkMinRequiredCards = () => {
-		var minReqMet = [];
-
-		ChartsInfo[chartProp.properties[propKey].chartType].dropZones.forEach((zone, zoneI) => {
-			chartProp.properties[propKey].chartAxes[zoneI].fields.length >= zone.min
-				? minReqMet.push(true)
-				: minReqMet.push(false);
-		});
-
-		if (chartProp.properties[propKey].chartType === "crossTab") {
-			if (
-				chartProp.properties[propKey].chartAxes[1].fields.length > 0 ||
-				chartProp.properties[propKey].chartAxes[2].fields.length > 0 ||
-				chartProp.properties[propKey].chartAxes[3].fields.length > 0
-			) {
-				minReqMet.push(true);
-			} else {
-				minReqMet.push(false);
-			}
-		}
-
-		if (minReqMet.includes(false)) {
-			return false;
-		} else {
-			return true;
-		}
-	};
-
 	const resetStore = () => {
 		toggleAxesEdit(propKey);
 		reUseOldData(propKey);
@@ -214,7 +212,7 @@ const mapStateToProps = (state) => {
 		tabTileProps: state.tabTileProps,
 		userFilterGroup: state.userFilterGroup,
 		chartProp: state.chartProperties,
-		token: state.isLogged.access_token,
+		token: state.isLogged.accessToken,
 	};
 };
 
