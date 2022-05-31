@@ -4,6 +4,7 @@ import shortuuid
 from sqlalchemy import Column, String, Integer, ForeignKey, Boolean
 
 
+# class for Dataset Table
 class DataSet(Base):
     __tablename__ = "data_set"
 

@@ -1,5 +1,6 @@
-# function to return SYMBOL for the comparison operator name
 def comparison_operator_name_to_symbol(exprs):
+    """function to return SYMBOL for the comparison operator name
+    """
     EXPRSN = None
     if exprs == 'equal_to':
         EXPRSN = '='

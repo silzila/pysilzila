@@ -58,7 +58,7 @@ const ScatterChart = ({
 			}
 			setSeriesData(seriesObj);
 		}
-	}, [chartData, chartControl]);
+	}, [chartData, chartControl.formatOptions]);
 
 	const RenderChart = () => {
 		return (

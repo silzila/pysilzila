@@ -22,7 +22,7 @@
 
 .ShowDataPopupKey {
 	font-weight: bold;
-	width: 40%;
+	width: 45%;
 	text-align: right;
 	word-wrap: break-word;
 }
@@ -64,7 +64,6 @@
 }
 
 .CrossTabLeftColumnHeader {
-	position: sticky;
 	left: 0;
 	top: auto;
 	text-align: left;
@@ -104,7 +103,8 @@
 .UserClickedCellRemainingChildren {
 	opacity: 0.2;
 }
-======= .ShowDataPopup {
+
+.ShowDataPopup {
 	width: 300px;
 	height: auto;
 	z-index: 100;
@@ -210,3 +210,4 @@
 .UserClickedCellRemainingChildren {
 	opacity: 0.2;
 }
+

@@ -10,7 +10,6 @@ from ..database.config import Base
 class User(Base):
     __tablename__ = "user"
     id = Column(Integer, primary_key=True)
-    # uuid = Column(String, nullable=False, default=lambda: str(uuid4()))
     uid = Column(String, nullable=False, unique=True, index=True,
                  default=lambda: shortuuid.ShortUUID().random(length=10))
     name = Column(String, nullable=False)

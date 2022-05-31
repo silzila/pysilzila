@@ -1,10 +1,13 @@
 from .helper_function import comparison_operator_name_to_symbol
 
 
-# function to construct where clause of query
-# Where clause is optional in query, meaning there may be Query without Where condition
-# in Query, "WHERE" key word should be kept only if there is Where condition expression
 def build_where_clause(filter_list: list, vendor_name: str) -> str:
+    """function to construct where clause of query.
+
+    Where clause is optional in query, meaning there may be Query without Where condition
+    in Query, "WHERE" key word should be kept only if there is Where condition expression
+    Dialect specific and each dialect is handled as separate sections below
+    """
     WHERE = ""  # holds final where clause string
     _where = []  # holds individual condition as list
     for val in filter_list:
