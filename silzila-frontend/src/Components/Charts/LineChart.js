@@ -43,7 +43,7 @@ const LineChart = ({
 								chartControl,
 								formattedValue
 							);
-							console.log(formattedValue);
+							//console.log(formattedValue);
 
 							return formattedValue;
 						},

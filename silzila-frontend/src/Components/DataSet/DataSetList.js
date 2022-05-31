@@ -77,7 +77,15 @@ const DataSetList = ({
 				setTestMessage("");
 			}, 2000);
 		} else {
-			console.log(result.detail);
+			console.log(result.data.detail);
+			setSeverity("error");
+			setOpenAlert(true);
+			setTestMessage(result.data.detail);
+			getInformation();
+			setTimeout(() => {
+				setOpenAlert(false);
+				setTestMessage("");
+			}, 3000);
 		}
 	};
 

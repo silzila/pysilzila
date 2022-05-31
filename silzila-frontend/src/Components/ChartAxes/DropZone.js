@@ -51,11 +51,11 @@ const DropZone = ({
 			fieldData.uId = uID;
 
 			let newFieldData = JSON.parse(JSON.stringify(setPrefix(fieldData, name, chartType)));
-			console.log(newFieldData);
+			//console.log(newFieldData);
 
 			updateDropZoneItems(propKey, bIndex, newFieldData, allowedNumbers);
 		} else if (item.bIndex !== bIndex) {
-			console.log("-------moving item from within------");
+			//console.log("-------moving item from within------");
 
 			let newFieldData = JSON.parse(JSON.stringify(setPrefix(item, name, chartType)));
 			["type", "bIndex"].forEach((e) => delete newFieldData[e]);
@@ -70,8 +70,8 @@ const DropZone = ({
 			{bIndex === 0 ? (
 				<span className="axisInfo">
 					{" "}
-					Drop (0 - max {ChartsInfo[chartType].dropZones[bIndex]?.allowedNumbers}) field(s)
-					here
+					Drop (0 - max {ChartsInfo[chartType].dropZones[bIndex]?.allowedNumbers})
+					field(s) here
 				</span>
 			) : null}
 			{bIndex === 1 && ChartsInfo[chartType]?.dropZones[bIndex]?.allowedNumbers === 1 ? (
@@ -94,7 +94,9 @@ const DropZone = ({
 					{ChartsInfo[chartType].dropZones[bIndex]?.allowedNumbers}) field(s) here
 				</span>
 			) : null}
-			{bIndex === 3 && ChartsInfo[chartType].dropZones[bIndex] && ChartsInfo[chartType].dropZones[bIndex].allowedNumbers === 1 ? (
+			{bIndex === 3 &&
+			ChartsInfo[chartType].dropZones[bIndex] &&
+			ChartsInfo[chartType].dropZones[bIndex].allowedNumbers === 1 ? (
 				<span className="axisInfo"> Drop (1) field(s) here</span>
 			) : null}
 

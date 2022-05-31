@@ -2,6 +2,7 @@ import ReactEcharts from "echarts-for-react";
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { formatChartLabelValue } from "../ChartOptions/Format/NumberFormatter";
+import { updateChartMargins } from "../../redux/ChartProperties/actionsChartControls";
 
 const PieChart = ({
 	//props
@@ -13,7 +14,11 @@ const PieChart = ({
 	//state
 	chartProp,
 	chartControls,
+
+	// dispatch
+	updateChartMargins,
 }) => {
+	var property = chartControls.properties[propKey];
 	var chartControl = chartControls.properties[propKey];
 	let chartData = chartControl.chartData ? chartControl.chartData.result : "";
 	const [chartDataKeys, setChartDataKeys] = useState([]);
@@ -21,17 +26,39 @@ const PieChart = ({
 	useEffect(() => {
 		if (chartControl.chartData) {
 			setChartDataKeys(Object.keys(chartData[0]));
-			var objKey =
-				chartProp.properties[propKey].chartAxes[1].fields[0].fieldname + "__" + "year";
-			chartControl.chartData.result.map((el) => {
-				if (objKey in el) {
-					let year = el[objKey];
-					el[objKey] = year.toString();
+
+			var objKey;
+			if (chartProp.properties[propKey].chartAxes[1].fields[0]) {
+				if ("time_grain" in chartProp.properties[propKey].chartAxes[1].fields[0]) {
+					objKey =
+						chartProp.properties[propKey].chartAxes[1].fields[0].fieldname +
+						"__" +
+						chartProp.properties[propKey].chartAxes[1].fields[0].time_grain;
+				} else {
+					objKey = chartProp.properties[propKey].chartAxes[1].fields[0].fieldname;
 				}
-				return el;
-			});
+				chartControl.chartData.result.map((el) => {
+					if (objKey in el) {
+						let aggregate = el[objKey];
+						//console.log(aggregate);
+						el[objKey] = aggregate.toString();
+					}
+					return el;
+				});
+				//console.log(chartControl.chartData.result);
+			}
 		}
 	}, [chartData, chartControl]);
+
+	//console.log(chartData);
+
+	var radius = property.chartMargin.radius;
+	useEffect(() => {
+		if (radius > 100) {
+			updateChartMargins(propKey, "radius", 100);
+			radius = 100;
+		}
+	});
 
 	const RenderChart = () => {
 		return (
@@ -74,7 +101,7 @@ const PieChart = ({
 							{
 								type: "pie",
 								startAngle: chartControl.axisOptions.pieAxisOptions.pieStartAngle,
-								clockWise: chartControl.axisOptions.pieAxisOptions.clockWise,
+								clockwise: chartControl.axisOptions.pieAxisOptions.clockWise,
 								label: {
 									position: chartControl.labelOptions.pieLabel.labelPosition,
 									show: chartControl.labelOptions.showLabel,
@@ -88,7 +115,7 @@ const PieChart = ({
 									],
 
 									formatter: (value) => {
-										console.log(value, chartDataKeys);
+										//console.log(value, chartDataKeys);
 
 										if (chartDataKeys) {
 											var formattedValue = value.value[chartDataKeys[1]];
@@ -100,6 +127,7 @@ const PieChart = ({
 										}
 									},
 								},
+								radius: radius + "%",
 							},
 						],
 					}}

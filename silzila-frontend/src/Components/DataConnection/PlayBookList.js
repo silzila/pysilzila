@@ -15,13 +15,14 @@ import {
 	setTablesForSelectedDataSets,
 } from "../../redux/TabTile/actionsTabTile";
 import FetchData from "../../ServerCall/FetchData";
-import { getChartData } from "../ChartAxes/ChartAxes";
+import { checkMinRequiredCards, getChartData, getCombainedValues } from "../ChartAxes/ChartAxes";
 import { NotificationDialog } from "../CommonFunctions/DialogComponents";
 import DatasetListPopover from "../CommonFunctions/PopOverComponents/DatasetListPopover";
 import LoadingPopover from "../CommonFunctions/PopOverComponents/LoadingPopover";
 import { SelectListItem } from "../CommonFunctions/SelectListItem";
 import { getColumnTypes, getTableData } from "../DataViewer/DataViewerBottom";
 import update from "immutability-helper";
+import { updateChartData } from "../../redux/ChartProperties/actionsChartControls";
 
 const PlayBookList = ({
 	// state
@@ -119,7 +120,7 @@ const PlayBookList = ({
 
 			// Get list of tables for a given dataset and save here
 			var selectedDatasetsInPlaybook = pb.content.tabTileProps.selectedDataSetList;
-			console.log(pb.content.tabTileProps.selectedDataSetList);
+			// //console.log(pb.content.tabTileProps.selectedDataSetList);
 
 			var tablesForSelectedDatasetsCopy = {};
 			await Promise.all(
@@ -137,22 +138,57 @@ const PlayBookList = ({
 				})
 			);
 
-			console.log(JSON.stringify(tablesForSelectedDatasetsCopy, null, 2));
+			// //console.log(JSON.stringify(tablesForSelectedDatasetsCopy, null, 2));
 			pb.content.tabTileProps.tablesForSelectedDataSets = tablesForSelectedDatasetsCopy;
 
 			var newChartControl = JSON.parse(JSON.stringify(pb.content?.chartControl));
-
 			await Promise.all(
 				Object.keys(pb.content.chartControl.properties).map(async (property) => {
-					var axesValue = pb.content.chartProperty.properties[property].chartAxes;
-					var data = await getChartData(
-						axesValue,
-						pb.content.chartProperty,
-						property,
-						token
+					var axesValue = JSON.parse(
+						JSON.stringify(pb.content.chartProperty.properties[property].chartAxes)
 					);
+					// //console.log(JSON.stringify(pb.content.chartProperty, null, 2));
+					var minReq = checkMinRequiredCards(pb.content.chartProperty, property);
+					var serverCall = false;
+					if (minReq) {
+						serverCall = true;
+					} else {
+						newChartControl.properties[property].chartData = "";
+					}
 
-					newChartControl.properties[property].chartData = data;
+					if (serverCall) {
+						// //console.log(pb.content.chartProperty.properties[property].chartType);
+
+						if (
+							pb.content.chartProperty.properties[property].chartType ===
+							"scatterPlot"
+						) {
+							var combinedValues = { name: "Measure", fields: [] };
+							var values1 = axesValue[2].fields;
+							var values2 = axesValue[3].fields;
+							var allValues = values1.concat(values2);
+							combinedValues.fields = allValues;
+							axesValue.splice(2, 2, combinedValues);
+						}
+
+						if (
+							pb.content.chartProperty.properties[property].chartType === "heatmap" ||
+							pb.content.chartProperty.properties[property].chartType === "crossTab"
+						) {
+							var combinedValues = { name: "Dimension", fields: [] };
+							var values1 = axesValue[1].fields;
+							var values2 = axesValue[2].fields;
+							var allValues = values1.concat(values2);
+							combinedValues.fields = allValues;
+							axesValue.splice(1, 2, combinedValues);
+						}
+						//console.log(axesValue);
+						getChartData(axesValue, pb.content.chartProperty, property, token).then(
+							(data) => {
+								newChartControl.properties[property].chartData = data;
+							}
+						);
+					}
 				})
 			);
 
@@ -359,6 +395,7 @@ const mapDispatchToProps = (dispatch) => {
 		loadPlayBook: (playBook) => dispatch(loadPlaybook(playBook)),
 		updatePlayBookId: (pbUid) => dispatch(updatePlaybookUid(pbUid)),
 		storePlayBookCopy: (pb) => dispatch(storePlayBookCopy(pb)),
+		updateChartData: (propKey, chartData) => dispatch(updateChartData(propKey, chartData)),
 	};
 };
 

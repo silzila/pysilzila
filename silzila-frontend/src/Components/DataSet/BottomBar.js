@@ -88,7 +88,7 @@ const BottomBar = ({
 
 				var arrowsForRelation = [];
 				arrowsForRelation = arrows.filter((arr) => arr.relationId === relation.relationId);
-				console.log(arrowsForRelation);
+				//console.log(arrowsForRelation);
 				var tbl1 = [];
 				var tbl2 = [];
 				arrowsForRelation.forEach((arr) => {
@@ -96,15 +96,15 @@ const BottomBar = ({
 					tbl2.push(arr.endColumnName);
 				});
 
-				console.log(tbl1, tbl2);
+				//console.log(tbl1, tbl2);
 				relationObj.table1_columns = tbl1;
 				relationObj.table2_columns = tbl2;
 
-				console.log(relationObj);
+				//console.log(relationObj);
 				relationshipServerObj.push(relationObj);
 			});
 
-			console.log(relationshipServerObj);
+			//console.log(relationshipServerObj);
 
 			var meth;
 			var apiurl;
@@ -141,7 +141,7 @@ const BottomBar = ({
 					navigate("/datahome");
 				}, 2000);
 			} else {
-				console.log(options.data.detail);
+				//console.log(options.data.detail);
 				setSeverity("error");
 				setOpenAlert(true);
 				setTestMessage(options.data.detail);
@@ -179,7 +179,7 @@ const BottomBar = ({
 					alias: el.alias,
 				};
 			});
-			console.log(tablesSelectedInSidebar);
+			//console.log(tablesSelectedInSidebar);
 			const temp1 = [];
 			const temp2 = [];
 			arrows.forEach((el) => {
@@ -188,7 +188,7 @@ const BottomBar = ({
 			});
 			const tablesWithRelation = [...temp1, ...temp2];
 
-			console.log(tablesSelectedInSidebar, tablesWithRelation);
+			//console.log(tablesSelectedInSidebar, tablesWithRelation);
 			checkTableRelationShip(tablesSelectedInSidebar, tablesWithRelation);
 		} else {
 			setSeverity("error");

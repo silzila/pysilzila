@@ -50,10 +50,10 @@ chartProperty
     var property = chartControls.properties[propKey];
     var chartPropAxes =  chartProperty.properties[propKey].chartAxes;
 
-    console.log(property, "+++++ PROPERTY +++++");
+    //console.log(property, "+++++ PROPERTY +++++");
     let chartPropData = property.chartData ? property.chartData.result : "";
     let tempFormatedChartPropData = CrossTab.cloneData(chartPropData);
-    console.log(tempFormatedChartPropData, "+++++ chartData +++++");
+    //console.log(tempFormatedChartPropData, "+++++ chartData +++++");
 
   const [showAsColumn, setShowAsColumn] = React.useState(true);
 

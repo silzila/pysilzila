@@ -117,7 +117,7 @@ export const setValuesToState = (payload) => {
 };
 
 export const actionsOnRemoveTable = ({ tempTables, tables, tableId }) => {
-	console.log("REMOVE TABLE FROM CANVAS", tempTables, tables, tableId);
+	//console.log("REMOVE TABLE FROM CANVAS", tempTables, tables, tableId);
 	return (dispatch) => {
 		dispatch(setTempTables(tempTables));
 		dispatch(setUserTable(tables));

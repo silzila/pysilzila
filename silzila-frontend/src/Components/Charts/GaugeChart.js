@@ -81,6 +81,8 @@ const GaugeChart = ({
 					series: [
 						{
 							type: "gauge",
+							radius: chartControl.chartMargin.radius,
+
 							max:
 								chartControl.colorScale.colorScaleType === "Manual"
 									? chartControl.colorScale.max !== ""
@@ -108,6 +110,13 @@ const GaugeChart = ({
 
 								roundCap: true,
 							},
+
+							pointer: {
+								itemStyle: {
+									color: "auto",
+								},
+							},
+
 							startAngle: chartControl.axisOptions.gaugeAxisOptions.startAngle,
 							endAngle: chartControl.axisOptions.gaugeAxisOptions.endAngle,
 							axisTick: {
@@ -117,7 +126,7 @@ const GaugeChart = ({
 							},
 							detail: {
 								formatter: (value) => {
-									console.log(value);
+									//console.log(value);
 
 									var formattedValue = value;
 									formattedValue = formatChartLabelValue(
@@ -131,7 +140,7 @@ const GaugeChart = ({
 								show: chartControl.axisOptions.gaugeAxisOptions.showAxisLabel,
 								distance: chartControl.axisOptions.gaugeAxisOptions.labelPadding,
 								formatter: (value) => {
-									console.log(value);
+									//console.log(value);
 
 									var formattedValue = value;
 									formattedValue = formatChartLabelValue(

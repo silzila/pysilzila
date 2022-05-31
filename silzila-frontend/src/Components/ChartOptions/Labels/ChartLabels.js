@@ -77,7 +77,7 @@ const ChartLabels = ({
 										value={labelOptions.pieLabel.labelPosition}
 										variant="outlined"
 										onChange={(e) => {
-											console.log("SETTING PIE LABEL POSITION");
+											//console.log("SETTING PIE LABEL POSITION");
 											updateLabelPosition(propKey, e.target.value);
 										}}
 										sx={{

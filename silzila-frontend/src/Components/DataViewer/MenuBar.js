@@ -57,25 +57,25 @@ const MenuBar = ({
 
 	if (from === "dataViewer" && playBookState.oldContent) {
 		if (JSON.stringify(tabState) !== JSON.stringify(playBookState.oldContent.tabState)) {
-			console.log(tabState, playBookState.oldContent.tabState);
+			//console.log(tabState, playBookState.oldContent.tabState);
 		}
 		if (JSON.stringify(tileState) !== JSON.stringify(playBookState.oldContent.tileState)) {
-			console.log(tileState, playBookState.oldContent.tileState);
+			//console.log(tileState, playBookState.oldContent.tileState);
 		}
 		if (
 			JSON.stringify(tabTileProps) !== JSON.stringify(playBookState.oldContent.tabTileProps)
 		) {
-			console.log(tabTileProps, playBookState.oldContent.tabTileProps);
+			//console.log(tabTileProps, playBookState.oldContent.tabTileProps);
 		}
 		if (
 			JSON.stringify(chartProperty) !== JSON.stringify(playBookState.oldContent.chartProperty)
 		) {
-			console.log(chartProperty, playBookState.oldContent.chartProperty);
+			//console.log(chartProperty, playBookState.oldContent.chartProperty);
 		}
 		if (
 			JSON.stringify(chartControl) !== JSON.stringify(playBookState.oldContent.chartControl)
 		) {
-			console.log(chartControl, playBookState.oldContent.chartControl);
+			//console.log(chartControl, playBookState.oldContent.chartControl);
 		}
 
 		if (
@@ -87,10 +87,10 @@ const MenuBar = ({
 				JSON.stringify(playBookState.oldContent.chartProperty) &&
 			JSON.stringify(chartControl) === JSON.stringify(playBookState.oldContent.chartControl)
 		) {
-			console.log("Same Data. No need to show warning");
+			//console.log("Same Data. No need to show warning");
 			showSaveWarning = false;
 		} else {
-			console.log("Provide warning about saving data");
+			//console.log("Provide warning about saving data");
 			showSaveWarning = true;
 		}
 	}
@@ -111,7 +111,7 @@ const MenuBar = ({
 
 	// Open / Close about popOver
 	const [aboutPopover, setAboutPopover] = useState(false);
-  
+
 	// Open / Close privacy popOver
 	const [privacyPopover, setPrivacyPopover] = useState(false);
 
@@ -464,7 +464,7 @@ const MenuBar = ({
 					<div
 						className="menuHome"
 						onClick={() => {
-							console.log(showSaveWarning);
+							//console.log(showSaveWarning);
 							if (showSaveWarning || playBookState.playBookUid === null) {
 								setSaveFromHomeIcon(true);
 								setSaveModal(true);

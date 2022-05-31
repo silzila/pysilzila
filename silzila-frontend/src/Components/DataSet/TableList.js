@@ -40,7 +40,7 @@ const TableList = (props) => {
 							...data,
 						};
 					});
-					console.log(arrayWithUid);
+					//console.log(arrayWithUid);
 					obj = {
 						id: el.id,
 						table_uid: el.table_uid,
@@ -50,6 +50,7 @@ const TableList = (props) => {
 						columns: arrayWithUid,
 						dcId: props.connectionId,
 						schema: props.schema,
+						isNewTable: el.isNewTable,
 					};
 				}
 			});
@@ -112,6 +113,7 @@ const TableList = (props) => {
 			<Checkbox
 				style={{ width: "1rem", height: "1rem", margin: "auto 5px auto 0" }}
 				size="1rem"
+				disabled={props.table.isNewTable ? false : true}
 				checked={props.table.isSelected ? true : false}
 				onClick={(e) => checkAndUncheck(e, props.table.id)}
 				value={props.table.tableName}

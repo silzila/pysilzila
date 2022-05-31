@@ -24,6 +24,7 @@ import gaugeChartIcon from "../../assets/gauge.png";
 import heatMapIcon from "../../assets/heat_map.png";
 import ChartsInfo from "../ChartAxes/ChartsInfo2";
 import CrossTabIcon from "../../assets/crosstab.png";
+import roseChartIcon from "../../assets/rose_chart.svg";
 
 import "./ChartOptions.css";
 
@@ -35,6 +36,7 @@ export const chartTypes = [
 	{ name: "horizontalStacked", icon: horizontalStackedBar, value: "Horizontal Stacked Bar" },
 	{ name: "pie", icon: pieChartIcon, value: " Pie Chart" },
 	{ name: "donut", icon: donutChartIcon, value: " Donut Chart" },
+	{ name: "rose", icon: roseChartIcon, value: "Rose Chart" },
 	{ name: "line", icon: lineChartIcon, value: "Line Chart" },
 	{ name: "area", icon: areaChartIcon, value: "Area Chart" },
 	{ name: "scatterPlot", icon: scatterPlotIcon, value: " Scatter Plot" },
@@ -94,6 +96,7 @@ const ChartTypes = ({
 			case "area":
 			case "pie":
 			case "donut":
+			case "rose":
 				if (
 					[
 						"multibar",
@@ -104,6 +107,7 @@ const ChartTypes = ({
 						"area",
 						"pie",
 						"donut",
+						"rose",
 					].includes(newChart)
 				) {
 					keepOldData(propKey, true);
@@ -223,6 +227,7 @@ const ChartTypes = ({
 						"area",
 						"pie",
 						"donut",
+						"rose",
 					].includes(newChart)
 				) {
 					keepOldData(propKey, true);
@@ -304,6 +309,7 @@ const ChartTypes = ({
 						"area",
 						"pie",
 						"donut",
+						"rose",
 					].includes(newChart)
 				) {
 					if (oldChartAxes[1].fields.length > 0)
@@ -376,6 +382,7 @@ const ChartTypes = ({
 						"area",
 						"pie",
 						"donut",
+						"rose",
 					].includes(newChart)
 				) {
 					if (oldChartAxes[1].fields.length > 0)
@@ -446,6 +453,7 @@ const ChartTypes = ({
 						"area",
 						"pie",
 						"donut",
+						"rose",
 					].includes(newChart)
 				) {
 					// Map filter to Filter
@@ -550,6 +558,7 @@ const ChartTypes = ({
 						"area",
 						"pie",
 						"donut",
+						"rose",
 					].includes(newChart)
 				) {
 					// Map filter to Filter
@@ -664,6 +673,7 @@ const ChartTypes = ({
 
 							"pie",
 							"donut",
+							"rose",
 
 							"area",
 							"scatterPlot",

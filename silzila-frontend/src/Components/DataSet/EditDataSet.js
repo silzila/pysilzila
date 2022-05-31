@@ -36,7 +36,7 @@ const EditDataSet = ({
 		});
 
 		if (res.status) {
-			// console.log(res.data);
+			// //console.log(res.data);
 			// const uid = new ShortUniqueId({ length: 8 });
 
 			const canvasTables = await Promise.all(
@@ -50,11 +50,13 @@ const EditDataSet = ({
 						columns: await getColumns(res.data.dc_uid, tbl.schema_name, tbl.table_name),
 						isSelected: true,
 						id: tbl.id,
+
+						isNewTable: false,
 					};
 				})
 			);
 
-			// console.log(canvasTables);
+			// //console.log(canvasTables);
 
 			// ======================== set tables & schema ====================================================
 
@@ -63,7 +65,7 @@ const EditDataSet = ({
 			});
 
 			var uniqueSchema = Array.from(new Set(schema_list));
-			// console.log(uniqueSchema);
+			// //console.log(uniqueSchema);
 
 			let userTable = [];
 
@@ -102,6 +104,7 @@ const EditDataSet = ({
 								isSelected: true,
 								table_uid: uniqueSchema[0].concat(el),
 								id: id,
+								isNewTable: false,
 							};
 						}
 						return {
@@ -109,9 +112,10 @@ const EditDataSet = ({
 							isSelected: false,
 							table_uid: uniqueSchema[0].concat(el),
 							id: uid(),
+							isNewTable: true,
 						};
 					});
-					// console.log(userTable, "$$$$$$$$$$$$$ user Table $$$$$$$$$$$$$$$");
+					// //console.log(userTable, "$$$$$$$$$$$$$ user Table $$$$$$$$$$$$$$$");
 					setUserTable(userTable);
 				}
 			};
@@ -151,7 +155,7 @@ const EditDataSet = ({
 					relationUniqueId = uid();
 				});
 
-				// console.log(columns_in_relationships);
+				// //console.log(columns_in_relationships);
 
 				arrowObj = columns_in_relationships.map((el) => {
 					return {
@@ -179,8 +183,8 @@ const EditDataSet = ({
 					};
 				});
 
-				// console.log(arrowObj);
-				// console.log(arrowsArray);
+				// //console.log(arrowObj);
+				// //console.log(arrowsArray);
 				arrowsArray.push(...arrowObj);
 
 				relObject = {

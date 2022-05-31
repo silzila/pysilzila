@@ -35,7 +35,7 @@ export const BuildTable = ({ crossTabData, dustbinRows, dustbinValues,
   //     if(![...e.target.classList].find(cls=>cls == "UserClickedCellChildren")){
   //       e.target.classList.add("UserClickedCellChildren");
   //       serUserClickedCell(()=> { return {id :e.target.id, compare : e.target.getAttribute("compareObj")}});
-  //       console.log({id :e.target.id, compare : e.target.getAttribute("compareObj")})
+  //       //console.log({id :e.target.id, compare : e.target.getAttribute("compareObj")})
   //     }
   //     else{
   //       e.target.classList.remove("UserClickedCellChildren");

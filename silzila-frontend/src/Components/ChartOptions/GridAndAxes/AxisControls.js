@@ -41,21 +41,24 @@ const GridControls = ({
 
 	return (
 		<div className="optionsInfo">
-			<div className="optionDescription">Start Angle</div>
 			{chartProps.properties[propKey].chartType === "gauge" ? (
-				<TextField
-					value={property.gaugeAxisOptions.startAngle}
-					variant="outlined"
-					type="number"
-					onChange={(e) => {
-						updateGaugeAxisOptions(propKey, "startAngle", e.target.value);
-					}}
-					InputProps={{ ...textFieldStyleProps }}
-				/>
+				<React.Fragment>
+					<div className="optionDescription">Start Angle</div>
+					<TextField
+						value={property.gaugeAxisOptions.startAngle}
+						variant="outlined"
+						type="number"
+						onChange={(e) => {
+							updateGaugeAxisOptions(propKey, "startAngle", e.target.value);
+						}}
+						InputProps={{ ...textFieldStyleProps }}
+					/>
+				</React.Fragment>
 			) : (
 				<React.Fragment>
 					{chartProps.properties[propKey].chartType === "pie" ||
-					chartProps.properties[propKey].chartType === "donut" ? (
+					chartProps.properties[propKey].chartType === "donut" ||
+					chartProps.properties[propKey].chartType === "rose" ? (
 						<React.Fragment>
 							<TextField
 								value={property.pieAxisOptions.pieStartAngle}

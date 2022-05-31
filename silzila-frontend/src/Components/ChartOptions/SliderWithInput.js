@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import "./SliderWithInput.css";
 
 const SliderWithInput = ({ sliderValue, sliderMinMax, changeValue, percent, degree }) => {
-	// console.log( sliderMinMax);
+	// //console.log( sliderMinMax);
 	const [showInputText, setShowInputText] = useState(false);
 	return (
 		<div className="sliderWithInput">
@@ -31,7 +31,7 @@ const SliderWithInput = ({ sliderValue, sliderMinMax, changeValue, percent, degr
 				<span
 					className="textValue"
 					onClick={(e) => {
-						console.log(e.target);
+						//console.log(e.target);
 						setShowInputText(true);
 					}}
 					title="Click to edit value"

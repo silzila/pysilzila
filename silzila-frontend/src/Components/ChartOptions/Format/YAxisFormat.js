@@ -33,7 +33,7 @@ const YAxisFormat = ({
 					}
 					value={formatObject.formatValue}
 					onClick={(e) => {
-						console.log(item.value);
+						//console.log(item.value);
 
 						updateFormat(propKey, "yAxisFormats", "formatValue", item.value);
 						// setLabelFormat(item.value);
@@ -63,7 +63,7 @@ const YAxisFormat = ({
 					}
 					value={formatObject.numberSeparator}
 					onClick={(e) => {
-						console.log(item.value);
+						//console.log(item.value);
 						updateFormat(propKey, "yAxisFormats", "numberSeparator", item.value);
 					}}
 				>
@@ -129,7 +129,7 @@ const YAxisFormat = ({
 				<InputNumber
 					value={formatObject.roundingDigits}
 					updateValue={(value) => {
-						console.log(value);
+						//console.log(value);
 						if (value >= 0) {
 							updateFormat(propKey, "yAxisFormats", "roundingDigits", value);
 						} else {

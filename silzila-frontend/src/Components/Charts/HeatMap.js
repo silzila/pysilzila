@@ -36,7 +36,7 @@ const HeatMap = ({
 			setMaxValue(max);
 		}
 	}, [chartData]);
-	console.log(chartData);
+	//console.log(chartData);
 	const RenderChart = () => {
 		return (
 			<ReactEcharts
@@ -162,7 +162,7 @@ const HeatMap = ({
 									show: chartControl.labelOptions.showLabel,
 									// formatter helps to show measure values as labels(inside each block)
 									formatter: (value) => {
-										console.log(value, chartDataKeys);
+										//console.log(value, chartDataKeys);
 
 										if (chartDataKeys) {
 											var formattedValue = value.value[chartDataKeys[2]];

@@ -81,7 +81,7 @@ const FunnelChart = ({
 									? chartControl.labelOptions.labelColor
 									: null,
 								formatter: (value) => {
-									console.log(value.value);
+									//console.log(value.value);
 
 									var formattedValue = value.value.value;
 									formattedValue = formatChartLabelValue(
@@ -91,6 +91,10 @@ const FunnelChart = ({
 									return formattedValue;
 								},
 							},
+							top: chartControl.chartMargin.top,
+							bottom: chartControl.chartMargin.bottom,
+							left: chartControl.chartMargin.left + "%",
+							right: chartControl.chartMargin.right + "%",
 						},
 					],
 				}}

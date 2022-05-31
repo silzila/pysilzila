@@ -46,7 +46,7 @@ const GraphRNDDash = ({
 			enableResizing={tabTileProps.dashMode === "Edit" ? true : false}
 			onMouseEnter={() => {
 				if (tabTileProps.dashMode === "Edit") {
-					// console.log("Mouse Entered in GraphRNDDash component");
+					// //console.log("Mouse Entered in GraphRNDDash component");
 					setHovering(true);
 				}
 			}}
@@ -60,14 +60,14 @@ const GraphRNDDash = ({
 			size={{ width: boxDetails.width * gridSize.x, height: boxDetails.height * gridSize.y }}
 			position={{ x: boxDetails.x * gridSize.x, y: boxDetails.y * gridSize.y }}
 			onDragStart={(e, d) => {
-				// console.log(d);
+				// //console.log(d);
 			}}
 			onDrag={(e, d) => {
-				// console.log(d);
+				// //console.log(d);
 				setStyle({ ...style, border: "1px solid gray" });
 			}}
 			onDragStop={(e, d) => {
-				// console.log(gridSize, d);
+				// //console.log(gridSize, d);
 				updateDashGraphPos(
 					tabId,
 					boxDetails.propKey,

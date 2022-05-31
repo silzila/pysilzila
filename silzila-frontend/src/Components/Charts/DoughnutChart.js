@@ -22,15 +22,25 @@ const DoughnutChart = ({
 	useEffect(() => {
 		if (chartControl.chartData) {
 			setchartDataKeys(Object.keys(chartData[0]));
-			var objKey =
-				chartProp.properties[propKey].chartAxes[1].fields[0].fieldname + "__" + "year";
-			chartControl.chartData.result.map((el) => {
-				if (objKey in el) {
-					let year = el[objKey];
-					el[objKey] = year.toString();
+			var objKey;
+			if (chartProp.properties[propKey].chartAxes[1].fields[0]) {
+				if ("time_grain" in chartProp.properties[propKey].chartAxes[1].fields[0]) {
+					objKey =
+						chartProp.properties[propKey].chartAxes[1].fields[0].fieldname +
+						"__" +
+						chartProp.properties[propKey].chartAxes[1].fields[0].time_grain;
+				} else {
+					objKey = chartProp.properties[propKey].chartAxes[1].fields[0].fieldname;
 				}
-				return el;
-			});
+				chartControl.chartData.result.map((el) => {
+					if (objKey in el) {
+						let year = el[objKey];
+						//console.log(year);
+						el[objKey] = year.toString();
+					}
+					return el;
+				});
+			}
 		}
 	}, [chartData, chartControl]);
 
@@ -73,7 +83,7 @@ const DoughnutChart = ({
 							{
 								type: "pie",
 								startAngle: chartControl.axisOptions.pieAxisOptions.pieStartAngle,
-								clockWise: chartControl.axisOptions.pieAxisOptions.clockWise,
+								clockwise: chartControl.axisOptions.pieAxisOptions.clockWise,
 
 								label: {
 									position: chartControl.labelOptions.pieLabel.labelPosition,
@@ -100,7 +110,10 @@ const DoughnutChart = ({
 										}
 									},
 								},
-								radius: ["40%", "70%"],
+								radius: [
+									chartControl.chartMargin.innerRadius,
+									chartControl.chartMargin.outerRadius,
+								],
 							},
 						],
 					}}

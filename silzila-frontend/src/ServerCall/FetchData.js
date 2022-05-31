@@ -14,7 +14,7 @@ import jwtDecode from "jwt-decode";
 //     // check if expired
 //     var timeShort = currentTimeStr.substr(0, 10);
 //     let diff = expiry - timeShort;
-//     console.log(`Current time: ${timeShort} \nExpiry time: ${expiry} \nDifference: ${diff}`);
+//     //console.log(`Current time: ${timeShort} \nExpiry time: ${expiry} \nDifference: ${diff}`);
 
 //     if (diff < 7200) {
 //         return false;
@@ -26,7 +26,7 @@ import jwtDecode from "jwt-decode";
 const FetchData = async ({ requestType, method, url, data, headers, token }) => {
 	// if (token) {
 	//     var token2 = await CheckTokenValidity(token);
-	//     console.log(token, "\n", token2);
+	//     //console.log(token, "\n", token2);
 	// }
 
 	// if (token2) {
@@ -41,7 +41,7 @@ const FetchData = async ({ requestType, method, url, data, headers, token }) => 
 				axios({ method, url: serverEndPoint + url, headers, data })
 					.then((res) => resolve({ status: true, data: res.data }))
 					.catch((err) => {
-						console.log(err.response.data);
+						//console.log(err.response.data);
 						resolve({ status: false, data: err.response.data });
 					});
 				break;
@@ -50,13 +50,13 @@ const FetchData = async ({ requestType, method, url, data, headers, token }) => 
 				axios({ method, url: serverEndPoint + url, headers })
 					.then((res) => resolve({ status: true, data: res.data }))
 					.catch((err) => {
-						console.log(err.response.data);
+						//console.log(err.response.data);
 						resolve({ status: false, data: err.response.data });
 					});
 				break;
 
 			default:
-				console.log("Fetch Data -- No fetch case made");
+				//console.log("Fetch Data -- No fetch case made");
 				break;
 		}
 	});

@@ -8,7 +8,10 @@ import ChartsInfo from "./ChartsInfo2";
 import "./ChartAxes.css";
 import DropZone from "./DropZone";
 import FetchData from "../../ServerCall/FetchData";
-import { updateChartData } from "../../redux/ChartProperties/actionsChartControls";
+import {
+	updateChartData,
+	updateCrossTabHeaderLabelOptions,
+} from "../../redux/ChartProperties/actionsChartControls";
 import LoadingPopover from "../CommonFunctions/PopOverComponents/LoadingPopover";
 import { canReUseData, toggleAxesEdited } from "../../redux/ChartProperties/actionsChartProperties";
 
@@ -96,6 +99,35 @@ export const getChartData = async (axesValues, chartProp, propKey, token) => {
 	}
 };
 
+export const checkMinRequiredCards = (chartProp, propKey) => {
+	var minReqMet = [];
+	//console.log(chartProp, propKey);
+	ChartsInfo[chartProp.properties[propKey].chartType].dropZones.forEach((zone, zoneI) => {
+		//console.log(chartProp.properties[propKey].chartAxes[zoneI]);
+		chartProp.properties[propKey].chartAxes[zoneI].fields.length >= zone.min
+			? minReqMet.push(true)
+			: minReqMet.push(false);
+	});
+
+	if (chartProp.properties[propKey].chartType === "crossTab") {
+		if (
+			chartProp.properties[propKey].chartAxes[1].fields.length > 0 ||
+			chartProp.properties[propKey].chartAxes[2].fields.length > 0 ||
+			chartProp.properties[propKey].chartAxes[3].fields.length > 0
+		) {
+			minReqMet.push(true);
+		} else {
+			minReqMet.push(false);
+		}
+	}
+
+	if (minReqMet.includes(false)) {
+		return false;
+	} else {
+		return true;
+	}
+};
+
 const ChartAxes = ({
 	// props
 	tabId,
@@ -119,7 +151,7 @@ const ChartAxes = ({
 	}
 
 	useEffect(() => {
-		console.log("ChartAxes changed");
+		//console.log("ChartAxes changed");
 		const axesValues = JSON.parse(JSON.stringify(chartProp.properties[propKey].chartAxes));
 
 		let serverCall = false;
@@ -133,7 +165,7 @@ const ChartAxes = ({
 				serverCall = false;
 				resetStore();
 			} else {
-				var minReq = checkMinRequiredCards();
+				var minReq = checkMinRequiredCards(chartProp, propKey);
 				if (minReq) {
 					serverCall = true;
 				} else {
@@ -165,29 +197,13 @@ const ChartAxes = ({
 
 		if (serverCall) {
 			setLoading(true);
-			console.log("Time for API call");
+			//console.log("Time for API call");
 			getChartData(axesValues, chartProp, propKey, token).then((data) => {
 				updateChartData(propKey, data);
 				setLoading(false);
 			});
 		}
 	}, [chartProp.properties[propKey].chartAxes]);
-
-	const checkMinRequiredCards = () => {
-		var minReqMet = [];
-
-		ChartsInfo[chartProp.properties[propKey].chartType].dropZones.forEach((zone, zoneI) => {
-			chartProp.properties[propKey].chartAxes[zoneI].fields.length >= zone.min
-				? minReqMet.push(true)
-				: minReqMet.push(false);
-		});
-
-		if (minReqMet.includes(false)) {
-			return false;
-		} else {
-			return true;
-		}
-	};
 
 	const resetStore = () => {
 		toggleAxesEdit(propKey);
