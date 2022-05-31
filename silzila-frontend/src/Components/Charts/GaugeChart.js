@@ -51,6 +51,7 @@ const GaugeChart = ({
 					width: graphDimension.width,
 					height: graphDimension.height,
 					overflow: "hidden",
+					margin: "auto",
 					border: chartArea
 						? "none"
 						: graphTileSize
@@ -117,8 +118,6 @@ const GaugeChart = ({
 							},
 							detail: {
 								formatter: (value) => {
-									console.log(value);
-
 									var formattedValue = value;
 									formattedValue = formatChartLabelValue(
 										chartControl,
@@ -131,8 +130,6 @@ const GaugeChart = ({
 								show: chartControl.axisOptions.gaugeAxisOptions.showAxisLabel,
 								distance: chartControl.axisOptions.gaugeAxisOptions.labelPadding,
 								formatter: (value) => {
-									console.log(value);
-
 									var formattedValue = value;
 									formattedValue = formatChartLabelValue(
 										chartControl,

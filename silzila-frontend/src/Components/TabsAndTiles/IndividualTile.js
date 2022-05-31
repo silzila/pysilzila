@@ -54,13 +54,17 @@ function IndividualTile({
 						: "commonTile indiItemTile"
 				}
 				onDoubleClick={() => renameTileBegin(tabId, tileId)}
+				onClick={() => selectTile(tileId, tileName, tabId, tabName)}
 				title={`${tileName}. Double click to edit name`}
 			>
-				<span onClick={() => selectTile(tileId, tileName, tabId, tabName)}>{tileName}</span>
+				<span>{tileName}</span>
 				<span
 					title="Delete Tile"
 					className="closeTile"
-					onClick={() => removeTile(tabId, tileId)}
+					onClick={(e) => {
+						e.stopPropagation();
+						removeTile(tabId, tileId);
+					}}
 				>
 					X
 				</span>

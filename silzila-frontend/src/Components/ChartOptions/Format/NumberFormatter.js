@@ -89,3 +89,46 @@ export const formatChartYAxisValue = (chartControl, value) => {
 
 	return value;
 };
+
+export const formatChartXAxisValue = (chartControl, value) => {
+	// =========================================
+	// Format RoundOff
+	if (chartControl.formatOptions.xAxisFormats.enableRounding) {
+		value = Number(value).toFixed(chartControl.formatOptions.xAxisFormats.roundingDigits);
+	}
+
+	// =========================================
+	// Format number separator
+	if (chartControl.formatOptions.xAxisFormats.numberSeparator === "Abbrev") {
+		var text = value.toString();
+		var index = text.indexOf(".");
+		if ((index = -1)) {
+		}
+		var roundOriginalDigits = text.length - index - 1;
+
+		value = formatNumberWithAbbrev(
+			value,
+			chartControl.formatOptions.xAxisFormats.enableRounding
+				? chartControl.formatOptions.xAxisFormats.roundingDigits
+				: roundOriginalDigits
+		);
+	}
+
+	// =========================================
+	// Format Comma
+	if (chartControl.formatOptions.xAxisFormats.numberSeparator === "Comma") {
+		value = formatNumberWithComma(value);
+	}
+
+	// =========================================
+	// Format Currency / Percentage
+	if (chartControl.formatOptions.labelFormats.formatValue === "Currency") {
+		value = `${chartControl.formatOptions.labelFormats.currencySymbol} ${value}`;
+	}
+
+	if (chartControl.formatOptions.labelFormats.formatValue === "Percent") {
+		value = `${value} %`;
+	}
+
+	return value;
+};

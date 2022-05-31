@@ -25,7 +25,6 @@ const HorizontalBar = ({
 		var seriesDataTemp = [];
 		if (chartData) {
 			var chartDataKeys = Object.keys(chartData[0]);
-			console.log(chartDataKeys);
 			for (let i = 0; i < Object.keys(chartData[0]).length - 1; i++) {
 				var seriesObj = {
 					type: "bar",
@@ -46,7 +45,6 @@ const HorizontalBar = ({
 								chartControl,
 								formattedValue
 							);
-							console.log(formattedValue);
 
 							return formattedValue;
 						},
@@ -69,6 +67,7 @@ const HorizontalBar = ({
 					width: graphDimension.width,
 					height: graphDimension.height,
 					overflow: "hidden",
+					margin: "auto",
 					border: chartArea
 						? "none"
 						: graphTileSize
