@@ -68,10 +68,10 @@ async def get_all_ds(request: Request, db: Session = Depends(get_db)):
 @router.get("/get-all-ds-by-dc_uid/{dc_uid}")
 async def get_ds_by_dc_uid(dc_uid: str, request: Request, db: Session = Depends(get_db)):
     db_ds = await service.get_all_ds_by_dc_uid(db, dc_uid)
-    if db_ds is None:
+    if db_ds is None or len(db_ds) == 0:
         raise HTTPException(
-            status_code=404, detail="Data Set not exists")
-    return db_ds
+            status_code=404, detail="No Data Set available for the Data Connection")
+    return {"friendly_name": db_ds}
 
 
 # get Data Set by it's ID

@@ -32,11 +32,8 @@ async def get_all_ds_by_dc_uid(db: Session, dc_uid: str):
     )
     ds = await db.execute(stmt)
     # convert result to list
-    _res = ds.scalars().all()
-    if not _res:
-        raise HTTPException(
-            status_code=404, detail="No Data Set available for the Data Connection")
-    return {"friendly_name": _res}
+    res_ds = ds.scalars().all()
+    return res_ds
 
 
 # checks if data set name is alreay taken for the user
@@ -203,7 +200,6 @@ async def update_data_set(db: Session, ds_uid: str, ds: schema.DataSetIn, uid: s
     # update data_schema & friendy name
     ds_info.data_schema = data_schema
     ds_info.friendly_name = ds.friendly_name
-    print("friendly name = ", ds.friendly_name)
     db.commit()
     db.refresh(ds_info)
 
@@ -224,11 +220,11 @@ async def delete_ds(db: Session, ds_uid: str, uid: str):
         raise HTTPException(
             status_code=404, detail="Data Set not exists")
     # if DS is present, then check if any Playbook is dependant on it.
-    # if any dependency on Playbook then can't delete
+    # if any dependency on Playbook then shoudn't delete
     dependant_pb_list = await get_all_pb_by_ds(ds_uid, db, uid)
     if len(dependant_pb_list) >= 1:
         raise HTTPException(
-            status_code=401, detail="Cannot delete Datasource. There are dependant Playbook(s)")
+            status_code=401, detail="Cannot delete Datasource. There are dependent Playbook(s)")
     qry_del_ds = DataSet.__table__.delete().where(DataSet.ds_uid == ds_uid)
     await db.execute(qry_del_ds)
     await db.commit()

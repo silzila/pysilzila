@@ -83,8 +83,8 @@ async def build_relationship(req, data_schema) -> str:
             #     # print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")# Build relationship - when many tables in qry
 
     # print("--------------------------------------")
-    for val in relationships:
-        print(val["table1"], " ", val["table2"])
+    # for val in relationships:
+        # print(val["table1"], " ", val["table2"])
 
     relationships2 = []  # holds all relations in ORDER
 
