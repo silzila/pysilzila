@@ -43,7 +43,6 @@ const LineChart = ({
 								chartControl,
 								formattedValue
 							);
-							console.log(formattedValue);
 
 							return formattedValue;
 						},
@@ -64,6 +63,7 @@ const LineChart = ({
 					width: graphDimension.width,
 					height: graphDimension.height,
 					overflow: "hidden",
+					margin: "auto",
 					border: chartArea
 						? "none"
 						: graphTileSize

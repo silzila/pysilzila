@@ -29,17 +29,17 @@ import "./ChartOptions.css";
 
 export const chartTypes = [
 	{ name: "crossTab", icon: CrossTabIcon, value: " Cross Tab" },
-	{ name: "multibar", icon: multiBarIcon, value: "Multi Bar" },
-	{ name: "stackedBar", icon: stackedBarIcon, value: "Stacked Bar" },
-	{ name: "horizontalBar", icon: horizontalBar, value: "Horizontal Bar" },
-	{ name: "horizontalStacked", icon: horizontalStackedBar, value: "Horizontal Stacked Bar" },
 	{ name: "pie", icon: pieChartIcon, value: " Pie Chart" },
 	{ name: "donut", icon: donutChartIcon, value: " Donut Chart" },
+	{ name: "gauge", icon: gaugeChartIcon, value: "Gauge Chart" },
+	{ name: "multibar", icon: multiBarIcon, value: "Multi Bar" },
+	{ name: "horizontalBar", icon: horizontalBar, value: "Horizontal Bar" },
+	{ name: "stackedBar", icon: stackedBarIcon, value: "Stacked Bar" },
+	{ name: "horizontalStacked", icon: horizontalStackedBar, value: "Horizontal Stacked Bar" },
 	{ name: "line", icon: lineChartIcon, value: "Line Chart" },
 	{ name: "area", icon: areaChartIcon, value: "Area Chart" },
 	{ name: "scatterPlot", icon: scatterPlotIcon, value: " Scatter Plot" },
 	{ name: "funnel", icon: funnelChartIcon, value: "Funnel Chart" },
-	{ name: "gauge", icon: gaugeChartIcon, value: "Gauge Chart" },
 	{ name: "heatmap", icon: heatMapIcon, value: " Heat Map" },
 ];
 

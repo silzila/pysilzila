@@ -47,7 +47,6 @@ const AreaChart = ({
 								chartControl,
 								formattedValue
 							);
-							console.log(formattedValue);
 
 							return formattedValue;
 						},
@@ -68,6 +67,7 @@ const AreaChart = ({
 					width: graphDimension.width,
 					height: graphDimension.height,
 					overflow: "hidden",
+					margin: "auto",
 					border: chartArea
 						? "none"
 						: graphTileSize
