@@ -5,6 +5,7 @@ from sqlalchemy.sql.elements import and_
 
 from . import model, schema, auth
 from ..data_set.model import DataSet
+from ..data_set.service import get_all_ds_by_dc_uid
 
 
 # adding data connection record to DB
@@ -26,6 +27,13 @@ async def delete_data_connection(db: Session, dc_uid: str, uid: str):
     if dc_item is None:
         raise HTTPException(
             status_code=404, detail="Data Connection not exists")
+    # if connection is present, then check if any Data Set is dependant on it.
+    # if any dependency on Data Set then shouldn't delete Connection
+    available_ds = await get_all_ds_by_dc_uid(db, dc_uid)
+    # print("available_ds ==========", available_ds.__dict__)
+    if available_ds and len(available_ds) >= 1:
+        raise HTTPException(
+            status_code=500, detail="Cannot delete Connection. There are dependent Dataset(s)")
     qry_del_ds = DataSet.__table__.delete().where(DataSet.dc_uid == dc_uid)
     await db.execute(qry_del_ds)
     await db.delete(dc_item)

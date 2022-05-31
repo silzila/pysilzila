@@ -17,7 +17,7 @@ HERE = pathlib.Path(__file__).resolve().parent
 engine = create_async_engine(
     DATABASE_URL,
     future=True,
-    echo=True,
+    echo=False,
     connect_args={"check_same_thread": False}
 )
 SessionLocal = sessionmaker(
