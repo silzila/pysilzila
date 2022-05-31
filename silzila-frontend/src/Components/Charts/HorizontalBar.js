@@ -67,6 +67,7 @@ const HorizontalBar = ({
 					width: graphDimension.width,
 					height: graphDimension.height,
 					overflow: "hidden",
+					margin: "auto",
 					border: chartArea
 						? "none"
 						: graphTileSize

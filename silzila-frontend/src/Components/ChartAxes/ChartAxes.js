@@ -71,12 +71,6 @@ export const getChartData = async (axesValues, chartProp, propKey, token) => {
 
 	formattedAxes.filters = [];
 
-	var url =
-		"ds/query/" +
-		chartProp.properties[propKey].selectedDs.dc_uid +
-		"/" +
-		chartProp.properties[propKey].selectedDs.ds_uid;
-
 	var res = await FetchData({
 		requestType: "withData",
 		method: "POST",
@@ -165,7 +159,6 @@ const ChartAxes = ({
 
 		if (serverCall) {
 			setLoading(true);
-			console.log("Time for API call");
 			getChartData(axesValues, chartProp, propKey, token).then((data) => {
 				updateChartData(propKey, data);
 				setLoading(false);
@@ -181,6 +174,18 @@ const ChartAxes = ({
 				? minReqMet.push(true)
 				: minReqMet.push(false);
 		});
+
+		if (chartProp.properties[propKey].chartType === "crossTab") {
+			if (
+				chartProp.properties[propKey].chartAxes[1].fields.length > 0 ||
+				chartProp.properties[propKey].chartAxes[2].fields.length > 0 ||
+				chartProp.properties[propKey].chartAxes[3].fields.length > 0
+			) {
+				minReqMet.push(true);
+			} else {
+				minReqMet.push(false);
+			}
+		}
 
 		if (minReqMet.includes(false)) {
 			return false;

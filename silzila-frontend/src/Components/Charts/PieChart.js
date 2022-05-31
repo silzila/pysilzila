@@ -45,6 +45,7 @@ const PieChart = ({
 						width: graphDimension.width,
 						height: graphDimension.height,
 						overflow: "hidden",
+						margin: "auto",
 						border: chartArea
 							? "none"
 							: graphTileSize
@@ -81,7 +82,9 @@ const PieChart = ({
 									position: chartControl.labelOptions.pieLabel.labelPosition,
 									show: chartControl.labelOptions.showLabel,
 									fontSize: chartControl.labelOptions.fontSize,
-									color: chartControl.labelOptions.labelColor,
+									color: chartControl.labelOptions.labelColorManual
+										? chartControl.labelOptions.labelColor
+										: null,
 									padding: [
 										chartControl.axisOptions.pieAxisOptions.labelPadding,
 										chartControl.axisOptions.pieAxisOptions.labelPadding,
@@ -90,8 +93,6 @@ const PieChart = ({
 									],
 
 									formatter: (value) => {
-										console.log(value, chartDataKeys);
-
 										if (chartDataKeys) {
 											var formattedValue = value.value[chartDataKeys[1]];
 											formattedValue = formatChartLabelValue(

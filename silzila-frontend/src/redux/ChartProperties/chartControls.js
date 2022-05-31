@@ -56,6 +56,12 @@ const chartControl = {
 					roundingDigits: 1,
 					numberSeparator: "None",
 				},
+
+				xAxisFormats: {
+					enableRounding: "false",
+					roundingDigits: 1,
+					numberSeparator: "None",
+				},
 			},
 
 			mouseOver: {
@@ -189,6 +195,12 @@ const chartControlsReducer = (state = chartControl, action) => {
 							},
 
 							yAxisFormats: {
+								enableRounding: "false",
+								roundingDigits: 1,
+								numberSeparator: "None",
+							},
+
+							xAxisFormats: {
 								enableRounding: "false",
 								roundingDigits: 1,
 								numberSeparator: "None",
@@ -332,6 +344,12 @@ const chartControlsReducer = (state = chartControl, action) => {
 							},
 
 							yAxisFormats: {
+								enableRounding: "false",
+								roundingDigits: 1,
+								numberSeparator: "None",
+							},
+
+							xAxisFormats: {
 								enableRounding: "false",
 								roundingDigits: 1,
 								numberSeparator: "None",

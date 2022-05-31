@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { updateFormatOption } from "../../../redux/ChartProperties/actionsChartControls";
-import InputNumber from "../CommonFunctions/InputNumber";
 import InputSymbol from "../CommonFunctions/InputSymbol";
-import { FormControl, MenuItem, Select } from "@mui/material";
+import InputPositiveNumber from "../CommonFunctions/InputPositiveNumber";
 
 const LabelFormatting = ({
 	// state
@@ -159,7 +158,7 @@ const LabelFormatting = ({
 						);
 					}}
 				/>
-				<InputNumber
+				<InputPositiveNumber
 					value={formatObject.roundingDigits}
 					updateValue={(value) => {
 						if (value >= 0) {

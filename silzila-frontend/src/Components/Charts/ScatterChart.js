@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import {
 	formatChartLabelValue,
+	formatChartXAxisValue,
 	formatChartYAxisValue,
 } from "../ChartOptions/Format/NumberFormatter";
 const ScatterChart = ({
@@ -130,7 +131,7 @@ const ScatterChart = ({
 										: chartControl.axisOptions.xAxis.tickPaddingBottom,
 
 								formatter: (value) => {
-									var formattedValue = formatChartYAxisValue(chartControl, value);
+									var formattedValue = formatChartXAxisValue(chartControl, value);
 									return formattedValue;
 								},
 							},
