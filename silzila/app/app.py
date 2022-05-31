@@ -1,5 +1,3 @@
-import os
-import pathlib
 from starlette.responses import FileResponse
 from starlette.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
@@ -14,28 +12,15 @@ from ..data_connection.api import router as dc_router
 from ..data_set.api import router as ds_router
 from ..play_book.api import router as pb_router
 
-# HERE = pathlib.Path(__file__).resolve().parent
-# print('PATHLIB ===============================', HERE)
-
-# from ..main.__main__ import root_folder
-# # html_file_path = os.path.join(root_folder, 'static', 'index.html')
-
-# HERE = pathlib.Path(__file__).resolve().parent.parent
-# print('Install path -------------------------', str(HERE))
-# static_path = os.path.realpath(os.path.join(HERE, 'static'))
-# print('static path ==========', static_path)
-
-# ROUTERS
+# ROUTERS to be added to the APP
 app = FastAPI()
 app.include_router(user_router)
 app.include_router(dc_router)
 app.include_router(ds_router)
 app.include_router(pb_router)
 
-
+# Exceptions for CORS
 origins = [
-    "http://silzila.org",
-    "https://silzila.org",
     "http://localhost",
     "http://localhost:3000",
     "http://localhost:3001",
@@ -54,32 +39,20 @@ app.add_middleware(
 )
 
 
-# app.mount("/", StaticFiles(
-#     directory=static_path, html=True), name='static')
-# # app.mount("/", StaticFiles(directory="backend/ui/"), name="ui")
-
-
-# @ app.get("/", tags=["Home"])
-# async def root():
-# print('static path ==========', static_path)
-#     return FileResponse("/index.html")
-
-
 @ app.get("/")
 async def home() -> dict:
-    return {"message": "Welcome to Silila, from Server"}
-
-
-@ app.get("/")
-async def home() -> dict:
+    """Root API
+    Just to Test if it works
+    """
     return {"message": "Welcome to Silila, from Server"}
 
 
 @ app.on_event("startup")
 async def startup():
     async with engine.begin() as conn:
-        '''
-        If needed, drop old Tables and create Fresh DB Tables when application starts
-        '''
+        """If needed, drop old Tables and create Fresh DB Tables when application starts
+        """
+        # this will recreate SQLite tables for metadata storage everytime app is starting.
         # await conn.run_sync(Base.metadata.drop_all)
+        # this will recreate SQLite once if Tables are not existing
         await conn.run_sync(Base.metadata.create_all)

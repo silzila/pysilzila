@@ -37,7 +37,7 @@ const ChartControlObjects = ({
 		"Grid/Axes",
 		"Format",
 	];
-	const crossTabOptionList = ["Title", "Tooltip"];
+	const crossTabOptionList = ["Title", "Tooltip", "Style", "Format"];
 
 	const RenderOptions = () => {
 		switch (selectedChart) {

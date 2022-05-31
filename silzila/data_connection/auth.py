@@ -1,11 +1,12 @@
 from cryptography.fernet import Fernet
 from fastapi import HTTPException
 
-# ENV Variables
 from decouple import config
+# ENV Variable load from .env file
 DB_SECRET = config("DB_SECRET")
 
 
+# encrypt the data connection password before saving
 def encrypt_password(raw_pass: str) -> str:
     try:
         encoded_raw_pass = raw_pass.encode("utf-8")  # to bytes
@@ -19,6 +20,7 @@ def encrypt_password(raw_pass: str) -> str:
             status_code=403, detail="Encryption error")
 
 
+# decrypt the encrypted saved password while creating data connection pool
 def decrypt_password(decoded_encrypted_pass: str) -> str:
     try:
         f = Fernet(DB_SECRET)

@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 
 
+# incoming request Data connection details
 class DataConnectionIn(BaseModel):
     friendly_name: str
     vendor: str
@@ -11,11 +12,13 @@ class DataConnectionIn(BaseModel):
     password: str
 
 
+# to hold data in-memory for data connection
 class DataConnectionPool(DataConnectionIn):
     dc_uid: str
     decrypted_password: str
 
 
+# outgoing response of Data connection details
 class DataConnectionOut(BaseModel):
     dc_uid: str
     friendly_name: str

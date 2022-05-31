@@ -1,12 +1,11 @@
 from fastapi import HTTPException
 
 
-'''
-This function is used to to show filter options when a user drags and drops a field into filter
-'''
-
-
 async def get_filter_values_mssql(req, FROM_TBL):
+    """This function is used to to show filter options when a user drags and drops a field into filter
+    req parameter is the request object - contains only one field
+    FROM_TBL parameter = schema_name.table_name.column_name as alias_name
+    """
     # get distinct values - text & number fields
     if req['data_type'] in ('text', 'boolean') or (req['data_type']
                                                    in ('integer', 'decimal') and req['filter_type'] == 'select members'):
@@ -89,7 +88,7 @@ async def get_filter_values_mssql(req, FROM_TBL):
         raise HTTPException(
             status_code=400, detail="Data Type or Filter Type is wrong")
 
-    print("\n===============QUERY=========================================")
-    print(QUERY)
+    # print("\n===============QUERY=========================================")
+    # print(QUERY)
 
     return QUERY

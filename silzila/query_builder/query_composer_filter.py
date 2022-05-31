@@ -7,8 +7,10 @@ from .sql_dialect.filter_mssql import get_filter_values_mssql
 from fastapi import HTTPException
 
 
-# for populating fields dropped into filter
 async def compose_query(req: schema.ColumnFilter, dc_uid: str, ds_uid: str, vendor_name: str):
+    """for populating fields dropped into filter.
+    TODO: implement in next version 
+    """
     req = req.dict()
     # print("request ========", req)
     data_schema = await engine.get_data_schema(dc_uid, ds_uid)
