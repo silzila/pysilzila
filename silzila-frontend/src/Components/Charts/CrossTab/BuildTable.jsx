@@ -195,10 +195,7 @@ export const BuildTable = ({ crossTabData, dustbinRows, dustbinValues,
 
       return (
         <tr className="CrossTabRow" style={{
-          lineHeight : chartControls.properties[propKey].crossTabHeaderLabelOptions.fontSize >
-          chartControls.properties[propKey].crossTabCellLabelOptions.fontSize ? 
-          chartControls.properties[propKey].crossTabHeaderLabelOptions.fontSize / 20:
-          chartControls.properties[propKey].crossTabCellLabelOptions.fontSize / 20         
+          lineHeight : chartControls.properties[propKey].crossTabStyleOptions.lineHeight  
         }} key={rowIndex}>
           {_rowContent}
         </tr>
@@ -211,7 +208,7 @@ export const BuildTable = ({ crossTabData, dustbinRows, dustbinValues,
       <table className="CrossTabTable" style={{
         borderWidth : chartControls.properties[propKey].crossTabStyleOptions.borderWidth
       }}>{_tableContent}</table>
-      {showPopup ? <ShowDataPopup show={showPopup} {...popupData}></ShowDataPopup> : null}
+      {showPopup ? <ShowDataPopup chartProp={chartControls.properties[propKey]} show={showPopup} {...popupData}></ShowDataPopup> : null}
     </div>
   );
 };

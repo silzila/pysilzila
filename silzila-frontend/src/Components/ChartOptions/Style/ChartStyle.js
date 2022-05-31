@@ -74,6 +74,16 @@ const ChartStyle = ({
 			}}  
 		/>
 
+		<div className="optionDescription">LINE HEIGHT</div>
+		<SliderWithInput
+			percent={false}
+			sliderValue={chartProp.properties[propKey].crossTabStyleOptions.lineHeight }
+			sliderMinMax={{ min: 1, max: 20, step: 0.5 }}
+			changeValue={(value) => {
+				updateCrossTabStyleOptions(propKey, "lineHeight", value);				
+			}}  
+		/>
+
 			<div className="radioButtons">{renderLabels()}</div>
 				<React.Fragment>
 					<div style={{ display: "flex", paddingBottom: "8px", flexDirection: "column" }}>					
@@ -161,6 +171,7 @@ const ChartStyle = ({
                                 }
 							}}  
 						/>
+					
 					</div>
 				</React.Fragment>
 			<Popover

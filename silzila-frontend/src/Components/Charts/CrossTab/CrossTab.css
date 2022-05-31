@@ -1,5 +1,6 @@
 .ShowDataPopup {
-	width: 300px;
+	width: auto;
+	min-width: 300px;
 	height: auto;
 	z-index: 100;
 	background-color: rgb(235, 245, 240);

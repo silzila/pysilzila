@@ -30,7 +30,8 @@ const chartControl = {
 			},
 
 			crossTabStyleOptions:{
-				borderWidth : 1
+				borderWidth : 1,
+				lineHeight : 1,
 			},
 			crossTabHeaderLabelOptions:{
 				labelColorManual: false,
@@ -188,7 +189,8 @@ const chartControlsReducer = (state = chartControl, action) => {
 							left: 65,
 						},
 						crossTabStyleOptions:{
-							borderWidth : 1
+							borderWidth : 1,
+							lineHeight : 1,
 						},
 
 						crossTabHeaderLabelOptions:{
@@ -354,7 +356,8 @@ const chartControlsReducer = (state = chartControl, action) => {
 						},
 
 						crossTabStyleOptions:{
-							borderWidth : 1
+							borderWidth : 1,
+							lineHeight : 1,
 						},
 
 						crossTabHeaderLabelOptions:{
