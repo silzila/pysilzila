@@ -36,7 +36,7 @@ const ContructPopupBody = (props)=>{
 const getPosition = ({rect})=>{
     let _style = {};
 
-    _style["top"] = rect.top + 50;
+    _style["top"] = rect.top + 30;
     _style["left"] = rect.left + 50;
 
     return _style;

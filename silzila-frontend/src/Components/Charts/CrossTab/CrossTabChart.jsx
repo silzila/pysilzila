@@ -69,7 +69,14 @@ chartProperty
 
           for (let i = 0; i < chartDataKeys.length; i++) {	
             if(typeof item[chartDataKeys[i]] === "number")	{
-              formattedValue[chartDataKeys[i]] = formatChartLabelValue(property, item[chartDataKeys[i]]);          
+               let _isMeasureField = dustbinValues.find(field=>chartDataKeys[i].includes(field.fieldname))
+
+              if(_isMeasureField){
+                formattedValue[chartDataKeys[i]] = formatChartLabelValue(property, item[chartDataKeys[i]]);          
+              }
+              else{
+                formattedValue[chartDataKeys[i]] = item[chartDataKeys[i]];
+              }
             }
             else{
               formattedValue[chartDataKeys[i]] = item[chartDataKeys[i]];
@@ -81,7 +88,7 @@ chartProperty
 		
 			setFormatedChartPropData(_formChartData);
 		}
-	}, [chartPropData, property.formatOptions]);
+	}, [chartPropData, property.formatOptions,chartProperty]);
 
   /*
     Assign Dusbin values from formatedChartPropData
