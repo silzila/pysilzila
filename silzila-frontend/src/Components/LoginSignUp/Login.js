@@ -177,7 +177,7 @@ const Login = (props) => {
 									type="submit"
 									value="Login"
 									onClick={(e) => {
-										console.log("Login button clicked");
+										//console.log("Login button clicked");
 										handleSubmit(e);
 									}}
 								>

@@ -181,7 +181,7 @@ function FormDialog({
 				getInformation();
 			}, 3000);
 		} else {
-			console.log("Delete Dc", result.data.detail);
+			// console.log("Delete Dc", result.data.detail);
 			setSeverity("error");
 			setOpenAlert(true);
 			setTestMessage(result.data.detail);

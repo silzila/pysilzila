@@ -24,6 +24,7 @@ import gaugeChartIcon from "../../assets/gauge.png";
 import heatMapIcon from "../../assets/heat_map.png";
 import ChartsInfo from "../ChartAxes/ChartsInfo2";
 import CrossTabIcon from "../../assets/crosstab.png";
+import roseChartIcon from "../../assets/rose_chart.svg";
 
 import "./ChartOptions.css";
 
@@ -31,14 +32,16 @@ export const chartTypes = [
 	{ name: "crossTab", icon: CrossTabIcon, value: " Cross Tab" },
 	{ name: "pie", icon: pieChartIcon, value: " Pie Chart" },
 	{ name: "donut", icon: donutChartIcon, value: " Donut Chart" },
-	{ name: "gauge", icon: gaugeChartIcon, value: "Gauge Chart" },
+	{ name: "rose", icon: roseChartIcon, value: "Rose Chart" },
 	{ name: "multibar", icon: multiBarIcon, value: "Multi Bar" },
 	{ name: "horizontalBar", icon: horizontalBar, value: "Horizontal Bar" },
 	{ name: "stackedBar", icon: stackedBarIcon, value: "Stacked Bar" },
 	{ name: "horizontalStacked", icon: horizontalStackedBar, value: "Horizontal Stacked Bar" },
+
 	{ name: "line", icon: lineChartIcon, value: "Line Chart" },
 	{ name: "area", icon: areaChartIcon, value: "Area Chart" },
 	{ name: "scatterPlot", icon: scatterPlotIcon, value: " Scatter Plot" },
+	{ name: "gauge", icon: gaugeChartIcon, value: "Gauge Chart" },
 	{ name: "funnel", icon: funnelChartIcon, value: "Funnel Chart" },
 	{ name: "heatmap", icon: heatMapIcon, value: " Heat Map" },
 ];
@@ -94,6 +97,7 @@ const ChartTypes = ({
 			case "area":
 			case "pie":
 			case "donut":
+			case "rose":
 				if (
 					[
 						"multibar",
@@ -104,6 +108,7 @@ const ChartTypes = ({
 						"area",
 						"pie",
 						"donut",
+						"rose",
 					].includes(newChart)
 				) {
 					keepOldData(propKey, true);
@@ -223,6 +228,7 @@ const ChartTypes = ({
 						"area",
 						"pie",
 						"donut",
+						"rose",
 					].includes(newChart)
 				) {
 					keepOldData(propKey, true);
@@ -304,6 +310,7 @@ const ChartTypes = ({
 						"area",
 						"pie",
 						"donut",
+						"rose",
 					].includes(newChart)
 				) {
 					if (oldChartAxes[1].fields.length > 0)
@@ -376,6 +383,7 @@ const ChartTypes = ({
 						"area",
 						"pie",
 						"donut",
+						"rose",
 					].includes(newChart)
 				) {
 					if (oldChartAxes[1].fields.length > 0)
@@ -410,7 +418,7 @@ const ChartTypes = ({
 					return oldChartAxes;
 				}
 
-				if (newChart === "heatmap" || newChart === "crossTab") {
+				if (newChart === "heatmap") {
 					if (oldChartAxes[1].fields.length > 0)
 						newChartAxes[3].fields.push(oldChartAxes[1].fields[0]);
 
@@ -446,6 +454,7 @@ const ChartTypes = ({
 						"area",
 						"pie",
 						"donut",
+						"rose",
 					].includes(newChart)
 				) {
 					// Map filter to Filter
@@ -517,25 +526,6 @@ const ChartTypes = ({
 					return newChartAxes;
 				}
 
-				// if (newChart === "crossTab") {
-				// 	if (oldChartAxes[1].fields.length > 0) {
-				// 		newChartAxes[1].fields.push(oldChartAxes[1].fields[0]);
-				// 	}
-
-				// 	if (oldChartAxes[2].fields.length > 0) {
-				// 		newChartAxes[2].fields.push(oldChartAxes[2].fields[0]);
-				// 	}
-
-				// 	if (oldChartAxes[3].fields.length > 0) {
-				// 		newChartAxes[3].fields.push(oldChartAxes[3].fields[0]);
-				// 	}
-
-				// 	// Map filter to Filter
-				// 	if (oldChartAxes[0].fields.length > 0)
-				// 		newChartAxes[0].fields = oldChartAxes[0].fields;
-
-				// 	return newChartAxes;
-				// }
 				break;
 			case "crossTab":
 				if (newChart === "crossTab") return oldChartAxes;
@@ -550,6 +540,7 @@ const ChartTypes = ({
 						"area",
 						"pie",
 						"donut",
+						"rose",
 					].includes(newChart)
 				) {
 					// Map filter to Filter
@@ -664,6 +655,7 @@ const ChartTypes = ({
 
 							"pie",
 							"donut",
+							"rose",
 
 							"area",
 							"scatterPlot",

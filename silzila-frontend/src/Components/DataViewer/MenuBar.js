@@ -442,7 +442,7 @@ const MenuBar = ({
 					<div
 						className="menuHome"
 						onClick={() => {
-							console.log(showSaveWarning);
+							// console.log(showSaveWarning);
 							if (showSaveWarning || playBookState.playBookUid === null) {
 								setSaveFromHomeIcon(true);
 								setSaveModal(true);

@@ -82,6 +82,8 @@ const GaugeChart = ({
 					series: [
 						{
 							type: "gauge",
+							radius: chartControl.chartMargin.radius,
+
 							max:
 								chartControl.colorScale.colorScaleType === "Manual"
 									? chartControl.colorScale.max !== ""
@@ -108,6 +110,11 @@ const GaugeChart = ({
 								},
 
 								roundCap: true,
+							},
+							pointer: {
+								itemStyle: {
+									color: "auto",
+								},
 							},
 							startAngle: chartControl.axisOptions.gaugeAxisOptions.startAngle,
 							endAngle: chartControl.axisOptions.gaugeAxisOptions.endAngle,

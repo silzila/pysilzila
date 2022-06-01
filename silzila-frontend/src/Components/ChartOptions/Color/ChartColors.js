@@ -33,7 +33,7 @@ const ChartColors = ({
 					value={selectedMenu}
 					variant="outlined"
 					onChange={(e) => {
-						console.log(e.target.value);
+						//console.log(e.target.value);
 						resetSelection(e.target.value);
 					}}
 					sx={{ fontSize: "14px", margin: "0 1rem" }}
