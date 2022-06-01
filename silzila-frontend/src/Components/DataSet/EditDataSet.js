@@ -50,6 +50,8 @@ const EditDataSet = ({
 						columns: await getColumns(res.data.dc_uid, tbl.schema_name, tbl.table_name),
 						isSelected: true,
 						id: tbl.id,
+
+						isNewTable: false,
 					};
 				})
 			);
@@ -102,6 +104,7 @@ const EditDataSet = ({
 								isSelected: true,
 								table_uid: uniqueSchema[0].concat(el),
 								id: id,
+								isNewTable: false,
 							};
 						}
 						return {
@@ -109,6 +112,7 @@ const EditDataSet = ({
 							isSelected: false,
 							table_uid: uniqueSchema[0].concat(el),
 							id: uid(),
+							isNewTable: true,
 						};
 					});
 					// console.log(userTable, "$$$$$$$$$$$$$ user Table $$$$$$$$$$$$$$$");

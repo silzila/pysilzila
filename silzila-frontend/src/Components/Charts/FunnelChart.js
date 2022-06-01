@@ -90,6 +90,10 @@ const FunnelChart = ({
 									return formattedValue;
 								},
 							},
+							top: chartControl.chartMargin.top,
+							bottom: chartControl.chartMargin.bottom,
+							left: chartControl.chartMargin.left + "%",
+							right: chartControl.chartMargin.right + "%",
 						},
 					],
 				}}

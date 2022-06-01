@@ -2,6 +2,7 @@ import ReactEcharts from "echarts-for-react";
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { formatChartLabelValue } from "../ChartOptions/Format/NumberFormatter";
+import { updateChartMargins } from "../../redux/ChartProperties/actionsChartControls";
 
 const PieChart = ({
 	//props
@@ -13,6 +14,9 @@ const PieChart = ({
 	//state
 	chartProp,
 	chartControls,
+
+	// dispatch
+	updateChartMargins,
 }) => {
 	var chartControl = chartControls.properties[propKey];
 	let chartData = chartControl.chartData ? chartControl.chartData.result : "";
@@ -21,19 +25,39 @@ const PieChart = ({
 	useEffect(() => {
 		if (chartControl.chartData) {
 			setChartDataKeys(Object.keys(chartData[0]));
+
+			var objKey;
 			if (chartProp.properties[propKey].chartAxes[1].fields[0]) {
-				var objKey =
-					chartProp.properties[propKey].chartAxes[1].fields[0].fieldname + "__" + "year";
+				if ("time_grain" in chartProp.properties[propKey].chartAxes[1].fields[0]) {
+					objKey =
+						chartProp.properties[propKey].chartAxes[1].fields[0].fieldname +
+						"__" +
+						chartProp.properties[propKey].chartAxes[1].fields[0].time_grain;
+				} else {
+					objKey = chartProp.properties[propKey].chartAxes[1].fields[0].fieldname;
+				}
 				chartControl.chartData.result.map((el) => {
 					if (objKey in el) {
-						let year = el[objKey];
-						el[objKey] = year.toString();
+						let agg = el[objKey];
+						//console.log(agg);
+						if (agg) el[objKey] = agg.toString();
 					}
 					return el;
 				});
+				//console.log(chartControl.chartData.result);
 			}
 		}
 	}, [chartData, chartControl]);
+
+	//console.log(chartData);
+
+	var radius = chartControl.chartMargin.radius;
+	useEffect(() => {
+		if (radius > 100) {
+			updateChartMargins(propKey, "radius", 100);
+			radius = 100;
+		}
+	});
 
 	const RenderChart = () => {
 		return (
@@ -77,7 +101,7 @@ const PieChart = ({
 							{
 								type: "pie",
 								startAngle: chartControl.axisOptions.pieAxisOptions.pieStartAngle,
-								clockWise: chartControl.axisOptions.pieAxisOptions.clockWise,
+								clockwise: chartControl.axisOptions.pieAxisOptions.clockWise,
 								label: {
 									position: chartControl.labelOptions.pieLabel.labelPosition,
 									show: chartControl.labelOptions.showLabel,
@@ -103,6 +127,7 @@ const PieChart = ({
 										}
 									},
 								},
+								radius: radius + "%",
 							},
 						],
 					}}

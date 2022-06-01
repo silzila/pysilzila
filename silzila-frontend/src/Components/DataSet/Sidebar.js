@@ -155,6 +155,7 @@ const Sidebar = ({
 			const uid = new ShortUniqueId({ length: 8 });
 			const userTable = res.data.map((el) => {
 				var id = "";
+				var bool = false;
 				var tableAlreadyChecked = tempTable.filter(
 					(tbl) =>
 						tbl.dcId === connectionId && tbl.schema === schema && tbl.tableName === el
@@ -166,6 +167,7 @@ const Sidebar = ({
 						tbl.tableName === el
 					) {
 						id = tbl.id;
+						bool = tbl.isNewTable;
 					}
 				});
 				if (tableAlreadyChecked) {
@@ -174,6 +176,7 @@ const Sidebar = ({
 						isSelected: true,
 						table_uid: schema.concat(el),
 						id: id,
+						isNewTable: bool,
 					};
 				}
 				return {
@@ -181,6 +184,7 @@ const Sidebar = ({
 					isSelected: false,
 					table_uid: schema.concat(el),
 					id: uid(),
+					isNewTable: true,
 				};
 			});
 

@@ -15,6 +15,7 @@ import StackedBar from "../Charts/StackedBar";
 import CrossTabChart from "../Charts/CrossTab/CrossTabChart";
 import HorizontalBar from "../Charts/HorizontalBar";
 import Horizontalstacked from "../Charts/Horizontalstacked";
+import RoseChart from "../Charts/RoseChart";
 
 const DashGraph = ({
 	// props
@@ -108,6 +109,15 @@ const DashGraph = ({
 			case "donut":
 				return (
 					<DoughnutChart
+						propKey={propKey}
+						graphDimension={dimensions}
+						chartArea="dashboard"
+					/>
+				);
+
+			case "rose":
+				return (
+					<RoseChart
 						propKey={propKey}
 						graphDimension={dimensions}
 						chartArea="dashboard"

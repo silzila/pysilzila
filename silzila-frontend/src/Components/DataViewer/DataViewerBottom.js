@@ -190,7 +190,7 @@ const DataViewerBottom = ({
 		const axes = chartProps.properties[propKey].chartAxes;
 		setAddNewOrChooseExistingDS(value);
 		if (value === "addNewDataset") {
-			console.log(axes);
+			//console.log(axes);
 			var count = 0;
 			axes.map((ax) => {
 				if (ax.fields.length > 0) {
@@ -215,7 +215,7 @@ const DataViewerBottom = ({
 			} else {
 				var dsObj = tabTileProps.selectedDataSetList.filter((ds) => ds.ds_uid === value)[0];
 				setSelectedDs(propKey, dsObj);
-				console.log(dsObj);
+				//console.log(dsObj);
 			}
 		}
 	};
