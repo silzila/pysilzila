@@ -82,7 +82,7 @@ const GaugeChart = ({
 					series: [
 						{
 							type: "gauge",
-							radius: chartControl.chartMargin.radius,
+							radius: chartControl.chartMargin.radius + "%",
 
 							max:
 								chartControl.colorScale.colorScaleType === "Manual"

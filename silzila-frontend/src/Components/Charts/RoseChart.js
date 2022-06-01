@@ -129,8 +129,8 @@ const RoseChart = ({
 									borderRadius: 5,
 								},
 								radius: [
-									chartControl.chartMargin.innerRadius,
-									chartControl.chartMargin.outerRadius,
+									chartControl.chartMargin.innerRadius + "%",
+									chartControl.chartMargin.outerRadius + "%",
 								],
 							},
 						],

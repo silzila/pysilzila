@@ -25,8 +25,8 @@ const chartControl = {
 				//for pie and gauge
 				radius: 70,
 				// for donut and rose
-				innerRadius: 40,
-				outerRadius: 80,
+				innerRadius: 30,
+				outerRadius: 70,
 				// for others
 				selectedMargin: "top",
 				top: 30,
@@ -207,8 +207,8 @@ const chartControlsReducer = (state = chartControl, action) => {
 							//for pie and gauge
 							radius: 70,
 							// for donut and rose
-							innerRadius: 40,
-							outerRadius: 80,
+							innerRadius: 30,
+							outerRadius: 70,
 							// for others
 							selectedMargin: "top",
 							top: 30,
@@ -394,8 +394,8 @@ const chartControlsReducer = (state = chartControl, action) => {
 							//for pie and gauge
 							radius: 70,
 							// for donut and rose
-							innerRadius: 40,
-							outerRadius: 80,
+							innerRadius: 30,
+							outerRadius: 70,
 							// for others
 							selectedMargin: "top",
 							top: 30,

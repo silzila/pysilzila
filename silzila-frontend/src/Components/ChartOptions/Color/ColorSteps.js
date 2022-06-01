@@ -1,3 +1,5 @@
+// Used for setting color scale in Gauge chart
+
 import { Radio, TextField, Tooltip, Typography, Popover } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
