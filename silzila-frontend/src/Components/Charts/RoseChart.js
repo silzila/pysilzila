@@ -37,6 +37,7 @@ const RoseChart = ({
 						let agg = el[objKey];
 						//console.log(agg);
 						if (agg) el[objKey] = agg.toString();
+						else el[objKey] = "null";
 					}
 					return el;
 				});
@@ -98,7 +99,7 @@ const RoseChart = ({
 						series: [
 							{
 								type: "pie",
-								roseType: "radius",
+								roseType: "area",
 								startAngle: chartControl.axisOptions.pieAxisOptions.pieStartAngle,
 								clockwise: chartControl.axisOptions.pieAxisOptions.clockWise,
 								label: {

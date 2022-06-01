@@ -205,7 +205,7 @@ const Card = ({
 
 				{options.length === 0 && options2.length === 0 ? (
 					<MenuItem onClick={handleClose} sx={menuStyle} key="optNa">
-						<i>-- NA --</i>
+						<i>-- No options --</i>
 					</MenuItem>
 				) : null}
 			</Menu>
