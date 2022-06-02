@@ -72,16 +72,20 @@ const PlayBookList = ({
 	// Creating new play book requires to select a dataset. On selecting that dataset,
 	// 		tables for that dataset is retrieved & stored
 	// 		Selected dataset is stored
-	useEffect(async () => {
-		if (selectedDataset !== "") {
-			setSelectedDataSetList(selectedDataset);
+	useEffect(() => {
+		const fetchData = async () => {
+			if (selectedDataset !== "") {
+				setSelectedDataSetList(selectedDataset);
 
-			var datasetFromServer = await getTables(selectedDataset.ds_uid);
-			setTablesForDs({ [selectedDataset.ds_uid]: datasetFromServer });
-			setSelectedDs(selectedDataset);
+				var datasetFromServer = await getTables(selectedDataset.ds_uid);
+				setTablesForDs({ [selectedDataset.ds_uid]: datasetFromServer });
+				setSelectedDs(selectedDataset);
 
-			navigate("/dataviewer");
-		}
+				navigate("/dataviewer");
+			}
+		};
+
+		fetchData();
 	}, [selectedDataset]);
 
 	// Get tables for a dataset from server
@@ -127,7 +131,7 @@ const PlayBookList = ({
 					var result2 = await FetchData({
 						requestType: "noData",
 						method: "GET",
-						url: `/ds/get-ds-tables/${sampleDs.ds_uid}`,
+						url: `ds/get-ds-tables/${sampleDs.ds_uid}`,
 						headers: { Authorization: `Bearer ${token}` },
 					});
 
@@ -171,12 +175,12 @@ const PlayBookList = ({
 							pb.content.chartProperty.properties[property].chartType === "heatmap" ||
 							pb.content.chartProperty.properties[property].chartType === "crossTab"
 						) {
-							var combinedValues = { name: "Dimension", fields: [] };
-							var values1 = axesValue[1].fields;
-							var values2 = axesValue[2].fields;
-							var allValues = values1.concat(values2);
-							combinedValues.fields = allValues;
-							axesValue.splice(1, 2, combinedValues);
+							var combinedValues2 = { name: "Dimension", fields: [] };
+							var values3 = axesValue[1].fields;
+							var values4 = axesValue[2].fields;
+							var allValues2 = values3.concat(values4);
+							combinedValues2.fields = allValues2;
+							axesValue.splice(1, 2, combinedValues2);
 						}
 						//console.log(axesValue);
 						getChartData(axesValue, pb.content.chartProperty, property, token).then(

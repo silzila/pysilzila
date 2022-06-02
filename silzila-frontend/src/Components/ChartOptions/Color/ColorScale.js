@@ -1,4 +1,4 @@
-// Used for setting color scale in Heatmap and gauge chart
+// Used for setting color scale in Heatmap
 
 import { FormControlLabel, Radio, RadioGroup, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";

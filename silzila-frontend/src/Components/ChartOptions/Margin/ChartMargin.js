@@ -36,14 +36,8 @@ const ChartMargin = ({
 							percent={true}
 							sliderValue={chartControl.properties[propKey].chartMargin.radius}
 							sliderMinMax={{
-								min:
-									chartProperties.properties[propKey].chartType === "pie"
-										? 10
-										: 100,
-								max:
-									chartProperties.properties[propKey].chartType === "pie"
-										? 100
-										: 200,
+								min: 10,
+								max: 100,
 								step: 1,
 							}}
 							changeValue={(value) => {
@@ -60,11 +54,11 @@ const ChartMargin = ({
 					<React.Fragment>
 						<div className="optionDescription">INNER RADIUS:</div>
 						<SliderWithInput
-							percent={false}
+							percent={true}
 							sliderValue={chartControl.properties[propKey].chartMargin.innerRadius}
 							sliderMinMax={{
 								min: 0,
-								max: 100,
+								max: 90,
 								step: 1,
 							}}
 							changeValue={(value) => {
@@ -74,11 +68,11 @@ const ChartMargin = ({
 						/>
 						<div className="optionDescription">OUTER RADIUS:</div>
 						<SliderWithInput
-							percent={false}
+							percent={true}
 							sliderValue={chartControl.properties[propKey].chartMargin.outerRadius}
 							sliderMinMax={{
 								min: 10,
-								max: 200,
+								max: 100,
 								step: 1,
 							}}
 							changeValue={(value) => {

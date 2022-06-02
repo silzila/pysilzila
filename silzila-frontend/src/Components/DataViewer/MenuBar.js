@@ -274,7 +274,7 @@ const MenuBar = ({
 							}
 						}
 
-						if (from === "dataHome") {
+						if (from === "dataHome" || from === "dataSet") {
 							resetUser();
 							navigate("/login");
 						}
@@ -415,7 +415,11 @@ const MenuBar = ({
 
 	return (
 		<div className="dataViewerMenu">
-			<img src={SilzilaLogo} style={{ padding: "4px 8px", backgroundColor: "white" }} />
+			<img
+				src={SilzilaLogo}
+				style={{ padding: "4px 8px", backgroundColor: "white" }}
+				alt="Silzila Home"
+			/>
 			{from === "dataHome" ? (
 				<>
 					<div className="menuHome">

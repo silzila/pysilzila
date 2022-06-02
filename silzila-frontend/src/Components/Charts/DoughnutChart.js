@@ -112,8 +112,8 @@ const DoughnutChart = ({
 									},
 								},
 								radius: [
-									chartControl.chartMargin.innerRadius,
-									chartControl.chartMargin.outerRadius,
+									chartControl.chartMargin.innerRadius + "%",
+									chartControl.chartMargin.outerRadius + "%",
 								],
 							},
 						],

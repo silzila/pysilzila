@@ -23,10 +23,10 @@ const chartControl = {
 
 			chartMargin: {
 				//for pie and gauge
-				radius: 80,
+				radius: 70,
 				// for donut and rose
-				innerRadius: 40,
-				outerRadius: 80,
+				innerRadius: 30,
+				outerRadius: 70,
 				// for others
 				selectedMargin: "top",
 				top: 30,
@@ -131,23 +131,14 @@ const chartControl = {
 					tickPadding: 12,
 					showAxisLabel: true,
 					labelPadding: 12,
+					max: 10000,
 				},
 
 				gaugeChartControls: {
 					stepcolor: [
-						{
-							percentage: 4,
-							color: "#3fb1e3",
-							per: 0.4,
-							isColorAuto: true,
-						},
-						{
-							percentage: 5,
-							color: "#6be6c1",
-							per: 0.9,
-							isColorAuto: true,
-						},
-						{ percentage: 1, color: "#626c91", per: 1, isColorAuto: true },
+						{ stepValue: 4000, color: "#3fb1e3", per: 0.4, isColorAuto: true },
+						{ stepValue: 5000, color: "#6be6c1", per: 0.9, isColorAuto: true },
+						{ stepValue: 1000, color: "#626c91", per: 0.1, isColorAuto: true },
 					],
 				},
 				pieAxisOptions: {
@@ -228,10 +219,10 @@ const chartControlsReducer = (state = chartControl, action) => {
 
 						chartMargin: {
 							//for pie and gauge
-							radius: 80,
+							radius: 70,
 							// for donut and rose
-							innerRadius: 40,
-							outerRadius: 80,
+							innerRadius: 30,
+							outerRadius: 70,
 							// for others
 							selectedMargin: "top",
 							top: 30,
@@ -336,22 +327,28 @@ const chartControlsReducer = (state = chartControl, action) => {
 								tickPadding: 12,
 								showAxisLabel: true,
 								labelPadding: 12,
+								max: 10000,
 							},
 							gaugeChartControls: {
 								stepcolor: [
 									{
-										percentage: 4,
+										stepValue: 4000,
 										color: "#3fb1e3",
 										per: 0.4,
 										isColorAuto: true,
 									},
 									{
-										percentage: 5,
+										stepValue: 5000,
 										color: "#6be6c1",
 										per: 0.9,
 										isColorAuto: true,
 									},
-									{ percentage: 1, color: "#626c91", per: 1, isColorAuto: true },
+									{
+										stepValue: 1000,
+										color: "#626c91",
+										per: 0.1,
+										isColorAuto: true,
+									},
 								],
 							},
 							pieAxisOptions: {
@@ -438,10 +435,10 @@ const chartControlsReducer = (state = chartControl, action) => {
 
 						chartMargin: {
 							//for pie and gauge
-							radius: 80,
+							radius: 70,
 							// for donut and rose
-							innerRadius: 40,
-							outerRadius: 80,
+							innerRadius: 30,
+							outerRadius: 70,
 							// for others
 							selectedMargin: "top",
 							top: 30,
@@ -548,22 +545,28 @@ const chartControlsReducer = (state = chartControl, action) => {
 								tickPadding: 12,
 								showAxisLabel: true,
 								labelPadding: 12,
+								max: 10000,
 							},
 							gaugeChartControls: {
 								stepcolor: [
 									{
-										percentage: 4,
+										stepValue: 4000,
 										color: "#3fb1e3",
 										per: 0.4,
 										isColorAuto: true,
 									},
 									{
-										percentage: 5,
+										stepValue: 5000,
 										color: "#6be6c1",
-										per: 0.9,
+										per: 0.5,
 										isColorAuto: true,
 									},
-									{ percentage: 1, color: "#626c91", per: 1, isColorAuto: true },
+									{
+										stepValue: 1000,
+										color: "#626c91",
+										per: 0.1,
+										isColorAuto: true,
+									},
 								],
 							},
 							pieAxisOptions: {
