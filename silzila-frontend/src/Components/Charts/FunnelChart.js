@@ -1,6 +1,7 @@
 import ReactEcharts from "echarts-for-react";
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { formatChartLabelValue } from "../ChartOptions/Format/NumberFormatter";
 
 const FunnelChart = ({
 	//props
@@ -10,10 +11,10 @@ const FunnelChart = ({
 	graphTileSize,
 
 	//state
-	chartControl,
+	chartControls,
 }) => {
-	var property = chartControl.properties[propKey];
-	let chartData = property.chartData ? property.chartData.result : "";
+	var chartControl = chartControls.properties[propKey];
+	let chartData = chartControl.chartData ? chartControl.chartData.result : "";
 
 	const [newData, setNewData] = useState([]);
 
@@ -33,12 +34,13 @@ const FunnelChart = ({
 	const RenderChart = () => {
 		return (
 			<ReactEcharts
-				theme={property.colorScheme}
+				theme={chartControl.colorScheme}
 				style={{
 					padding: "1rem",
 					width: graphDimension.width,
 					height: graphDimension.height,
 					overflow: "hidden",
+					margin: "auto",
 					border: chartArea
 						? "none"
 						: graphTileSize
@@ -49,23 +51,23 @@ const FunnelChart = ({
 					animation: chartArea ? false : true,
 					legend: {
 						type: "scroll",
-						show: property.legendOptions?.showLegend,
+						show: chartControl.legendOptions?.showLegend,
 						itemHeight:
 							chartArea === "dashboard"
-								? property.legendOptions?.symbolHeight / 2
-								: property.legendOptions?.symbolHeight,
+								? chartControl.legendOptions?.symbolHeight / 2
+								: chartControl.legendOptions?.symbolHeight,
 						itemWidth:
 							chartArea === "dashboard"
-								? property.legendOptions?.symbolWidth / 2
-								: property.legendOptions?.symbolWidth,
-						itemGap: property.legendOptions?.itemGap,
+								? chartControl.legendOptions?.symbolWidth / 2
+								: chartControl.legendOptions?.symbolWidth,
+						itemGap: chartControl.legendOptions?.itemGap,
 
-						left: property.legendOptions?.position?.left,
-						top: property.legendOptions?.position?.top,
-						orient: property.legendOptions?.orientation,
+						left: chartControl.legendOptions?.position?.left,
+						top: chartControl.legendOptions?.position?.top,
+						orient: chartControl.legendOptions?.orientation,
 					},
 
-					tooltip: { show: property.mouseOver.enable },
+					tooltip: { show: chartControl.mouseOver.enable },
 					dataset: {
 						source: newData,
 					},
@@ -74,12 +76,24 @@ const FunnelChart = ({
 						{
 							type: "funnel",
 							label: {
-								show: property.labelOptions.showLabel,
-								fontSize: property.labelOptions.fontSize,
-								color: property.labelOptions.labelColorManual
-									? property.labelOptions.labelColor
+								show: chartControl.labelOptions.showLabel,
+								fontSize: chartControl.labelOptions.fontSize,
+								color: chartControl.labelOptions.labelColorManual
+									? chartControl.labelOptions.labelColor
 									: null,
+								formatter: (value) => {
+									var formattedValue = value.value.value;
+									formattedValue = formatChartLabelValue(
+										chartControl,
+										formattedValue
+									);
+									return formattedValue;
+								},
 							},
+							top: chartControl.chartMargin.top,
+							bottom: chartControl.chartMargin.bottom,
+							left: chartControl.chartMargin.left + "%",
+							right: chartControl.chartMargin.right + "%",
 						},
 					],
 				}}
@@ -91,7 +105,7 @@ const FunnelChart = ({
 };
 const mapStateToProps = (state) => {
 	return {
-		chartControl: state.chartControls,
+		chartControls: state.chartControls,
 	};
 };
 

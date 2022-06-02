@@ -99,19 +99,19 @@ const CrossTabChart = ({
   /*
     Assign deeply cloned values from Dustbins
   */
-  if (chartPropAxes[1] && chartPropAxes[1].fields && chartPropAxes[1].fields.length > 0) {
-    dustbinRows = CrossTab.cloneData(chartPropAxes[1].fields);
-  }
+	if (chartPropAxes[1] && chartPropAxes[1].fields && chartPropAxes[1].fields.length > 0) {
+		dustbinRows = CrossTab.cloneData(chartPropAxes[1].fields);
+	}
 
-  if (chartPropAxes[2] && chartPropAxes[2].fields && chartPropAxes[2].fields.length > 0) {
-    dustbinColumns = CrossTab.cloneData(chartPropAxes[2].fields);
-  }
+	if (chartPropAxes[2] && chartPropAxes[2].fields && chartPropAxes[2].fields.length > 0) {
+		dustbinColumns = CrossTab.cloneData(chartPropAxes[2].fields);
+	}
 
-  if (chartPropAxes[3] && chartPropAxes[3].fields && chartPropAxes[3].fields.length > 0) {
-    dustbinValues = CrossTab.cloneData(chartPropAxes[3].fields);
-  }
+	if (chartPropAxes[3] && chartPropAxes[3].fields && chartPropAxes[3].fields.length > 0) {
+		dustbinValues = CrossTab.cloneData(chartPropAxes[3].fields);
+	}
 
-  /*
+/*
     To update the ColumnSpan of header segment
 */
   const updateColSpan = (noValue) => {
@@ -507,11 +507,10 @@ const CrossTabChart = ({
           let distinctList = CrossTab.getDistinctList(dustbinColumns, _currentCompObj, i, list);
 
           /* IMPROMENT
+
          let _list = chartDataCSV.columns.filter(item => item.includes(crossTabData[i].columnItems[colItem].displayData))
          
          CrossTab.getColumnList(i, _list).forEach() --> form comp obj then filter using "getFilteredChartPropDataByCompareObject"
-
-         
          */
 
           distinctList = distinctList || [];

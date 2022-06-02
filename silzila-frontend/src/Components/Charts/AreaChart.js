@@ -1,6 +1,10 @@
 import ReactEcharts from "echarts-for-react";
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import {
+	formatChartLabelValue,
+	formatChartYAxisValue,
+} from "../ChartOptions/Format/NumberFormatter";
 
 const AreaChart = ({
 	//props
@@ -13,44 +17,57 @@ const AreaChart = ({
 	chartProp,
 	chartControls,
 }) => {
-	var property = chartControls.properties[propKey];
+	var chartControl = chartControls.properties[propKey];
 
-	let chartData = property.chartData ? property.chartData.result : "";
-
-	var seriesObj = {
-		type: "line",
-		areaStyle: {
-			color: "#ff0",
-			opacity: 0.5,
-		},
-		label: {
-			show: property.labelOptions.showLabel,
-			fontSize: property.labelOptions.fontSize,
-			color: property.labelOptions.labelColorManual ? property.labelOptions.labelColor : null,
-		},
-	};
+	let chartData = chartControl.chartData ? chartControl.chartData.result : "";
 
 	const [seriesData, setSeriesData] = useState([]);
 
 	useEffect(() => {
 		var seriesDataTemp = [];
 		if (chartData) {
+			var chartDataKeys = Object.keys(chartData[0]);
 			for (let i = 0; i < Object.keys(chartData[0]).length - 1; i++) {
+				var seriesObj = {
+					type: "line",
+					areaStyle: {
+						color: "#ff0",
+						opacity: 0.5,
+					},
+					label: {
+						show: chartControl.labelOptions.showLabel,
+						fontSize: chartControl.labelOptions.fontSize,
+						color: chartControl.labelOptions.labelColorManual
+							? chartControl.labelOptions.labelColor
+							: null,
+
+						formatter: (value) => {
+							var formattedValue = value.value[chartDataKeys[i + 1]];
+							var formattedValue = formatChartLabelValue(
+								chartControl,
+								formattedValue
+							);
+
+							return formattedValue;
+						},
+					},
+				};
 				seriesDataTemp.push(seriesObj);
 			}
 			setSeriesData(seriesDataTemp);
 		}
-	}, [chartData, property]);
+	}, [chartData, chartControl]);
 
 	const RenderChart = () => {
 		return (
 			<ReactEcharts
-				theme={property.colorScheme}
+				theme={chartControl.colorScheme}
 				style={{
 					padding: "1rem",
 					width: graphDimension.width,
 					height: graphDimension.height,
 					overflow: "hidden",
+					margin: "auto",
 					border: chartArea
 						? "none"
 						: graphTileSize
@@ -67,67 +84,72 @@ const AreaChart = ({
 					},
 					xAxis: {
 						type: "category",
-						position: property.axisOptions.xAxis.position,
+						position: chartControl.axisOptions.xAxis.position,
 
 						axisLine: {
-							onZero: property.axisOptions.xAxis.onZero,
+							onZero: chartControl.axisOptions.xAxis.onZero,
 						},
 
 						axisTick: {
 							alignWithLabel: true,
 							length:
-								property.axisOptions.xAxis.position === "top"
-									? property.axisOptions.xAxis.tickSizeTop
-									: property.axisOptions.xAxis.tickSizeBottom,
+								chartControl.axisOptions.xAxis.position === "top"
+									? chartControl.axisOptions.xAxis.tickSizeTop
+									: chartControl.axisOptions.xAxis.tickSizeBottom,
 						},
 						axisLabel: {
 							rotate:
-								property.axisOptions.xAxis.position === "top"
-									? property.axisOptions.xAxis.tickRotationTop
-									: property.axisOptions.xAxis.tickRotationBottom,
+								chartControl.axisOptions.xAxis.position === "top"
+									? chartControl.axisOptions.xAxis.tickRotationTop
+									: chartControl.axisOptions.xAxis.tickRotationBottom,
 							margin:
-								property.axisOptions.xAxis.position === "top"
-									? property.axisOptions.xAxis.tickPaddingTop
-									: property.axisOptions.xAxis.tickPaddingBottom,
+								chartControl.axisOptions.xAxis.position === "top"
+									? chartControl.axisOptions.xAxis.tickPaddingTop
+									: chartControl.axisOptions.xAxis.tickPaddingBottom,
 						},
-						show: property.axisOptions.xAxis.showLabel,
+						show: chartControl.axisOptions.xAxis.showLabel,
 
-						name: property.axisOptions.xAxis.name,
-						nameLocation: property.axisOptions.xAxis.nameLocation,
-						nameGap: property.axisOptions.xAxis.nameGap,
+						name: chartControl.axisOptions.xAxis.name,
+						nameLocation: chartControl.axisOptions.xAxis.nameLocation,
+						nameGap: chartControl.axisOptions.xAxis.nameGap,
 					},
 					yAxis: {
-						inverse: property.axisOptions.inverse,
+						inverse: chartControl.axisOptions.inverse,
 
-						position: property.axisOptions.yAxis.position,
+						position: chartControl.axisOptions.yAxis.position,
 
 						axisLine: {
-							onZero: property.axisOptions.yAxis.onZero,
+							onZero: chartControl.axisOptions.yAxis.onZero,
 						},
 
 						axisTick: {
 							alignWithLabel: true,
 							length:
-								property.axisOptions.yAxis.position === "left"
-									? property.axisOptions.yAxis.tickSizeLeft
-									: property.axisOptions.yAxis.tickSizeRight,
+								chartControl.axisOptions.yAxis.position === "left"
+									? chartControl.axisOptions.yAxis.tickSizeLeft
+									: chartControl.axisOptions.yAxis.tickSizeRight,
 						},
 
 						axisLabel: {
 							rotate:
-								property.axisOptions.yAxis.position === "left"
-									? property.axisOptions.yAxis.tickRotationLeft
-									: property.axisOptions.yAxis.tickRotationRight,
+								chartControl.axisOptions.yAxis.position === "left"
+									? chartControl.axisOptions.yAxis.tickRotationLeft
+									: chartControl.axisOptions.yAxis.tickRotationRight,
 							margin:
-								property.axisOptions.yAxis.position === "left"
-									? property.axisOptions.yAxis.tickPaddingLeft
-									: property.axisOptions.yAxis.tickPaddingRight,
+								chartControl.axisOptions.yAxis.position === "left"
+									? chartControl.axisOptions.yAxis.tickPaddingLeft
+									: chartControl.axisOptions.yAxis.tickPaddingRight,
+
+							formatter: (value) => {
+								var formattedValue = formatChartYAxisValue(chartControl, value);
+								return formattedValue;
+							},
 						},
 
-						show: property.axisOptions.yAxis.showLabel,
-						name: property.axisOptions.yAxis.name,
-						nameLocation: property.axisOptions.yAxis.nameLocation,
-						nameGap: property.axisOptions.yAxis.nameGap,
+						show: chartControl.axisOptions.yAxis.showLabel,
+						name: chartControl.axisOptions.yAxis.name,
+						nameLocation: chartControl.axisOptions.yAxis.nameLocation,
+						nameGap: chartControl.axisOptions.yAxis.nameGap,
 					},
 					series: seriesData,
 				}}

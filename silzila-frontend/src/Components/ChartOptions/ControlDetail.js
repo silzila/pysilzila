@@ -12,7 +12,8 @@ import ChartLegend from "./Legend/ChartLegend";
 import ChartMargin from "./Margin/ChartMargin";
 import ChartMouseOver from "./MouseOver/ChartMouseOver";
 import ChartTitle from "./Title/ChartTitle";
-import ChartStyle from './Style/ChartStyle'
+import ChartStyle from "./Style/ChartStyle";
+import ColorSteps from "./Color/ColorSteps";
 
 const ControlDetail = ({ chartProp, tabTileProps }) => {
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
@@ -25,8 +26,10 @@ const ControlDetail = ({ chartProp, tabTileProps }) => {
 				return <ChartTitle />;
 
 			case "Colors":
-				if (chartType === "heatmap" || chartType === "gauge") {
+				if (chartType === "heatmap") {
 					return <ColorScale />;
+				} else if (chartType === "gauge") {
+					return <ColorSteps />;
 				} else {
 					return <ChartColors />;
 				}
@@ -52,6 +55,9 @@ const ControlDetail = ({ chartProp, tabTileProps }) => {
         	case "Style":
 			return <ChartStyle />;
 
+
+			case "Style":
+				return <ChartStyle />;
 
 			case "Format":
 				return <ChartFormat chartType={chartType} />;

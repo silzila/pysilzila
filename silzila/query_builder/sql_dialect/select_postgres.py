@@ -11,6 +11,8 @@ period_dict = {
 
 
 def build_select_clause(req: list, select_dim_list: list, group_by_dim_list: list, order_by_dim_list: list) -> str:
+    """SELECT clause for Postgres dialect
+    """
     SELECT = ""  # holds final select clause string
     _select = []  # holds individual select column as list
     select_meas_list = []
@@ -182,7 +184,7 @@ def build_select_clause(req: list, select_dim_list: list, group_by_dim_list: lis
 
     SELECT = "\n\t" + ",\n\t".join(_select)
     # print(_select)
-    print("dim selection ***** \n", select_dim_list)
-    print("meas selection ***** \n", select_meas_list)
-    print(SELECT)
+    # print("dim selection ***** \n", select_dim_list)
+    # print("meas selection ***** \n", select_meas_list)
+    # print(SELECT)
     return SELECT

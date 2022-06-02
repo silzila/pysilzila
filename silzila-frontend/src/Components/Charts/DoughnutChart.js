@@ -16,22 +16,33 @@ const DoughnutChart = ({
 }) => {
 	var chartControl = chartControls.properties[propKey];
 	let chartData = chartControl.chartData ? chartControl.chartData.result : "";
-	var chartDataKeys;
+
+	const [chartDataKeys, setchartDataKeys] = useState([]);
 
 	useEffect(() => {
 		if (chartControl.chartData) {
-			chartDataKeys = Object.keys(chartData[0]);
-			var objKey =
-				chartProp.properties[propKey].chartAxes[1].fields[0].fieldname + "__" + "year";
-			chartControl.chartData.result.map((el) => {
-				if (objKey in el) {
-					let year = el[objKey];
-					el[objKey] = year.toString();
+			setchartDataKeys(Object.keys(chartData[0]));
+			var objKey;
+			if (chartProp.properties[propKey].chartAxes[1].fields[0]) {
+				if ("time_grain" in chartProp.properties[propKey].chartAxes[1].fields[0]) {
+					objKey =
+						chartProp.properties[propKey].chartAxes[1].fields[0].fieldname +
+						"__" +
+						chartProp.properties[propKey].chartAxes[1].fields[0].time_grain;
+				} else {
+					objKey = chartProp.properties[propKey].chartAxes[1].fields[0].fieldname;
 				}
-				return el;
-			});
+				chartControl.chartData.result.map((el) => {
+					if (objKey in el) {
+						let agg = el[objKey];
+						//console.log(agg);
+						if (agg) el[objKey] = agg.toString();
+					}
+					return el;
+				});
+			}
 		}
-	});
+	}, [chartData, chartControl]);
 
 	const RenderChart = () => {
 		return (
@@ -43,6 +54,7 @@ const DoughnutChart = ({
 						width: graphDimension.width,
 						height: graphDimension.height,
 						overflow: "hidden",
+						margin: "auto",
 						border: chartArea
 							? "none"
 							: graphTileSize
@@ -62,12 +74,7 @@ const DoughnutChart = ({
 							top: chartControl.legendOptions?.position?.top,
 							orient: chartControl.legendOptions?.orientation,
 						},
-						// grid: {
-						// 	left: chartControl.chartMargin.left,
-						// 	right: chartControl.chartMargin.right,
-						// 	top: chartControl.chartMargin.top,
-						// 	bottom: chartControl.chartMargin.bottom,
-						// },
+
 						tooltip: { show: chartControl.mouseOver.enable },
 						dataset: {
 							dimensions: Object.keys(chartData[0]),
@@ -77,7 +84,7 @@ const DoughnutChart = ({
 							{
 								type: "pie",
 								startAngle: chartControl.axisOptions.pieAxisOptions.pieStartAngle,
-								clockWise: chartControl.axisOptions.pieAxisOptions.clockWise,
+								clockwise: chartControl.axisOptions.pieAxisOptions.clockWise,
 
 								label: {
 									position: chartControl.labelOptions.pieLabel.labelPosition,
@@ -86,7 +93,6 @@ const DoughnutChart = ({
 									color: chartControl.labelOptions.labelColorManual
 										? chartControl.labelOptions.labelColor
 										: null,
-									// padding: chartControl.axisOptions.pieAxisOptions.labelPadding,
 									padding: [
 										chartControl.axisOptions.pieAxisOptions.labelPadding,
 										chartControl.axisOptions.pieAxisOptions.labelPadding,
@@ -94,16 +100,21 @@ const DoughnutChart = ({
 										chartControl.axisOptions.pieAxisOptions.labelPadding,
 									],
 
-									// formatter: (value) => {
-									// 	var formattedValue = value.value[chartDataKeys[1]];
-									// 	formattedValue = formatChartLabelValue(
-									// 		chartControl,
-									// 		formattedValue
-									// 	);
-									// 	return formattedValue;
-									// },
+									formatter: (value) => {
+										if (chartDataKeys) {
+											var formattedValue = value.value[chartDataKeys[1]];
+											formattedValue = formatChartLabelValue(
+												chartControl,
+												formattedValue
+											);
+											return formattedValue;
+										}
+									},
 								},
-								radius: ["40%", "70%"],
+								radius: [
+									chartControl.chartMargin.innerRadius,
+									chartControl.chartMargin.outerRadius,
+								],
 							},
 						],
 					}}

@@ -171,7 +171,6 @@ const ChartStyle = ({
                                 }
 							}}  
 						/>
-					
 					</div>
 				</React.Fragment>
 			<Popover

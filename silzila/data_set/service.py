@@ -6,11 +6,11 @@ import json
 
 from . import model, schema
 from .model import DataSet
-# from ..user.model import User
 from ..data_connection.model import DataConnection
 from ..play_book.service import get_all_pb_by_ds
 
 
+# gets Data Source by Name
 async def get_ds_by_friendly_name(db: Session, uid: str, friendly_name: str):
     stmt = select(DataSet).join(DataConnection).where(
         and_(
@@ -25,19 +25,18 @@ async def get_ds_by_friendly_name(db: Session, uid: str, friendly_name: str):
     return ds.scalars().first()
 
 
+# gets all data sources by data connection
 async def get_all_ds_by_dc_uid(db: Session, dc_uid: str):
     stmt = select(DataSet.friendly_name).where(
         DataSet.dc_uid == dc_uid
     )
     ds = await db.execute(stmt)
     # convert result to list
-    _res = ds.scalars().all()
-    if not _res:
-        raise HTTPException(
-            status_code=404, detail="No Data Set available for the Data Connection")
-    return {"friendly_name": _res}
+    res_ds = ds.scalars().all()
+    return res_ds
 
 
+# checks if data set name is alreay taken for the user
 async def check_friendly_name_in_other_ds(db: Session, uid: str, friendly_name: str, ds_uid: str):
     stmt = select(DataSet).join(DataConnection).where(
         and_(
@@ -54,35 +53,38 @@ async def check_friendly_name_in_other_ds(db: Session, uid: str, friendly_name: 
 
 
 def create_alias_names_for_tables(tables: list) -> list:
+    """In Data Set, each table is given short, meaningful & unique alias name.
+
+    This alias is used in query building. eg. product AS p, sub_category as sc
+    single word table names gets first letter. If multiple tables start with
+    the same letter then numbers are suffixed.
+    eg. product AS p, process AS p2, pointofsales as p3
+    if table names have hyphen symbol, then first letters are combined
+    eg. point_of_sales AS pos, sub_category AS sc
+    """
     table_names = [table['table_name'] for table in tables]
     alias_names = []
     alias_names_without_suffix_number = {}
     # iterate incoming list to get table names
     for table_name in table_names:
-        # print("\ntbl name ==========", table_name)
         # split table name to list. eg. sub_category will be split into ['sub', 'category']
         table_name_split_array = table_name.split('_')
-
         alias_name = ""
 
         ################ To take one or multiple letters #################
         # if the split list has one word, get first letter of the word
         if len(table_name_split_array) == 1:
             alias_name = table_name_split_array[0][0]
-            # print(" if alias name ++++++1= ", alias_name)
         # for >1 word in list, get first letter of only first three words
         else:
             for word in table_name_split_array[:3]:
                 alias_name += word[0]
-            # print(" else alias name ++++++2= ", alias_name)
 
         ################ To add number suffix or not #################
         # first time an alias name comes
         if alias_names_without_suffix_number.get(alias_name) == None:
             alias_names_without_suffix_number[alias_name] = 1
             alias_names.append(alias_name)
-            # print(" if appended alias name ++++++1= ", alias_name)
-            # print("alias_names =", alias_names)
 
         else:
             # second time same alias name comes
@@ -103,11 +105,10 @@ def create_alias_names_for_tables(tables: list) -> list:
                 alias_names_without_suffix_number[alias_name] += 1
                 alias_name = f"{alias_name}{alias_names_without_suffix_number[alias_name]}"
                 alias_names.append(alias_name)
-                # print(" if appended alias name ++++++3= ", alias_name)
-                # print("alias_names =", alias_names)
     return alias_names
 
 
+# create Data Set
 async def create_ds(db: Session, ds: schema.DataSetIn):
     data_schema = ds.dict()['data_schema']
 
@@ -130,7 +131,6 @@ async def create_ds(db: Session, ds: schema.DataSetIn):
                 else:
                     _rel[i] = {"table2": tbl['id2']}
 
-    # print("_rel dict =============", _rel)
     for idx, val in enumerate(_rel):
         data_schema['relationships'][idx]['table1'] = _rel[idx]['table1']
         data_schema['relationships'][idx]['table2'] = _rel[idx]['table2']
@@ -152,6 +152,7 @@ async def create_ds(db: Session, ds: schema.DataSetIn):
     return resp
 
 
+# update Data Set
 async def update_data_set(db: Session, ds_uid: str, ds: schema.DataSetIn, uid: str):
     # check if DS exists
     _ds_info = await db.execute(select(DataSet).where(
@@ -199,7 +200,6 @@ async def update_data_set(db: Session, ds_uid: str, ds: schema.DataSetIn, uid: s
     # update data_schema & friendy name
     ds_info.data_schema = data_schema
     ds_info.friendly_name = ds.friendly_name
-    print("friendly name = ", ds.friendly_name)
     db.commit()
     db.refresh(ds_info)
 
@@ -211,6 +211,7 @@ async def update_data_set(db: Session, ds_uid: str, ds: schema.DataSetIn, uid: s
     return resp
 
 
+# delete data set
 async def delete_ds(db: Session, ds_uid: str, uid: str):
     # get the DS record
     ds_item = await get_ds_by_id(db, ds_uid)
@@ -219,18 +220,18 @@ async def delete_ds(db: Session, ds_uid: str, uid: str):
         raise HTTPException(
             status_code=404, detail="Data Set not exists")
     # if DS is present, then check if any Playbook is dependant on it.
-    # if any dependency on Playbook then can't delete
+    # if any dependency on Playbook then shoudn't delete
     dependant_pb_list = await get_all_pb_by_ds(ds_uid, db, uid)
     if len(dependant_pb_list) >= 1:
         raise HTTPException(
-            status_code=401, detail="Cannot delete Datasource. There are dependant Playbook(s)")
+            status_code=401, detail="Cannot delete Datasource. There are dependent Playbook(s)")
     qry_del_ds = DataSet.__table__.delete().where(DataSet.ds_uid == ds_uid)
     await db.execute(qry_del_ds)
     await db.commit()
-    # db.flush()
     return 1
 
 
+# gets all data set for the user
 async def get_all_ds(db: Session, user_id: str):
     stmt = select(Bundle("dataset", DataSet.friendly_name, DataSet.dc_uid, DataSet.ds_uid)).join(DataConnection).where(
         DataConnection.user_id == user_id
@@ -239,6 +240,7 @@ async def get_all_ds(db: Session, user_id: str):
     return all_ds.scalars().all()
 
 
+# get Data Set by ID
 async def get_ds_by_id(db: Session, ds_uid: str):
     stmt = select(Bundle("dataset", DataSet.friendly_name, DataSet.dc_uid, DataSet.ds_uid, DataSet.data_schema)).where(
         model.DataSet.ds_uid == ds_uid

@@ -1,6 +1,5 @@
 import React from "react";
 import LabelFormatting from "./LabelFormatting";
-import TooltipFormat from "./TooltipFormat";
 import XAxisFormat from "./XAxisFormat";
 import YAxisFormat from "./YAxisFormat";
 
@@ -11,17 +10,27 @@ const ChartFormat = ({ chartType }) => {
 			Right now only multiBar chart works */}
 			<LabelFormatting />
 
+			{chartType === "scatterPlot" ? (
+				<>
+					<div
+						style={{ borderTop: "1px solid rgb(211,211,211)", margin: "1rem 6% 1rem" }}
+					></div>{" "}
+					<XAxisFormat chartType={chartType} />{" "}
+				</>
+			) : null}
+
 			{chartType !== "pie" &&
 			chartType !== "donut" &&
 			chartType !== "gauge" &&
 			chartType !== "rose" &&
 			chartType !== "crossTab" &&
-			chartType !== "funnel" ? (
+			chartType !== "funnel" &&
+			chartType !== "heatmap" ? (
 				<>
 					<div
 						style={{ borderTop: "1px solid rgb(211,211,211)", margin: "1rem 6% 1rem" }}
 					></div>
-					<YAxisFormat />
+					<YAxisFormat chartType={chartType} />
 				</>
 			) : null}
 		</div>

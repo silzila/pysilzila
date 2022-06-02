@@ -25,9 +25,18 @@ const ChartControlObjects = ({
 		"Format",
 	];
 
-	const pieOptionsList = ["Title", "Labels", "Legend", "Tooltip", "Axis", "Colors", "Format"];
-	const funnelOptionList = ["Title", "Legend", "Tooltip", "Colors", "Format"];
-	const gaugeOptionList = ["Title", "Tooltip", "Axis", "Colors", "Format"];
+	const pieOptionsList = [
+		"Title",
+		"Labels",
+		"Legend",
+		"Margin",
+		"Tooltip",
+		"Axis",
+		"Colors",
+		"Format",
+	];
+	const funnelOptionList = ["Title", "Legend", "Margin", "Tooltip", "Colors", "Format"];
+	const gaugeOptionList = ["Title", "Margin", "Tooltip", "Axis", "Colors", "Format"];
 	const heatmapOptionList = [
 		"Title",
 		"Labels",
@@ -43,6 +52,8 @@ const ChartControlObjects = ({
 		switch (selectedChart) {
 			case "multibar":
 			case "stackedBar":
+			case "horizontalBar":
+			case "horizontalStacked":
 			case "line":
 			case "area":
 			case "scatterPlot":
@@ -63,6 +74,7 @@ const ChartControlObjects = ({
 				});
 			case "pie":
 			case "donut":
+			case "rose":
 				return pieOptionsList.map((option) => {
 					return (
 						<div

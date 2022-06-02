@@ -6,8 +6,8 @@ import {
 	formatChartYAxisValue,
 } from "../ChartOptions/Format/NumberFormatter";
 
-const MultiBar = ({
-	// props
+const Horizontalstacked = ({
+	//props
 	propKey,
 	graphDimension,
 	chartArea,
@@ -15,9 +15,10 @@ const MultiBar = ({
 
 	//state
 	chartControlState,
-	chartProperty,
+	chartProperties,
 }) => {
 	var chartControl = chartControlState.properties[propKey];
+
 	let chartData = chartControl.chartData ? chartControl.chartData.result : "";
 
 	const [seriesData, setSeriesData] = useState([]);
@@ -30,7 +31,7 @@ const MultiBar = ({
 			for (let i = 0; i < Object.keys(chartData[0]).length - 1; i++) {
 				var seriesObj = {
 					type: "bar",
-					stack: "",
+					stack: chartProperties.properties[propKey]?.chartAxes[1]?.fields[0]?.fieldname,
 					emphasis: {
 						focus: "series",
 					},
@@ -43,11 +44,7 @@ const MultiBar = ({
 
 						formatter: (value) => {
 							var formattedValue = value.value[chartDataKeys[i + 1]];
-							var formattedValue = formatChartLabelValue(
-								chartControl,
-								formattedValue
-							);
-
+							formattedValue = formatChartLabelValue(chartControl, formattedValue);
 							return formattedValue;
 						},
 					},
@@ -57,15 +54,14 @@ const MultiBar = ({
 			}
 			setSeriesData(seriesDataTemp);
 		}
-	}, [chartData, chartControl.formatOptions]);
+	}, [chartData, chartControl]);
 
 	const RenderChart = () => {
-		return chartData ? (
+		return (
 			<ReactEcharts
-				opts={{ renderer: "svg" }}
 				theme={chartControl.colorScheme}
 				style={{
-					padding: "5px",
+					padding: "1rem",
 					width: graphDimension.width,
 					height: graphDimension.height,
 					overflow: "hidden",
@@ -103,22 +99,21 @@ const MultiBar = ({
 						dimensions: Object.keys(chartData[0]),
 						source: chartData,
 					},
+
 					xAxis: {
 						splitLine: {
 							show: chartControl.axisOptions?.xSplitLine,
 						},
-						type: "category",
 						position: chartControl.axisOptions.xAxis.position,
-
-						axisLine: {
-							onZero: chartControl.axisOptions.xAxis.onZero,
-						},
-
 						show: chartControl.axisOptions.xAxis.showLabel,
 
 						name: chartControl.axisOptions.xAxis.name,
 						nameLocation: chartControl.axisOptions.xAxis.nameLocation,
 						nameGap: chartControl.axisOptions.xAxis.nameGap,
+
+						axisLine: {
+							onZero: chartControl.axisOptions.xAxis.onZero,
+						},
 
 						axisTick: {
 							alignWithLabel: true,
@@ -136,22 +131,28 @@ const MultiBar = ({
 								chartControl.axisOptions.xAxis.position === "top"
 									? chartControl.axisOptions.xAxis.tickPaddingTop
 									: chartControl.axisOptions.xAxis.tickPaddingBottom,
+
+							formatter: (value) => {
+								var formattedValue = formatChartYAxisValue(chartControl, value);
+								return formattedValue;
+							},
 						},
 					},
+
 					yAxis: {
+						type: "category",
 						splitLine: {
 							show: chartControl.axisOptions?.ySplitLine,
 						},
-						min: chartControl.axisOptions.axisMinMax.enableMin
-							? chartControl.axisOptions.axisMinMax.minValue
-							: null,
-						max: chartControl.axisOptions.axisMinMax.enableMax
-							? chartControl.axisOptions.axisMinMax.maxValue
-							: null,
-
 						inverse: chartControl.axisOptions.inverse,
 
 						position: chartControl.axisOptions.yAxis.position,
+
+						show: chartControl.axisOptions.yAxis.showLabel,
+
+						name: chartControl.axisOptions.yAxis.name,
+						nameLocation: chartControl.axisOptions.yAxis.nameLocation,
+						nameGap: chartControl.axisOptions.yAxis.nameGap,
 
 						axisLine: {
 							onZero: chartControl.axisOptions.yAxis.onZero,
@@ -174,32 +175,22 @@ const MultiBar = ({
 								chartControl.axisOptions.yAxis.position === "left"
 									? chartControl.axisOptions.yAxis.tickPaddingLeft
 									: chartControl.axisOptions.yAxis.tickPaddingRight,
-
-							formatter: (value) => {
-								var formattedValue = formatChartYAxisValue(chartControl, value);
-								return formattedValue;
-							},
 						},
-
-						show: chartControl.axisOptions.yAxis.showLabel,
-
-						name: chartControl.axisOptions.yAxis.name,
-						nameLocation: chartControl.axisOptions.yAxis.nameLocation,
-						nameGap: chartControl.axisOptions.yAxis.nameGap,
 					},
+
 					series: seriesData,
 				}}
 			/>
-		) : null;
+		);
 	};
 
 	return <>{chartData ? <RenderChart /> : ""}</>;
 };
+
 const mapStateToProps = (state) => {
 	return {
+		chartProperties: state.chartProperties,
 		chartControlState: state.chartControls,
-		chartProperty: state.chartProperties,
 	};
 };
-
-export default connect(mapStateToProps, null)(MultiBar);
+export default connect(mapStateToProps, null)(Horizontalstacked);

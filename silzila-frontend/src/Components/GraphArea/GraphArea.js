@@ -34,6 +34,9 @@ import HeatMap from "../Charts/HeatMap";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
 import { toggleGraphSize } from "../../redux/TabTile/actionsTabTile";
+import HorizontalBar from "../Charts/HorizontalBar";
+import Horizontalstacked from "../Charts/Horizontalstacked";
+import RoseChart from "../Charts/RoseChart";
 
 const GraphArea = ({
 	// state
@@ -102,7 +105,7 @@ const GraphArea = ({
 	]);
 
 	const removeFullScreen = (e) => {
-		console.log(e.keyCode);
+		//console.log(e.keyCode);
 		if (e.keyCode === 27) {
 			setFullScreen(false);
 		}
@@ -122,6 +125,24 @@ const GraphArea = ({
 			case "stackedBar":
 				return (
 					<StackedBar
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
+					/>
+				);
+
+			case "horizontalBar":
+				return (
+					<HorizontalBar
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
+					/>
+				);
+
+			case "horizontalStacked":
+				return (
+					<Horizontalstacked
 						propKey={propKey}
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
 						graphTileSize={tileState.tiles[propKey].graphSizeFull}
@@ -164,6 +185,14 @@ const GraphArea = ({
 			case "donut":
 				return (
 					<DoughnutChart
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
+					/>
+				);
+			case "rose":
+				return (
+					<RoseChart
 						propKey={propKey}
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
 						graphTileSize={tileState.tiles[propKey].graphSizeFull}
@@ -440,7 +469,7 @@ const GraphArea = ({
 					id="graphFullScreen"
 					className="graphFullScreen"
 					onKeyDown={(e) => {
-						console.log("Key pressed");
+						//console.log("Key pressed");
 						removeFullScreen(e);
 					}}
 				>

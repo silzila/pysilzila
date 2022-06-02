@@ -11,13 +11,13 @@ DATABASE_URL = config("LOCAL_DB_DRIVER") + \
     os.path.join(root_folder, config("LOCAL_DB_NAME"))
 
 HERE = pathlib.Path(__file__).resolve().parent
-print('PATHLIB ===============================', HERE)
+# print('PATHLIB ===============================', HERE)
 
 
 engine = create_async_engine(
     DATABASE_URL,
     future=True,
-    echo=True,
+    echo=False,
     connect_args={"check_same_thread": False}
 )
 SessionLocal = sessionmaker(

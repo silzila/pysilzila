@@ -120,12 +120,12 @@ const DataSetReducer = (state = initialState, action) => {
 			const z1 = y1.filter((rel) => {
 				return rel.endId !== action.payload;
 			});
-			console.log(z1);
+			//console.log(z1);
 			return update(state, { relationships: { $set: z1 } });
 
 		case "DELETE_RELATIONSHIP_FROM_CANVAS":
 			const rels = state.relationships.filter((rel) => rel.relationId !== action.payload);
-			console.log(rels);
+			//console.log(rels);
 			return update(state, { relationships: { $set: rels } });
 
 		case "UPDATE_RELATIONSHIP":
@@ -134,15 +134,15 @@ const DataSetReducer = (state = initialState, action) => {
 			);
 
 			var oldRelationsArray = state.relationships.slice();
-			console.log(JSON.stringify(oldRelationsArray, null, 4));
+			//console.log(JSON.stringify(oldRelationsArray, null, 4));
 			oldRelationsArray.splice(index2, 1);
 			oldRelationsArray.push(action.payload.relation);
-			console.log(JSON.stringify(oldRelationsArray, null, 4));
+			//console.log(JSON.stringify(oldRelationsArray, null, 4));
 
 			var oldArrows = state.arrows.slice();
 			var relArrows = oldArrows.filter((arr) => arr.relationId === action.payload.relationId);
-			console.log(JSON.stringify(oldArrows, null, 4));
-			console.log(JSON.stringify(relArrows, null, 4));
+			//console.log(JSON.stringify(oldArrows, null, 4));
+			//console.log(JSON.stringify(relArrows, null, 4));
 
 			relArrows.forEach((arr) => {
 				arr.integrity = action.payload.relation.integrity;
@@ -150,7 +150,7 @@ const DataSetReducer = (state = initialState, action) => {
 				arr.showHead = action.payload.relation.showHead;
 				arr.showTail = action.payload.relation.showTail;
 			});
-			console.log(JSON.stringify(relArrows, null, 4));
+			//console.log(JSON.stringify(relArrows, null, 4));
 
 			oldArrows.push(relArrows);
 

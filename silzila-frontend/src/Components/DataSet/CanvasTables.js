@@ -58,7 +58,7 @@ const CanvasTables = ({
 	// 		- Save new arrow and new relation
 
 	const checkRelationExists = (newArrowObj) => {
-		console.log(JSON.stringify(newArrowObj, null, 4));
+		//console.log(JSON.stringify(newArrowObj, null, 4));
 		if (dataSetState.arrows.length === 0) {
 			newArrowObj.relationId = uid();
 			setArrowProp(newArrowObj);
@@ -71,10 +71,10 @@ const CanvasTables = ({
 			var sameRelInvObj = {};
 
 			dataSetState.relationships.forEach((rel, i) => {
-				console.log(rel);
-				console.log("Relation Loop ", i);
+				//console.log(rel);
+				//console.log("Relation Loop ", i);
 				if (rel.startId === newArrowObj.startId && rel.endId === newArrowObj.endId) {
-					console.log("Another arrow from same relationship");
+					//console.log("Another arrow from same relationship");
 
 					newArrowObj.relationId = rel.relationId;
 					newArrowObj.cardinality = rel.cardinality;
@@ -84,7 +84,7 @@ const CanvasTables = ({
 					sameRel = true;
 					sameRelObj = newArrowObj;
 				} else if (rel.startId === newArrowObj.endId && rel.endId === newArrowObj.startId) {
-					console.log("Another arrow from same relationship - but INVERTED");
+					//console.log("Another arrow from same relationship - but INVERTED");
 
 					newArrowObj.relationId = rel.relationId;
 					var newReverseArrowObj = JSON.parse(JSON.stringify(newArrowObj));
@@ -107,14 +107,14 @@ const CanvasTables = ({
 					newReverseArrowObj.showHead = rel.showHead;
 					newReverseArrowObj.showTail = rel.showTail;
 
-					console.log(newReverseArrowObj);
+					//console.log(newReverseArrowObj);
 					sameRelInv = true;
 					sameRelInvObj = newReverseArrowObj;
 				}
 			});
 
-			console.log(sameRel);
-			console.log(sameRelInv);
+			//console.log(sameRel);
+			//console.log(sameRelInv);
 			if (sameRel) {
 				addArrows(sameRelObj);
 			}
@@ -131,13 +131,13 @@ const CanvasTables = ({
 	};
 
 	const addRelationship = (relObj) => {
-		console.log(relObj);
+		//console.log(relObj);
 		addNewRelationship(relObj);
 	};
 
 	// Remove or rename tables in canvas
 	const selectAction = (e) => {
-		console.log(tableId);
+		//console.log(tableId);
 		if (open === true) {
 			if (parseInt(e.target.id) === 1) {
 				const tempTables = [...dataSetState.tempTable].filter((tab) => {
@@ -158,8 +158,8 @@ const CanvasTables = ({
 						actionsOnRemoveTable(tempTables, tables, tableId);
 					}
 				} else {
-					console.log(tables);
-					console.log(tempTables);
+					//console.log(tables);
+					//console.log(tempTables);
 					actionsOnRemoveTable(tempTables, tables, tableId);
 				}
 			} else if (parseInt(e.target.id) === 2) {
@@ -187,7 +187,7 @@ const CanvasTables = ({
 				}
 				return tab;
 			});
-			console.log(newTable);
+			//console.log(newTable);
 			setTempTables(newTable);
 			setNewName("");
 			setInputField(false);
@@ -313,6 +313,7 @@ const CanvasTables = ({
 				setOpen={setOpen}
 				selectAction={selectAction}
 				anchorEl={anchorEl}
+				tableData={tableData}
 			/>
 		</div>
 	);

@@ -71,12 +71,6 @@ export const getChartData = async (axesValues, chartProp, propKey, token) => {
 
 	formattedAxes.filters = [];
 
-	var url =
-		"ds/query/" +
-		chartProp.properties[propKey].selectedDs.dc_uid +
-		"/" +
-		chartProp.properties[propKey].selectedDs.ds_uid;
-
 	var res = await FetchData({
 		requestType: "withData",
 		method: "POST",
@@ -93,6 +87,33 @@ export const getChartData = async (axesValues, chartProp, propKey, token) => {
 		return res.data;
 	} else {
 		console.log("Get Table Data Error", res.data.detail);
+	}
+};
+
+export const checkMinRequiredCards = (chartProp, propKey) => {
+	var minReqMet = [];
+	ChartsInfo[chartProp.properties[propKey].chartType].dropZones.forEach((zone, zoneI) => {
+		chartProp.properties[propKey].chartAxes[zoneI].fields.length >= zone.min
+			? minReqMet.push(true)
+			: minReqMet.push(false);
+	});
+
+	if (chartProp.properties[propKey].chartType === "crossTab") {
+		if (
+			chartProp.properties[propKey].chartAxes[1].fields.length > 0 ||
+			chartProp.properties[propKey].chartAxes[2].fields.length > 0 ||
+			chartProp.properties[propKey].chartAxes[3].fields.length > 0
+		) {
+			minReqMet.push(true);
+		} else {
+			minReqMet.push(false);
+		}
+	}
+
+	if (minReqMet.includes(false)) {
+		return false;
+	} else {
+		return true;
 	}
 };
 
@@ -119,7 +140,6 @@ const ChartAxes = ({
 	}
 
 	useEffect(() => {
-		console.log("ChartAxes changed");
 		const axesValues = JSON.parse(JSON.stringify(chartProp.properties[propKey].chartAxes));
 
 		let serverCall = false;
@@ -133,7 +153,7 @@ const ChartAxes = ({
 				serverCall = false;
 				resetStore();
 			} else {
-				var minReq = checkMinRequiredCards();
+				var minReq = checkMinRequiredCards(chartProp, propKey);
 				if (minReq) {
 					serverCall = true;
 				} else {
@@ -165,29 +185,12 @@ const ChartAxes = ({
 
 		if (serverCall) {
 			setLoading(true);
-			console.log("Time for API call");
 			getChartData(axesValues, chartProp, propKey, token).then((data) => {
 				updateChartData(propKey, data);
 				setLoading(false);
 			});
 		}
 	}, [chartProp.properties[propKey].chartAxes]);
-
-	const checkMinRequiredCards = () => {
-		var minReqMet = [];
-
-		ChartsInfo[chartProp.properties[propKey].chartType].dropZones.forEach((zone, zoneI) => {
-			chartProp.properties[propKey].chartAxes[zoneI].fields.length >= zone.min
-				? minReqMet.push(true)
-				: minReqMet.push(false);
-		});
-
-		if (minReqMet.includes(false)) {
-			return false;
-		} else {
-			return true;
-		}
-	};
 
 	const resetStore = () => {
 		toggleAxesEdit(propKey);
@@ -209,7 +212,7 @@ const mapStateToProps = (state) => {
 		tabTileProps: state.tabTileProps,
 		userFilterGroup: state.userFilterGroup,
 		chartProp: state.chartProperties,
-		token: state.isLogged.access_token,
+		token: state.isLogged.accessToken,
 	};
 };
 

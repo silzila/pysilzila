@@ -57,23 +57,22 @@ function IndividualTab({
 						renameTabBegin(tabId);
 					}
 				}}
+				onClick={() => {
+					selectTab(tabName, tabId);
+				}}
 				title={`${tabName}. Double click to edit name`}
 			>
-				<span
-					className="tabText"
-					onClick={() => {
-						selectTab(tabName, tabId);
-					}}
-				>
-					{tabName}
-				</span>
+				<span className="tabText">{tabName}</span>
 
 				{/* If dashboard is in presentation mode, the 'X'(close tab icon) will disappear */}
 
 				<span
 					title="Delete Tab"
 					className="closeTab"
-					onClick={() => removeTab(tabName, tabId)}
+					onClick={(e) => {
+						e.stopPropagation();
+						removeTab(tabName, tabId);
+					}}
 					style={
 						dashMode !== "Present"
 							? { visibility: "visible" }

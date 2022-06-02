@@ -6,7 +6,7 @@ import {
 	formatChartYAxisValue,
 } from "../ChartOptions/Format/NumberFormatter";
 
-const MultiBar = ({
+const HorizontalBar = ({
 	// props
 	propKey,
 	graphDimension,
@@ -15,7 +15,6 @@ const MultiBar = ({
 
 	//state
 	chartControlState,
-	chartProperty,
 }) => {
 	var chartControl = chartControlState.properties[propKey];
 	let chartData = chartControl.chartData ? chartControl.chartData.result : "";
@@ -26,7 +25,6 @@ const MultiBar = ({
 		var seriesDataTemp = [];
 		if (chartData) {
 			var chartDataKeys = Object.keys(chartData[0]);
-
 			for (let i = 0; i < Object.keys(chartData[0]).length - 1; i++) {
 				var seriesObj = {
 					type: "bar",
@@ -57,7 +55,7 @@ const MultiBar = ({
 			}
 			setSeriesData(seriesDataTemp);
 		}
-	}, [chartData, chartControl.formatOptions]);
+	}, [chartData, chartControl]);
 
 	const RenderChart = () => {
 		return chartData ? (
@@ -107,7 +105,7 @@ const MultiBar = ({
 						splitLine: {
 							show: chartControl.axisOptions?.xSplitLine,
 						},
-						type: "category",
+
 						position: chartControl.axisOptions.xAxis.position,
 
 						axisLine: {
@@ -136,9 +134,15 @@ const MultiBar = ({
 								chartControl.axisOptions.xAxis.position === "top"
 									? chartControl.axisOptions.xAxis.tickPaddingTop
 									: chartControl.axisOptions.xAxis.tickPaddingBottom,
+
+							formatter: (value) => {
+								var formattedValue = formatChartYAxisValue(chartControl, value);
+								return formattedValue;
+							},
 						},
 					},
 					yAxis: {
+						type: "category",
 						splitLine: {
 							show: chartControl.axisOptions?.ySplitLine,
 						},
@@ -174,11 +178,6 @@ const MultiBar = ({
 								chartControl.axisOptions.yAxis.position === "left"
 									? chartControl.axisOptions.yAxis.tickPaddingLeft
 									: chartControl.axisOptions.yAxis.tickPaddingRight,
-
-							formatter: (value) => {
-								var formattedValue = formatChartYAxisValue(chartControl, value);
-								return formattedValue;
-							},
 						},
 
 						show: chartControl.axisOptions.yAxis.showLabel,
@@ -195,6 +194,7 @@ const MultiBar = ({
 
 	return <>{chartData ? <RenderChart /> : ""}</>;
 };
+
 const mapStateToProps = (state) => {
 	return {
 		chartControlState: state.chartControls,
@@ -202,4 +202,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, null)(MultiBar);
+export default connect(mapStateToProps, null)(HorizontalBar);

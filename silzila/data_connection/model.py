@@ -3,9 +3,9 @@ from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 from ..database.config import Base
 import shortuuid
-# from pydantic.networks import AnyUrl
 
 
+# class used for creating data connection table
 class DataConnection(Base):
     __tablename__ = "data_connection"
 

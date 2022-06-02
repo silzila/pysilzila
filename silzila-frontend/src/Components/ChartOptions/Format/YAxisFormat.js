@@ -1,10 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 import { updateFormatOption } from "../../../redux/ChartProperties/actionsChartControls";
-import InputNumber from "../CommonFunctions/InputNumber";
-import InputSymbol from "../CommonFunctions/InputSymbol";
+import InputPositiveNumber from "../CommonFunctions/InputPositiveNumber";
 
 const YAxisFormat = ({
+	// props
+	chartType,
+
 	// state
 	tabTileProps,
 	chartControl,
@@ -14,36 +16,6 @@ const YAxisFormat = ({
 }) => {
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 	let formatObject = chartControl.properties[propKey].formatOptions.yAxisFormats;
-
-	const formatOptions = [
-		{ type: "Number", value: "Number" },
-		{ type: "Currency", value: "Currency" },
-		{ type: "Percent", value: "Percent" },
-	];
-
-	const renderFormatOptions = () => {
-		return formatOptions.map((item) => {
-			return (
-				<div
-					key={item.value}
-					className={
-						item.value === formatObject.formatValue
-							? "radioButtonSelected"
-							: "radioButton"
-					}
-					value={formatObject.formatValue}
-					onClick={(e) => {
-						console.log(item.value);
-
-						updateFormat(propKey, "yAxisFormats", "formatValue", item.value);
-						// setLabelFormat(item.value);
-					}}
-				>
-					{item.type}
-				</div>
-			);
-		});
-	};
 
 	const separatorOptions = [
 		{ type: "None", value: "None" },
@@ -63,7 +35,6 @@ const YAxisFormat = ({
 					}
 					value={formatObject.numberSeparator}
 					onClick={(e) => {
-						console.log(item.value);
 						updateFormat(propKey, "yAxisFormats", "numberSeparator", item.value);
 					}}
 				>
@@ -75,29 +46,9 @@ const YAxisFormat = ({
 
 	return (
 		<React.Fragment>
-			<div className="optionDescription">MEASURE AXIS FORMAT</div>
-
-			{/* <div className="optionDescription">
-				<label htmlFor="enableDisable" className="enableDisableLabel">
-					Format Value
-				</label>
+			<div className="optionDescription">
+				{chartType === "scatterPlot" ? "Y-AXIS MEASURE FORMAT" : "MEASURE AXIS FORMAT"}{" "}
 			</div>
-			<div className="radioButtons" style={{ padding: "0", margin: "auto" }}>
-				{renderFormatOptions()}
-			</div> */}
-			{/* <div className="optionDescription" style={{ marginTop: "0.5rem" }}>
-				{formatObject.formatValue === "Currency" ? (
-					<>
-						<span style={{ margin: "auto" }}>Curency Symbol</span>
-						<InputSymbol
-							value={formatObject.currencySymbol}
-							updateValue={(value) =>
-								updateFormat(propKey, "yAxisFormats", "currencySymbol", value)
-							}
-						/>
-					</>
-				) : null}
-			</div> */}
 
 			<div className="optionDescription">
 				<label htmlFor="enableDisable" className="enableDisableLabel">
@@ -126,10 +77,9 @@ const YAxisFormat = ({
 						);
 					}}
 				/>
-				<InputNumber
+				<InputPositiveNumber
 					value={formatObject.roundingDigits}
 					updateValue={(value) => {
-						console.log(value);
 						if (value >= 0) {
 							updateFormat(propKey, "yAxisFormats", "roundingDigits", value);
 						} else {

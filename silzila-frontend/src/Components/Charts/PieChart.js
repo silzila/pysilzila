@@ -2,6 +2,7 @@ import ReactEcharts from "echarts-for-react";
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { formatChartLabelValue } from "../ChartOptions/Format/NumberFormatter";
+import { updateChartMargins } from "../../redux/ChartProperties/actionsChartControls";
 
 const PieChart = ({
 	//props
@@ -13,27 +14,50 @@ const PieChart = ({
 	//state
 	chartProp,
 	chartControls,
+
+	// dispatch
+	updateChartMargins,
 }) => {
 	var chartControl = chartControls.properties[propKey];
 	let chartData = chartControl.chartData ? chartControl.chartData.result : "";
-	var chartDataKeys;
+	const [chartDataKeys, setChartDataKeys] = useState([]);
 
 	useEffect(() => {
 		if (chartControl.chartData) {
-			chartDataKeys = Object.keys(chartData[0]);
-			var objKey =
-				chartProp.properties[propKey].chartAxes[1].fields[0].fieldname + "__" + "year";
-			chartControl.chartData.result.map((el) => {
-				if (objKey in el) {
-					let year = el[objKey];
-					el[objKey] = year.toString();
+			setChartDataKeys(Object.keys(chartData[0]));
+
+			var objKey;
+			if (chartProp.properties[propKey].chartAxes[1].fields[0]) {
+				if ("time_grain" in chartProp.properties[propKey].chartAxes[1].fields[0]) {
+					objKey =
+						chartProp.properties[propKey].chartAxes[1].fields[0].fieldname +
+						"__" +
+						chartProp.properties[propKey].chartAxes[1].fields[0].time_grain;
+				} else {
+					objKey = chartProp.properties[propKey].chartAxes[1].fields[0].fieldname;
 				}
-				return el;
-			});
+				chartControl.chartData.result.map((el) => {
+					if (objKey in el) {
+						let agg = el[objKey];
+						//console.log(agg);
+						if (agg) el[objKey] = agg.toString();
+					}
+					return el;
+				});
+				//console.log(chartControl.chartData.result);
+			}
 		}
 	}, [chartData, chartControl]);
 
-	// console.log(chartData);
+	//console.log(chartData);
+
+	var radius = chartControl.chartMargin.radius;
+	useEffect(() => {
+		if (radius > 100) {
+			updateChartMargins(propKey, "radius", 100);
+			radius = 100;
+		}
+	});
 
 	const RenderChart = () => {
 		return (
@@ -45,6 +69,7 @@ const PieChart = ({
 						width: graphDimension.width,
 						height: graphDimension.height,
 						overflow: "hidden",
+						margin: "auto",
 						border: chartArea
 							? "none"
 							: graphTileSize
@@ -76,12 +101,14 @@ const PieChart = ({
 							{
 								type: "pie",
 								startAngle: chartControl.axisOptions.pieAxisOptions.pieStartAngle,
-								clockWise: chartControl.axisOptions.pieAxisOptions.clockWise,
+								clockwise: chartControl.axisOptions.pieAxisOptions.clockWise,
 								label: {
 									position: chartControl.labelOptions.pieLabel.labelPosition,
 									show: chartControl.labelOptions.showLabel,
 									fontSize: chartControl.labelOptions.fontSize,
-									color: chartControl.labelOptions.labelColor,
+									color: chartControl.labelOptions.labelColorManual
+										? chartControl.labelOptions.labelColor
+										: null,
 									padding: [
 										chartControl.axisOptions.pieAxisOptions.labelPadding,
 										chartControl.axisOptions.pieAxisOptions.labelPadding,
@@ -89,15 +116,18 @@ const PieChart = ({
 										chartControl.axisOptions.pieAxisOptions.labelPadding,
 									],
 
-									// formatter: (value) => {
-									// 	var formattedValue = value.value[chartDataKeys[1]];
-									// 	formattedValue = formatChartLabelValue(
-									// 		chartControl,
-									// 		formattedValue
-									// 	);
-									// 	return formattedValue;
-									// },
+									formatter: (value) => {
+										if (chartDataKeys) {
+											var formattedValue = value.value[chartDataKeys[1]];
+											formattedValue = formatChartLabelValue(
+												chartControl,
+												formattedValue
+											);
+											return formattedValue;
+										}
+									},
 								},
+								radius: radius + "%",
 							},
 						],
 					}}

@@ -22,11 +22,39 @@ const chartControl = {
 			},
 
 			chartMargin: {
+				//for pie and gauge
+				radius: 80,
+				// for donut and rose
+				innerRadius: 40,
+				outerRadius: 80,
+				// for others
 				selectedMargin: "top",
 				top: 30,
 				right: 40,
 				bottom: 25,
-				left: 65,
+				left: 70,
+			},
+
+			crossTabStyleOptions: {
+				borderWidth: 1,
+			},
+			crossTabHeaderLabelOptions: {
+				labelColorManual: false,
+				labelColor: "#666666",
+				fontSize: 14,
+				fontStyle: "normal",
+				fontWeigth: "normal",
+				fontFamily: "sans-serif",
+				fontWeight: "500",
+			},
+			crossTabCellLabelOptions: {
+				labelColorManual: false,
+				labelColor: "#666666",
+				fontSize: 12,
+				fontStyle: "normal",
+				fontWeigth: "normal",
+				fontFamily: "sans-serif",
+				fontWeight: "400",
 			},
 
 			crossTabStyleOptions:{
@@ -79,6 +107,12 @@ const chartControl = {
 					roundingDigits: 1,
 					numberSeparator: "None",
 				},
+
+				xAxisFormats: {
+					enableRounding: "false",
+					roundingDigits: 1,
+					numberSeparator: "None",
+				},
 			},
 
 			mouseOver: {
@@ -98,11 +132,22 @@ const chartControl = {
 					showAxisLabel: true,
 					labelPadding: 12,
 				},
+
 				gaugeChartControls: {
 					stepcolor: [
-						{ percentage: 40, color: "#67e0e3", per: 0.4 },
-						{ percentage: 50, color: "#37a2da", per: 0.9 },
-						{ percentage: 10, color: "#fd666d", per: 1 },
+						{
+							percentage: 4,
+							color: "#3fb1e3",
+							per: 0.4,
+							isColorAuto: true,
+						},
+						{
+							percentage: 5,
+							color: "#6be6c1",
+							per: 0.9,
+							isColorAuto: true,
+						},
+						{ percentage: 1, color: "#626c91", per: 1, isColorAuto: true },
 					],
 				},
 				pieAxisOptions: {
@@ -182,11 +227,39 @@ const chartControlsReducer = (state = chartControl, action) => {
 						},
 
 						chartMargin: {
+							//for pie and gauge
+							radius: 80,
+							// for donut and rose
+							innerRadius: 40,
+							outerRadius: 80,
+							// for others
 							selectedMargin: "top",
 							top: 30,
 							right: 40,
 							bottom: 25,
-							left: 65,
+							left: 70,
+						},
+						crossTabStyleOptions: {
+							borderWidth: 1,
+						},
+
+						crossTabHeaderLabelOptions: {
+							labelColorManual: false,
+							labelColor: "#666666",
+							fontSize: 14,
+							fontStyle: "normal",
+							fontWeigth: "normal",
+							fontFamily: "sans-serif",
+							fontWeight: "500",
+						},
+						crossTabCellLabelOptions: {
+							labelColorManual: false,
+							labelColor: "#666666",
+							fontSize: 12,
+							fontStyle: "normal",
+							fontWeigth: "normal",
+							fontFamily: "sans-serif",
+							fontWeight: "400",
 						},
 						crossTabStyleOptions:{
 							borderWidth : 1,
@@ -239,6 +312,12 @@ const chartControlsReducer = (state = chartControl, action) => {
 								roundingDigits: 1,
 								numberSeparator: "None",
 							},
+
+							xAxisFormats: {
+								enableRounding: "false",
+								roundingDigits: 1,
+								numberSeparator: "None",
+							},
 						},
 
 						mouseOver: {
@@ -260,9 +339,19 @@ const chartControlsReducer = (state = chartControl, action) => {
 							},
 							gaugeChartControls: {
 								stepcolor: [
-									{ percentage: 40, color: "#67e0e3", per: 0.4 },
-									{ percentage: 50, color: "#37a2da", per: 0.9 },
-									{ percentage: 10, color: "#fd666d", per: 1 },
+									{
+										percentage: 4,
+										color: "#3fb1e3",
+										per: 0.4,
+										isColorAuto: true,
+									},
+									{
+										percentage: 5,
+										color: "#6be6c1",
+										per: 0.9,
+										isColorAuto: true,
+									},
+									{ percentage: 1, color: "#626c91", per: 1, isColorAuto: true },
 								],
 							},
 							pieAxisOptions: {
@@ -348,11 +437,40 @@ const chartControlsReducer = (state = chartControl, action) => {
 						},
 
 						chartMargin: {
+							//for pie and gauge
+							radius: 80,
+							// for donut and rose
+							innerRadius: 40,
+							outerRadius: 80,
+							// for others
 							selectedMargin: "top",
 							top: 30,
 							right: 40,
 							bottom: 25,
-							left: 65,
+							left: 70,
+						},
+
+						crossTabStyleOptions: {
+							borderWidth: 1,
+						},
+
+						crossTabHeaderLabelOptions: {
+							labelColorManual: false,
+							labelColor: "#666666",
+							fontSize: 14,
+							fontStyle: "normal",
+							fontWeigth: "normal",
+							fontFamily: "sans-serif",
+							fontWeight: "500",
+						},
+						crossTabCellLabelOptions: {
+							labelColorManual: false,
+							labelColor: "#666666",
+							fontSize: 12,
+							fontStyle: "normal",
+							fontWeigth: "normal",
+							fontFamily: "sans-serif",
+							fontWeight: "400",
 						},
 
 						crossTabStyleOptions:{
@@ -406,6 +524,12 @@ const chartControlsReducer = (state = chartControl, action) => {
 								roundingDigits: 1,
 								numberSeparator: "None",
 							},
+
+							xAxisFormats: {
+								enableRounding: "false",
+								roundingDigits: 1,
+								numberSeparator: "None",
+							},
 						},
 
 						mouseOver: {
@@ -427,9 +551,19 @@ const chartControlsReducer = (state = chartControl, action) => {
 							},
 							gaugeChartControls: {
 								stepcolor: [
-									{ percentage: 40, color: "#67e0e3", per: 0.4 },
-									{ percentage: 50, color: "#37a2da", per: 0.9 },
-									{ percentage: 10, color: "#fd666d", per: 1 },
+									{
+										percentage: 4,
+										color: "#3fb1e3",
+										per: 0.4,
+										isColorAuto: true,
+									},
+									{
+										percentage: 5,
+										color: "#6be6c1",
+										per: 0.9,
+										isColorAuto: true,
+									},
+									{ percentage: 1, color: "#626c91", per: 1, isColorAuto: true },
 								],
 							},
 							pieAxisOptions: {
@@ -662,6 +796,39 @@ const chartControlsReducer = (state = chartControl, action) => {
 				properties: {
 					[action.payload.propKey]: {
 						crossTabCellLabelOptions: { [action.payload.option]: { $set: action.payload.value } },
+					},
+				},
+			});
+
+		case "UPDATE_CROSSTAB_STYLE_OPTIONS":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						crossTabStyleOptions: {
+							[action.payload.option]: { $set: action.payload.value },
+						},
+					},
+				},
+			});
+
+		case "UPDATE_CROSSTAB_HEADER_LABEL_OPTIONS":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						crossTabHeaderLabelOptions: {
+							[action.payload.option]: { $set: action.payload.value },
+						},
+					},
+				},
+			});
+
+		case "UPDATE_CROSSTAB_CELL_LABEL_OPTIONS":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						crossTabCellLabelOptions: {
+							[action.payload.option]: { $set: action.payload.value },
+						},
 					},
 				},
 			});
