@@ -14,7 +14,6 @@ import ChartMouseOver from "./MouseOver/ChartMouseOver";
 import ChartTitle from "./Title/ChartTitle";
 import ChartStyle from "./Style/ChartStyle";
 import ColorSteps from "./Color/ColorSteps";
-import ColorSteps2 from "./Color/ColorSteps2";
 
 const ControlDetail = ({ chartProp, tabTileProps }) => {
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
@@ -33,7 +32,6 @@ const ControlDetail = ({ chartProp, tabTileProps }) => {
 					return (
 						<>
 							<ColorSteps />
-							{/* <ColorSteps2 /> */}
 						</>
 					);
 				} else {
@@ -57,10 +55,9 @@ const ControlDetail = ({ chartProp, tabTileProps }) => {
 
 			case "Axis":
 				return <AxisControls />;
-        
-        	case "Style":
-			return <ChartStyle />;
 
+			case "Style":
+				return <ChartStyle />;
 
 			case "Style":
 				return <ChartStyle />;
