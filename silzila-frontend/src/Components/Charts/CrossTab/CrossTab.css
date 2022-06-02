@@ -47,9 +47,6 @@
 	border-collapse: collapse;
 }
 
-/* .CrossTabTable th{
-       width: 2em;
-    } */
 
 .CrossTabHeader,
 .CrossTabLeftColumnHeader {
@@ -105,6 +102,3 @@
 .UserClickedCellRemainingChildren {
 	opacity: 0.2;
 }
-
-
-   

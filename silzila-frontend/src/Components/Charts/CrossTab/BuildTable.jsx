@@ -3,12 +3,22 @@ import debounce from "lodash.debounce";
 import ShowDataPopup from "../../ChartOptions/ShowDataPopup";
 import * as CrossTab from "./CrossTab";
 
-export const BuildTable = ({ crossTabData, dustbinRows, dustbinValues, 
-  dustbinColumns, chartPropData, chartProperty, propKey,chartControls }) => {
+export const BuildTable = ({
+  crossTabData,
+  dustbinRows,
+  dustbinValues,
+  dustbinColumns,
+  chartPropData,
+  chartProperty,
+  propKey,
+  chartControls,
+}) => {
   const [showPopup, setShowPopup] = useState(false);
   const [popupData, setPopupData] = useState({});
 
-  const [userClickedCell, serUserClickedCell] = useState(chartProperty.properties[propKey].crossTabUserClicked);
+  const [userClickedCell, serUserClickedCell] = useState(
+    chartProperty.properties[propKey].crossTabUserClicked
+  );
 
   const prevCountRef = useRef();
 
@@ -16,53 +26,36 @@ export const BuildTable = ({ crossTabData, dustbinRows, dustbinValues,
     prevCountRef.current = userClickedCell;
   });
 
-  // const debouncedMouseClickHandler = useMemo(
-  //     ()=>debounce(_mouseClickHandler.bind(this), 300)
-  //     , []);
-
-  // const _mouseClickHandler = (e) =>{
-  //     let _prevId = prevCountRef.current;
-  //     updateCrossTabUserClicked(propKey, {id :e.target.id, compare : e.target.getAttribute("compareObj")})
-
-  //     if(_prevId && _prevId.id != e.target.id){
-  //       let _cell = document.getElementById(_prevId.id);
-
-  //       if(_cell){
-  //         _cell.classList.remove("UserClickedCellChildren");
-  //       }
-  //     }
-
-  //     if(![...e.target.classList].find(cls=>cls == "UserClickedCellChildren")){
-  //       e.target.classList.add("UserClickedCellChildren");
-  //       serUserClickedCell(()=> { return {id :e.target.id, compare : e.target.getAttribute("compareObj")}});
-  //       console.log({id :e.target.id, compare : e.target.getAttribute("compareObj")})
-  //     }
-  //     else{
-  //       e.target.classList.remove("UserClickedCellChildren");
-  //       serUserClickedCell(()=> { return {id :"", compare : ""}});
-  //     }
-  //   }
-
+  /* Construct cell data to show on popup */
   const _mouseEnterHandler = (e) => {
     let _compareObj = JSON.parse(e.target.getAttribute("compareObj"));
 
     if (!(Object.keys(_compareObj).length === 0 && _compareObj.constructor === Object)) {
-      setPopupData({ data: _compareObj, rect: e.target.getClientRects()[0], remove: null, style: null });
+      setPopupData({
+        data: _compareObj,
+        rect: e.target.getClientRects()[0],
+        remove: null,
+        style: null,
+      });
       setShowPopup(true);
     }
   };
 
-  const _hideCellDataPopup = () => {   
-    setShowPopup(false); 
-};
+  const _hideCellDataPopup = () => {
+    setShowPopup(false);
+  };
 
-  const debouncedMouseEnterHandler = useMemo(() => debounce(_mouseEnterHandler.bind(this), 300), []);
+  const debouncedMouseEnterHandler = useMemo(
+    () => debounce(_mouseEnterHandler.bind(this), 300),
+    []
+  );
 
-  const debouncedMouseLeaveHandler = useMemo(() => debounce(_hideCellDataPopup.bind(this), 300), []);
+  const debouncedMouseLeaveHandler = useMemo(
+    () => debounce(_hideCellDataPopup.bind(this), 300),
+    []
+  );
 
-
- 
-
+  /*  TODO:: Feature to change color of Row/Column cells on header cell click */
   const _getUserClickedColor = (col, rowIndex, colIndex) => {
     let _className = "";
 
@@ -88,11 +81,19 @@ export const BuildTable = ({ crossTabData, dustbinRows, dustbinValues,
 
           if (_idArray[0] < dustbinColumns.length + 1) {
             if (colIndex >= dustbinRows.length) {
-              return CrossTab.getUserClickedClassNameForColor(chartPropData, col, _userCellCompareJSON);
+              return CrossTab.getUserClickedClassNameForColor(
+                chartPropData,
+                col,
+                _userCellCompareJSON
+              );
             }
           } else if (_idArray[1] < dustbinRows.length) {
             if (col.rowSpan > 1) {
-              return CrossTab.getUserClickedClassNameForColor(chartPropData, col, _userCellCompareJSON);
+              return CrossTab.getUserClickedClassNameForColor(
+                chartPropData,
+                col,
+                _userCellCompareJSON
+              );
             } else {
               if (rowIndex == _idArray[0]) {
                 return "UserClickedCellChildren";
@@ -114,21 +115,22 @@ export const BuildTable = ({ crossTabData, dustbinRows, dustbinValues,
     return _className;
   };
 
+  /*  Adding class to both Row & Column headers */
   const _getHeaderClassName = (col, rowIndex, colIndex) => {
     let _header = "";
 
-    //_header = rowIndex <= dustbinRows.length ? "CrossTabHeader " : "CrossTabLeftColumnHeader"; PRS 14 May 2022
-    //_header = col.isHeaderField ? "CrossTabHeader " : "CrossTabLeftColumnHeader";
     _header = rowIndex < dustbinColumns.length ? "CrossTabHeader " : "CrossTabLeftColumnHeader";
-   // _header = "CrossTabLeftColumnHeader";
 
-    return col.displayData ? _header + _getUserClickedColor(col, rowIndex, colIndex) : "EmptyHeaderCell";
+    return col.displayData
+      ? _header + _getUserClickedColor(col, rowIndex, colIndex)
+      : "EmptyHeaderCell";
   };
 
+/*  Construct table header and cell with data */
   const GetTableContent = (col, rowIndex, colIndex) => {
     if (col.isHeaderField && !col.skip) {
-      /*   onClick={e=>{e.persist(); debouncedMouseClickHandler(e)}}  */
       return (
+        /*  Construct header area */
         <th
           id={rowIndex + "_" + colIndex + "_" + col.isHeaderField}
           className={_getHeaderClassName(col, rowIndex, colIndex)}
@@ -137,11 +139,11 @@ export const BuildTable = ({ crossTabData, dustbinRows, dustbinValues,
           colSpan={col.columnSpan}
           rowSpan={col.rowSpan}
           style={{
-            fontSize : chartControls.properties[propKey].crossTabHeaderLabelOptions.fontSize,
-            fontWeight : chartControls.properties[propKey].crossTabHeaderLabelOptions.fontWeight,
-            color : chartControls.properties[propKey].crossTabHeaderLabelOptions.labelColor,
-            borderWidth : chartControls.properties[propKey].crossTabStyleOptions.borderWidth
-           }}
+            fontSize: chartControls.properties[propKey].crossTabHeaderLabelOptions.fontSize,
+            fontWeight: chartControls.properties[propKey].crossTabHeaderLabelOptions.fontWeight,
+            color: chartControls.properties[propKey].crossTabHeaderLabelOptions.labelColor,
+            borderWidth: chartControls.properties[propKey].crossTabStyleOptions.borderWidth,
+          }}
         >
           {col.displayData}
         </th>
@@ -149,24 +151,26 @@ export const BuildTable = ({ crossTabData, dustbinRows, dustbinValues,
     } else {
       if (!col.skip) {
         return (
+        /*  Construct table body area */
+
           <td
             id={rowIndex + "_" + colIndex + "_" + col.isHeaderField}
             className={"CrossTabCell " + _getUserClickedColor(col, rowIndex, colIndex)}
             key={colIndex}
             style={{
-             fontSize : chartControls.properties[propKey].crossTabCellLabelOptions.fontSize,
-             fontWeight : chartControls.properties[propKey].crossTabCellLabelOptions.fontWeight,
-             color : chartControls.properties[propKey].crossTabCellLabelOptions.labelColor,
-             borderWidth : chartControls.properties[propKey].crossTabStyleOptions.borderWidth
+              fontSize: chartControls.properties[propKey].crossTabCellLabelOptions.fontSize,
+              fontWeight: chartControls.properties[propKey].crossTabCellLabelOptions.fontWeight,
+              color: chartControls.properties[propKey].crossTabCellLabelOptions.labelColor,
+              borderWidth: chartControls.properties[propKey].crossTabStyleOptions.borderWidth,
             }}
             colSpan={col.columnSpan}
             rowSpan={col.rowSpan}
             compareObj={JSON.stringify(col.compareObj)}
             onMouseEnter={(e) => {
-              if(chartControls.properties[propKey].mouseOver.enable){
+              if (chartControls.properties[propKey].mouseOver.enable) {
                 e.persist();
                 debouncedMouseEnterHandler(e);
-              }           
+              }
             }}
             onMouseLeave={(e) => {
               e.persist();
@@ -184,6 +188,7 @@ export const BuildTable = ({ crossTabData, dustbinRows, dustbinValues,
 
   let _tableContent = [];
 
+  /*  Construct cross tab chart table  rows */
   if (crossTabData.length > 0) {
     _tableContent = crossTabData.map((row, rowIndex) => {
       let _rowContent = [];
@@ -194,21 +199,37 @@ export const BuildTable = ({ crossTabData, dustbinRows, dustbinValues,
       );
 
       return (
-        <tr className="CrossTabRow" style={{
-          lineHeight : chartControls.properties[propKey].crossTabStyleOptions.lineHeight  
-        }} key={rowIndex}>
+        <tr
+          className="CrossTabRow"
+          style={{
+            lineHeight: chartControls.properties[propKey].crossTabStyleOptions.lineHeight,
+          }}
+          key={rowIndex}
+        >
           {_rowContent}
         </tr>
       );
     });
   }
 
+  /*  Render table and show popup */
   return (
     <div className="CrossTab">
-      <table className="CrossTabTable" style={{
-        borderWidth : chartControls.properties[propKey].crossTabStyleOptions.borderWidth
-      }}>{_tableContent}</table>
-      {showPopup ? <ShowDataPopup chartProp={chartControls.properties[propKey]} show={showPopup} {...popupData}></ShowDataPopup> : null}
+      <table
+        className="CrossTabTable"
+        style={{
+          borderWidth: chartControls.properties[propKey].crossTabStyleOptions.borderWidth,
+        }}
+      >
+        {_tableContent}
+      </table>
+      {showPopup ? (
+        <ShowDataPopup
+          chartProp={chartControls.properties[propKey]}
+          show={showPopup}
+          {...popupData}
+        ></ShowDataPopup>
+      ) : null}
     </div>
   );
 };
