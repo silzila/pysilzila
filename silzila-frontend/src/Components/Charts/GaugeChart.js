@@ -84,17 +84,7 @@ const GaugeChart = ({
 							type: "gauge",
 							radius: chartControl.chartMargin.radius + "%",
 
-							max:
-								chartControl.colorScale.colorScaleType === "Manual"
-									? chartControl.colorScale.max !== ""
-										? parseInt(chartControl.colorScale.max)
-										: newData[0]
-										? newData[0].value * 2
-										: 0
-									: newData[0]
-									? newData[0].value * 2
-									: 0,
-
+							max: chartControl.axisOptions.gaugeAxisOptions.max,
 							min:
 								chartControl.colorScale.colorScaleType === "Manual"
 									? chartControl.colorScale.min !== ""

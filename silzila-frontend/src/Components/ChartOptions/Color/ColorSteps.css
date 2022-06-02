@@ -1,0 +1,33 @@
+.colorStepsContainer {
+	width: 100%;
+	padding: 10px 0 0 0;
+	font-size: 12px;
+	display: flex;
+	flex-direction: column;
+	transition: ease-in 0.3s linear;
+	overflow: auto;
+	height: 100%;
+}
+
+.colorStepsInput {
+	margin: 2px;
+	height: 1.5rem;
+	flex: 1;
+	display: flex;
+	padding: 1px;
+	border-radius: 3px;
+}
+
+.colorIndicator {
+	height: 23px;
+	max-width: 23px;
+	border-color: grey;
+	border-radius: 3px;
+	border: 1px solid;
+	flex: 1;
+	margin-top: 1px;
+}
+
+/* .colorStepsAddDelete {
+	flex: 1;
+} */

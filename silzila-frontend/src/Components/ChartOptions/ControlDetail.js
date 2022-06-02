@@ -14,6 +14,7 @@ import ChartMouseOver from "./MouseOver/ChartMouseOver";
 import ChartTitle from "./Title/ChartTitle";
 import ChartStyle from "./Style/ChartStyle";
 import ColorSteps from "./Color/ColorSteps";
+import ColorSteps2 from "./Color/ColorSteps2";
 
 const ControlDetail = ({ chartProp, tabTileProps }) => {
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
@@ -29,7 +30,12 @@ const ControlDetail = ({ chartProp, tabTileProps }) => {
 				if (chartType === "heatmap") {
 					return <ColorScale />;
 				} else if (chartType === "gauge") {
-					return <ColorSteps />;
+					return (
+						<>
+							<ColorSteps />
+							{/* <ColorSteps2 /> */}
+						</>
+					);
 				} else {
 					return <ChartColors />;
 				}

@@ -1,12 +1,11 @@
 // Used for setting color scale in Gauge chart
 
-import { Radio, TextField, Tooltip, Typography, Popover } from "@mui/material";
+import { TextField, Tooltip, Popover } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import {
 	addingNewStep,
 	changingValuesofSteps,
-	setColorScaleOption,
 	updateGaugeAxisOptions,
 } from "../../../redux/ChartProperties/actionsChartControls";
 import { NotificationDialog } from "../../CommonFunctions/DialogComponents";
@@ -16,6 +15,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { SketchPicker } from "react-color";
 import ChartColors from "./ChartColors";
 import { ColorSchemes } from "./ColorScheme";
+import "./ColorSteps.css";
 
 const textFieldStyleProps = {
 	style: {
@@ -76,15 +76,15 @@ const ColorSteps = ({
 	const calculatePercentage = (temp) => {
 		let total = 0;
 		temp.map((el) => {
-			total = parseInt(total) + parseInt(el.percentage);
+			total = parseInt(total) + parseInt(el.stepValue);
 		});
-		console.log(total);
 		var per = 0;
 		var i = 0;
 
 		for (i = 0; i < temp.length; i++) {
-			per = per + temp[i].percentage / total;
-			updatePercentageValue(per.toPrecision(1), i, temp);
+			per = per + temp[i].stepValue / total;
+
+			updatePercentageValue(per.toPrecision(2), i, temp);
 		}
 	};
 
@@ -93,14 +93,13 @@ const ColorSteps = ({
 	const updatePercentageValue = (value, index, temp) => {
 		var maxTotal = 0;
 		const temp1 = temp.map((el, i) => {
-			maxTotal = maxTotal + el.percentage;
+			maxTotal = maxTotal + el.stepValue;
 			if (i === index) {
 				el.per = value;
 			}
 			return el;
 		});
-		console.log(temp1, "temp1temp1");
-		console.log(maxTotal);
+
 		updateGaugeAxisOptions(propKey, "max", maxTotal);
 		changingValuesofSteps(propKey, temp1);
 	};
@@ -121,7 +120,7 @@ const ColorSteps = ({
 		const temp = chartProp.properties[propKey].axisOptions.gaugeChartControls.stepcolor.map(
 			(el, i) => {
 				if (index === i) {
-					el.percentage = parseInt(value);
+					el.stepValue = parseInt(value);
 				}
 				return el;
 			}
@@ -139,18 +138,7 @@ const ColorSteps = ({
 	};
 
 	return (
-		<div
-			style={{
-				width: "100%",
-				padding: "10px 0 0 0",
-				fontSize: "12px",
-				display: "flex",
-				flexDirection: "column",
-				transition: "ease-in 0.3s linear",
-				overflow: "auto",
-				height: "100%",
-			}}
-		>
+		<div className="colorStepsContainer">
 			<div>
 				<ChartColors />
 			</div>
@@ -176,153 +164,145 @@ const ColorSteps = ({
 										onMouseOver={() => xprops.setOpen(true)}
 										onMouseLeave={() => xprops.setOpen(false)}
 									>
-										<div
-											style={{
-												margin: "2px",
-												height: "1.5rem",
-												flex: 1,
-												display: "flex",
-												padding: "1px",
-												borderRadius: "3px",
-											}}
-										>
+										<div className="colorStepsInput">
 											<TextField
 												type="number"
 												style={{ flex: 1, marginRight: "5px" }}
 												onChange={(e) => {
 													changeStepValue(e.target.value, index);
 												}}
-												value={el.percentage}
+												value={el.stepValue}
 												inputProps={{ ...textFieldStyleProps }}
 											/>
-											{el.isColorAuto ? (
-												<div
-													style={{
-														height: "23px",
-														maxWidth: "20px",
-														borderColor: "grey",
-														borderRadius: "3px",
-														border: "1px solid",
-														backgroundColor: colorsOfScheme[index],
-														flex: 1,
-														marginTop: "1px",
-													}}
-													onClick={(el) => {
-														setSelectedStepIndex(index);
-														setColorPopoverOpen(true);
-													}}
-												></div>
-											) : (
-												<div
-													style={{
-														height: "23px",
-														maxWidth: "20px",
-														borderColor: "grey",
-														borderRadius: "3px",
-														border: "1px solid",
-														backgroundColor: el.color,
-														flex: 1,
-														marginTop: "1px",
-													}}
-													onClick={(el) => {
-														setSelectedStepIndex(index);
-														setColorPopoverOpen(true);
-													}}
-												></div>
-											)}
-											<div
-												style={{
-													flex: 1,
-												}}
-											>
-												{xprops.open ? (
-													<div
-														style={{
-															display: "flex",
-															float: "right",
-														}}
-													>
-														<div
-															style={{
-																cursor: "pointer",
-																justifyContent: "center",
-															}}
-															onClick={(e) => {
-																var idx = index + 1;
-																var obj = {
-																	percentage: el.percentage,
-																	color: colorsOfScheme[idx],
-																	per: el.per,
-																	isColorAuto: true,
-																};
 
-																addNewStep(obj, idx);
-															}}
-														>
-															<Tooltip title="Add Below">
-																<AddIcon
-																	sx={{
-																		color: "#666",
-																		height: "20px",
-																		width: "20px",
-																		padding: "1px",
-																		marginRight: "4px",
-																		"&:hover": {
-																			backgroundColor:
-																				"#d7d9db",
-																			borderRadius: "2px",
-																		},
-																	}}
-																/>
-															</Tooltip>
-														</div>
-														<div
-															style={{
-																cursor: "pointer",
-																justifyContent: "center",
-															}}
-															onClick={() => {
-																console.log("removing steps");
-																if (
-																	chartProp.properties[propKey]
-																		.axisOptions
-																		.gaugeChartControls
-																		.stepcolor.length === 1
-																) {
-																	console.log("cant remove step");
-																	setOpenAlert(true);
-																	setSeverity("warning");
-																	setTestMessage(
-																		"atleast one step should be there"
+											<div
+												className="colorIndicator"
+												style={{
+													backgroundColor: el.color,
+												}}
+												onClick={(el) => {
+													setSelectedStepIndex(index);
+													setColorPopoverOpen(true);
+												}}
+											></div>
+											<div className="colorStepsAddDelete">
+												<div
+													style={{
+														display: "flex",
+														float: "right",
+														width: "50px",
+														marginLeft: "10px",
+													}}
+												>
+													{xprops.open ? (
+														<>
+															<div
+																style={{
+																	cursor: "pointer",
+																	justifyContent: "center",
+																}}
+																onClick={(e) => {
+																	var idx = index + 1;
+																	console.log(
+																		colorsOfScheme.length,
+																		idx
 																	);
-																	setTimeout(() => {
-																		setOpenAlert(false);
-																		setTestMessage("");
-																	}, 3000);
-																} else {
-																	removeStep(index);
-																}
-															}}
-														>
-															<Tooltip title="Delete">
-																<DeleteIcon
-																	sx={{
-																		color: "#666",
-																		height: "20px",
-																		width: "20px",
-																		padding: "2px",
-																		"&:hover": {
-																			color: "red",
-																			backgroundColor:
-																				"#d7d9db",
-																			borderRadius: "2px",
-																		},
-																	}}
-																/>
-															</Tooltip>
-														</div>
-													</div>
-												) : null}
+																	console.log(
+																		idx % colorsOfScheme.length
+																	);
+																	var colorValue = "";
+																	console.log(colorsOfScheme);
+																	if (
+																		idx >= colorsOfScheme.length
+																	) {
+																		var id2 =
+																			idx %
+																			colorsOfScheme.length;
+																		console.log(id2);
+																		colorValue =
+																			colorsOfScheme[id2];
+																	} else {
+																		colorValue =
+																			colorsOfScheme[idx];
+																	}
+																	var obj = {
+																		stepValue: el.stepValue,
+																		color: colorValue,
+																		per: el.per,
+																		isColorAuto: true,
+																	};
+
+																	addNewStep(obj, idx);
+																}}
+															>
+																<Tooltip title="Add Below">
+																	<AddIcon
+																		sx={{
+																			color: "#666",
+																			height: "23px",
+																			width: "23px",
+																			padding: "1px",
+																			marginRight: "4px",
+																			"&:hover": {
+																				backgroundColor:
+																					"#d7d9db",
+																				borderRadius: "2px",
+																			},
+																		}}
+																	/>
+																</Tooltip>
+															</div>
+															<div
+																style={{
+																	cursor: "pointer",
+																	justifyContent: "center",
+																}}
+																onClick={() => {
+																	console.log("removing steps");
+																	if (
+																		chartProp.properties[
+																			propKey
+																		].axisOptions
+																			.gaugeChartControls
+																			.stepcolor.length === 1
+																	) {
+																		console.log(
+																			"cant remove step"
+																		);
+																		setOpenAlert(true);
+																		setSeverity("warning");
+																		setTestMessage(
+																			"atleast one step should be there"
+																		);
+																		setTimeout(() => {
+																			setOpenAlert(false);
+																			setTestMessage("");
+																		}, 3000);
+																	} else {
+																		removeStep(index);
+																	}
+																}}
+															>
+																<Tooltip title="Delete">
+																	<DeleteIcon
+																		sx={{
+																			color: "#666",
+																			height: "23px",
+																			width: "23px",
+																			padding: "2px",
+																			"&:hover": {
+																				color: "red",
+																				backgroundColor:
+																					"#d7d9db",
+																				borderRadius: "2px",
+																			},
+																		}}
+																	/>
+																</Tooltip>
+															</div>
+														</>
+													) : null}
+												</div>
 											</div>
 										</div>
 									</div>
@@ -402,8 +382,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		// setColorScaleOption: (option, value, propKey) =>
-		// 	dispatch(setColorScaleOption(option, value, propKey)),
 		changingValuesofSteps: (propKey, value) => dispatch(changingValuesofSteps(propKey, value)),
 		addingNewStep: (propKey, index, value) => dispatch(addingNewStep(propKey, index, value)),
 		updateGaugeAxisOptions: (propKey, option, value) =>
