@@ -57,6 +57,29 @@ const chartControl = {
 				fontWeight: "400",
 			},
 
+			crossTabStyleOptions:{
+				borderWidth : 1,
+				lineHeight : 1,
+			},
+			crossTabHeaderLabelOptions:{
+				labelColorManual: false,
+				labelColor: "#666666",			
+				fontSize: 14,
+				fontStyle: "normal",
+				fontWeigth: "normal",
+				fontFamily: "sans-serif",
+				fontWeight: "500"
+			},
+			crossTabCellLabelOptions:{
+				labelColorManual: false,
+				labelColor: "#666666",				
+				fontSize: 12,
+				fontStyle: "normal",
+				fontWeigth: "normal",
+				fontFamily: "sans-serif",
+				fontWeight: "400"
+			},
+
 			labelOptions: {
 				showLabel: true,
 				labelColorManual: false,
@@ -237,6 +260,29 @@ const chartControlsReducer = (state = chartControl, action) => {
 							fontWeigth: "normal",
 							fontFamily: "sans-serif",
 							fontWeight: "400",
+						},
+						crossTabStyleOptions:{
+							borderWidth : 1,
+							lineHeight : 1,
+						},
+
+						crossTabHeaderLabelOptions:{
+							labelColorManual: false,
+							labelColor: "#666666",			
+							fontSize: 14,
+							fontStyle: "normal",
+							fontWeigth: "normal",
+							fontFamily: "sans-serif",
+							fontWeight: "500"
+						},
+						crossTabCellLabelOptions:{
+							labelColorManual: false,
+							labelColor: "#666666",				
+							fontSize: 12,
+							fontStyle: "normal",
+							fontWeigth: "normal",
+							fontFamily: "sans-serif",
+							fontWeight: "400"
 						},
 
 						labelOptions: {
@@ -425,6 +471,30 @@ const chartControlsReducer = (state = chartControl, action) => {
 							fontWeigth: "normal",
 							fontFamily: "sans-serif",
 							fontWeight: "400",
+						},
+
+						crossTabStyleOptions:{
+							borderWidth : 1,
+							lineHeight : 1,
+						},
+
+						crossTabHeaderLabelOptions:{
+							labelColorManual: false,
+							labelColor: "#666666",			
+							fontSize: 14,
+							fontStyle: "normal",
+							fontWeigth: "normal",
+							fontFamily: "sans-serif",
+							fontWeight: "500"
+						},
+						crossTabCellLabelOptions:{
+							labelColorManual: false,
+							labelColor: "#666666",				
+							fontSize: 12,
+							fontStyle: "normal",
+							fontWeigth: "normal",
+							fontFamily: "sans-serif",
+							fontWeight: "400"
 						},
 
 						labelOptions: {
@@ -700,6 +770,35 @@ const chartControlsReducer = (state = chartControl, action) => {
 
 		case "RESET_CHART_CONTROLS":
 			return chartControl;
+      
+      
+
+		case "UPDATE_CROSSTAB_STYLE_OPTIONS":
+		return update(state, {
+			properties: {
+				[action.payload.propKey]: {
+					crossTabStyleOptions: { [action.payload.option]: { $set: action.payload.value } },
+				},
+			},
+		});
+
+		case "UPDATE_CROSSTAB_HEADER_LABEL_OPTIONS":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						crossTabHeaderLabelOptions: { [action.payload.option]: { $set: action.payload.value } },
+					},
+				},
+			});
+
+		case "UPDATE_CROSSTAB_CELL_LABEL_OPTIONS":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						crossTabCellLabelOptions: { [action.payload.option]: { $set: action.payload.value } },
+					},
+				},
+			});
 
 		case "UPDATE_CROSSTAB_STYLE_OPTIONS":
 			return update(state, {

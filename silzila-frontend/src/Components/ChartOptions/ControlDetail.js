@@ -51,6 +51,10 @@ const ControlDetail = ({ chartProp, tabTileProps }) => {
 
 			case "Axis":
 				return <AxisControls />;
+        
+        	case "Style":
+			return <ChartStyle />;
+
 
 			case "Style":
 				return <ChartStyle />;

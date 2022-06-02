@@ -23,6 +23,7 @@ const ChartFormat = ({ chartType }) => {
 			chartType !== "donut" &&
 			chartType !== "gauge" &&
 			chartType !== "rose" &&
+			chartType !== "crossTab" &&
 			chartType !== "funnel" &&
 			chartType !== "heatmap" ? (
 				<>
