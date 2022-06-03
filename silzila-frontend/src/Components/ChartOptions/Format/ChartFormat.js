@@ -6,8 +6,6 @@ import YAxisFormat from "./YAxisFormat";
 const ChartFormat = ({ chartType }) => {
 	return (
 		<div className="optionsInfo">
-			{/* TODO: Priority 1 - Include formatting in all graphs
-			Right now only multiBar chart works */}
 			<LabelFormatting />
 
 			{chartType === "scatterPlot" ? (

@@ -58,6 +58,7 @@ const Login = (props) => {
 		e.preventDefault();
 		setLoading(true);
 
+		// Enable login if all inputs are not null and have valid formats
 		var canLogin = false;
 		if (
 			account.email.length > 0 &&

@@ -41,6 +41,7 @@ const GraphRNDDash = ({
 	}, [boxDetails.highlight]);
 
 	return (
+		// Drag and resize component
 		<Rnd
 			disableDragging={tabTileProps.dashMode === "Edit" ? false : true}
 			enableResizing={tabTileProps.dashMode === "Edit" ? true : false}
@@ -54,8 +55,10 @@ const GraphRNDDash = ({
 				if (!boxDetails.highlight) setHovering(false);
 			}}
 			bounds="parent"
+			// units of pixels to move each time when this component is dragged or resized
 			dragGrid={[dragGridX, dragGridY]}
 			resizeGrid={[resizeGridX, resizeGridY]}
+			// Compute the width * height based on number of background grids each component takes
 			style={boxDetails.highlight || hovering ? style2 : style}
 			size={{ width: boxDetails.width * gridSize.x, height: boxDetails.height * gridSize.y }}
 			position={{ x: boxDetails.x * gridSize.x, y: boxDetails.y * gridSize.y }}

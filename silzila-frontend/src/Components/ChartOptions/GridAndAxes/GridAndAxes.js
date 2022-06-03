@@ -12,7 +12,6 @@ import {
 	enableGrid,
 	updateAxisMinMax,
 	updateAxisOptions,
-	updateGaugeAxisOptions,
 	updateReverse,
 } from "../../../redux/ChartProperties/actionsChartControls";
 import SliderWithInput from "../SliderWithInput";
@@ -36,7 +35,6 @@ const GridAndAxes = ({
 	chartProp,
 
 	//dispatch
-	updateGaugeAxisOptions,
 	setAxisMinMax,
 	setReverse,
 	enableGrids,
@@ -517,8 +515,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		updateGaugeAxisOptions: (propKey, option, value) =>
-			dispatch(updateGaugeAxisOptions(propKey, option, value)),
 		setAxisMinMax: (propKey, axisKey, axisValue) =>
 			dispatch(updateAxisMinMax(propKey, axisKey, axisValue)),
 		setReverse: (propKey, value) => dispatch(updateReverse(propKey, value)),

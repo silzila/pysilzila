@@ -47,6 +47,7 @@ const BottomBar = ({
 		}
 	}, []);
 
+	// Check if every table has atleast one relationship before submitting the dataset
 	const checkTableRelationShip = async (tablesSelectedInSidebar, tablesWithRelation) => {
 		if (tablesSelectedInSidebar.length > 1) {
 			tablesSelectedInSidebar.map((el) => {
@@ -57,13 +58,15 @@ const BottomBar = ({
 				}
 			});
 		}
+
+		// If there is a table without relation, show a warning
 		if (tablesWithoutRelation.length !== 0) {
 			setSeverity("error");
 			setOpenAlert(true);
 			setTestMessage(
 				"Error: Every table should have atleast one relationship.\n" +
 					"tables with no Relationship\n" +
-					tablesWithoutRelation.map((el) => el)
+					tablesWithoutRelation.map((el) => "\n" + el)
 			);
 			setTimeout(() => {
 				setOpenAlert(false);
@@ -71,6 +74,9 @@ const BottomBar = ({
 			}, 4000);
 		}
 
+		// case where there is only one table and no relations or
+		// if all the tables have relations defined,
+		// prepare data to be saved in server and submit
 		var relationshipServerObj = [];
 		if (
 			tablesWithoutRelation.length === 0 ||
@@ -131,7 +137,7 @@ const BottomBar = ({
 				},
 			});
 			if (options.status) {
-				console.log(options.data);
+				// console.log(options.data);
 				setSeverity("success");
 				setOpenAlert(true);
 				setTestMessage("Saved Successfully!");
@@ -152,30 +158,33 @@ const BottomBar = ({
 			}
 		}
 
-		if (tablesSelectedInSidebar.length > 1 && relationships.length === 0) {
-			setSeverity("error");
-			setOpenAlert(true);
-			setTestMessage(
-				"Error: Every table should have atleast one relationship.\n" +
-					"tables with no Relationship\t" +
-					tablesWithoutRelation.map((el) => el)
-			);
-			setTimeout(() => {
-				setOpenAlert(false);
-				setTestMessage("");
-			}, 4000);
-		}
+		// Potential repeat of code in above section
+		// if (tablesSelectedInSidebar.length > 1 && relationships.length === 0) {
+		// 	setSeverity("error");
+		// 	setOpenAlert(true);
+		// 	setTestMessage(
+		// 		"Error: Every table should have atleast one relationship.\n" +
+		// 			"tables with no Relationship\t" +
+		// 			tablesWithoutRelation.map((el) => el)
+		// 	);
+		// 	setTimeout(() => {
+		// 		setOpenAlert(false);
+		// 		setTestMessage("");
+		// 	}, 4000);
+		// }
 	};
 
+	// After send/update button is clicked
 	const onSendData = () => {
+		// If dataset name is provided,
+		// prepare the tables with relations list and
+		// check if table relationships and arrows meet requirements
 		if (fname !== "") {
-			const uid = new ShortUniqueId({ length: 8 });
 			const tablesSelectedInSidebar = tempTable.map((el) => {
 				return {
 					table_name: el.tableName,
 					schema_name: el.schema,
 					id: el.id,
-					// id: uid(),
 					alias: el.alias,
 				};
 			});
@@ -191,6 +200,7 @@ const BottomBar = ({
 			//console.log(tablesSelectedInSidebar, tablesWithRelation);
 			checkTableRelationShip(tablesSelectedInSidebar, tablesWithRelation);
 		} else {
+			// If dataSet name is not provided, show error
 			setSeverity("error");
 			setOpenAlert(true);
 			setTestMessage("Please Enter A Dataset Name");

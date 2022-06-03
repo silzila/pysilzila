@@ -122,9 +122,9 @@ const PlayBookList = ({
 
 			var pb = result.data;
 
-			// Get list of tables for a given dataset and save here
 			var selectedDatasetsInPlaybook = pb.content.tabTileProps.selectedDataSetList;
 
+			// Get list of tables for a given dataset and save here
 			var tablesForSelectedDatasetsCopy = {};
 			await Promise.all(
 				selectedDatasetsInPlaybook.map(async (sampleDs) => {
@@ -140,9 +140,9 @@ const PlayBookList = ({
 					}
 				})
 			);
-
 			pb.content.tabTileProps.tablesForSelectedDataSets = tablesForSelectedDatasetsCopy;
 
+			// for each tile in playbook, if it has minimum required cards in dropzones, get chart data from server
 			var newChartControl = JSON.parse(JSON.stringify(pb.content?.chartControl));
 			await Promise.all(
 				Object.keys(pb.content.chartControl.properties).map(async (property) => {
@@ -192,6 +192,7 @@ const PlayBookList = ({
 				})
 			);
 
+			// Get all tables for selected Dataset and display them here
 			var sampleRecords = { recordsColumnType: {} };
 			await Promise.all(
 				Object.keys(pb.content.chartProperty.properties).map(async (prop) => {
@@ -271,6 +272,7 @@ const PlayBookList = ({
 		}
 	};
 
+	// Delete a playbook
 	const deletePlayBook = async (pbUid) => {
 		var result = await FetchData({
 			requestType: "noData",

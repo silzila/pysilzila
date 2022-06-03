@@ -27,6 +27,7 @@ const DashGraph = ({
 	chartProp,
 	tabState,
 }) => {
+	// compute the dimensions of each graph to be displayed in dashboard and render the appropriate graph here
 	const renderGraph = () => {
 		var dimensions = {
 			height:
@@ -37,7 +38,6 @@ const DashGraph = ({
 		};
 
 		switch (chartProp?.properties[propKey]?.chartType) {
-			// "bar", "stackedBar", "pie", "donut", "line", "area", "heatmap", "table", "calendar", "scatterPlot", "crossTab"
 			case "multibar":
 				return (
 					<MultiBarChart

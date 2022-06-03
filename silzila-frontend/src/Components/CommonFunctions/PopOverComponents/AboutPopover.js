@@ -1,3 +1,5 @@
+// Contents for About section under help menu
+
 import { Popover } from "@mui/material";
 import React from "react";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
