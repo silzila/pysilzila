@@ -68,12 +68,16 @@ const DashBoard = ({
 		zIndex: 20,
 	});
 
+	// Every time the dimensions or dashboard layout changes,
+	// recompute the space available for graph
 	useEffect(() => {
 		graphArea();
 		window.addEventListener("resize", handleResize);
 		return () => window.removeEventListener("resize", handleResize);
 	}, [dimensions, tabState.tabs[tabTileProps.selectedTabId].dashLayout]);
 
+	// When dashboard is changed from edit to present mode, enable or disable
+	// the grid like background in dashboard area
 	useEffect(() => {
 		if (tabTileProps.dashMode === "Present") {
 			setdashStyle({ ...dashStyle, background: null });
@@ -112,10 +116,14 @@ const DashBoard = ({
 			dashLayoutProperty.dashboardLayout === "Auto" &&
 			dashLayoutProperty.selectedOptionForAuto === "Full Screen"
 		) {
+			// Approximately divided the area into 32 sections wide & 18 sections height
 			var fullWidth = Math.trunc(dimensions.width / 32, 0) * 32;
 			var fullHeight = Math.trunc(dimensions.height / 18, 0) * 18;
 
+			// setting dashboard graph area according to above size
 			setinnerDimensions({ width: fullWidth, height: fullHeight });
+
+			// set grid like background of dashboard accordingly
 			setdashStyle({
 				...dashStyle,
 				width: fullWidth,
@@ -125,6 +133,9 @@ const DashBoard = ({
 				${fullWidth / 2}px ${fullWidth / 2}px,
 				${fullHeight / 2}px ${fullHeight / 2}px`,
 			});
+
+			// compute size of each of the grid and save it in store
+			// used by graph area in tile for displaying graph in dashboard size
 			setGridSize({ x: fullWidth / 32, y: fullHeight / 18 });
 		}
 
@@ -135,9 +146,14 @@ const DashBoard = ({
 			// ======================================================
 			// For aspect ratio
 
+			// Get user defined aspect ratio and set number of grids (twice that of width & height)
 			var xUnit = dimensions.width / (dashLayoutProperty.aspectRatio.width * 2);
 			var yUnit = dimensions.height / (dashLayoutProperty.aspectRatio.height * 2);
 
+			// checking if the x unit or the y unit can be used as a base unit
+			// for computing total size of dashboard graph area
+
+			// Using xUnit as a base
 			if (xUnit * (dashLayoutProperty.aspectRatio.height * 2) > dimensions.height) {
 			} else {
 				var truncatedX = Math.trunc(xUnit, 0);
@@ -159,6 +175,7 @@ const DashBoard = ({
 				setGridSize({ x: truncatedX, y: truncatedX });
 			}
 
+			// Using yUnit as a base
 			if (yUnit * (dashLayoutProperty.aspectRatio.width * 2) > dimensions.width) {
 			} else {
 				var truncatedY = Math.trunc(yUnit, 0);
@@ -182,6 +199,8 @@ const DashBoard = ({
 		}
 	};
 
+	// List of tiles to be mapped on the side of dashboard,
+	// allowing users to choose graphs from these tiles
 	let tilesForSelectedTab = tileState.tileList[tabTileProps.selectedTabId];
 
 	let tileList = tilesForSelectedTab.map((tile, index) => {

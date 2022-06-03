@@ -60,7 +60,6 @@ const CanvasTableColumns = ({
 		// A new connection between B & D  or C & D shouldn't happen
 
 		// Check if both column types (Arrow start and end column) are of same dataType
-
 		if (arrows.length === 0) {
 			if (
 				e.dataTransfer.getData("connectItemId") === itemId ||
@@ -102,7 +101,6 @@ const CanvasTableColumns = ({
 				setTestMessage("");
 			}, 4000);
 		} else {
-			// setShowCard(true);
 			const refs = {
 				isSelected: true,
 

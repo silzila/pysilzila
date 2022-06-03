@@ -66,40 +66,6 @@ const DashBoardLayoutControl = ({
 		},
 	};
 
-	const dashSizeOptionBtn = () => {
-		return (
-			<div className="radioButtons" style={{ marginTop: "10px" }}>
-				<div
-					className={
-						tabState.tabs[tabId].dashLayout.dashboardLayout === "Auto"
-							? "radioButtonSelected"
-							: "radioButton"
-					}
-					onClick={() => {
-						setIsAutoSelected(true);
-						setIsFixedSelected(false);
-						setDashLayout(tabId, "Auto");
-					}}
-				>
-					Auto
-				</div>
-				<div
-					className={
-						tabState.tabs[tabId].dashLayout.dashboardLayout === "Fixed"
-							? "radioButtonSelected"
-							: "radioButton"
-					}
-					onClick={() => {
-						setIsFixedSelected(true);
-						setIsAutoSelected(false);
-						setDashLayout(tabId, "Fixed");
-					}}
-				>
-					Fixed
-				</div>
-			</div>
-		);
-	};
 	const RadioBtn = () => {
 		return (
 			<Radio
@@ -170,142 +136,181 @@ const DashBoardLayoutControl = ({
 		return <Typography style={{ fontSize: "14px" }}>{value}</Typography>;
 	};
 
-	const whenPagesizeIsFixed = () => {
-		return (
-			<>
-				<FormControlLabel
-					key="FHD"
-					value="Full HD"
-					checked={fixedOption === "Full HD" ? true : false}
-					control={RadioBtn()}
-					label={typographyComponent("Full HD (0980 x 1080)")}
-				/>
-				<FormControlLabel
-					key="HD"
-					value="HD"
-					checked={fixedOption === "HD" ? true : false}
-					control={RadioBtn()}
-					label={typographyComponent("HD (0980 x 1080)")}
-				/>
-				<FormControlLabel
-					key="WS"
-					value="Wide Screen"
-					checked={fixedOption === "Wide Screen" ? true : false}
-					control={RadioBtn()}
-					label={typographyComponent("Wide Screen (0980 x 1080)")}
-				/>
-				<FormControlLabel
-					key="C"
-					value="Custom"
-					checked={fixedOption === "Custom" ? true : false}
-					control={RadioBtn()}
-					label={typographyComponent("Custom")}
-				/>
-				{isCoustomSelected ? (
-					<div
-						style={{ display: "flex", columnGap: "20px", padding: "8px 2px 8px 12px" }}
-					>
-						<TextField
-							type="number"
-							value={customHeight}
-							onChange={(e) => setCustomHeight(tabId, e.target.value)}
-							label="Height"
-							InputLabelProps={{ shrink: true }}
-							inputProps={{ ...textFieldInputProps, min: 1 }}
-						/>
-						<TextField
-							type="number"
-							value={customWidth}
-							onChange={(e) => setCustomWidth(tabId, e.target.value)}
-							label="Width"
-							InputLabelProps={{ shrink: true }}
-							inputProps={{ ...textFieldInputProps, min: 1 }}
-						/>
-					</div>
-				) : null}
-				<FormControlLabel
-					sx={{ fontSize: "10px" }}
-					key="CR"
-					value="Custom Range"
-					checked={fixedOption === "Custom Range" ? true : false}
-					control={RadioBtn()}
-					label={typographyComponent("Custom Range")}
-				/>
-				{isCoustomRangeSelected ? (
-					<div
-						style={{
-							display: "flex",
-							flexDirection: "column",
-							rowGap: "10px",
-							padding: "8px 2px 8px 12px",
-						}}
-					>
-						<InputLabel sx={{ float: "left", flex: 1, fontSize: "14px" }}>
-							Min
-						</InputLabel>
-						<div style={{ flex: 1, display: "flex", columnGap: "20px" }}>
-							<TextField
-								type="number"
-								value={tabState.tabs[tabId].dashLayout.customRange.minHeight}
-								onChange={(e) => setCustomRMinHeight(tabId, e.target.value)}
-								label="Height"
-								InputLabelProps={{ shrink: true }}
-								inputProps={{ ...textFieldInputProps, min: 1 }}
-							/>
-							<TextField
-								type="number"
-								value={tabState.tabs[tabId].dashLayout.customRange.minWidth}
-								onChange={(e) => setCustomRMinWidth(tabId, e.target.value)}
-								label="Width"
-								InputLabelProps={{ shrink: true }}
-								inputProps={{ ...textFieldInputProps, min: 1 }}
-							/>
-						</div>
-						<InputLabel sx={{ float: "left", flex: 1, fontSize: "14px" }}>
-							Max
-						</InputLabel>
-						<div style={{ flex: 1, display: "flex", columnGap: "20px" }}>
-							<TextField
-								type="number"
-								value={tabState.tabs[tabId].dashLayout.customRange.maxHeight}
-								onChange={(e) => setCustomRMaxHeight(tabId, e.target.value)}
-								label="Height"
-								InputLabelProps={{ shrink: true }}
-								inputProps={{ ...textFieldInputProps, min: 1 }}
-							/>
-							<TextField
-								type="number"
-								value={tabState.tabs[tabId].dashLayout.customRange.maxWidth}
-								onChange={(e) => setCustomRMaxWidth(tabId, e.target.value)}
-								label="Width"
-								InputLabelProps={{ shrink: true }}
-								inputProps={{ ...textFieldInputProps, min: 1 }}
-							/>
-						</div>
-					</div>
-				) : null}
-			</>
-		);
-	};
-	const onToggle = (value) => {
-		setDashLayoutSelectedOptionForFixed(tabId, value);
-		if (value === "Custom") {
-			setIsCustomSelected(true);
-			setIsCustomRangeSelected(false);
-		} else if (value === "Custom Range") {
-			setIsCustomSelected(false);
-			setIsCustomRangeSelected(true);
-		} else {
-			setIsCustomSelected(false);
-			setIsCustomRangeSelected(false);
-		}
-	};
+	// When user chooses a custom pixel size for the dashboard area
+	// For future versions
+
+	// const dashSizeOptionBtn = () => {
+	// 	return (
+	// 		<div className="radioButtons" style={{ marginTop: "10px" }}>
+	// 			<div
+	// 				className={
+	// 					tabState.tabs[tabId].dashLayout.dashboardLayout === "Auto"
+	// 						? "radioButtonSelected"
+	// 						: "radioButton"
+	// 				}
+	// 				onClick={() => {
+	// 					setIsAutoSelected(true);
+	// 					setIsFixedSelected(false);
+	// 					setDashLayout(tabId, "Auto");
+	// 				}}
+	// 			>
+	// 				Auto
+	// 			</div>
+	// 			<div
+	// 				className={
+	// 					tabState.tabs[tabId].dashLayout.dashboardLayout === "Fixed"
+	// 						? "radioButtonSelected"
+	// 						: "radioButton"
+	// 				}
+	// 				onClick={() => {
+	// 					setIsFixedSelected(true);
+	// 					setIsAutoSelected(false);
+	// 					setDashLayout(tabId, "Fixed");
+	// 				}}
+	// 			>
+	// 				Fixed
+	// 			</div>
+	// 		</div>
+	// 	);
+	// };
+
+	// const whenPagesizeIsFixed = () => {
+	// 	return (
+	// 		<>
+	// 			<FormControlLabel
+	// 				key="FHD"
+	// 				value="Full HD"
+	// 				checked={fixedOption === "Full HD" ? true : false}
+	// 				control={RadioBtn()}
+	// 				label={typographyComponent("Full HD (0980 x 1080)")}
+	// 			/>
+	// 			<FormControlLabel
+	// 				key="HD"
+	// 				value="HD"
+	// 				checked={fixedOption === "HD" ? true : false}
+	// 				control={RadioBtn()}
+	// 				label={typographyComponent("HD (0980 x 1080)")}
+	// 			/>
+	// 			<FormControlLabel
+	// 				key="WS"
+	// 				value="Wide Screen"
+	// 				checked={fixedOption === "Wide Screen" ? true : false}
+	// 				control={RadioBtn()}
+	// 				label={typographyComponent("Wide Screen (0980 x 1080)")}
+	// 			/>
+	// 			<FormControlLabel
+	// 				key="C"
+	// 				value="Custom"
+	// 				checked={fixedOption === "Custom" ? true : false}
+	// 				control={RadioBtn()}
+	// 				label={typographyComponent("Custom")}
+	// 			/>
+	// 			{isCoustomSelected ? (
+	// 				<div
+	// 					style={{ display: "flex", columnGap: "20px", padding: "8px 2px 8px 12px" }}
+	// 				>
+	// 					<TextField
+	// 						type="number"
+	// 						value={customHeight}
+	// 						onChange={(e) => setCustomHeight(tabId, e.target.value)}
+	// 						label="Height"
+	// 						InputLabelProps={{ shrink: true }}
+	// 						inputProps={{ ...textFieldInputProps, min: 1 }}
+	// 					/>
+	// 					<TextField
+	// 						type="number"
+	// 						value={customWidth}
+	// 						onChange={(e) => setCustomWidth(tabId, e.target.value)}
+	// 						label="Width"
+	// 						InputLabelProps={{ shrink: true }}
+	// 						inputProps={{ ...textFieldInputProps, min: 1 }}
+	// 					/>
+	// 				</div>
+	// 			) : null}
+	// 			<FormControlLabel
+	// 				sx={{ fontSize: "10px" }}
+	// 				key="CR"
+	// 				value="Custom Range"
+	// 				checked={fixedOption === "Custom Range" ? true : false}
+	// 				control={RadioBtn()}
+	// 				label={typographyComponent("Custom Range")}
+	// 			/>
+	// 			{isCoustomRangeSelected ? (
+	// 				<div
+	// 					style={{
+	// 						display: "flex",
+	// 						flexDirection: "column",
+	// 						rowGap: "10px",
+	// 						padding: "8px 2px 8px 12px",
+	// 					}}
+	// 				>
+	// 					<InputLabel sx={{ float: "left", flex: 1, fontSize: "14px" }}>
+	// 						Min
+	// 					</InputLabel>
+	// 					<div style={{ flex: 1, display: "flex", columnGap: "20px" }}>
+	// 						<TextField
+	// 							type="number"
+	// 							value={tabState.tabs[tabId].dashLayout.customRange.minHeight}
+	// 							onChange={(e) => setCustomRMinHeight(tabId, e.target.value)}
+	// 							label="Height"
+	// 							InputLabelProps={{ shrink: true }}
+	// 							inputProps={{ ...textFieldInputProps, min: 1 }}
+	// 						/>
+	// 						<TextField
+	// 							type="number"
+	// 							value={tabState.tabs[tabId].dashLayout.customRange.minWidth}
+	// 							onChange={(e) => setCustomRMinWidth(tabId, e.target.value)}
+	// 							label="Width"
+	// 							InputLabelProps={{ shrink: true }}
+	// 							inputProps={{ ...textFieldInputProps, min: 1 }}
+	// 						/>
+	// 					</div>
+	// 					<InputLabel sx={{ float: "left", flex: 1, fontSize: "14px" }}>
+	// 						Max
+	// 					</InputLabel>
+	// 					<div style={{ flex: 1, display: "flex", columnGap: "20px" }}>
+	// 						<TextField
+	// 							type="number"
+	// 							value={tabState.tabs[tabId].dashLayout.customRange.maxHeight}
+	// 							onChange={(e) => setCustomRMaxHeight(tabId, e.target.value)}
+	// 							label="Height"
+	// 							InputLabelProps={{ shrink: true }}
+	// 							inputProps={{ ...textFieldInputProps, min: 1 }}
+	// 						/>
+	// 						<TextField
+	// 							type="number"
+	// 							value={tabState.tabs[tabId].dashLayout.customRange.maxWidth}
+	// 							onChange={(e) => setCustomRMaxWidth(tabId, e.target.value)}
+	// 							label="Width"
+	// 							InputLabelProps={{ shrink: true }}
+	// 							inputProps={{ ...textFieldInputProps, min: 1 }}
+	// 						/>
+	// 					</div>
+	// 				</div>
+	// 			) : null}
+	// 		</>
+	// 	);
+	// };
+	// const onToggle = (value) => {
+	// 	setDashLayoutSelectedOptionForFixed(tabId, value);
+	// 	if (value === "Custom") {
+	// 		setIsCustomSelected(true);
+	// 		setIsCustomRangeSelected(false);
+	// 	} else if (value === "Custom Range") {
+	// 		setIsCustomSelected(false);
+	// 		setIsCustomRangeSelected(true);
+	// 	} else {
+	// 		setIsCustomSelected(false);
+	// 		setIsCustomRangeSelected(false);
+	// 	}
+	// };
 
 	return (
 		<div className="dashboardLayoutControl">
 			<div className="axisTitle">Dashboard Size</div>
 			{/* {dashSizeOptionBtn()} */}
 			{whenPageSizeisAuto()}
+
 			{/* {isAutoSelected ? (
 				whenPageSizeisAuto()
 			) : (

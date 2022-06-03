@@ -65,6 +65,8 @@ const DropZone = ({
 		<div ref={drop} className="chartAxis mt-2">
 			<span className="axisTitle">{name}</span>
 
+			{/* The subtext displayed under each dropzone  */}
+			{/* How many minimum fields required & maximum allowed  */}
 			{bIndex === 0 ? (
 				<span className="axisInfo">
 					{" "}

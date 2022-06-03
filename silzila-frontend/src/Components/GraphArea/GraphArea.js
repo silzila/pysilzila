@@ -242,37 +242,74 @@ const GraphArea = ({
 	// Setting title automatically
 	// ############################################
 
-	// TODO: Priority 1 - Setting title for different types of graphs
-	// Different graphs have different Dropzones. Setting automatic title must take into account of all these types
-	// Eg., Scatter plot has 2 measures, Funnel has 1 measure and no dimension, Heatmap has 2 dimensions, etc....
-
 	const graphTitle = () => {
 		if (chartProperties.properties[propKey].titleOptions.generateTitle === "Auto") {
 			const chartAxes = chartProperties.properties[propKey].chartAxes;
 
-			var title = "";
-			if (chartAxes[2]?.fields.length > 0) {
-				chartAxes[2].fields.forEach((element, index) => {
-					if (index === 0) {
-						var titlePart = element.fieldname;
-						title = title + titlePart;
-					}
-					if (index > 0) {
-						var titlePart = `, ${element.fieldname}`;
-						title = title + titlePart;
-					}
-				});
+			var dims = [];
+			var measures = [];
+
+			// Compile dimensions and measures of different chart types in one format
+			switch (chartProperties.properties[propKey].chartType) {
+				case "crossTab":
+				case "heatmap":
+					dims = dims.concat(chartAxes[1].fields);
+					dims = dims.concat(chartAxes[2].fields);
+					measures = measures.concat(chartAxes[3].fields);
+					break;
+
+				case "scatterPlot":
+					dims = dims.concat(chartAxes[1].fields);
+					measures = measures.concat(chartAxes[2].fields);
+					measures = measures.concat(chartAxes[3].fields);
+					break;
+
+				case "gauge":
+				case "funnel":
+					measures = measures.concat(chartAxes[1].fields);
+					break;
+
+				default:
+					dims = dims.concat(chartAxes[1].fields);
+					measures = measures.concat(chartAxes[2].fields);
+					break;
 			}
-			if (chartAxes[1].fields.length > 0) {
-				if (chartAxes[1].fields[0].time_grain) {
-					title =
-						title +
-						` by ${chartAxes[1].fields[0].time_grain.toLowerCase()} of ${
-							chartAxes[1].fields[0].fieldname
-						}`;
-				} else {
-					title = title + ` by ${chartAxes[1].fields[0].fieldname}`;
+
+			console.log(dims, measures);
+
+			var title = "";
+
+			// Concatenate field names in dims / measures
+			const concatenateFields = (fields) => {
+				if (fields.length > 0) {
+					var tempTitle = "";
+					fields.forEach((element, index) => {
+						if (index === 0) {
+							var titlePart = element.fieldname;
+							tempTitle = tempTitle + titlePart;
+						}
+						if (index > 0) {
+							var titlePart = `, ${element.fieldname}`;
+							tempTitle = tempTitle + titlePart;
+						}
+					});
+
+					return tempTitle;
 				}
+			};
+
+			var dimTitle = concatenateFields(dims);
+			var measureTitle = concatenateFields(measures);
+			console.log(dimTitle, measureTitle);
+
+			if (
+				chartProperties.properties[propKey].chartType === "gauge" ||
+				chartProperties.properties[propKey].chartType === "funnel"
+			) {
+				title = measureTitle ? measureTitle : "";
+			} else {
+				title = dimTitle ? dimTitle : "";
+				title = measureTitle ? title + ` by ${measureTitle}` : "";
 			}
 
 			title = title.charAt(0).toUpperCase() + title.slice(1);

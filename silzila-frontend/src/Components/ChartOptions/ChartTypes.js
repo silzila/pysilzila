@@ -664,13 +664,7 @@ const ChartTypes = ({
 							"gauge",
 							"heatmap",
 
-							// "step line",
-							// "rose",
-
-							// "calendar",
 							"crossTab",
-							// "bubble",
-							// "treeMap",
 						].includes(chart.name)
 					) {
 						const newChartAxes = switchAxesForCharts(

@@ -104,16 +104,16 @@ const ChartMargin = ({
 						<div className="optionDescription">Left:</div>
 						<SliderWithInput
 							percent={true}
-							sliderValue={chartControl.properties[propKey].chartMargin.left}
+							sliderValue={chartControl.properties[propKey].chartMargin.funnelLeft}
 							sliderMinMax={{ min: 0, max: 50, step: 1 }}
-							changeValue={(value) => updateMargin(propKey, "left", value)}
+							changeValue={(value) => updateMargin(propKey, "funnelLeft", value)}
 						/>
 						<div className="optionDescription">Right:</div>
 						<SliderWithInput
 							percent={true}
-							sliderValue={chartControl.properties[propKey].chartMargin.right}
+							sliderValue={chartControl.properties[propKey].chartMargin.funnelRight}
 							sliderMinMax={{ min: 0, max: 50, step: 1 }}
-							changeValue={(value) => updateMargin(propKey, "right", value)}
+							changeValue={(value) => updateMargin(propKey, "funnelRight", value)}
 						/>
 					</React.Fragment>
 				);

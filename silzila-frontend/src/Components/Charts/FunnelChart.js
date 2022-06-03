@@ -92,8 +92,8 @@ const FunnelChart = ({
 							},
 							top: chartControl.chartMargin.top,
 							bottom: chartControl.chartMargin.bottom,
-							left: chartControl.chartMargin.left + "%",
-							right: chartControl.chartMargin.right + "%",
+							left: chartControl.chartMargin.funnelLeft + "%",
+							right: chartControl.chartMargin.funnelRight + "%",
 						},
 					],
 				}}

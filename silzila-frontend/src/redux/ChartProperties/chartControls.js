@@ -27,6 +27,9 @@ const chartControl = {
 				// for donut and rose
 				innerRadius: 30,
 				outerRadius: 70,
+				// for funnel chart
+				funnelRight: 10,
+				funnelLeft: 10,
 				// for others
 				selectedMargin: "top",
 				top: 30,
@@ -57,27 +60,27 @@ const chartControl = {
 				fontWeight: "400",
 			},
 
-			crossTabStyleOptions:{
-				borderWidth : 1,
-				lineHeight : 1,
+			crossTabStyleOptions: {
+				borderWidth: 1,
+				lineHeight: 1,
 			},
-			crossTabHeaderLabelOptions:{
+			crossTabHeaderLabelOptions: {
 				labelColorManual: false,
-				labelColor: "#666666",			
+				labelColor: "#666666",
 				fontSize: 14,
 				fontStyle: "normal",
 				fontWeigth: "normal",
 				fontFamily: "sans-serif",
-				fontWeight: "500"
+				fontWeight: "500",
 			},
-			crossTabCellLabelOptions:{
+			crossTabCellLabelOptions: {
 				labelColorManual: false,
-				labelColor: "#666666",				
+				labelColor: "#666666",
 				fontSize: 12,
 				fontStyle: "normal",
 				fontWeigth: "normal",
 				fontFamily: "sans-serif",
-				fontWeight: "400"
+				fontWeight: "400",
 			},
 
 			labelOptions: {
@@ -223,6 +226,9 @@ const chartControlsReducer = (state = chartControl, action) => {
 							// for donut and rose
 							innerRadius: 30,
 							outerRadius: 70,
+							// for funnel chart
+							funnelRight: 10,
+							funnelLeft: 10,
 							// for others
 							selectedMargin: "top",
 							top: 30,
@@ -252,28 +258,28 @@ const chartControlsReducer = (state = chartControl, action) => {
 							fontFamily: "sans-serif",
 							fontWeight: "400",
 						},
-						crossTabStyleOptions:{
-							borderWidth : 1,
-							lineHeight : 1,
+						crossTabStyleOptions: {
+							borderWidth: 1,
+							lineHeight: 1,
 						},
 
-						crossTabHeaderLabelOptions:{
+						crossTabHeaderLabelOptions: {
 							labelColorManual: false,
-							labelColor: "#666666",			
+							labelColor: "#666666",
 							fontSize: 14,
 							fontStyle: "normal",
 							fontWeigth: "normal",
 							fontFamily: "sans-serif",
-							fontWeight: "500"
+							fontWeight: "500",
 						},
-						crossTabCellLabelOptions:{
+						crossTabCellLabelOptions: {
 							labelColorManual: false,
-							labelColor: "#666666",				
+							labelColor: "#666666",
 							fontSize: 12,
 							fontStyle: "normal",
 							fontWeigth: "normal",
 							fontFamily: "sans-serif",
-							fontWeight: "400"
+							fontWeight: "400",
 						},
 
 						labelOptions: {
@@ -439,6 +445,9 @@ const chartControlsReducer = (state = chartControl, action) => {
 							// for donut and rose
 							innerRadius: 30,
 							outerRadius: 70,
+							// for funnel chart
+							funnelRight: 10,
+							funnelLeft: 10,
 							// for others
 							selectedMargin: "top",
 							top: 30,
@@ -470,28 +479,28 @@ const chartControlsReducer = (state = chartControl, action) => {
 							fontWeight: "400",
 						},
 
-						crossTabStyleOptions:{
-							borderWidth : 1,
-							lineHeight : 1,
+						crossTabStyleOptions: {
+							borderWidth: 1,
+							lineHeight: 1,
 						},
 
-						crossTabHeaderLabelOptions:{
+						crossTabHeaderLabelOptions: {
 							labelColorManual: false,
-							labelColor: "#666666",			
+							labelColor: "#666666",
 							fontSize: 14,
 							fontStyle: "normal",
 							fontWeigth: "normal",
 							fontFamily: "sans-serif",
-							fontWeight: "500"
+							fontWeight: "500",
 						},
-						crossTabCellLabelOptions:{
+						crossTabCellLabelOptions: {
 							labelColorManual: false,
-							labelColor: "#666666",				
+							labelColor: "#666666",
 							fontSize: 12,
 							fontStyle: "normal",
 							fontWeigth: "normal",
 							fontFamily: "sans-serif",
-							fontWeight: "400"
+							fontWeight: "400",
 						},
 
 						labelOptions: {
@@ -773,23 +782,25 @@ const chartControlsReducer = (state = chartControl, action) => {
 
 		case "RESET_CHART_CONTROLS":
 			return chartControl;
-      
-      
 
 		case "UPDATE_CROSSTAB_STYLE_OPTIONS":
-		return update(state, {
-			properties: {
-				[action.payload.propKey]: {
-					crossTabStyleOptions: { [action.payload.option]: { $set: action.payload.value } },
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						crossTabStyleOptions: {
+							[action.payload.option]: { $set: action.payload.value },
+						},
+					},
 				},
-			},
-		});
+			});
 
 		case "UPDATE_CROSSTAB_HEADER_LABEL_OPTIONS":
 			return update(state, {
 				properties: {
 					[action.payload.propKey]: {
-						crossTabHeaderLabelOptions: { [action.payload.option]: { $set: action.payload.value } },
+						crossTabHeaderLabelOptions: {
+							[action.payload.option]: { $set: action.payload.value },
+						},
 					},
 				},
 			});
@@ -798,7 +809,9 @@ const chartControlsReducer = (state = chartControl, action) => {
 			return update(state, {
 				properties: {
 					[action.payload.propKey]: {
-						crossTabCellLabelOptions: { [action.payload.option]: { $set: action.payload.value } },
+						crossTabCellLabelOptions: {
+							[action.payload.option]: { $set: action.payload.value },
+						},
 					},
 				},
 			});

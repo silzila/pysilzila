@@ -32,7 +32,7 @@ import {
 } from "../../ServerCall/EnvironmentVariables";
 import AboutPopover from "../CommonFunctions/PopOverComponents/AboutPopover";
 import PrivacyPopover from "../CommonFunctions/PopOverComponents/PrivacyPopover";
-import SilzilaLogo from "../../assets/Silzila.png";
+import SilzilaLogo from "../../assets/silzila_crop.png";
 
 const MenuBar = ({
 	// props
@@ -56,6 +56,7 @@ const MenuBar = ({
 }) => {
 	var showSaveWarning = false;
 
+	// Check if the current state of playbook is the same as old state or not
 	if (from === "dataViewer" && playBookState.oldContent) {
 		if (
 			JSON.stringify(tabState) === JSON.stringify(playBookState.oldContent.tabState) &&
@@ -162,6 +163,7 @@ const MenuBar = ({
 		}
 	};
 
+	// Format the data to be saved under this playbook
 	const formatPlayBookData = () => {
 		var playBookObj = {
 			name: playBookName.trim(),
@@ -175,11 +177,7 @@ const MenuBar = ({
 		};
 
 		if (playBookDescription) playBookObj.description = playBookDescription;
-		// var chartControlCopy = JSON.parse(JSON.stringify(chartControl));
-		// Object.keys(chartControlCopy.properties).forEach((property) => {
-		// 	chartControlCopy.properties[property].chartData = {};
-		// });
-		// playBookObj.content.chartControl = chartControlCopy;
+
 		return playBookObj;
 	};
 
@@ -417,9 +415,12 @@ const MenuBar = ({
 		<div className="dataViewerMenu">
 			<img
 				src={SilzilaLogo}
-				style={{ padding: "4px 8px", backgroundColor: "white" }}
+				style={{ padding: "4px 8px", width: "3rem", backgroundColor: "white" }}
 				alt="Silzila Home"
 			/>
+
+			{/* Render the following components depending upon the page in which home is rendered */}
+			{/* In Data Home page, just show icon */}
 			{from === "dataHome" ? (
 				<>
 					<div className="menuHome">
@@ -428,6 +429,8 @@ const MenuBar = ({
 					<div className="menuItemsGroup">&nbsp;</div>
 				</>
 			) : null}
+
+			{/* in Dataset page, Clicking home will navigate to dataHome */}
 			{from === "dataSet" ? (
 				<>
 					<div
@@ -441,6 +444,10 @@ const MenuBar = ({
 					<div className="menuItemsGroup">&nbsp;</div>
 				</>
 			) : null}
+
+			{/* In dataviewer page, clicking Home will prompt a warning to save playbook if there are any changes */}
+			{/* Additionally, file and about menu are displayed here */}
+			{/* If Dashboard is shown, Edit and Present mode selection is also displayed here */}
 			{from === "dataViewer" ? (
 				<>
 					<div
