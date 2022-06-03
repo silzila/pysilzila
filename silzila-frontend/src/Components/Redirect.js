@@ -30,6 +30,5 @@ const Redirect = () => {
 		</div>
 	);
 };
-s;
 
 export default Redirect;
