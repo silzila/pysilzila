@@ -33,7 +33,7 @@ async def delete_data_connection(db: Session, dc_uid: str, uid: str):
     # print("available_ds ==========", available_ds.__dict__)
     if available_ds and len(available_ds) >= 1:
         raise HTTPException(
-            status_code=500, detail="Cannot delete Connection. There are dependent Dataset(s)")
+            status_code=403, detail="Cannot delete Connection. There are dependent Dataset(s)")
     qry_del_ds = DataSet.__table__.delete().where(DataSet.dc_uid == dc_uid)
     await db.execute(qry_del_ds)
     await db.delete(dc_item)
