@@ -182,7 +182,7 @@ async def query(request: Request, query: schema.Query, dc_uid: str, ds_uid: str,
     except Exception as error:
         # logger.exception("Something Wrong in query execution")
         raise HTTPException(
-            status_code=401, detail="error")
+            status_code=401, detail="something went wrong in running query")
 
 
 # Future Development

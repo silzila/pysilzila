@@ -1,5 +1,5 @@
 from fastapi.exceptions import HTTPException
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.orm import Session, Bundle
 from sqlalchemy.sql.elements import and_
 import json
@@ -7,6 +7,7 @@ import json
 from . import model, schema
 from .model import DataSet
 from ..data_connection.model import DataConnection
+from ..data_connection import engine
 from ..play_book.service import get_all_pb_by_ds
 
 
@@ -200,8 +201,18 @@ async def update_data_set(db: Session, ds_uid: str, ds: schema.DataSetIn, uid: s
     # update data_schema & friendy name
     ds_info.data_schema = data_schema
     ds_info.friendly_name = ds.friendly_name
-    db.commit()
-    db.refresh(ds_info)
+    # execute update in DB
+    await db.execute(update(DataSet).values(
+        friendly_name=ds.friendly_name, data_schema=data_schema).where(
+        DataSet.ds_uid == ds_uid
+    ))
+    await db.flush()
+
+    # if the DS is already loded into in-memory, then need to load updated DS
+    is_reloaded = engine.reload_ds(ds_info)
+    if is_reloaded is None:
+        raise HTTPException(
+            status_code=404, detail="Data Set Could not be Reloaded")
 
     # returning of model will be thrown error because of serialization of data_schema, so custom dict
     resp = {"dc_uid": ds_info.dc_uid,

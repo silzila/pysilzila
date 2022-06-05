@@ -68,17 +68,24 @@ async def test_connection(dc: schema.DataConnectionIn) -> dict:
 # closes an exsiting connection pool
 async def close_connection(dc_uid: str) -> bool:
     global db_pool
-    if db_pool.get(dc_uid):
-        try:
-            db_pool[dc_uid]["engine"].dispose()
-            del db_pool[dc_uid]
+    try:
+        if db_pool:
+            if db_pool.get(dc_uid):
+                try:
+                    db_pool[dc_uid]["engine"].dispose()
+                    del db_pool[dc_uid]
+                    return True
+                except Exception as err:
+                    raise HTTPException(
+                        status_code=500, detail=err)
+            else:
+                raise HTTPException(
+                    status_code=404, detail="connection is not available")
+        else:
             return True
-        except Exception as err:
-            raise HTTPException(
-                status_code=500, detail=err)
-    else:
+    except Exception as err:
         raise HTTPException(
-            status_code=404, detail="connection is not available")
+            status_code=500, detail=err)
 
 
 # gets all DC list of the user as parameter. Then checks with active DC list and
@@ -167,8 +174,19 @@ async def activate_ds(ds: DataSetOut):
     else:
         db_pool[ds.dc_uid]['data_schema'] = {}
         db_pool[ds.dc_uid]['data_schema'][ds.ds_uid] = ds.data_schema
-    # print("data schema during activating ds ========\n",
-        #   db_pool[ds.dc_uid]['data_schema'][ds.ds_uid])
+    return True
+
+
+# re-loads data set when already loaded in-memory
+# re-loading is needed when data set is already loaded and DS is edited by user
+def reload_ds(ds: DataSetOut):
+    global db_pool
+    if not (db_pool and db_pool.get(ds.dc_uid)):
+        raise HTTPException(
+            status_code=500, detail="Data Connection is not established")
+    if db_pool.get(ds.dc_uid).get('data_schema'):
+        if db_pool.get(ds.dc_uid).get('data_schema').get(ds.ds_uid):
+            db_pool[ds.dc_uid]['data_schema'][ds.ds_uid] = ds.data_schema
     return True
 
 
