@@ -23,7 +23,8 @@ const ContructPopupBody = (props)=>{
 
  if(_data){
     Object.keys(_data).forEach(key=>{
-        let _pair = <div><span className="ShowDataPopupKey">{key}</span><span>:</span><span className="ShowDataPopupValue">{_data[key]}</span></div>
+        let _pair = <div><span className="ShowDataPopupKey" style={{fontSize:props.chartProp.crossTabHeaderLabelOptions.fontSize}}>
+                    {key}</span><span style={{fontSize:props.chartProp.crossTabHeaderLabelOptions.fontSize}}>:</span><span style={{fontSize:props.chartProp.crossTabCellLabelOptions.fontSize}} className="ShowDataPopupValue">{_data[key]}</span></div>
         _body.push(_pair);
     });
  }
@@ -35,7 +36,7 @@ const ContructPopupBody = (props)=>{
 const getPosition = ({rect})=>{
     let _style = {};
 
-    _style["top"] = rect.top + 50;
+    _style["top"] = rect.top + 30;
     _style["left"] = rect.left + 50;
 
     return _style;

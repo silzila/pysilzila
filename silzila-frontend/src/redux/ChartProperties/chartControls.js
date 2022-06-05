@@ -22,33 +22,65 @@ const chartControl = {
 			},
 
 			chartMargin: {
+				//for pie and gauge
+				radius: 70,
+				// for donut and rose
+				innerRadius: 30,
+				outerRadius: 70,
+				// for funnel chart
+				funnelRight: 10,
+				funnelLeft: 10,
+				// for others
 				selectedMargin: "top",
 				top: 30,
 				right: 40,
 				bottom: 25,
-				left: 65,
+				left: 70,
 			},
 
-			crossTabStyleOptions:{
-				borderWidth : 1
+			crossTabStyleOptions: {
+				borderWidth: 1,
 			},
-			crossTabHeaderLabelOptions:{
+			crossTabHeaderLabelOptions: {
 				labelColorManual: false,
-				labelColor: "#666666",			
+				labelColor: "#666666",
 				fontSize: 14,
 				fontStyle: "normal",
 				fontWeigth: "normal",
 				fontFamily: "sans-serif",
-				fontWeight: "500"
+				fontWeight: "500",
 			},
-			crossTabCellLabelOptions:{
+			crossTabCellLabelOptions: {
 				labelColorManual: false,
-				labelColor: "#666666",				
+				labelColor: "#666666",
 				fontSize: 12,
 				fontStyle: "normal",
 				fontWeigth: "normal",
 				fontFamily: "sans-serif",
-				fontWeight: "400"
+				fontWeight: "400",
+			},
+
+			crossTabStyleOptions: {
+				borderWidth: 1,
+				lineHeight: 1,
+			},
+			crossTabHeaderLabelOptions: {
+				labelColorManual: false,
+				labelColor: "#666666",
+				fontSize: 14,
+				fontStyle: "normal",
+				fontWeigth: "normal",
+				fontFamily: "sans-serif",
+				fontWeight: "500",
+			},
+			crossTabCellLabelOptions: {
+				labelColorManual: false,
+				labelColor: "#666666",
+				fontSize: 12,
+				fontStyle: "normal",
+				fontWeigth: "normal",
+				fontFamily: "sans-serif",
+				fontWeight: "400",
 			},
 
 			labelOptions: {
@@ -102,12 +134,14 @@ const chartControl = {
 					tickPadding: 12,
 					showAxisLabel: true,
 					labelPadding: 12,
+					max: 10000,
 				},
+
 				gaugeChartControls: {
 					stepcolor: [
-						{ percentage: 40, color: "#67e0e3", per: 0.4 },
-						{ percentage: 50, color: "#37a2da", per: 0.9 },
-						{ percentage: 10, color: "#fd666d", per: 1 },
+						{ stepValue: 4000, color: "#3fb1e3", per: 0.4, isColorAuto: true },
+						{ stepValue: 5000, color: "#6be6c1", per: 0.9, isColorAuto: true },
+						{ stepValue: 1000, color: "#626c91", per: 0.1, isColorAuto: true },
 					],
 				},
 				pieAxisOptions: {
@@ -187,33 +221,65 @@ const chartControlsReducer = (state = chartControl, action) => {
 						},
 
 						chartMargin: {
+							//for pie and gauge
+							radius: 70,
+							// for donut and rose
+							innerRadius: 30,
+							outerRadius: 70,
+							// for funnel chart
+							funnelRight: 10,
+							funnelLeft: 10,
+							// for others
 							selectedMargin: "top",
 							top: 30,
 							right: 40,
 							bottom: 25,
-							left: 65,
+							left: 70,
 						},
-						crossTabStyleOptions:{
-							borderWidth : 1
+						crossTabStyleOptions: {
+							borderWidth: 1,
 						},
 
-						crossTabHeaderLabelOptions:{
+						crossTabHeaderLabelOptions: {
 							labelColorManual: false,
-							labelColor: "#666666",			
+							labelColor: "#666666",
 							fontSize: 14,
 							fontStyle: "normal",
 							fontWeigth: "normal",
 							fontFamily: "sans-serif",
-							fontWeight: "500"
+							fontWeight: "500",
 						},
-						crossTabCellLabelOptions:{
+						crossTabCellLabelOptions: {
 							labelColorManual: false,
-							labelColor: "#666666",				
+							labelColor: "#666666",
 							fontSize: 12,
 							fontStyle: "normal",
 							fontWeigth: "normal",
 							fontFamily: "sans-serif",
-							fontWeight: "400"
+							fontWeight: "400",
+						},
+						crossTabStyleOptions: {
+							borderWidth: 1,
+							lineHeight: 1,
+						},
+
+						crossTabHeaderLabelOptions: {
+							labelColorManual: false,
+							labelColor: "#666666",
+							fontSize: 14,
+							fontStyle: "normal",
+							fontWeigth: "normal",
+							fontFamily: "sans-serif",
+							fontWeight: "500",
+						},
+						crossTabCellLabelOptions: {
+							labelColorManual: false,
+							labelColor: "#666666",
+							fontSize: 12,
+							fontStyle: "normal",
+							fontWeigth: "normal",
+							fontFamily: "sans-serif",
+							fontWeight: "400",
 						},
 
 						labelOptions: {
@@ -267,12 +333,28 @@ const chartControlsReducer = (state = chartControl, action) => {
 								tickPadding: 12,
 								showAxisLabel: true,
 								labelPadding: 12,
+								max: 10000,
 							},
 							gaugeChartControls: {
 								stepcolor: [
-									{ percentage: 40, color: "#67e0e3", per: 0.4 },
-									{ percentage: 50, color: "#37a2da", per: 0.9 },
-									{ percentage: 10, color: "#fd666d", per: 1 },
+									{
+										stepValue: 4000,
+										color: "#3fb1e3",
+										per: 0.4,
+										isColorAuto: true,
+									},
+									{
+										stepValue: 5000,
+										color: "#6be6c1",
+										per: 0.9,
+										isColorAuto: true,
+									},
+									{
+										stepValue: 1000,
+										color: "#626c91",
+										per: 0.1,
+										isColorAuto: true,
+									},
 								],
 							},
 							pieAxisOptions: {
@@ -358,34 +440,67 @@ const chartControlsReducer = (state = chartControl, action) => {
 						},
 
 						chartMargin: {
+							//for pie and gauge
+							radius: 70,
+							// for donut and rose
+							innerRadius: 30,
+							outerRadius: 70,
+							// for funnel chart
+							funnelRight: 10,
+							funnelLeft: 10,
+							// for others
 							selectedMargin: "top",
 							top: 30,
 							right: 40,
 							bottom: 25,
-							left: 65,
+							left: 70,
 						},
 
-						crossTabStyleOptions:{
-							borderWidth : 1
+						crossTabStyleOptions: {
+							borderWidth: 1,
 						},
 
-						crossTabHeaderLabelOptions:{
+						crossTabHeaderLabelOptions: {
 							labelColorManual: false,
-							labelColor: "#666666",			
+							labelColor: "#666666",
 							fontSize: 14,
 							fontStyle: "normal",
 							fontWeigth: "normal",
 							fontFamily: "sans-serif",
-							fontWeight: "500"
+							fontWeight: "500",
 						},
-						crossTabCellLabelOptions:{
+						crossTabCellLabelOptions: {
 							labelColorManual: false,
-							labelColor: "#666666",				
+							labelColor: "#666666",
 							fontSize: 12,
 							fontStyle: "normal",
 							fontWeigth: "normal",
 							fontFamily: "sans-serif",
-							fontWeight: "400"
+							fontWeight: "400",
+						},
+
+						crossTabStyleOptions: {
+							borderWidth: 1,
+							lineHeight: 1,
+						},
+
+						crossTabHeaderLabelOptions: {
+							labelColorManual: false,
+							labelColor: "#666666",
+							fontSize: 14,
+							fontStyle: "normal",
+							fontWeigth: "normal",
+							fontFamily: "sans-serif",
+							fontWeight: "500",
+						},
+						crossTabCellLabelOptions: {
+							labelColorManual: false,
+							labelColor: "#666666",
+							fontSize: 12,
+							fontStyle: "normal",
+							fontWeigth: "normal",
+							fontFamily: "sans-serif",
+							fontWeight: "400",
 						},
 
 						labelOptions: {
@@ -439,12 +554,28 @@ const chartControlsReducer = (state = chartControl, action) => {
 								tickPadding: 12,
 								showAxisLabel: true,
 								labelPadding: 12,
+								max: 10000,
 							},
 							gaugeChartControls: {
 								stepcolor: [
-									{ percentage: 40, color: "#67e0e3", per: 0.4 },
-									{ percentage: 50, color: "#37a2da", per: 0.9 },
-									{ percentage: 10, color: "#fd666d", per: 1 },
+									{
+										stepValue: 4000,
+										color: "#3fb1e3",
+										per: 0.4,
+										isColorAuto: true,
+									},
+									{
+										stepValue: 5000,
+										color: "#6be6c1",
+										per: 0.5,
+										isColorAuto: true,
+									},
+									{
+										stepValue: 1000,
+										color: "#626c91",
+										per: 0.1,
+										isColorAuto: true,
+									},
 								],
 							},
 							pieAxisOptions: {
@@ -651,23 +782,25 @@ const chartControlsReducer = (state = chartControl, action) => {
 
 		case "RESET_CHART_CONTROLS":
 			return chartControl;
-      
-      
 
 		case "UPDATE_CROSSTAB_STYLE_OPTIONS":
-		return update(state, {
-			properties: {
-				[action.payload.propKey]: {
-					crossTabStyleOptions: { [action.payload.option]: { $set: action.payload.value } },
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						crossTabStyleOptions: {
+							[action.payload.option]: { $set: action.payload.value },
+						},
+					},
 				},
-			},
-		});
+			});
 
 		case "UPDATE_CROSSTAB_HEADER_LABEL_OPTIONS":
 			return update(state, {
 				properties: {
 					[action.payload.propKey]: {
-						crossTabHeaderLabelOptions: { [action.payload.option]: { $set: action.payload.value } },
+						crossTabHeaderLabelOptions: {
+							[action.payload.option]: { $set: action.payload.value },
+						},
 					},
 				},
 			});
@@ -676,7 +809,42 @@ const chartControlsReducer = (state = chartControl, action) => {
 			return update(state, {
 				properties: {
 					[action.payload.propKey]: {
-						crossTabCellLabelOptions: { [action.payload.option]: { $set: action.payload.value } },
+						crossTabCellLabelOptions: {
+							[action.payload.option]: { $set: action.payload.value },
+						},
+					},
+				},
+			});
+
+		case "UPDATE_CROSSTAB_STYLE_OPTIONS":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						crossTabStyleOptions: {
+							[action.payload.option]: { $set: action.payload.value },
+						},
+					},
+				},
+			});
+
+		case "UPDATE_CROSSTAB_HEADER_LABEL_OPTIONS":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						crossTabHeaderLabelOptions: {
+							[action.payload.option]: { $set: action.payload.value },
+						},
+					},
+				},
+			});
+
+		case "UPDATE_CROSSTAB_CELL_LABEL_OPTIONS":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						crossTabCellLabelOptions: {
+							[action.payload.option]: { $set: action.payload.value },
+						},
 					},
 				},
 			});

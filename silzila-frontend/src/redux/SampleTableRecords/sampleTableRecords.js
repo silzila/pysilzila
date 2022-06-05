@@ -20,11 +20,11 @@ const SampleRecordsReducer = (state = initialRecords, action) => {
 				var stateCopy = Object.assign(state);
 				var dsObj = { [action.payload.ds_uid]: {} };
 
-				console.log(dsObj);
+				//console.log(dsObj);
 				stateCopy = update(stateCopy, { $merge: dsObj });
 				stateCopy = update(stateCopy, { recordsColumnType: { $merge: dsObj } });
 
-				console.log(stateCopy);
+				//console.log(stateCopy);
 
 				return update(stateCopy, {
 					[action.payload.ds_uid]: {

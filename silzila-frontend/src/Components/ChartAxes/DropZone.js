@@ -17,8 +17,6 @@ const DropZone = ({
 	propKey,
 
 	// state
-	token,
-	tabTileProps,
 	chartProp,
 
 	// dispatch
@@ -51,11 +49,11 @@ const DropZone = ({
 			fieldData.uId = uID;
 
 			let newFieldData = JSON.parse(JSON.stringify(setPrefix(fieldData, name, chartType)));
-			console.log(newFieldData);
+			// console.log(newFieldData);
 
 			updateDropZoneItems(propKey, bIndex, newFieldData, allowedNumbers);
 		} else if (item.bIndex !== bIndex) {
-			console.log("-------moving item from within------");
+			// console.log("-------moving item from within------");
 
 			let newFieldData = JSON.parse(JSON.stringify(setPrefix(item, name, chartType)));
 			["type", "bIndex"].forEach((e) => delete newFieldData[e]);
@@ -67,6 +65,8 @@ const DropZone = ({
 		<div ref={drop} className="chartAxis mt-2">
 			<span className="axisTitle">{name}</span>
 
+			{/* The subtext displayed under each dropzone  */}
+			{/* How many minimum fields required & maximum allowed  */}
 			{bIndex === 0 ? (
 				<span className="axisInfo">
 					{" "}
@@ -134,9 +134,7 @@ const DropZone = ({
 
 const mapStateToProps = (state) => {
 	return {
-		tabTileProps: state.tabTileProps,
 		chartProp: state.chartProperties,
-		token: state.isLogged.access_token,
 	};
 };
 

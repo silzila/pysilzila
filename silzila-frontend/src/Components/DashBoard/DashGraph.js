@@ -15,6 +15,7 @@ import StackedBar from "../Charts/StackedBar";
 import CrossTabChart from "../Charts/CrossTab/CrossTabChart";
 import HorizontalBar from "../Charts/HorizontalBar";
 import Horizontalstacked from "../Charts/Horizontalstacked";
+import RoseChart from "../Charts/RoseChart";
 
 const DashGraph = ({
 	// props
@@ -26,6 +27,7 @@ const DashGraph = ({
 	chartProp,
 	tabState,
 }) => {
+	// compute the dimensions of each graph to be displayed in dashboard and render the appropriate graph here
 	const renderGraph = () => {
 		var dimensions = {
 			height:
@@ -36,7 +38,6 @@ const DashGraph = ({
 		};
 
 		switch (chartProp?.properties[propKey]?.chartType) {
-			// "bar", "stackedBar", "pie", "donut", "line", "area", "heatmap", "table", "calendar", "scatterPlot", "crossTab"
 			case "multibar":
 				return (
 					<MultiBarChart
@@ -108,6 +109,15 @@ const DashGraph = ({
 			case "donut":
 				return (
 					<DoughnutChart
+						propKey={propKey}
+						graphDimension={dimensions}
+						chartArea="dashboard"
+					/>
+				);
+
+			case "rose":
+				return (
+					<RoseChart
 						propKey={propKey}
 						graphDimension={dimensions}
 						chartArea="dashboard"

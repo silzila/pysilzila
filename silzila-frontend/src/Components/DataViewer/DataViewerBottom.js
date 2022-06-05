@@ -133,6 +133,9 @@ const DataViewerBottom = ({
 	// 	}
 	// };
 
+	// When a table selected in dataset is changed,
+	// check if this table's sample records are already present
+	// if yes,display them. If no, get the table records and save in store
 	const handleTableChange = async (table, dsUid) => {
 		if (table.id !== selectedChartProp.selectedTable) {
 			setSelectedTable(propKey, { [selectedChartProp.selectedDs.ds_uid]: table.id });
@@ -161,6 +164,7 @@ const DataViewerBottom = ({
 		}
 	};
 
+	// List of tables for a dataset, displayed
 	const TableListForDs = () => {
 		if (tables !== undefined) {
 			return tables.map((table) => {
@@ -186,11 +190,14 @@ const DataViewerBottom = ({
 
 	var selectInput = { fontSize: "12px", padding: "2px 1rem" };
 
+	// when the dataset itself is changed,
+	// if there are no added fields in dropzone, allow the change.
+	// else, open a new tile with the selected dataset
 	const handleDataSetChange = (value) => {
 		const axes = chartProps.properties[propKey].chartAxes;
 		setAddNewOrChooseExistingDS(value);
 		if (value === "addNewDataset") {
-			console.log(axes);
+			//console.log(axes);
 			var count = 0;
 			axes.map((ax) => {
 				if (ax.fields.length > 0) {
@@ -215,7 +222,7 @@ const DataViewerBottom = ({
 			} else {
 				var dsObj = tabTileProps.selectedDataSetList.filter((ds) => ds.ds_uid === value)[0];
 				setSelectedDs(propKey, dsObj);
-				console.log(dsObj);
+				//console.log(dsObj);
 			}
 		}
 	};

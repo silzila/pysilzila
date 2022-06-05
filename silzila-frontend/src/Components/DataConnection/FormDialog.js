@@ -63,7 +63,8 @@ function FormDialog({
 			account.db_name !== "" &&
 			account.username !== "" &&
 			account.friendly_name !== "" &&
-			account.password !== ""
+			account.password &&
+			(account.password !== "" || account.password !== undefined)
 		) {
 			let data = {
 				friendly_name: account.friendly_name,
@@ -140,24 +141,10 @@ function FormDialog({
 	};
 
 	const deleteDcWarning = async () => {
-		var result = await FetchData({
-			requestType: "noData",
-			method: "GET",
-			url: "ds/get-all-ds",
-			headers: { Authorization: `Bearer ${token}` },
-		});
-		if (result.status) {
-			result.data.map((ds) => {
-				if (ds.dc_uid === account.dc_uid) {
-					dsList.push(ds.friendly_name);
-				}
-			});
-			setDcDel(true);
-			setDcDelMeg(dslistitem());
-		} else {
-			console.log(result.data.detail);
-			dsList = [];
-			setDcDel(true);
+		var delDataSet = window.confirm("Delete Data Connection?");
+		if (delDataSet) {
+			showAndHideForm();
+			deleteDc();
 		}
 	};
 
@@ -181,7 +168,7 @@ function FormDialog({
 				getInformation();
 			}, 3000);
 		} else {
-			console.log("Delete Dc", result.data.detail);
+			// console.log("Delete Dc", result.data.detail);
 			setSeverity("error");
 			setOpenAlert(true);
 			setTestMessage(result.data.detail);
@@ -449,46 +436,6 @@ function FormDialog({
 					</form>
 				</div>
 			</Dialog>
-			<Popover
-				anchorOrigin={{
-					vertical: "center",
-					horizontal: "center",
-				}}
-				anchorReference="anchorPosition"
-				anchorPosition={{ top: 200, left: 530 }}
-				open={dcDel}
-			>
-				<p>{dcDelMeg}</p>
-				<div style={{ margin: "0px 0px 0px auto", display: "flex", columnGap: "20px" }}>
-					<Button
-						variant="contained"
-						style={{
-							backgroundColor: "black",
-							float: "left",
-							height: "30px",
-							width: "40px",
-							fontSize: "12px",
-						}}
-						onClick={() => {
-							setDcDel(false);
-						}}
-					>
-						Cancel
-					</Button>
-					<Button
-						onClick={deleteDc}
-						variant="contained"
-						style={{
-							backgroundColor: "red",
-							height: "30px",
-							width: "40px",
-							fontSize: "12px",
-						}}
-					>
-						Delete
-					</Button>
-				</div>
-			</Popover>
 		</>
 	);
 }

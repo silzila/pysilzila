@@ -1,53 +1,46 @@
 export const delimiter = ",";
 
+/*  To deep clone an Object */
 export const cloneData = (data) => {
   return JSON.parse(JSON.stringify(data));
 };
 
 /*
-    Get display data from fields with prefix
+    Get display data("JSON object") from fields with prefix
   */
 export const getKeyWithPrefix = (item, dustbinName) => {
-  if(dustbinName == "val"){ //val ==> "Measure"
+  if (dustbinName == "val") {
+    //val ==> "Measure"
     switch (item.dataType) {
       case "date":
       case "timestamp":
         return `${item.fieldname}__${item.time_grain}_${item.agg}`;
       case "decimal":
-      case "integer":   
-        return `${item.fieldname}${item.agg? "__" + item.agg : ""}`;
+      case "integer":
+        return `${item.fieldname}${item.agg ? "__" + item.agg : ""}`;
       case "text":
-        return `${item.fieldname}${item.agg? "__" + item.agg : ""}`;
+        return `${item.fieldname}${item.agg ? "__" + item.agg : ""}`;
       default:
         return item?.fieldname || "";
     }
-  }
-  else{
+  } else {  // col/row ==> Columns / Rows
     switch (item.dataType) {
       case "date":
       case "timestamp":
         return `${item.fieldname}__${item.agg ? item.agg : item.time_grain}`;
       case "decimal":
-      case "integer":   
-        return `${item.fieldname}${item.agg? "__" + item.agg : ""}`;
+      case "integer":
+        return `${item.fieldname}${item.agg ? "__" + item.agg : ""}`;
       case "text":
-        return `${item.fieldname}${item.agg? "__" + item.agg : ""}`;
+        return `${item.fieldname}${item.agg ? "__" + item.agg : ""}`;
       default:
         return item?.fieldname || "";
     }
   }
-
-
-  // if (item && item.agg) {
-  //   //return `${item.prefix.toLowerCase()}(${item.fieldname})`;
-  //   return `${item.fieldname}__${item.agg.toLowerCase()}`;
-  // } else {
-  //   return item?.fieldname || "";
-  // }
 };
 
 /*
-    Get particular distinct list for index from split of chartDataCSV.columns
+    Get particular distinct list for given index from split of chartDataCSV.columns using the delimiter
   */
 
 export const getColumnList = (index, list) => {
@@ -133,15 +126,8 @@ export const getDistinctList = (dustbinColumns, compareObj, columnIndex, list) =
   return resultList;
 };
 
-export const constructFirstRowFromDusbinColumns = (dustbinColumns) => {
-  let _headerName = "";
 
-  dustbinColumns.forEach((item) => {
-    _headerName = _headerName.concat(getKeyWithPrefix(item), " / ");
-  });
-
-  return _headerName.substring(0, _headerName.length - 2);
-};
+  /*  TODO:: Feature to change color of Row/Column cells on header cell click */
 
 export const getUserClickedClassNameForColor = (chartPropData, col, userCellCompareJSON) => {
   let _className = "UserClickedCellRemainingChildren";
@@ -149,7 +135,11 @@ export const getUserClickedClassNameForColor = (chartPropData, col, userCellComp
   let _filteredData = getFilteredChartPropDataByCompareObject(chartPropData, userCellCompareJSON);
 
   if (Object.keys(col.compareObj).length > 0) {
-    let _currentData = getFilteredChartPropDataByCompareObject(chartPropData, col.compareObj, _filteredData);
+    let _currentData = getFilteredChartPropDataByCompareObject(
+      chartPropData,
+      col.compareObj,
+      _filteredData
+    );
 
     if (_currentData.length > 0) {
       _className = "UserClickedCellChildren";
@@ -163,20 +153,30 @@ export const getUserClickedClassNameForColor = (chartPropData, col, userCellComp
     For row span, need to compare with previous cell display value
 */
 
-export const getPreviousRowColumnData = (crossTabData, dustbinColumns, dustbinValues, showAsColumn, rowIndex, colIndex, dontIncrement) => {
+export const getPreviousRowColumnData = (
+  crossTabData,
+  dustbinColumns,
+  dustbinValues,
+  showAsColumn,
+  rowIndex,
+  colIndex,
+  dontIncrement
+) => {
   let headerRowCount = dustbinColumns.length;
-
-  // if (dustbinValues.length > 1 && showAsColumn && !dontIncrement) {
-  //   headerRowCount = headerRowCount + 1;
-  // }
-
   let rowNumber = headerRowCount + rowIndex;
 
   if (rowNumber >= 0) {
     let colData = crossTabData[rowNumber]?.columnItems[colIndex];
 
     if (colData && colData.displayData === "" && rowIndex !== 0) {
-      return getPreviousRowColumnData(crossTabData, dustbinColumns, dustbinValues, showAsColumn, rowIndex - 1, colIndex);
+      return getPreviousRowColumnData(
+        crossTabData,
+        dustbinColumns,
+        dustbinValues,
+        showAsColumn,
+        rowIndex - 1,
+        colIndex
+      );
     } else {
       return colData;
     }
@@ -185,20 +185,18 @@ export const getPreviousRowColumnData = (crossTabData, dustbinColumns, dustbinVa
   }
 };
 
-
-
- /*
+/*
     Push Dusbin Values into ChartData rows/column collection
 */
-export const addDusbinValuesMeasuresInChartData = (dustbinValues, list)=>{
+export const addDusbinValuesMeasuresInChartData = (dustbinValues, list) => {
   let newRowsArray = [];
 
-   if (dustbinValues.length > 1) {
-     for (let i = 0; i < list.length; i++) {
-       for (let valIndex = 0; valIndex < dustbinValues.length; valIndex++) {
-         newRowsArray.push(list[i].concat(getKeyWithPrefix(dustbinValues[valIndex]), delimiter));
-       }
-     }
-     return newRowsArray;
-   }
- }
+  if (dustbinValues.length > 1) {
+    for (let i = 0; i < list.length; i++) {
+      for (let valIndex = 0; valIndex < dustbinValues.length; valIndex++) {
+        newRowsArray.push(list[i].concat(getKeyWithPrefix(dustbinValues[valIndex]), delimiter));
+      }
+    }
+    return newRowsArray;
+  }
+};

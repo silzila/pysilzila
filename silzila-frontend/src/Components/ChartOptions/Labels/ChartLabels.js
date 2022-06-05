@@ -63,7 +63,6 @@ const ChartLabels = ({
 			{showLabel === true ? (
 				<React.Fragment>
 					<div style={{ display: "flex", paddingBottom: "8px", flexDirection: "column" }}>
-						{/* <div style={{ flex: 1, display: "flex" }}> */}
 						{chartDetail[propKey].chartType === "pie" ||
 						chartDetail[propKey].chartType === "donut" ? (
 							<React.Fragment>
@@ -77,7 +76,6 @@ const ChartLabels = ({
 										value={labelOptions.pieLabel.labelPosition}
 										variant="outlined"
 										onChange={(e) => {
-											console.log("SETTING PIE LABEL POSITION");
 											updateLabelPosition(propKey, e.target.value);
 										}}
 										sx={{
@@ -107,14 +105,10 @@ const ChartLabels = ({
 								</FormControl>
 							</React.Fragment>
 						) : null}
-						{/* </div> */}
-						<div
-						// style={{ flex: 1, display: "flex" }}
-						>
+						<div>
 							<div className="optionDescription">LABEL COLOR</div>
 
 							<div className="optionDescription">
-								{/* <label htmlFor="enableDisable" style={{ padding: "5px" }}> */}
 								<label
 									htmlFor="enableDisable"
 									className="enableDisableLabel"

@@ -60,15 +60,14 @@ const CanvasTableColumns = ({
 		// A new connection between B & D  or C & D shouldn't happen
 
 		// Check if both column types (Arrow start and end column) are of same dataType
-
 		if (arrows.length === 0) {
 			if (
 				e.dataTransfer.getData("connectItemId") === itemId ||
 				e.dataTransfer.getData("connectTableName") === tableName
 			) {
-				console.log("same table names");
+				//console.log("same table names");
 				if (e.dataTransfer.getData("schema") !== schema) {
-					console.log("same table Diff schema, new rel");
+					//console.log("same table Diff schema, new rel");
 					setupForRelation(e);
 				}
 			} else {
@@ -81,7 +80,7 @@ const CanvasTableColumns = ({
 					(arr.start === e.dataTransfer.getData("connectItemId") && arr.end === itemId) ||
 					(arr.end === e.dataTransfer.getData("connectItemId") && arr.start === itemId)
 				) {
-					console.log("RELATION BETWEEN THESE TWO COLUMNS ARE ALREADY EXIST");
+					//console.log("RELATION BETWEEN THESE TWO COLUMNS ARE ALREADY EXIST");
 					oldRel = true;
 				}
 			});
@@ -102,7 +101,6 @@ const CanvasTableColumns = ({
 				setTestMessage("");
 			}, 4000);
 		} else {
-			// setShowCard(true);
 			const refs = {
 				isSelected: true,
 

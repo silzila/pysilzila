@@ -79,6 +79,7 @@ const Card = ({
 		backgroundColor: "rgba(25, 118, 210, 0.08)",
 	};
 
+	// Properties and behaviour when a card is dragged
 	const [, drag] = useDrag({
 		item: {
 			uId: field.uId,
@@ -115,6 +116,7 @@ const Card = ({
 		},
 	});
 
+	// Properties and behaviours when another card is dropped over this card
 	const [, drop] = useDrop({
 		accept: "card",
 		canDrop: () => false,
@@ -140,6 +142,8 @@ const Card = ({
 		},
 	});
 
+	// List of options to show at the end of each card
+	// (like, year, month, day, or Count, sum, avg etc)
 	const RenderMenu = useCallback(() => {
 		var options = [];
 		var options2 = [];
@@ -153,7 +157,7 @@ const Card = ({
 			}
 		}
 
-if (axisTitle === "Dimension" || axisTitle === "Row" || axisTitle === "Column") {
+		if (axisTitle === "Dimension" || axisTitle === "Row" || axisTitle === "Column") {
 			if (field.dataType === "date" || field.dataType === "timestamp") {
 				options2 = options2.concat(Aggregators[axisTitle][field.dataType].time_grain);
 			} else {
@@ -205,7 +209,7 @@ if (axisTitle === "Dimension" || axisTitle === "Row" || axisTitle === "Column") 
 
 				{options.length === 0 && options2.length === 0 ? (
 					<MenuItem onClick={handleClose} sx={menuStyle} key="optNa">
-						<i>-- NA --</i>
+						<i>-- No options --</i>
 					</MenuItem>
 				) : null}
 			</Menu>
@@ -259,7 +263,6 @@ const mapStateToProps = (state) => {
 	return {
 		tabTileProps: state.tabTileProps,
 		chartProp: state.chartProperties,
-		// token: state.isLogged.access_token,
 	};
 };
 
@@ -282,8 +285,6 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch(sortAxes(propKey, bIndex, dragUId, uId)),
 		revertAxes: (propKey, bIndex, uId, originalIndex) =>
 			dispatch(revertAxes(propKey, bIndex, uId, originalIndex)),
-
-		// chartPropUpdated: (updated) => dispatch(chartPropsLeftUpdated(updated)),
 	};
 };
 

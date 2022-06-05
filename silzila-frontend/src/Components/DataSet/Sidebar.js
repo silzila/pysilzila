@@ -62,6 +62,7 @@ const Sidebar = ({
 	};
 
 	useEffect(() => {
+		// If Dataset is opened in edit mode, set all required values to state
 		if (editMode) {
 			getAllDc();
 			setSelectedConnection(connectionValue);
@@ -73,6 +74,7 @@ const Sidebar = ({
 		}
 	}, []);
 
+	// Reset all the values in store
 	useEffect(() => {
 		if (resetDataset) {
 			setSelectedConnection(dcToResetTo);
@@ -155,10 +157,16 @@ const Sidebar = ({
 			const uid = new ShortUniqueId({ length: 8 });
 			const userTable = res.data.map((el) => {
 				var id = "";
+				var bool = false;
+
+				// Checking if the table is already selected to canvas by user
 				var tableAlreadyChecked = tempTable.filter(
 					(tbl) =>
 						tbl.dcId === connectionId && tbl.schema === schema && tbl.tableName === el
 				)[0];
+
+				// Checking if the selected table is new or previously added to this dataset
+				// Required as editing a dataset doesn't allow for deleting already added tables
 				tempTable.forEach((tbl) => {
 					if (
 						tbl.dcId === connectionId &&
@@ -166,21 +174,28 @@ const Sidebar = ({
 						tbl.tableName === el
 					) {
 						id = tbl.id;
+						bool = tbl.isNewTable;
 					}
 				});
+
+				// Already selected table in canvas has an ID.
 				if (tableAlreadyChecked) {
 					return {
 						tableName: el,
 						isSelected: true,
 						table_uid: schema.concat(el),
 						id: id,
+						isNewTable: bool,
 					};
 				}
+
+				// New tables need to be assigned a uid
 				return {
 					tableName: el,
 					isSelected: false,
 					table_uid: schema.concat(el),
 					id: uid(),
+					isNewTable: true,
 				};
 			});
 

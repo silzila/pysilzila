@@ -21,6 +21,7 @@ const TableList = (props) => {
 	const [tableData, setTableData] = useState([]);
 	const [objKeys, setObjKeys] = useState([]);
 
+	// Get all columns for a given table
 	const getTableColumns = async (tableName) => {
 		const uid = new ShortUniqueId({ length: 8 });
 
@@ -33,6 +34,8 @@ const TableList = (props) => {
 		if (result.status) {
 			let obj;
 			props.tableList.map((el) => {
+				// While in edit mode, we check if this table has already been selected
+				// If selected, set its old parameters UID parameters,
 				if (el.tableName === tableName && el.isSelected === true) {
 					const arrayWithUid = result.data.map((data) => {
 						return {
@@ -40,7 +43,7 @@ const TableList = (props) => {
 							...data,
 						};
 					});
-					console.log(arrayWithUid);
+
 					obj = {
 						id: el.id,
 						table_uid: el.table_uid,
@@ -50,13 +53,16 @@ const TableList = (props) => {
 						columns: arrayWithUid,
 						dcId: props.connectionId,
 						schema: props.schema,
+						isNewTable: el.isNewTable,
 					};
 				}
 			});
+
 			props.addTable(obj);
 		}
 	};
 
+	// Handles when a table listed in sidebar is checked or unchecked
 	const checkAndUncheck = (e, id) => {
 		props.onChecked(id);
 
@@ -112,6 +118,7 @@ const TableList = (props) => {
 			<Checkbox
 				style={{ width: "1rem", height: "1rem", margin: "auto 5px auto 0" }}
 				size="1rem"
+				disabled={props.table.isNewTable ? false : true}
 				checked={props.table.isSelected ? true : false}
 				onClick={(e) => checkAndUncheck(e, props.table.id)}
 				value={props.table.tableName}

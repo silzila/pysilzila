@@ -58,7 +58,7 @@ const CanvasTables = ({
 	// 		- Save new arrow and new relation
 
 	const checkRelationExists = (newArrowObj) => {
-		console.log(JSON.stringify(newArrowObj, null, 4));
+		// if there are no arrows yet between these two tables, add arrow and show popup to define relationship
 		if (dataSetState.arrows.length === 0) {
 			newArrowObj.relationId = uid();
 			setArrowProp(newArrowObj);
@@ -71,11 +71,10 @@ const CanvasTables = ({
 			var sameRelInvObj = {};
 
 			dataSetState.relationships.forEach((rel, i) => {
-				console.log(rel);
-				console.log("Relation Loop ", i);
-				if (rel.startId === newArrowObj.startId && rel.endId === newArrowObj.endId) {
-					console.log("Another arrow from same relationship");
+				// check if the relationship already exist by checking
+				// if the start table and end table matches between the new arrow and existing realtionships
 
+				if (rel.startId === newArrowObj.startId && rel.endId === newArrowObj.endId) {
 					newArrowObj.relationId = rel.relationId;
 					newArrowObj.cardinality = rel.cardinality;
 					newArrowObj.integrity = rel.integrity;
@@ -84,7 +83,7 @@ const CanvasTables = ({
 					sameRel = true;
 					sameRelObj = newArrowObj;
 				} else if (rel.startId === newArrowObj.endId && rel.endId === newArrowObj.startId) {
-					console.log("Another arrow from same relationship - but INVERTED");
+					// If it is in reverse assign the start and end table parameters in reverse
 
 					newArrowObj.relationId = rel.relationId;
 					var newReverseArrowObj = JSON.parse(JSON.stringify(newArrowObj));
@@ -107,14 +106,13 @@ const CanvasTables = ({
 					newReverseArrowObj.showHead = rel.showHead;
 					newReverseArrowObj.showTail = rel.showTail;
 
-					console.log(newReverseArrowObj);
 					sameRelInv = true;
 					sameRelInvObj = newReverseArrowObj;
 				}
 			});
 
-			console.log(sameRel);
-			console.log(sameRelInv);
+			//console.log(sameRel);
+			//console.log(sameRelInv);
 			if (sameRel) {
 				addArrows(sameRelObj);
 			}
@@ -131,24 +129,28 @@ const CanvasTables = ({
 	};
 
 	const addRelationship = (relObj) => {
-		console.log(relObj);
 		addNewRelationship(relObj);
 	};
 
 	// Remove or rename tables in canvas
 	const selectAction = (e) => {
-		console.log(tableId);
 		if (open === true) {
+			// Remove table from canvas
 			if (parseInt(e.target.id) === 1) {
+				// get ID of table listed in canvas
 				const tempTables = [...dataSetState.tempTable].filter((tab) => {
 					return tab.id !== tableId;
 				});
+
+				// remove checked state of the table from Sidebar
 				const tables = [...dataSetState.tables].map((tab) => {
 					if (tab.id === tableId) {
 						tab.isSelected = false;
 					}
 					return tab;
 				});
+
+				// Remove this table's info from Relationship information
 				var is_in_relationship = dataSetState.relationships.filter(
 					(obj) => obj.startId === tableId || obj.endId === tableId
 				)[0];
@@ -158,12 +160,10 @@ const CanvasTables = ({
 						actionsOnRemoveTable(tempTables, tables, tableId);
 					}
 				} else {
-					console.log(tables);
-					console.log(tempTables);
 					actionsOnRemoveTable(tempTables, tables, tableId);
 				}
 			} else if (parseInt(e.target.id) === 2) {
-				// alert("do you want to change the table name?");
+				// Rename table alias in canvas
 				setNewName(tableData.alias);
 				setInputField(true);
 			}
@@ -173,11 +173,13 @@ const CanvasTables = ({
 		setOpen(false);
 	};
 
+	// Focusing the input text field during rename of table
 	const selectText = () => {
 		var input = document.getElementById("name");
 		input.select();
 	};
 
+	// When changing name of a table, make sure that it is not empty
 	const changeTableName = (tableId) => {
 		var spaceCount = newName.split(" ").length - 1;
 		if (newName.length > 0 && newName.length !== spaceCount) {
@@ -187,7 +189,6 @@ const CanvasTables = ({
 				}
 				return tab;
 			});
-			console.log(newTable);
 			setTempTables(newTable);
 			setNewName("");
 			setInputField(false);
@@ -313,6 +314,7 @@ const CanvasTables = ({
 				setOpen={setOpen}
 				selectAction={selectAction}
 				anchorEl={anchorEl}
+				tableData={tableData}
 			/>
 		</div>
 	);

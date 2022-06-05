@@ -12,6 +12,7 @@ import { updateChartData } from "../../redux/ChartProperties/actionsChartControl
 import LoadingPopover from "../CommonFunctions/PopOverComponents/LoadingPopover";
 import { canReUseData, toggleAxesEdited } from "../../redux/ChartProperties/actionsChartProperties";
 
+// format the chartAxes into the way it is needed for api call
 export const getChartData = async (axesValues, chartProp, propKey, token) => {
 	var formattedAxes = {};
 	axesValues.forEach((axis) => {
@@ -90,6 +91,34 @@ export const getChartData = async (axesValues, chartProp, propKey, token) => {
 	}
 };
 
+// given chart type, check if the dropzones have required number of fields
+export const checkMinRequiredCards = (chartProp, propKey) => {
+	var minReqMet = [];
+	ChartsInfo[chartProp.properties[propKey].chartType].dropZones.forEach((zone, zoneI) => {
+		chartProp.properties[propKey].chartAxes[zoneI].fields.length >= zone.min
+			? minReqMet.push(true)
+			: minReqMet.push(false);
+	});
+
+	if (chartProp.properties[propKey].chartType === "crossTab") {
+		if (
+			chartProp.properties[propKey].chartAxes[1].fields.length > 0 ||
+			chartProp.properties[propKey].chartAxes[2].fields.length > 0 ||
+			chartProp.properties[propKey].chartAxes[3].fields.length > 0
+		) {
+			minReqMet.push(true);
+		} else {
+			minReqMet.push(false);
+		}
+	}
+
+	if (minReqMet.includes(false)) {
+		return false;
+	} else {
+		return true;
+	}
+};
+
 const ChartAxes = ({
 	// props
 	tabId,
@@ -112,25 +141,26 @@ const ChartAxes = ({
 		dropZones.push(ChartsInfo[chartProp.properties[propKey].chartType].dropZones[i].name);
 	}
 
+	// every time chartAxes or chartType is changed, check if
+	// new data must be obtained from server
+	// check for minimum requirements in each dropzone for the given chart type
+	// if not reset the data
+
 	useEffect(() => {
-		console.log("ChartAxes changed");
 		const axesValues = JSON.parse(JSON.stringify(chartProp.properties[propKey].chartAxes));
 
 		let serverCall = false;
-
-		// TODO: Priority 1 - ReUseData udpate error
-		// When table fields are dropped in dropzones or different chart is selected, server call doesn't happen properly.
-		// Verify if reUseData (chartProp.properties[propKey].reUseData) value is properly assigned while changing charts and updating chart axes
 
 		if (chartProp.properties[propKey].axesEdited) {
 			if (chartProp.properties[propKey].reUseData) {
 				serverCall = false;
 				resetStore();
 			} else {
-				var minReq = checkMinRequiredCards();
+				var minReq = checkMinRequiredCards(chartProp, propKey);
 				if (minReq) {
 					serverCall = true;
 				} else {
+					console.log("Reset chartData");
 					updateChartData(propKey, "");
 				}
 			}
@@ -164,35 +194,7 @@ const ChartAxes = ({
 				setLoading(false);
 			});
 		}
-	}, [chartProp.properties[propKey].chartAxes]);
-
-	const checkMinRequiredCards = () => {
-		var minReqMet = [];
-
-		ChartsInfo[chartProp.properties[propKey].chartType].dropZones.forEach((zone, zoneI) => {
-			chartProp.properties[propKey].chartAxes[zoneI].fields.length >= zone.min
-				? minReqMet.push(true)
-				: minReqMet.push(false);
-		});
-
-		if (chartProp.properties[propKey].chartType === "crossTab") {
-			if (
-				chartProp.properties[propKey].chartAxes[1].fields.length > 0 ||
-				chartProp.properties[propKey].chartAxes[2].fields.length > 0 ||
-				chartProp.properties[propKey].chartAxes[3].fields.length > 0
-			) {
-				minReqMet.push(true);
-			} else {
-				minReqMet.push(false);
-			}
-		}
-
-		if (minReqMet.includes(false)) {
-			return false;
-		} else {
-			return true;
-		}
-	};
+	}, [chartProp.properties[propKey].chartAxes, chartProp.properties[propKey].chartType]);
 
 	const resetStore = () => {
 		toggleAxesEdit(propKey);
@@ -214,7 +216,7 @@ const mapStateToProps = (state) => {
 		tabTileProps: state.tabTileProps,
 		userFilterGroup: state.userFilterGroup,
 		chartProp: state.chartProperties,
-		token: state.isLogged.access_token,
+		token: state.isLogged.accessToken,
 	};
 };
 

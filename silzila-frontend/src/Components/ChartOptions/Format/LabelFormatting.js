@@ -128,7 +128,11 @@ const LabelFormatting = ({
 			) : null}
 
 			<div style={{ borderTop: "1px solid rgb(211,211,211)", margin: "1rem 6% 1rem" }}></div>
-			<div className="optionDescription">LABEL FORMAT</div>
+			{
+				chartProperty[propKey].chartType === "crossTab" ? <div className="optionDescription">FORMAT</div> : 
+					<div className="optionDescription">LABEL FORMAT</div>
+			}
+			
 
 			<div className="optionDescription">
 				<label htmlFor="enableDisable" className="enableDisableLabel">
