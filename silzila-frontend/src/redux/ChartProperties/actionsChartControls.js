@@ -9,6 +9,10 @@ export const setColorScheme = (propKey, color) => {
 	return { type: "CHANGE_COLOR_SCHEME", payload: { propKey, color } };
 };
 
+export const setAreaColorOptions = (propKey, option, value) => {
+	return { type: "AREA_COLOR_OPTIONS", payload: { propKey, option, value } };
+};
+
 export const addControl = (tabId, nextTileId, newTab) => {
 	if (newTab) {
 		return {
@@ -93,6 +97,12 @@ export const updateLabelPosition = (propKey, value) => {
 		payload: { propKey: propKey, value: value },
 	};
 };
+export const updateLabelPadding = (propKey, value) => {
+	return {
+		type: "UPDATE_LABEL_PADDING",
+		payload: { propKey: propKey, value: value },
+	};
+};
 
 // ===================================
 // Format
@@ -142,6 +152,9 @@ export const enableGrid = (propKey, value, show) => {
 
 export const updateAxisMinMax = (propKey, axisKey, axisValue) => {
 	return { type: "AXIS_MIN_MAX", payload: { propKey, axisKey, axisValue } };
+};
+export const updateAxisMinMaxforScatter = (propKey, axisKey, axisValue) => {
+	return { type: "AXIS_MIN_MAX_FOR_SCATTER", payload: { propKey, axisKey, axisValue } };
 };
 
 export const loadChartControls = (chartControls) => {

@@ -1,10 +1,11 @@
-import { Radio, TextField, Tooltip, Typography, Popover } from "@mui/material";
+// Used for setting color scale in Gauge chart
+
+import { TextField, Tooltip, Popover } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import {
 	addingNewStep,
 	changingValuesofSteps,
-	setColorScaleOption,
 	updateGaugeAxisOptions,
 } from "../../../redux/ChartProperties/actionsChartControls";
 import { NotificationDialog } from "../../CommonFunctions/DialogComponents";
@@ -14,6 +15,8 @@ import AddIcon from "@mui/icons-material/Add";
 import { SketchPicker } from "react-color";
 import ChartColors from "./ChartColors";
 import { ColorSchemes } from "./ColorScheme";
+import "./ColorSteps.css";
+import { update } from "immutability-helper";
 
 const textFieldStyleProps = {
 	style: {
@@ -46,109 +49,153 @@ const ColorSteps = ({
 
 	const [colorsOfScheme, setColorsOfScheme] = useState([]);
 
-	console.log(chartProp.properties[propKey].colorScheme);
+	let chartData = chartProp.properties[propKey].chartData
+		? chartProp.properties[propKey].chartData.result
+		: "";
+
+	// console.log(chartProp.properties[propKey].colorScheme);
 
 	useEffect(() => {
-		console.log(chartProp.properties[propKey].colorScheme);
 		ColorSchemes.map((el) => {
 			if (el.name === chartProp.properties[propKey].colorScheme) {
 				setColorsOfScheme(el.colors);
 			}
 		});
-		console.log("theme changed");
 
 		// when theme change  'isColorAuto' prop of all steps set to 'ture' to show the colors of selected theme
 
-		const temp = chartProp.properties[propKey].axisOptions.gaugeChartControls.stepcolor.map(
-			(element) => {
-				element.isColorAuto = true;
-				return element;
-			}
-		);
-		console.log(temp);
-		changingValuesofSteps(propKey, temp);
+		const ArrayOfStepsWithSchemaColors = JSON.parse(
+			JSON.stringify(chartProp.properties[propKey].axisOptions.gaugeChartControls.stepcolor)
+		).map((element) => {
+			element.isColorAuto = true;
+			return element;
+		});
+
+		changingValuesofSteps(propKey, ArrayOfStepsWithSchemaColors);
 	}, [chartProp.properties[propKey].colorScheme]);
 
-	// calculate percentage  value of each step while add or delete steps
-
-	const calculatePercentage = (temp) => {
-		let total = 0;
-		temp.map((el) => {
-			total = parseInt(total) + parseInt(el.percentage);
-		});
-		console.log(total);
-		var per = 0;
-		var i = 0;
-
-		for (i = 0; i < temp.length; i++) {
-			per = per + temp[i].percentage / total;
-			updatePercentageValue(per.toPrecision(1), i, temp);
+	useEffect(() => {
+		var newTempData = [];
+		var total = "";
+		if (chartData) {
+			Object.keys(chartData[0]).map((key) => {
+				newTempData.push({
+					name: key,
+					value: chartData[0][key],
+				});
+			});
+			total = newTempData[0].value * 2;
+			const stepsWithValues = JSON.parse(
+				JSON.stringify(
+					chartProp.properties[propKey].axisOptions.gaugeChartControls.stepcolor
+				)
+			).map((el) => {
+				el.value = Math.ceil((el.stepValue * total) / 100);
+				return el;
+			});
+			changingValuesofSteps(propKey, stepsWithValues);
+			updateGaugeAxisOptions(propKey, "max", total);
 		}
-	};
-
-	// update calculated  percent value  for ecah step and return in a temprory array, update state with this array
-
-	const updatePercentageValue = (value, index, temp) => {
-		var maxTotal = 0;
-		const temp1 = temp.map((el, i) => {
-			maxTotal = maxTotal + el.percentage;
-			if (i === index) {
-				el.per = value;
-			}
-			return el;
-		});
-		console.log(temp1, "temp1temp1");
-		console.log(maxTotal);
-		updateGaugeAxisOptions(propKey, "max", maxTotal);
-		changingValuesofSteps(propKey, temp1);
-	};
+	}, [chartData]);
 
 	// function to remove existing steps
 	const removeStep = (index) => {
-		const temp = chartProp.properties[propKey].axisOptions.gaugeChartControls.stepcolor.filter(
-			(el, i) => {
-				return i !== index;
-			}
-		);
-		console.log(temp);
-		calculatePercentage(temp);
+		updateGaugeAxisOptions(propKey, "isMaxAuto", false);
+
+		const reminingSteps = JSON.parse(
+			JSON.stringify(chartProp.properties[propKey].axisOptions.gaugeChartControls.stepcolor)
+		).filter((el, i) => {
+			return i !== index;
+		});
+		var total = getTotal(reminingSteps);
+		var maxTotalAndUpdatedArray = computeAndGetMaxValue(reminingSteps, total);
+
+		changingValuesofSteps(propKey, maxTotalAndUpdatedArray.arrayWithUpdatedValueOfNewStep);
+		updateGaugeAxisOptions(propKey, "max", maxTotalAndUpdatedArray.maxTotal);
 	};
 
 	// changing value of existing step (edit)
 	const changeStepValue = (value, index) => {
-		const temp = chartProp.properties[propKey].axisOptions.gaugeChartControls.stepcolor.map(
-			(el, i) => {
-				if (index === i) {
-					el.percentage = parseInt(value);
-				}
-				return el;
+		updateGaugeAxisOptions(propKey, "isMaxAuto", false);
+
+		const stepWithChangedValue = JSON.parse(
+			JSON.stringify(chartProp.properties[propKey].axisOptions.gaugeChartControls.stepcolor)
+		).map((el, i) => {
+			if (index === i) {
+				el.value = parseInt(value);
 			}
-		);
-		calculatePercentage(temp);
+			return el;
+		});
+
+		var total = getTotal(stepWithChangedValue);
+		var maxTotalAndUpdatedArray = computeAndGetMaxValue(stepWithChangedValue, total);
+
+		changingValuesofSteps(propKey, maxTotalAndUpdatedArray.arrayWithUpdatedValueOfNewStep);
+		updateGaugeAxisOptions(propKey, "max", maxTotalAndUpdatedArray.maxTotal);
 	};
 
 	const addNewStep = (obj, idx) => {
+		updateGaugeAxisOptions(propKey, "isMaxAuto", false);
 		addingNewStep(propKey, idx, obj);
-		const temp = [
-			...chartProp.properties[propKey].axisOptions.gaugeChartControls.stepcolor,
-			obj,
-		];
-		calculatePercentage(temp);
+
+		const newStepAddedArray = JSON.parse(
+			JSON.stringify(chartProp.properties[propKey].axisOptions.gaugeChartControls.stepcolor)
+		);
+
+		newStepAddedArray.splice(idx, 0, obj);
+		console.log(newStepAddedArray);
+
+		var total = getTotal(newStepAddedArray);
+
+		var maxTotalAndUpdatedArray = computeAndGetMaxValue(newStepAddedArray, total);
+
+		changingValuesofSteps(propKey, maxTotalAndUpdatedArray.arrayWithUpdatedValueOfNewStep);
+		updateGaugeAxisOptions(propKey, "max", maxTotalAndUpdatedArray.maxTotal);
+	};
+
+	const getTotal = (stepsArray) => {
+		let total = 0;
+		stepsArray.map((el) => {
+			total = parseInt(total) + parseInt(el.value);
+		});
+		return total;
+	};
+
+	const computeAndGetMaxValue = (stepsArray, total) => {
+		var per = 0;
+		var stepValue = 0;
+		var i = 0;
+		var maxTotalAndUpdatedArray = {};
+		for (i = 0; i < stepsArray.length; i++) {
+			per = per + stepsArray[i].value / total;
+			stepValue = (stepsArray[i].value * 100) / total;
+			maxTotalAndUpdatedArray = getMaxTotalAndUpdatedArray(
+				per.toPrecision(1),
+				stepValue,
+				i,
+				stepsArray
+			);
+		}
+		return maxTotalAndUpdatedArray;
+	};
+
+	const getMaxTotalAndUpdatedArray = (per, stepValue, index, stepsArray) => {
+		var maxTotal = 0;
+		const arrayWithUpdatedValueOfNewStep = stepsArray.map((el, i) => {
+			maxTotal = maxTotal + el.value;
+			console.log(maxTotal);
+			if (i === index) {
+				el.per = per;
+				el.stepValue = stepValue;
+			}
+			return el;
+		});
+
+		return { maxTotal, arrayWithUpdatedValueOfNewStep };
 	};
 
 	return (
-		<div
-			style={{
-				width: "100%",
-				padding: "10px 0 0 0",
-				fontSize: "12px",
-				display: "flex",
-				flexDirection: "column",
-				transition: "ease-in 0.3s linear",
-				overflow: "auto",
-				height: "100%",
-			}}
-		>
+		<div className="colorStepsContainer">
 			<div>
 				<ChartColors />
 			</div>
@@ -156,14 +203,7 @@ const ColorSteps = ({
 			<div className="optionDescription" style={{ marginTop: "10px" }}>
 				STEPS:
 			</div>
-			<div
-				style={{
-					display: "flex",
-					flexDirection: "column",
-					paddingLeft: "15px",
-					paddingRight: "10px",
-				}}
-			>
+			<div className=" colorStepsList">
 				{chartProp.properties[propKey].axisOptions.gaugeChartControls.stepcolor.map(
 					(el, index) => {
 						return (
@@ -174,153 +214,139 @@ const ColorSteps = ({
 										onMouseOver={() => xprops.setOpen(true)}
 										onMouseLeave={() => xprops.setOpen(false)}
 									>
-										<div
-											style={{
-												margin: "2px",
-												height: "1.5rem",
-												flex: 1,
-												display: "flex",
-												padding: "1px",
-												borderRadius: "3px",
-											}}
-										>
+										<div className="colorStepsInput">
 											<TextField
 												type="number"
 												style={{ flex: 1, marginRight: "5px" }}
 												onChange={(e) => {
 													changeStepValue(e.target.value, index);
 												}}
-												value={el.percentage}
+												value={el.value}
 												inputProps={{ ...textFieldStyleProps }}
 											/>
-											{el.isColorAuto ? (
-												<div
-													style={{
-														height: "23px",
-														maxWidth: "20px",
-														borderColor: "grey",
-														borderRadius: "3px",
-														border: "1px solid",
-														backgroundColor: colorsOfScheme[index],
-														flex: 1,
-														marginTop: "1px",
-													}}
-													onClick={(el) => {
-														setSelectedStepIndex(index);
-														setColorPopoverOpen(true);
-													}}
-												></div>
-											) : (
-												<div
-													style={{
-														height: "23px",
-														maxWidth: "20px",
-														borderColor: "grey",
-														borderRadius: "3px",
-														border: "1px solid",
-														backgroundColor: el.color,
-														flex: 1,
-														marginTop: "1px",
-													}}
-													onClick={(el) => {
-														setSelectedStepIndex(index);
-														setColorPopoverOpen(true);
-													}}
-												></div>
-											)}
-											<div
-												style={{
-													flex: 1,
-												}}
-											>
-												{xprops.open ? (
-													<div
-														style={{
-															display: "flex",
-															float: "right",
-														}}
-													>
-														<div
-															style={{
-																cursor: "pointer",
-																justifyContent: "center",
-															}}
-															onClick={(e) => {
-																var idx = index + 1;
-																var obj = {
-																	percentage: el.percentage,
-																	color: colorsOfScheme[idx],
-																	per: el.per,
-																	isColorAuto: true,
-																};
 
-																addNewStep(obj, idx);
-															}}
-														>
-															<Tooltip title="Add Below">
-																<AddIcon
-																	sx={{
-																		color: "#666",
-																		height: "20px",
-																		width: "20px",
-																		padding: "1px",
-																		marginRight: "4px",
-																		"&:hover": {
-																			backgroundColor:
-																				"#d7d9db",
-																			borderRadius: "2px",
-																		},
-																	}}
-																/>
-															</Tooltip>
-														</div>
-														<div
-															style={{
-																cursor: "pointer",
-																justifyContent: "center",
-															}}
-															onClick={() => {
-																console.log("removing steps");
-																if (
-																	chartProp.properties[propKey]
-																		.axisOptions
-																		.gaugeChartControls
-																		.stepcolor.length === 1
-																) {
-																	console.log("cant remove step");
-																	setOpenAlert(true);
-																	setSeverity("warning");
-																	setTestMessage(
-																		"atleast one step should be there"
+											<div
+												className="colorIndicator"
+												style={{
+													backgroundColor: el.color,
+												}}
+												onClick={(el) => {
+													setSelectedStepIndex(index);
+													setColorPopoverOpen(true);
+												}}
+											></div>
+											<div>
+												<div className="colorStepsAddDelete">
+													{xprops.open ? (
+														<>
+															<div
+																style={{
+																	cursor: "pointer",
+																	justifyContent: "center",
+																}}
+																onClick={(e) => {
+																	var idx = index + 1;
+																	console.log(
+																		colorsOfScheme.length,
+																		idx
 																	);
-																	setTimeout(() => {
-																		setOpenAlert(false);
-																		setTestMessage("");
-																	}, 3000);
-																} else {
-																	removeStep(index);
-																}
-															}}
-														>
-															<Tooltip title="Delete">
-																<DeleteIcon
-																	sx={{
-																		color: "#666",
-																		height: "20px",
-																		width: "20px",
-																		padding: "2px",
-																		"&:hover": {
-																			color: "red",
-																			backgroundColor:
-																				"#d7d9db",
-																			borderRadius: "2px",
-																		},
-																	}}
-																/>
-															</Tooltip>
-														</div>
-													</div>
-												) : null}
+																	console.log(
+																		idx % colorsOfScheme.length
+																	);
+																	var colorValue = "";
+																	console.log(colorsOfScheme);
+																	if (
+																		idx >= colorsOfScheme.length
+																	) {
+																		var id2 =
+																			idx %
+																			colorsOfScheme.length;
+																		console.log(id2);
+																		colorValue =
+																			colorsOfScheme[id2];
+																	} else {
+																		colorValue =
+																			colorsOfScheme[idx];
+																	}
+																	var obj = {
+																		stepValue: 1,
+																		color: colorValue,
+																		per: el.per,
+																		isColorAuto: true,
+																		value: 0,
+																	};
+
+																	addNewStep(obj, idx);
+																}}
+															>
+																<Tooltip title="Add Below">
+																	<AddIcon
+																		sx={{
+																			color: "#666",
+																			height: "23px",
+																			width: "23px",
+																			padding: "1px",
+																			marginRight: "4px",
+																			"&:hover": {
+																				backgroundColor:
+																					"#d7d9db",
+																				borderRadius: "2px",
+																			},
+																		}}
+																	/>
+																</Tooltip>
+															</div>
+															<div
+																style={{
+																	cursor: "pointer",
+																	justifyContent: "center",
+																}}
+																onClick={() => {
+																	console.log("removing steps");
+																	if (
+																		chartProp.properties[
+																			propKey
+																		].axisOptions
+																			.gaugeChartControls
+																			.stepcolor.length === 1
+																	) {
+																		console.log(
+																			"cant remove step"
+																		);
+																		setOpenAlert(true);
+																		setSeverity("warning");
+																		setTestMessage(
+																			"atleast one step should be there"
+																		);
+																		setTimeout(() => {
+																			setOpenAlert(false);
+																			setTestMessage("");
+																		}, 3000);
+																	} else {
+																		removeStep(index);
+																	}
+																}}
+															>
+																<Tooltip title="Delete">
+																	<DeleteIcon
+																		sx={{
+																			color: "#666",
+																			height: "23px",
+																			width: "23px",
+																			padding: "2px",
+																			"&:hover": {
+																				color: "red",
+																				backgroundColor:
+																					"#d7d9db",
+																				borderRadius: "2px",
+																			},
+																		}}
+																	/>
+																</Tooltip>
+															</div>
+														</>
+													) : null}
+												</div>
 											</div>
 										</div>
 									</div>
@@ -356,7 +382,7 @@ const ColorSteps = ({
 						width="16rem"
 						styles={{ padding: "0" }}
 						onChangeComplete={(color) => {
-							const temp = chartProp.properties[
+							const stepsWithUserSelectedColor = chartProp.properties[
 								propKey
 							].axisOptions.gaugeChartControls.stepcolor.map((element, index) => {
 								if (index === selectedStepIndex) {
@@ -366,11 +392,11 @@ const ColorSteps = ({
 
 								return element;
 							});
-							console.log(temp);
-							changingValuesofSteps(propKey, temp);
+							// console.log(stepsWithUserSelectedColor);
+							changingValuesofSteps(propKey, stepsWithUserSelectedColor);
 						}}
 						onChange={(color) => {
-							const temp = chartProp.properties[
+							const stepsWithUserSelectedColor = chartProp.properties[
 								propKey
 							].axisOptions.gaugeChartControls.stepcolor.map((element, index) => {
 								if (index === selectedStepIndex) {
@@ -380,8 +406,7 @@ const ColorSteps = ({
 
 								return element;
 							});
-							console.log(temp);
-							changingValuesofSteps(propKey, temp);
+							changingValuesofSteps(propKey, stepsWithUserSelectedColor);
 						}}
 						disableAlpha
 					/>
@@ -400,8 +425,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		// setColorScaleOption: (option, value, propKey) =>
-		// 	dispatch(setColorScaleOption(option, value, propKey)),
 		changingValuesofSteps: (propKey, value) => dispatch(changingValuesofSteps(propKey, value)),
 		addingNewStep: (propKey, index, value) => dispatch(addingNewStep(propKey, index, value)),
 		updateGaugeAxisOptions: (propKey, option, value) =>

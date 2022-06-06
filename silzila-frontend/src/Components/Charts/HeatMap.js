@@ -2,6 +2,7 @@ import ReactEcharts from "echarts-for-react";
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { formatChartLabelValue } from "../ChartOptions/Format/NumberFormatter";
+import { ColorSchemes } from "../ChartOptions/Color/ColorScheme";
 
 const HeatMap = ({
 	//props
@@ -17,6 +18,7 @@ const HeatMap = ({
 	var chartControl = chartControls.properties[propKey];
 	let chartData = chartControl.chartData ? chartControl.chartData.result : "";
 	const [chartDataKeys, setChartDataKeys] = useState([]);
+	const [colorsOfScheme, setColorsOfScheme] = useState([]);
 
 	const [maxValue, setMaxValue] = useState(0);
 
@@ -36,6 +38,14 @@ const HeatMap = ({
 			setMaxValue(max);
 		}
 	}, [chartData]);
+
+	useEffect(() => {
+		ColorSchemes.map((el) => {
+			if (el.name === chartControl.colorScheme) {
+				setColorsOfScheme(el.colors);
+			}
+		});
+	}, [chartControl.colorScheme]);
 
 	const RenderChart = () => {
 		return (
@@ -101,6 +111,10 @@ const HeatMap = ({
 						name: chartControl.axisOptions.xAxis.name,
 						nameLocation: chartControl.axisOptions.xAxis.nameLocation,
 						nameGap: chartControl.axisOptions.xAxis.nameGap,
+						nameTextStyle: {
+							fontSize: chartControl.axisOptions.xAxis.nameSize,
+							color: chartControl.axisOptions.xAxis.nameColor,
+						},
 					},
 					yAxis: {
 						type: "category",
@@ -137,6 +151,10 @@ const HeatMap = ({
 						name: chartControl.axisOptions.yAxis.name,
 						nameLocation: chartControl.axisOptions.yAxis.nameLocation,
 						nameGap: chartControl.axisOptions.yAxis.nameGap,
+						nameTextStyle: {
+							fontSize: chartControl.axisOptions.yAxis.nameSize,
+							color: chartControl.axisOptions.yAxis.nameColor,
+						},
 					},
 					visualMap: [
 						{
@@ -152,6 +170,9 @@ const HeatMap = ({
 										? parseInt(chartControl.colorScale.max)
 										: 0
 									: maxValue,
+							inRange: {
+								color: colorsOfScheme,
+							},
 						},
 					],
 

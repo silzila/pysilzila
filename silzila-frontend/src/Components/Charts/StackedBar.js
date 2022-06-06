@@ -111,6 +111,10 @@ const StackedBar = ({
 						name: chartControl.axisOptions.xAxis.name,
 						nameLocation: chartControl.axisOptions.xAxis.nameLocation,
 						nameGap: chartControl.axisOptions.xAxis.nameGap,
+						nameTextStyle: {
+							fontSize: chartControl.axisOptions.xAxis.nameSize,
+							color: chartControl.axisOptions.xAxis.nameColor,
+						},
 
 						axisLine: {
 							onZero: chartControl.axisOptions.xAxis.onZero,
@@ -148,6 +152,10 @@ const StackedBar = ({
 						name: chartControl.axisOptions.yAxis.name,
 						nameLocation: chartControl.axisOptions.yAxis.nameLocation,
 						nameGap: chartControl.axisOptions.yAxis.nameGap,
+						nameTextStyle: {
+							fontSize: chartControl.axisOptions.yAxis.nameSize,
+							color: chartControl.axisOptions.yAxis.nameColor,
+						},
 
 						axisLine: {
 							onZero: chartControl.axisOptions.yAxis.onZero,

@@ -110,10 +110,10 @@ const PieChart = ({
 										? chartControl.labelOptions.labelColor
 										: null,
 									padding: [
-										chartControl.axisOptions.pieAxisOptions.labelPadding,
-										chartControl.axisOptions.pieAxisOptions.labelPadding,
-										chartControl.axisOptions.pieAxisOptions.labelPadding,
-										chartControl.axisOptions.pieAxisOptions.labelPadding,
+										chartControl.labelOptions.pieLabel.labelPadding,
+										chartControl.labelOptions.pieLabel.labelPadding,
+										chartControl.labelOptions.pieLabel.labelPadding,
+										chartControl.labelOptions.pieLabel.labelPadding,
 									],
 
 									formatter: (value) => {
@@ -145,4 +145,11 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, null)(PieChart);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		updateChartMargins: (propKey, option, value) =>
+			dispatch(updateChartMargins(propKey, option, value)),
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PieChart);

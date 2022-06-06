@@ -4,7 +4,14 @@
 import React, { useState } from "react";
 import "./SliderWithInput.css";
 
-const SliderWithInput = ({ sliderValue, sliderMinMax, changeValue, percent, degree }) => {
+const SliderWithInput = ({
+	sliderValue,
+	sliderMinMax,
+	changeValue,
+	percent,
+	degree,
+	pointNumbers,
+}) => {
 	// console.log( sliderMinMax);
 	const [showInputText, setShowInputText] = useState(false);
 	return (
@@ -40,6 +47,8 @@ const SliderWithInput = ({ sliderValue, sliderMinMax, changeValue, percent, degr
 						`${sliderValue} %`
 					) : degree ? (
 						<span>{sliderValue} &#176;</span>
+					) : pointNumbers ? (
+						<span>{sliderValue}</span>
 					) : (
 						`${sliderValue} px`
 					)}

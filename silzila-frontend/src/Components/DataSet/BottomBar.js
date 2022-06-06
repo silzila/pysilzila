@@ -180,13 +180,13 @@ const BottomBar = ({
 				};
 			});
 			//console.log(tablesSelectedInSidebar);
-			const temp1 = [];
-			const temp2 = [];
+			const listOfStartTableNames = [];
+			const listOfEndTableNames = [];
 			arrows.forEach((el) => {
-				temp1.push(el.startTableName);
-				temp2.push(el.endTableName);
+				listOfStartTableNames.push(el.startTableName);
+				listOfEndTableNames.push(el.endTableName);
 			});
-			const tablesWithRelation = [...temp1, ...temp2];
+			const tablesWithRelation = [...listOfStartTableNames, ...listOfEndTableNames];
 
 			//console.log(tablesSelectedInSidebar, tablesWithRelation);
 			checkTableRelationShip(tablesSelectedInSidebar, tablesWithRelation);

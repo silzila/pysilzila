@@ -39,11 +39,11 @@ const ChartMargin = ({
 								min:
 									chartProperties.properties[propKey].chartType === "pie"
 										? 10
-										: 100,
+										: 80,
 								max:
 									chartProperties.properties[propKey].chartType === "pie"
 										? 100
-										: 200,
+										: 150,
 								step: 1,
 							}}
 							changeValue={(value) => {

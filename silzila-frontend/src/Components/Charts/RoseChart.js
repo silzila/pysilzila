@@ -107,10 +107,10 @@ const RoseChart = ({
 									fontSize: chartControl.labelOptions.fontSize,
 									color: chartControl.labelOptions.labelColor,
 									padding: [
-										chartControl.axisOptions.pieAxisOptions.labelPadding,
-										chartControl.axisOptions.pieAxisOptions.labelPadding,
-										chartControl.axisOptions.pieAxisOptions.labelPadding,
-										chartControl.axisOptions.pieAxisOptions.labelPadding,
+										chartControl.labelOptions.pieLabel.labelPadding,
+										chartControl.labelOptions.pieLabel.labelPadding,
+										chartControl.labelOptions.pieLabel.labelPadding,
+										chartControl.labelOptions.pieLabel.labelPadding,
 									],
 
 									formatter: (value) => {

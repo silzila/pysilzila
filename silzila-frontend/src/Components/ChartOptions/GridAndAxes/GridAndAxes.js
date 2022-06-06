@@ -5,18 +5,20 @@
 // 		- Provide a name for Axis
 // 		- Tick size, padding and rotation
 
-import { FormControl, MenuItem, Select, Switch, TextField } from "@mui/material";
-import React from "react";
+import { FormControl, MenuItem, Popover, Select, Switch, TextField } from "@mui/material";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import {
 	enableGrid,
 	updateAxisMinMax,
+	updateAxisMinMaxforScatter,
 	updateAxisOptions,
 	updateGaugeAxisOptions,
 	updateReverse,
 } from "../../../redux/ChartProperties/actionsChartControls";
 import SliderWithInput from "../SliderWithInput";
 import InputNumber from "../CommonFunctions/InputNumber";
+import { SketchPicker } from "react-color";
 
 const textFieldStyleProps = {
 	style: {
@@ -41,9 +43,13 @@ const GridAndAxes = ({
 	setReverse,
 	enableGrids,
 	updateAxisOptions,
+	updateAxisMinMaxforScatter,
 }) => {
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 	var property = chartControl.properties[propKey].axisOptions;
+
+	const [isXColorPopoverOpen, setXColorPopOverOpen] = useState(false);
+	const [isYColorPopoverOpen, setYColorPopOverOpen] = useState(false);
 
 	var xAxisProps = property.xAxis;
 	var yAxisProps = property.yAxis;
@@ -162,41 +168,41 @@ const GridAndAxes = ({
 							}}
 						/>
 					</div>
+					<div className="optionDescription">MIN VALUE</div>
+					<div className="optionDescription">
+						<input
+							type="checkbox"
+							id="enableDisable"
+							checked={property.axisMinMax.enableMin}
+							onChange={(e) => {
+								setAxisMinMax(propKey, "enableMin", !property.axisMinMax.enableMin);
+							}}
+						/>
+						<InputNumber
+							value={property.axisMinMax.minValue}
+							updateValue={(value) => setAxisMinMax(propKey, "minValue", value)}
+							disabled={property.axisMinMax.enableMin ? false : true}
+						/>
+					</div>
+					<div className="optionDescription">MAX VALUE</div>
+					<div className="optionDescription">
+						<input
+							type="checkbox"
+							id="enableDisable"
+							checked={property.axisMinMax.enableMax}
+							onChange={(e) => {
+								setAxisMinMax(propKey, "enableMax", !property.axisMinMax.enableMax);
+							}}
+						/>
+						<InputNumber
+							value={property.axisMinMax.maxValue}
+							updateValue={(value) => setAxisMinMax(propKey, "maxValue", value)}
+							disabled={property.axisMinMax.enableMax ? false : true}
+						/>
+					</div>
 				</>
 			) : null}
 
-			<div className="optionDescription">MIN VALUE</div>
-			<div className="optionDescription">
-				<input
-					type="checkbox"
-					id="enableDisable"
-					checked={property.axisMinMax.enableMin}
-					onChange={(e) => {
-						setAxisMinMax(propKey, "enableMin", !property.axisMinMax.enableMin);
-					}}
-				/>
-				<InputNumber
-					value={property.axisMinMax.minValue}
-					updateValue={(value) => setAxisMinMax(propKey, "minValue", value)}
-					disabled={property.axisMinMax.enableMin ? false : true}
-				/>
-			</div>
-			<div className="optionDescription">MAX VALUE</div>
-			<div className="optionDescription">
-				<input
-					type="checkbox"
-					id="enableDisable"
-					checked={property.axisMinMax.enableMax}
-					onChange={(e) => {
-						setAxisMinMax(propKey, "enableMax", !property.axisMinMax.enableMax);
-					}}
-				/>
-				<InputNumber
-					value={property.axisMinMax.maxValue}
-					updateValue={(value) => setAxisMinMax(propKey, "maxValue", value)}
-					disabled={property.axisMinMax.enableMax ? false : true}
-				/>
-			</div>
 			{/* ==================================================================================
                                                  AXIS PROPS
 			================================================================================== */}
@@ -229,6 +235,58 @@ const GridAndAxes = ({
 			</div>
 			{xAxisProps.showLabel ? (
 				<React.Fragment>
+					{chartProp[propKey].chartType === "scatterPlot" ? (
+						<React.Fragment>
+							<div className="optionDescription">MIN VALUE</div>
+							<div className="optionDescription">
+								<input
+									type="checkbox"
+									id="enableDisable"
+									checked={property.scatterChartMinMax.x_enableMin}
+									onChange={(e) => {
+										updateAxisMinMaxforScatter(
+											propKey,
+											"x_enableMin",
+											!property.scatterChartMinMax.x_enableMin
+										);
+									}}
+								/>
+								<InputNumber
+									value={property.scatterChartMinMax.x_minValue}
+									updateValue={(value) =>
+										updateAxisMinMaxforScatter(propKey, "x_minValue", value)
+									}
+									disabled={
+										property.scatterChartMinMax.x_enableMin ? false : true
+									}
+								/>
+							</div>
+							<div className="optionDescription">MAX VALUE</div>
+							<div className="optionDescription">
+								<input
+									type="checkbox"
+									id="enableDisable"
+									checked={property.scatterChartMinMax.x_enableMax}
+									onChange={(e) => {
+										updateAxisMinMaxforScatter(
+											propKey,
+											"x_enableMax",
+											!property.scatterChartMinMax.x_enableMax
+										);
+									}}
+								/>
+								<InputNumber
+									value={property.scatterChartMinMax.x_maxValue}
+									updateValue={(value) =>
+										updateAxisMinMaxforScatter(propKey, "x_maxValue", value)
+									}
+									disabled={
+										property.scatterChartMinMax.x_enableMax ? false : true
+									}
+								/>
+							</div>
+						</React.Fragment>
+					) : null}
 					<div className="radioButtons">{renderAxisOptionsForX()}</div>
 
 					<div className="optionDescription">Axis Name</div>
@@ -289,6 +347,33 @@ const GridAndAxes = ({
 						}}
 						InputProps={{ ...textFieldStyleProps }}
 					/>
+					<div className="optionDescription">Name FontSize</div>
+					<SliderWithInput
+						percent={false}
+						sliderValue={xAxisProps.nameSize}
+						sliderMinMax={{ min: 0, max: 80, step: 1 }}
+						changeValue={(value) => {
+							updateAxisOptions(propKey, "xAxis", "nameSize", value);
+						}}
+					/>
+					<div style={{ display: "flex", marginTop: "2px", marginBottom: "2px" }}>
+						<div className="optionDescription">Name Color</div>
+						<div
+							style={{
+								width: " 30%",
+								margin: "0 5% 10px 0",
+								height: "1.25rem",
+								color: xAxisProps.nameColor,
+								border: "1px solid lightgray",
+								borderRadius: "3px",
+								padding: "0 5px",
+								backgroundColor: xAxisProps.nameColor,
+							}}
+							onClick={(e) => {
+								setXColorPopOverOpen(!isXColorPopoverOpen);
+							}}
+						></div>
+					</div>
 
 					<div className="optionDescription">Tick Size</div>
 					<SliderWithInput
@@ -379,6 +464,50 @@ const GridAndAxes = ({
 			</div>
 			{yAxisProps.showLabel ? (
 				<React.Fragment>
+					<div className="optionDescription">MIN VALUE</div>
+					<div className="optionDescription">
+						<input
+							type="checkbox"
+							id="enableDisable"
+							checked={property.scatterChartMinMax.y_enableMin}
+							onChange={(e) => {
+								updateAxisMinMaxforScatter(
+									propKey,
+									"y_enableMin",
+									!property.scatterChartMinMax.y_enableMin
+								);
+							}}
+						/>
+						<InputNumber
+							value={property.scatterChartMinMax.y_minValue}
+							updateValue={(value) =>
+								updateAxisMinMaxforScatter(propKey, "y_minValue", value)
+							}
+							disabled={property.scatterChartMinMax.y_enableMin ? false : true}
+						/>
+					</div>
+					<div className="optionDescription">MAX VALUE</div>
+					<div className="optionDescription">
+						<input
+							type="checkbox"
+							id="enableDisable"
+							checked={property.scatterChartMinMax.y_enableMax}
+							onChange={(e) => {
+								updateAxisMinMaxforScatter(
+									propKey,
+									"y_enableMax",
+									!property.scatterChartMinMax.y_enableMax
+								);
+							}}
+						/>
+						<InputNumber
+							value={property.scatterChartMinMax.y_maxValue}
+							updateValue={(value) =>
+								updateAxisMinMaxforScatter(propKey, "y_maxValue", value)
+							}
+							disabled={property.scatterChartMinMax.y_enableMax ? false : true}
+						/>
+					</div>
 					<div className="radioButtons">{renderAxisOptionsForY()}</div>
 
 					<div className="optionDescription">Axis Name</div>
@@ -440,6 +569,33 @@ const GridAndAxes = ({
 						}}
 						InputProps={{ ...textFieldStyleProps }}
 					/>
+					<div className="optionDescription">Name FontSize</div>
+					<SliderWithInput
+						percent={false}
+						sliderValue={yAxisProps.nameSize}
+						sliderMinMax={{ min: 0, max: 80, step: 1 }}
+						changeValue={(value) => {
+							updateAxisOptions(propKey, "yAxis", "nameSize", value);
+						}}
+					/>
+					<div style={{ display: "flex", marginTop: "2px", marginBottom: "2px" }}>
+						<div className="optionDescription">Name Color</div>
+						<div
+							style={{
+								width: " 30%",
+								margin: "0 5% 10px 0",
+								height: "1.25rem",
+								color: yAxisProps.nameColor,
+								border: "1px solid lightgray",
+								borderRadius: "3px",
+								padding: "0 5px",
+								backgroundColor: yAxisProps.nameColor,
+							}}
+							onClick={(e) => {
+								setYColorPopOverOpen(!isYColorPopoverOpen);
+							}}
+						></div>
+					</div>
 
 					<div className="optionDescription">Tick Size</div>
 					<SliderWithInput
@@ -503,6 +659,52 @@ const GridAndAxes = ({
 					/>
 				</React.Fragment>
 			) : null}
+			<Popover
+				open={isXColorPopoverOpen}
+				onClose={() => setXColorPopOverOpen(false)}
+				onClick={() => setXColorPopOverOpen(false)}
+				anchorReference="anchorPosition"
+				anchorPosition={{ top: 350, left: 1300 }}
+			>
+				<div>
+					<SketchPicker
+						color={xAxisProps.nameColor}
+						className="sketchPicker"
+						width="16rem"
+						styles={{ padding: "0" }}
+						onChangeComplete={(color) => {
+							updateAxisOptions(propKey, "xAxis", "nameColor", color.hex);
+						}}
+						onChange={(color) =>
+							updateAxisOptions(propKey, "xAxis", "nameColor", color.hex)
+						}
+						disableAlpha
+					/>
+				</div>
+			</Popover>
+			<Popover
+				open={isYColorPopoverOpen}
+				onClose={() => setYColorPopOverOpen(false)}
+				onClick={() => setYColorPopOverOpen(false)}
+				anchorReference="anchorPosition"
+				anchorPosition={{ top: 350, left: 1300 }}
+			>
+				<div>
+					<SketchPicker
+						color={yAxisProps.nameColor}
+						className="sketchPicker"
+						width="16rem"
+						styles={{ padding: "0" }}
+						onChangeComplete={(color) => {
+							updateAxisOptions(propKey, "yAxis", "nameColor", color.hex);
+						}}
+						onChange={(color) =>
+							updateAxisOptions(propKey, "yAxis", "nameColor", color.hex)
+						}
+						disableAlpha
+					/>
+				</div>
+			</Popover>
 		</div>
 	);
 };
@@ -521,6 +723,9 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch(updateGaugeAxisOptions(propKey, option, value)),
 		setAxisMinMax: (propKey, axisKey, axisValue) =>
 			dispatch(updateAxisMinMax(propKey, axisKey, axisValue)),
+		updateAxisMinMaxforScatter: (propKey, axisKey, axisValue) =>
+			dispatch(updateAxisMinMaxforScatter(propKey, axisKey, axisValue)),
+
 		setReverse: (propKey, value) => dispatch(updateReverse(propKey, value)),
 		enableGrids: (propKey, value, show) => dispatch(enableGrid(propKey, value, show)),
 		updateAxisOptions: (propKey, axis, option, value) =>
