@@ -523,6 +523,7 @@ const MenuBar = ({
 					</div>
 				</>
 			) : null}
+			{from === "dataViewer" ? <div style={{ width: "3rem" }}>&nbsp;</div> : null}
 			<div
 				className="menuHome"
 				onClick={(e) => {
