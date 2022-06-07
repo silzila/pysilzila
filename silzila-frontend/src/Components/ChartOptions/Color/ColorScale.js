@@ -9,6 +9,8 @@ import {
 	setColorScaleOption,
 } from "../../../redux/ChartProperties/actionsChartControls";
 import { NotificationDialog } from "../../CommonFunctions/DialogComponents";
+import ChartColors from "./ChartColors";
+import "./ColorSteps.css";
 
 const textFieldInputProps = {
 	style: {
@@ -82,15 +84,7 @@ const ColorScale = ({
 	return (
 		<div className="optionsInfo">
 			<div className="optionDescription">SET COLOR SCALE:</div>
-			<div
-				style={{
-					margin: "10px",
-					padding: "0px 5px 5px 16px",
-					textAlign: "left",
-					color: "rgb(96, 96, 96)",
-					fontWeight: "600",
-				}}
-			>
+			<div className="colorScaleContainer">
 				<RadioGroup
 					aria-labelledby="demo-controlled-radio-buttons-group"
 					name="controlled-radio-buttons-group"
@@ -114,34 +108,35 @@ const ColorScale = ({
 					/>
 				</RadioGroup>
 				{selectedOption === "Manual" ? (
-					<div
-						style={{ display: "flex", columnGap: "20px", padding: "8px 2px 8px 12px" }}
-					>
-						<TextField
-							type="text"
-							value={min}
-							onChange={(e) => {
-								//console.log(e.target.value);
-								setColorScaleOption("min", e.target.value, propKey);
-							}}
-							label="Min"
-							InputLabelProps={{ shrink: true }}
-							inputProps={{ ...textFieldInputProps }}
-						/>
-						<TextField
-							type="text"
-							value={max}
-							onChange={(e) => {
-								//console.log(e.target.value);
-								setColorScaleOption("max", e.target.value, propKey);
-							}}
-							label="Max"
-							InputLabelProps={{ shrink: true }}
-							inputProps={{ ...textFieldInputProps }}
-							onBlur={checkMinMaxValue}
-						/>
+					<div>
+						<div className="inputFieldContainer">
+							<TextField
+								type="text"
+								value={min}
+								onChange={(e) => {
+									//console.log(e.target.value);
+									setColorScaleOption("min", e.target.value, propKey);
+								}}
+								label="Min"
+								InputLabelProps={{ shrink: true }}
+								inputProps={{ ...textFieldInputProps }}
+							/>
+							<TextField
+								type="text"
+								value={max}
+								onChange={(e) => {
+									//console.log(e.target.value);
+									setColorScaleOption("max", e.target.value, propKey);
+								}}
+								label="Max"
+								InputLabelProps={{ shrink: true }}
+								inputProps={{ ...textFieldInputProps }}
+								onBlur={checkMinMaxValue}
+							/>
+						</div>
 					</div>
 				) : null}
+				<ChartColors />
 			</div>
 
 			<NotificationDialog

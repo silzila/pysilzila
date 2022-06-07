@@ -1,6 +1,7 @@
 import ReactEcharts from "echarts-for-react";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { updateChartMargins } from "../../redux/ChartProperties/actionsChartControls";
 import { formatChartLabelValue } from "../ChartOptions/Format/NumberFormatter";
 
 const GaugeChart = ({
@@ -12,6 +13,9 @@ const GaugeChart = ({
 	//state
 	chartControls,
 	graphTileSize,
+
+	//dispatch
+	updateChartMargins,
 }) => {
 	var chartControl = chartControls.properties[propKey];
 	let chartData = chartControl.chartData ? chartControl.chartData.result : "";
@@ -28,6 +32,15 @@ const GaugeChart = ({
 		}
 	};
 	getColors();
+
+	// TODO: Priority 1 - Explain why gauge chart margin can't be below 80?
+	var radius = chartControl.chartMargin.radius;
+	useEffect(() => {
+		if (radius < 80) {
+			updateChartMargins(propKey, "radius", 80);
+			radius = 80;
+		}
+	});
 
 	useEffect(() => {
 		if (chartData) {
@@ -82,15 +95,16 @@ const GaugeChart = ({
 					series: [
 						{
 							type: "gauge",
-							radius: chartControl.chartMargin.radius + "%",
+							radius: radius + "%",
 
-							max: chartControl.axisOptions.gaugeAxisOptions.max,
-							min:
-								chartControl.colorScale.colorScaleType === "Manual"
-									? chartControl.colorScale.min !== ""
-										? parseInt(chartControl.colorScale.min)
-										: 0
-									: 0,
+							max: newData[0]
+								? chartControl.axisOptions.gaugeAxisOptions.isMaxAuto
+									? newData[0].value * 2
+									: parseInt(chartControl.axisOptions.gaugeAxisOptions.max)
+								: 0,
+
+							min: chartControl.axisOptions.gaugeAxisOptions.min,
+
 							data: newData,
 
 							axisLine: {
@@ -151,4 +165,11 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, null)(GaugeChart);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		updateChartMargins: (propKey, option, value) =>
+			dispatch(updateChartMargins(propKey, option, value)),
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GaugeChart);
