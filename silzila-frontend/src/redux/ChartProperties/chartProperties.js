@@ -39,8 +39,8 @@ const chartProperties = {
 
 			titleOptions: {
 				fontSize: 28,
-				titleLeftPadding: "10px",
-				titleAlign: "center",
+				titleLeftPadding: "15px",
+				titleAlign: "left",
 				chartTitle: "",
 				generateTitle: "Auto",
 			},
