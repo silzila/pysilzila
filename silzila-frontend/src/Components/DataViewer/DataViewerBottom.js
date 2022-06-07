@@ -309,16 +309,28 @@ const DataViewerBottom = ({
 					setSelectedDataset={setSelectedDataset}
 				/>
 			</div>
-			<div className="tileTableView">
-				{selectedChartProp.selectedTable?.[selectedChartProp.selectedDs.ds_uid] ? (
+			{selectedChartProp.selectedTable?.[selectedChartProp.selectedDs.ds_uid] ? (
+				<div className="tileTableView">
 					<DisplayTable
 						dsId={selectedChartProp.selectedDs?.ds_uid}
 						table={
 							selectedChartProp.selectedTable[selectedChartProp.selectedDs?.ds_uid]
 						}
 					/>
-				) : null}
-			</div>
+				</div>
+			) : (
+				<div
+					className="axisInfo"
+					style={{
+						flex: "1",
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "center",
+					}}
+				>
+					Select any table from the list on left to show records here
+				</div>
+			)}
 			{loading ? <LoadingPopover /> : null}
 			<ChangeConnection
 				onChangeOrAddDataset={onChangeOrAddDataset}

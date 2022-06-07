@@ -319,7 +319,7 @@ const MenuBar = ({
 						setSaveModal(true);
 					}}
 				>
-					Save As
+					Save Playbook As
 				</MenuItem>
 			</Menu>
 		);
@@ -486,7 +486,12 @@ const MenuBar = ({
 						</div>
 					</div>
 
-					<div className="playbookName" title={playBookState.description}>
+					<div
+						className="playbookName"
+						title={`Playbook Name: ${playBookState.playBookName}\n${
+							playBookState.description !== null ? playBookState.description : ""
+						}`}
+					>
 						{playBookState.playBookName}
 					</div>
 
