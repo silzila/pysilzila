@@ -4,7 +4,7 @@
 // 	- Select Schema
 // 	- Select tables in a schema
 
-import { MenuItem, Select, Typography } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import ShortUniqueId from "short-unique-id";
@@ -207,72 +207,77 @@ const Sidebar = ({
 
 	return (
 		<div className="sidebar">
-			<div className="sidebarHeading">Connection</div>
+			{/* <div className="sidebarHeading">Connection</div> */}
 			<div>
-				<Select
-					className="selectBar"
-					onChange={(e) => {
-						onConnectionChange(e);
-					}}
-					value={selectedConnection}
-				>
-					{connectionList &&
-						connectionList.map((connection, i) => {
-							return (
-								<MenuItem
-									title={
-										connection.db_name +
-										" ".concat("(" + connection.friendly_name + ")")
-									}
-									sx={{
-										width: "200px",
-									}}
-									value={connection.dc_uid}
-									key={connection.dc_uid}
-								>
-									<Typography
-										sx={{
-											width: "auto",
-											overflow: "hidden",
-											textOverflow: "ellipsis",
-											fontSize: "14px",
-										}}
+				<FormControl fullWidth size="small">
+					<InputLabel id="dcSelect">Connection</InputLabel>
+					<Select
+						labelId="dcSelect"
+						className="selectBar"
+						onChange={(e) => {
+							onConnectionChange(e);
+						}}
+						value={selectedConnection}
+						label="Connection"
+					>
+						{connectionList &&
+							connectionList.map((connection, i) => {
+								return (
+									<MenuItem
+										title={
+											connection.db_name +
+											" ".concat("(" + connection.friendly_name + ")")
+										}
+										value={connection.dc_uid}
+										key={connection.dc_uid}
 									>
-										{connection.db_name} ({connection.friendly_name})
-									</Typography>
-								</MenuItem>
-							);
-						})}
-				</Select>
+										<Typography
+											sx={{
+												width: "auto",
+												overflow: "hidden",
+												textOverflow: "ellipsis",
+												fontSize: "14px",
+											}}
+										>
+											{connection.db_name} ({connection.friendly_name})
+										</Typography>
+									</MenuItem>
+								);
+							})}
+					</Select>
+				</FormControl>
 			</div>
 
-			<div className="sidebarHeading">Schema</div>
+			{/* <div className="sidebarHeading">Schema</div> */}
 			<div>
-				<Select className="selectBar" onChange={(e) => getTables(e)} value={selectedSchema}>
-					{schemaList &&
-						schemaList.map((schema) => {
-							return (
-								<MenuItem
-									sx={{
-										width: "200px",
-									}}
-									value={schema}
-									key={schema}
-								>
-									<Typography
-										sx={{
-											width: "auto",
-											overflow: "hidden",
-											textOverflow: "ellipsis",
-											fontSize: "14px",
-										}}
-									>
-										{schema}
-									</Typography>
-								</MenuItem>
-							);
-						})}
-				</Select>
+				<FormControl fullWidth size="small">
+					<InputLabel id="schemaSelect">Schema</InputLabel>
+					<Select
+						labelId="schemaSelect"
+						className="selectBar"
+						label="Schema"
+						onChange={(e) => getTables(e)}
+						value={selectedSchema}
+					>
+						{schemaList &&
+							schemaList.map((schema) => {
+								return (
+									<MenuItem value={schema} key={schema}>
+										<Typography
+											sx={{
+												width: "auto",
+												overflow: "hidden",
+												textOverflow: "ellipsis",
+												fontSize: "14px",
+											}}
+										>
+											{schema}
+										</Typography>
+									</MenuItem>
+								);
+							})}
+					</Select>
+				</FormControl>
 			</div>
 
 			<div className="sidebarHeading">Tables</div>

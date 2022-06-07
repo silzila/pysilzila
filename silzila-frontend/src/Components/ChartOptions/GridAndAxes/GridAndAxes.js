@@ -206,7 +206,7 @@ const GridAndAxes = ({
 			<div
 				style={{ borderTop: "1px solid rgb(211,211,211)", margin: "0.5rem 6% 1rem" }}
 			></div>
-			<div className="optionDescription">X-AXES</div>
+			<div className="optionDescription">Dimension-Axis</div>
 
 			<div className="optionDescription">
 				<label
@@ -357,7 +357,7 @@ const GridAndAxes = ({
 			<div
 				style={{ borderTop: "1px solid rgb(211,211,211)", margin: "0.5rem 6% 1rem" }}
 			></div>
-			<div className="optionDescription">Y-AXES</div>
+			<div className="optionDescription">Measure-Axis</div>
 			<div className="optionDescription">
 				<label
 					htmlFor="enableDisable"

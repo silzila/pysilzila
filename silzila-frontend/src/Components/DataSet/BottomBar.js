@@ -228,7 +228,7 @@ const BottomBar = ({
 					value={fname}
 					onChange={(e) => setFname(e.target.value)}
 					variant="outlined"
-					sx={{ marginRight: "3rem" }}
+					sx={{ marginRight: "3rem", backgroundColor: "white" }}
 				/>
 
 				<Button variant="contained" onClick={onSendData} id="setButton">

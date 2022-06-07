@@ -177,12 +177,9 @@ Datasets
 }
 
 .selectBar {
-	width: 90%;
-	height: 45px;
 	border-radius: 5px;
-	background-color: #e8e9eb;
-	padding: 8px;
-	margin: 0.5rem 0 1.5rem 0;
+	background-color: white;
+	margin-bottom: 1.5rem;
 	text-align: left;
 }
 
