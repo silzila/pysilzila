@@ -128,7 +128,7 @@ const ChartTypes = ({
 				}
 
 				if (newChart === "scatterPlot") {
-					keepOldData(propKey, true);
+					keepOldData(propKey, false);
 
 					// Map Category to Category
 					if (oldChartAxes[1].fields.length > 0)
@@ -171,6 +171,7 @@ const ChartTypes = ({
 				}
 
 				if (newChart === "gauge") {
+					keepOldData(propKey, false);
 					if (oldChartAxes[2].fields.length > 0)
 						newChartAxes[1].fields.push(oldChartAxes[2].fields[0]);
 
@@ -182,6 +183,7 @@ const ChartTypes = ({
 				}
 
 				if (newChart === "heatmap" || newChart === "crossTab") {
+					keepOldData(propKey, false);
 					if (oldChartAxes[1].fields.length > 0) {
 						newChartAxes[1].fields.push(oldChartAxes[1].fields[0]);
 					}
@@ -198,6 +200,7 @@ const ChartTypes = ({
 				}
 
 				if (newChart === "crossTab") {
+					keepOldData(propKey, false);
 					if (oldChartAxes[1].fields.length > 0) {
 						newChartAxes[1].fields = oldChartAxes[1].fields;
 					}
@@ -251,6 +254,7 @@ const ChartTypes = ({
 				}
 
 				if (newChart === "funnel") {
+					keepOldData(propKey, false);
 					newChartAxes[1].fields = getFieldsToChartAllowedNumbers(
 						newChart,
 						1,
@@ -265,6 +269,7 @@ const ChartTypes = ({
 				}
 
 				if (newChart === "gauge") {
+					keepOldData(propKey, false);
 					newChartAxes[1].fields = getFieldsToChartAllowedNumbers(
 						newChart,
 						1,
@@ -279,6 +284,7 @@ const ChartTypes = ({
 				}
 
 				if (newChart === "heatmap" || newChart === "crossTab") {
+					keepOldData(propKey, false);
 					if (oldChartAxes[1].fields.length > 0)
 						newChartAxes[1].fields.push(oldChartAxes[1].fields[0]);
 
@@ -313,6 +319,7 @@ const ChartTypes = ({
 						"rose",
 					].includes(newChart)
 				) {
+					keepOldData(propKey, false);
 					if (oldChartAxes[1].fields.length > 0)
 						newChartAxes[2].fields = getFieldsToChartAllowedNumbers(
 							newChart,
@@ -328,6 +335,7 @@ const ChartTypes = ({
 				}
 
 				if (newChart === "scatterPlot") {
+					keepOldData(propKey, false);
 					if (oldChartAxes[1].fields.length > 0) {
 						if (oldChartAxes[1].fields.length > 1) {
 							newChartAxes[2].fields.push(oldChartAxes[1].fields.shift());
@@ -343,6 +351,7 @@ const ChartTypes = ({
 				}
 
 				if (newChart === "gauge") {
+					keepOldData(propKey, false);
 					if (oldChartAxes[1].fields.length > 0)
 						newChartAxes[1].fields.push(oldChartAxes[1].fields[0]);
 
@@ -354,6 +363,7 @@ const ChartTypes = ({
 				}
 
 				if (newChart === "heatmap" || newChart === "crossTab") {
+					keepOldData(propKey, false);
 					if (oldChartAxes[1].fields.length > 0)
 						newChartAxes[3].fields = getFieldsToChartAllowedNumbers(
 							newChart,
@@ -386,6 +396,7 @@ const ChartTypes = ({
 						"rose",
 					].includes(newChart)
 				) {
+					keepOldData(propKey, false);
 					if (oldChartAxes[1].fields.length > 0)
 						newChartAxes[2].fields = getFieldsToChartAllowedNumbers(
 							newChart,
@@ -401,6 +412,7 @@ const ChartTypes = ({
 				}
 
 				if (newChart === "scatterPlot") {
+					keepOldData(propKey, false);
 					if (oldChartAxes[1].fields.length > 0) {
 						newChartAxes[2].fields.push(oldChartAxes[1].fields.shift());
 					}
@@ -419,6 +431,7 @@ const ChartTypes = ({
 				}
 
 				if (newChart === "heatmap") {
+					keepOldData(propKey, false);
 					if (oldChartAxes[1].fields.length > 0)
 						newChartAxes[3].fields.push(oldChartAxes[1].fields[0]);
 
@@ -430,6 +443,7 @@ const ChartTypes = ({
 				}
 
 				if (newChart === "crossTab") {
+					keepOldData(propKey, false);
 					if (oldChartAxes[1].fields.length > 0)
 						newChartAxes[3].fields = oldChartAxes[1].fields;
 
@@ -457,7 +471,7 @@ const ChartTypes = ({
 						"rose",
 					].includes(newChart)
 				) {
-					// Map filter to Filter
+					keepOldData(propKey, false);
 					if (oldChartAxes[0].fields.length > 0)
 						newChartAxes[0].fields = oldChartAxes[0].fields;
 
@@ -479,7 +493,7 @@ const ChartTypes = ({
 				}
 
 				if (newChart === "scatterPlot") {
-					// Map filter to Filter
+					keepOldData(propKey, false);
 					if (oldChartAxes[0].fields.length > 0)
 						newChartAxes[0].fields = oldChartAxes[0].fields;
 
@@ -501,7 +515,7 @@ const ChartTypes = ({
 				}
 
 				if (newChart === "funnel") {
-					// Map filter to Filter
+					keepOldData(propKey, false);
 					if (oldChartAxes[0].fields.length > 0)
 						newChartAxes[0].fields = oldChartAxes[0].fields;
 
@@ -516,7 +530,7 @@ const ChartTypes = ({
 				}
 
 				if (newChart === "gauge") {
-					// Map filter to Filter
+					keepOldData(propKey, false);
 					if (oldChartAxes[0].fields.length > 0)
 						newChartAxes[0].fields = oldChartAxes[0].fields;
 
@@ -544,6 +558,7 @@ const ChartTypes = ({
 					].includes(newChart)
 				) {
 					// Map filter to Filter
+					keepOldData(propKey, false);
 					if (oldChartAxes[0].fields.length > 0)
 						newChartAxes[0].fields = oldChartAxes[0].fields;
 
@@ -565,6 +580,7 @@ const ChartTypes = ({
 				}
 
 				if (newChart === "scatterPlot") {
+					keepOldData(propKey, false);
 					// Map filter to Filter
 					if (oldChartAxes[0].fields.length > 0)
 						newChartAxes[0].fields = oldChartAxes[0].fields;
@@ -587,7 +603,7 @@ const ChartTypes = ({
 				}
 
 				if (newChart === "funnel") {
-					// Map filter to Filter
+					keepOldData(propKey, false);
 					if (oldChartAxes[0].fields.length > 0)
 						newChartAxes[0].fields = oldChartAxes[0].fields;
 
@@ -602,7 +618,7 @@ const ChartTypes = ({
 				}
 
 				if (newChart === "gauge") {
-					// Map filter to Filter
+					keepOldData(propKey, false);
 					if (oldChartAxes[0].fields.length > 0)
 						newChartAxes[0].fields = oldChartAxes[0].fields;
 
@@ -613,6 +629,7 @@ const ChartTypes = ({
 				}
 
 				if (newChart === "heatmap") {
+					keepOldData(propKey, false);
 					if (oldChartAxes[1].fields.length > 0) {
 						newChartAxes[1].fields.push(oldChartAxes[1].fields[0]);
 					}

@@ -275,8 +275,6 @@ const GraphArea = ({
 					break;
 			}
 
-			console.log(dims, measures);
-
 			var title = "";
 
 			// Concatenate field names in dims / measures
@@ -300,7 +298,6 @@ const GraphArea = ({
 
 			var dimTitle = concatenateFields(dims);
 			var measureTitle = concatenateFields(measures);
-			console.log(dimTitle, measureTitle);
 
 			if (
 				chartProperties.properties[propKey].chartType === "gauge" ||
