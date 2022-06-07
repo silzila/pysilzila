@@ -148,20 +148,19 @@ const GridAndAxes = ({
 			</React.Fragment>
 			{chartProp[propKey].chartType !== "scatterPlot" ? (
 				<>
-					<div className="optionDescription">REVERSE</div>
-					<div className="optionDescription">
+					<div className="optionDescription" style={{ padding: "0 6% 5px 4%" }}>
 						<label
 							htmlFor="enableDisable"
 							className="enableDisableLabel"
 							style={{ marginRight: "10px" }}
 						>
-							Enable
+							REVERSE
 						</label>
 						<Switch
 							size="small"
 							id="enableDisable"
 							checked={property.inverse}
-							onClick={() => {
+							onClick={(e) => {
 								setReverse(propKey, !property.inverse);
 							}}
 						/>
@@ -214,13 +213,13 @@ const GridAndAxes = ({
 			></div>
 			<div className="optionDescription">Dimension-Axis</div>
 
-			<div className="optionDescription">
+			<div className="optionDescription" style={{ padding: "0 6% 5px 4%" }}>
 				<label
 					htmlFor="enableDisable"
 					className="enableDisableLabel"
 					style={{ marginRight: "10px" }}
 				>
-					show Label
+					Show Label
 				</label>
 				<Switch
 					size="small"
@@ -443,7 +442,7 @@ const GridAndAxes = ({
 				style={{ borderTop: "1px solid rgb(211,211,211)", margin: "0.5rem 6% 1rem" }}
 			></div>
 			<div className="optionDescription">Measure-Axis</div>
-			<div className="optionDescription">
+			<div className="optionDescription" style={{ padding: "0 6% 5px 4%" }}>
 				<label
 					htmlFor="enableDisable"
 					className="enableDisableLabel"
