@@ -30,8 +30,8 @@ const ChartTitle = ({
 	];
 
 	var titleAlignOptions = [
-		{ name: "Center", value: "center" },
 		{ name: "Left", value: "left" },
+		{ name: "Center", value: "center" },
 	];
 
 	const setGenerateTitle = (type) => {

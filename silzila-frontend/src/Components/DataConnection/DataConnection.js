@@ -105,7 +105,7 @@ const DataConnection = (props) => {
 		});
 
 		if (result.status) {
-			setAccount(result.data);
+			setAccount({ ...result.data, password: "" });
 			setShowForm(true);
 			setViewMode(true);
 		} else {

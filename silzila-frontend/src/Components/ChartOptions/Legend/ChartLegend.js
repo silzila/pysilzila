@@ -5,7 +5,7 @@
 // 	- Orientation
 // 	- legend item size
 
-import { FormControl, MenuItem, Select } from "@mui/material";
+import { FormControl, MenuItem, Select, Switch } from "@mui/material";
 import React from "react";
 import { connect } from "react-redux";
 import { updateLegendOptions } from "../../../redux/ChartProperties/actionsChartControls";
@@ -22,26 +22,6 @@ const ChartLegend = ({
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 
 	const showLegend = chartControl.properties[propKey].legendOptions.showLegend;
-	const setLegend = (item) => {
-		updateLegendOption(propKey, "showLegend", item);
-	};
-	const legendOption = [
-		{ name: "Show", key: true },
-		{ name: "Hide", key: false },
-	];
-	const renderLegend = () => {
-		return legendOption.map((item) => {
-			return (
-				<div
-					className={item.key === showLegend ? "radioButtonSelected" : "radioButton"}
-					onClick={() => setLegend(item.key)}
-					key={item.key}
-				>
-					{item.name}
-				</div>
-			);
-		});
-	};
 
 	const orientation = chartControl.properties[propKey].legendOptions.orientation;
 
@@ -139,7 +119,23 @@ const ChartLegend = ({
 
 	return (
 		<div className="optionsInfo">
-			<div className="radioButtons">{renderLegend()}</div>
+			<div className="optionDescription" style={{ padding: "0 6% 5px 4%" }}>
+				<label
+					htmlFor="enableDisable"
+					className="enableDisableLabel"
+					style={{ marginRight: "10px" }}
+				>
+					SHOW LEGEND
+				</label>
+				<Switch
+					size="small"
+					id="enableDisable"
+					checked={showLegend}
+					onClick={(e) => {
+						updateLegendOption(propKey, "showLegend", !showLegend);
+					}}
+				/>
+			</div>
 			{showLegend ? (
 				<React.Fragment>
 					<div className="optionDescription">POSITION:</div>
