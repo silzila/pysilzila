@@ -16,6 +16,7 @@ import { SketchPicker } from "react-color";
 import ChartColors from "./ChartColors";
 import { ColorSchemes } from "./ColorScheme";
 import "./ColorSteps.css";
+import { update } from "immutability-helper";
 
 const textFieldStyleProps = {
 	style: {
@@ -48,93 +49,150 @@ const ColorSteps = ({
 
 	const [colorsOfScheme, setColorsOfScheme] = useState([]);
 
-	console.log(chartProp.properties[propKey].colorScheme);
+	let chartData = chartProp.properties[propKey].chartData
+		? chartProp.properties[propKey].chartData.result
+		: "";
+
+	// TODO: Priority 1 - Color steps value keeps changing every time we come back to it
+	// after clicking on other control tiles
 
 	useEffect(() => {
-		console.log(chartProp.properties[propKey].colorScheme);
 		ColorSchemes.map((el) => {
 			if (el.name === chartProp.properties[propKey].colorScheme) {
 				setColorsOfScheme(el.colors);
 			}
 		});
-		console.log("theme changed");
 
 		// when theme change  'isColorAuto' prop of all steps set to 'ture' to show the colors of selected theme
 
-		const temp = chartProp.properties[propKey].axisOptions.gaugeChartControls.stepcolor.map(
-			(element) => {
-				element.isColorAuto = true;
-				return element;
-			}
-		);
-		console.log(temp);
-		changingValuesofSteps(propKey, temp);
+		const ArrayOfStepsWithSchemaColors = JSON.parse(
+			JSON.stringify(chartProp.properties[propKey].axisOptions.gaugeChartControls.stepcolor)
+		).map((element) => {
+			element.isColorAuto = true;
+			return element;
+		});
+
+		changingValuesofSteps(propKey, ArrayOfStepsWithSchemaColors);
 	}, [chartProp.properties[propKey].colorScheme]);
 
-	// calculate percentage  value of each step while add or delete steps
-
-	const calculatePercentage = (temp) => {
-		let total = 0;
-		temp.map((el) => {
-			total = parseInt(total) + parseInt(el.stepValue);
-		});
-		var per = 0;
-		var i = 0;
-
-		for (i = 0; i < temp.length; i++) {
-			per = per + temp[i].stepValue / total;
-
-			updatePercentageValue(per.toPrecision(2), i, temp);
+	useEffect(() => {
+		var newTempData = [];
+		var total = "";
+		if (chartData) {
+			Object.keys(chartData[0]).map((key) => {
+				newTempData.push({
+					name: key,
+					value: chartData[0][key],
+				});
+			});
+			total = newTempData[0].value * 2;
+			const stepsWithValues = JSON.parse(
+				JSON.stringify(
+					chartProp.properties[propKey].axisOptions.gaugeChartControls.stepcolor
+				)
+			).map((el) => {
+				el.value = Math.ceil((el.stepValue * total) / 100);
+				return el;
+			});
+			changingValuesofSteps(propKey, stepsWithValues);
+			updateGaugeAxisOptions(propKey, "max", total);
 		}
-	};
-
-	// update calculated  percent value  for ecah step and return in a temprory array, update state with this array
-
-	const updatePercentageValue = (value, index, temp) => {
-		var maxTotal = 0;
-		const temp1 = temp.map((el, i) => {
-			maxTotal = maxTotal + el.stepValue;
-			if (i === index) {
-				el.per = value;
-			}
-			return el;
-		});
-
-		updateGaugeAxisOptions(propKey, "max", maxTotal);
-		changingValuesofSteps(propKey, temp1);
-	};
+	}, [chartData]);
 
 	// function to remove existing steps
 	const removeStep = (index) => {
-		const temp = chartProp.properties[propKey].axisOptions.gaugeChartControls.stepcolor.filter(
-			(el, i) => {
-				return i !== index;
-			}
-		);
-		console.log(temp);
-		calculatePercentage(temp);
+		updateGaugeAxisOptions(propKey, "isMaxAuto", false);
+
+		const reminingSteps = JSON.parse(
+			JSON.stringify(chartProp.properties[propKey].axisOptions.gaugeChartControls.stepcolor)
+		).filter((el, i) => {
+			return i !== index;
+		});
+		var total = getTotal(reminingSteps);
+		var maxTotalAndUpdatedArray = computeAndGetMaxValue(reminingSteps, total);
+
+		changingValuesofSteps(propKey, maxTotalAndUpdatedArray.arrayWithUpdatedValueOfNewStep);
+		updateGaugeAxisOptions(propKey, "max", maxTotalAndUpdatedArray.maxTotal);
 	};
 
 	// changing value of existing step (edit)
 	const changeStepValue = (value, index) => {
-		const temp = chartProp.properties[propKey].axisOptions.gaugeChartControls.stepcolor.map(
-			(el, i) => {
-				if (index === i) {
-					el.stepValue = parseInt(value);
-				}
-				return el;
+		updateGaugeAxisOptions(propKey, "isMaxAuto", false);
+
+		const stepWithChangedValue = JSON.parse(
+			JSON.stringify(chartProp.properties[propKey].axisOptions.gaugeChartControls.stepcolor)
+		).map((el, i) => {
+			if (index === i) {
+				el.value = parseInt(value);
 			}
-		);
-		calculatePercentage(temp);
+			return el;
+		});
+
+		var total = getTotal(stepWithChangedValue);
+		var maxTotalAndUpdatedArray = computeAndGetMaxValue(stepWithChangedValue, total);
+
+		changingValuesofSteps(propKey, maxTotalAndUpdatedArray.arrayWithUpdatedValueOfNewStep);
+		updateGaugeAxisOptions(propKey, "max", maxTotalAndUpdatedArray.maxTotal);
 	};
 
 	const addNewStep = (obj, idx) => {
+		updateGaugeAxisOptions(propKey, "isMaxAuto", false);
 		addingNewStep(propKey, idx, obj);
-		const temp = [
-			...chartProp.properties[propKey].axisOptions.gaugeChartControls.stepcolor,
-			obj,
-		];
-		calculatePercentage(temp);
+
+		const newStepAddedArray = JSON.parse(
+			JSON.stringify(chartProp.properties[propKey].axisOptions.gaugeChartControls.stepcolor)
+		);
+
+		newStepAddedArray.splice(idx, 0, obj);
+		console.log(newStepAddedArray);
+
+		var total = getTotal(newStepAddedArray);
+
+		var maxTotalAndUpdatedArray = computeAndGetMaxValue(newStepAddedArray, total);
+
+		changingValuesofSteps(propKey, maxTotalAndUpdatedArray.arrayWithUpdatedValueOfNewStep);
+		updateGaugeAxisOptions(propKey, "max", maxTotalAndUpdatedArray.maxTotal);
+	};
+
+	const getTotal = (stepsArray) => {
+		let total = 0;
+		stepsArray.map((el) => {
+			total = parseInt(total) + parseInt(el.value);
+		});
+		return total;
+	};
+
+	const computeAndGetMaxValue = (stepsArray, total) => {
+		var per = 0;
+		var stepValue = 0;
+		var i = 0;
+		var maxTotalAndUpdatedArray = {};
+		for (i = 0; i < stepsArray.length; i++) {
+			per = per + stepsArray[i].value / total;
+			stepValue = (stepsArray[i].value * 100) / total;
+			maxTotalAndUpdatedArray = getMaxTotalAndUpdatedArray(
+				per.toPrecision(1),
+				stepValue,
+				i,
+				stepsArray
+			);
+		}
+		return maxTotalAndUpdatedArray;
+	};
+
+	const getMaxTotalAndUpdatedArray = (per, stepValue, index, stepsArray) => {
+		var maxTotal = 0;
+		const arrayWithUpdatedValueOfNewStep = stepsArray.map((el, i) => {
+			maxTotal = maxTotal + el.value;
+			console.log(maxTotal);
+			if (i === index) {
+				el.per = per;
+				el.stepValue = stepValue;
+			}
+			return el;
+		});
+
+		return { maxTotal, arrayWithUpdatedValueOfNewStep };
 	};
 
 	return (
@@ -146,14 +204,7 @@ const ColorSteps = ({
 			<div className="optionDescription" style={{ marginTop: "10px" }}>
 				STEPS:
 			</div>
-			<div
-				style={{
-					display: "flex",
-					flexDirection: "column",
-					paddingLeft: "15px",
-					paddingRight: "10px",
-				}}
-			>
+			<div className=" colorStepsList">
 				{chartProp.properties[propKey].axisOptions.gaugeChartControls.stepcolor.map(
 					(el, index) => {
 						return (
@@ -171,7 +222,7 @@ const ColorSteps = ({
 												onChange={(e) => {
 													changeStepValue(e.target.value, index);
 												}}
-												value={el.stepValue}
+												value={el.value}
 												inputProps={{ ...textFieldStyleProps }}
 											/>
 
@@ -185,15 +236,8 @@ const ColorSteps = ({
 													setColorPopoverOpen(true);
 												}}
 											></div>
-											<div className="colorStepsAddDelete">
-												<div
-													style={{
-														display: "flex",
-														float: "right",
-														width: "50px",
-														marginLeft: "10px",
-													}}
-												>
+											<div>
+												<div className="colorStepsAddDelete">
 													{xprops.open ? (
 														<>
 															<div
@@ -226,10 +270,11 @@ const ColorSteps = ({
 																			colorsOfScheme[idx];
 																	}
 																	var obj = {
-																		stepValue: el.stepValue,
+																		stepValue: 1,
 																		color: colorValue,
 																		per: el.per,
 																		isColorAuto: true,
+																		value: 0,
 																	};
 
 																	addNewStep(obj, idx);
@@ -338,7 +383,7 @@ const ColorSteps = ({
 						width="16rem"
 						styles={{ padding: "0" }}
 						onChangeComplete={(color) => {
-							const temp = chartProp.properties[
+							const stepsWithUserSelectedColor = chartProp.properties[
 								propKey
 							].axisOptions.gaugeChartControls.stepcolor.map((element, index) => {
 								if (index === selectedStepIndex) {
@@ -348,11 +393,10 @@ const ColorSteps = ({
 
 								return element;
 							});
-							console.log(temp);
-							changingValuesofSteps(propKey, temp);
+							changingValuesofSteps(propKey, stepsWithUserSelectedColor);
 						}}
 						onChange={(color) => {
-							const temp = chartProp.properties[
+							const stepsWithUserSelectedColor = chartProp.properties[
 								propKey
 							].axisOptions.gaugeChartControls.stepcolor.map((element, index) => {
 								if (index === selectedStepIndex) {
@@ -362,8 +406,7 @@ const ColorSteps = ({
 
 								return element;
 							});
-							console.log(temp);
-							changingValuesofSteps(propKey, temp);
+							changingValuesofSteps(propKey, stepsWithUserSelectedColor);
 						}}
 						disableAlpha
 					/>

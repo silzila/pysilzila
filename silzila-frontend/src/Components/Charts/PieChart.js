@@ -110,10 +110,10 @@ const PieChart = ({
 										? chartControl.labelOptions.labelColor
 										: null,
 									padding: [
-										chartControl.axisOptions.pieAxisOptions.labelPadding,
-										chartControl.axisOptions.pieAxisOptions.labelPadding,
-										chartControl.axisOptions.pieAxisOptions.labelPadding,
-										chartControl.axisOptions.pieAxisOptions.labelPadding,
+										chartControl.labelOptions.pieLabel.labelPadding,
+										chartControl.labelOptions.pieLabel.labelPadding,
+										chartControl.labelOptions.pieLabel.labelPadding,
+										chartControl.labelOptions.pieLabel.labelPadding,
 									],
 
 									formatter: (value) => {
