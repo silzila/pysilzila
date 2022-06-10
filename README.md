@@ -1,5 +1,9 @@
 # Silzila - Data Visualization Tool
 
+Data exploration and dashboarding app
+
+[**Installation**](#installation)|[**Demo**](#demo)
+
 [Silzila](https://silzila.org/) is an open source tool (License information here) which enables you
 to create meaningful visual charts in four easy steps
 
@@ -13,6 +17,8 @@ DataConnections and Datasets can be viewed in the home page
 ![DataHome](silzila-frontend/src/assets/dataHome-ss.png)
 
 Visit [Silzila](https://silzila.org/) website to learn more
+
+##Demo
 
 ## 1. Connect with Database
 
