@@ -1,7 +1,16 @@
 // Used for setting color scale in Heatmap
 
-import { FormControlLabel, Radio, RadioGroup, TextField, Typography } from "@mui/material";
+import {
+	FormControlLabel,
+	Radio,
+	RadioGroup,
+	TextField,
+	Typography,
+	Switch,
+	Popover,
+} from "@mui/material";
 import React, { useState } from "react";
+import { SketchPicker } from "react-color";
 import { connect } from "react-redux";
 import {
 	addingNewStep,
@@ -35,6 +44,9 @@ const ColorScale = ({
 	const [severity, setSeverity] = useState("success");
 	const [openAlert, setOpenAlert] = useState(false);
 	const [testMessage, setTestMessage] = useState("Testing alert");
+	const [isColorPopoverOpen, setColorPopOverOpen] = useState(false);
+	const [minOrMaxColor, setminOrMaxColor] = useState("");
+	const [color, setColor] = useState("");
 
 	var max = chartProp.properties[propKey].colorScale.max;
 	var min = chartProp.properties[propKey].colorScale.min;
@@ -59,7 +71,9 @@ const ColorScale = ({
 
 	const checkMinMaxValue = () => {
 		// if (min === 0 && max === 0) {
-		if (max === 0) {
+		console.log(min, max);
+		console.log(Number(min), Number(max));
+		if (Number(max) === 0) {
 			setOpenAlert(true);
 			setSeverity("error");
 
@@ -69,7 +83,7 @@ const ColorScale = ({
 				setTestMessage("");
 			}, 3000);
 		} else {
-			if (min >= max) {
+			if (Number(min) >= Number(max)) {
 				setOpenAlert(true);
 				setSeverity("error");
 				setTestMessage("Max value should be grater than Min");
@@ -84,6 +98,62 @@ const ColorScale = ({
 	return (
 		<div className="optionsInfo">
 			<div className="optionDescription">SET COLOR SCALE:</div>
+
+			<div className="optionDescription" style={{ marginTop: "5px", marginBottom: "5px" }}>
+				<label
+					htmlFor="enableDisable"
+					className="enableDisableLabel"
+					style={{ marginRight: "5px" }}
+				>
+					Min Color
+				</label>
+				<div
+					style={{
+						height: "1.25rem",
+						width: "20%",
+						marginLeft: "20px",
+						backgroundColor: chartProp.properties[propKey].colorScale.minColor,
+						color: chartProp.properties[propKey].colorScale.minColor,
+						border: "2px solid darkgray",
+						margin: "auto",
+					}}
+					onClick={(e) => {
+						setColor(chartProp.properties[propKey].colorScale.minColor);
+						setminOrMaxColor("minColor");
+						setColorPopOverOpen(!isColorPopoverOpen);
+					}}
+				>
+					{"  "}
+				</div>
+				<label
+					htmlFor="enableDisable"
+					className="enableDisableLabel"
+					style={{ marginRight: "5px" }}
+				>
+					Max Color
+				</label>
+				<div
+					style={{
+						height: "1.25rem",
+						width: "20%",
+						marginLeft: "20px",
+						backgroundColor: chartProp.properties[propKey].colorScale.maxColor,
+						color: chartProp.properties[propKey].colorScale.maxColor,
+						border: "2px solid darkgray",
+						margin: "auto",
+					}}
+					onClick={(e) => {
+						setColor(chartProp.properties[propKey].colorScale.maxColor);
+
+						setminOrMaxColor("maxColor");
+						setColorPopOverOpen(!isColorPopoverOpen);
+					}}
+				>
+					{"  "}
+				</div>
+			</div>
+			<div className="optionDescription">SET MIN MAX VALUES</div>
+
 			<div className="colorScaleContainer">
 				<RadioGroup
 					aria-labelledby="demo-controlled-radio-buttons-group"
@@ -107,11 +177,12 @@ const ColorScale = ({
 						label={typographyComponent("Manual")}
 					/>
 				</RadioGroup>
+
 				{selectedOption === "Manual" ? (
 					<div>
 						<div className="inputFieldContainer">
 							<TextField
-								type="text"
+								type="number"
 								value={min}
 								onChange={(e) => {
 									//console.log(e.target.value);
@@ -120,9 +191,10 @@ const ColorScale = ({
 								label="Min"
 								InputLabelProps={{ shrink: true }}
 								inputProps={{ ...textFieldInputProps }}
+								onBlur={checkMinMaxValue}
 							/>
 							<TextField
-								type="text"
+								type="number"
 								value={max}
 								onChange={(e) => {
 									//console.log(e.target.value);
@@ -136,8 +208,29 @@ const ColorScale = ({
 						</div>
 					</div>
 				) : null}
-				<ChartColors />
 			</div>
+
+			<Popover
+				open={isColorPopoverOpen}
+				onClose={() => setColorPopOverOpen(false)}
+				onClick={() => setColorPopOverOpen(false)}
+				anchorReference="anchorPosition"
+				anchorPosition={{ top: 350, left: 1300 }}
+			>
+				<div>
+					<SketchPicker
+						color={color}
+						className="sketchPicker"
+						width="16rem"
+						styles={{ padding: "0" }}
+						onChangeComplete={(color) => {
+							setColorScaleOption(minOrMaxColor, color.hex, propKey);
+						}}
+						onChange={(color) => setColorScaleOption(minOrMaxColor, color.hex, propKey)}
+						disableAlpha
+					/>
+				</div>
+			</Popover>
 
 			<NotificationDialog
 				onCloseAlert={() => {

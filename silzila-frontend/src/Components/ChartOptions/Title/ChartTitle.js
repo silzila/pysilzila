@@ -8,7 +8,9 @@ import { connect } from "react-redux";
 import {
 	setGenerateTitle,
 	setTitleAlignment,
+	setTitleSize,
 } from "../../../redux/ChartProperties/actionsChartProperties";
+import SliderWithInput from "../SliderWithInput";
 
 const ChartTitle = ({
 	// state
@@ -18,6 +20,7 @@ const ChartTitle = ({
 	// dispatch
 	setGenerateTitleToStore,
 	setTitleAlignment,
+	setTitleSize,
 }) => {
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 
@@ -79,6 +82,16 @@ const ChartTitle = ({
 			<div className="optionsInfo">
 				<div className="optionDescription">TITLE ALIGN</div>
 				<div className="radioButtons">{renderTitleAlignOptions()}</div>
+				<div className="optionDescription">TITLE SIZE</div>
+				<SliderWithInput
+					percent={false}
+					sliderValue={chartProp.properties[propKey].titleOptions.fontSize}
+					sliderMinMax={{ min: 6, max: 40, step: 1 }}
+					changeValue={(value) => {
+						console.log(value);
+						setTitleSize(propKey, value);
+					}}
+				/>
 			</div>
 		</React.Fragment>
 	);
@@ -95,6 +108,7 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		setGenerateTitleToStore: (propKey, option) => dispatch(setGenerateTitle(propKey, option)),
 		setTitleAlignment: (propKey, align) => dispatch(setTitleAlignment(propKey, align)),
+		setTitleSize: (propKey, value) => dispatch(setTitleSize(propKey, value)),
 	};
 };
 

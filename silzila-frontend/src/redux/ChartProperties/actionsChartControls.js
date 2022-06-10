@@ -60,6 +60,13 @@ export const changingValuesofSteps = (propkey, value) => {
 		payload: { propKey: propkey, value: value },
 	};
 };
+
+export const switchAutotoManualinSteps = (propkey, value) => {
+	return {
+		type: "SWITCH_STEPS_AUTO_MANUAL",
+		payload: { propKey: propkey, value: value },
+	};
+};
 // ===================================
 // Labels
 

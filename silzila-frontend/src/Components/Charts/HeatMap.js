@@ -18,7 +18,6 @@ const HeatMap = ({
 	var chartControl = chartControls.properties[propKey];
 	let chartData = chartControl.chartData ? chartControl.chartData.result : "";
 	const [chartDataKeys, setChartDataKeys] = useState([]);
-	const [colorsOfScheme, setColorsOfScheme] = useState([]);
 
 	const [maxValue, setMaxValue] = useState(0);
 
@@ -38,15 +37,6 @@ const HeatMap = ({
 			setMaxValue(max);
 		}
 	}, [chartData]);
-
-	useEffect(() => {
-		ColorSchemes.map((el) => {
-			if (el.name === chartControl.colorScheme) {
-				console.log(el.colors);
-				setColorsOfScheme(el.colors);
-			}
-		});
-	}, [chartControl.colorScheme]);
 
 	const RenderChart = () => {
 		return (
@@ -173,9 +163,12 @@ const HeatMap = ({
 									: maxValue,
 
 							// TODO: Priority 1 - This property breaks page when switching from other chart types
-							// inRange: {
-							// 	color: colorsOfScheme ? colorsOfScheme : null,
-							// },
+							inRange: {
+								color: [
+									chartControl.colorScale.minColor,
+									chartControl.colorScale.maxColor,
+								],
+							},
 						},
 					],
 
