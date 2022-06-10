@@ -1,5 +1,7 @@
 # Silzila - Data Visualization Tool
 
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 ![](silzila-frontend/src/assets/silzila_crop.png)
 
 Data exploration and dashboarding app
