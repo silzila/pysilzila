@@ -1,4 +1,4 @@
-# Silzila - Data Visualization Tool
+# Silzila - Data Exploration and Dashboarding App
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
@@ -16,13 +16,7 @@ to create meaningful visual charts in four easy steps
 3. Visualize the data
 4. Present charts in dashboard
 
-DataConnections and Datasets can be viewed in the home page
-
-![DataHome](silzila-frontend/src/assets/dataHome-ss.png)
-
-Visit [Silzila](https://silzila.org/) website to learn more
-
-## Installation
+# Installation
 
 Make sure you have Python version XX or higher.
 
@@ -44,7 +38,13 @@ Activate the new virtual environment `.\<envName>\Scripts\activate`
 Once the environment is active, you can then start the silzila app by typing the following command
 in prompt `silzila`
 
-## Demo
+DataConnections and Datasets can be viewed in the home page
+
+<!-- ![DataHome](silzila-frontend/src/assets/dataHome-ss.png) -->
+
+<!-- Visit [Silzila](https://silzila.org/) website to learn more -->
+
+# Demo
 
 ## 1. Connect with Database
 
