@@ -305,8 +305,8 @@ const GraphArea = ({
 			) {
 				title = measureTitle ? measureTitle : "";
 			} else {
-				title = dimTitle ? dimTitle : "";
-				title = measureTitle ? title + ` by ${measureTitle}` : "";
+				title = measureTitle ? measureTitle : "";
+				title = dimTitle ? title + ` by ${dimTitle}` : "";
 			}
 
 			title = title.charAt(0).toUpperCase() + title.slice(1);
