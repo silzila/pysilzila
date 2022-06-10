@@ -1,12 +1,10 @@
 # Silzila - Data Visualization Tool
 
+![](silzila-frontend/src/assets/silzila_crop.png)
+
 Data exploration and dashboarding app
 
 [**Installation**](#installation) | [**Demo**](#demo)
-
-## Installation
-
-Testing
 
 [Silzila](https://silzila.org/) is an open source tool (License information here) which enables you
 to create meaningful visual charts in four easy steps
@@ -21,6 +19,28 @@ DataConnections and Datasets can be viewed in the home page
 ![DataHome](silzila-frontend/src/assets/dataHome-ss.png)
 
 Visit [Silzila](https://silzila.org/) website to learn more
+
+## Installation
+
+Make sure you have Python version XX or higher.
+
+Open command line or terminal and check your version of python by using the following code
+`python --version`
+
+Verify that you also have setupTools by typing `pip list`
+
+Install virtual environment if you don't have it already `pip install virtualenv`
+
+Navigate into the folder of your choice where you want to install silzila project
+
+Create a new virtual envronment `python -m venv <envName>`
+
+Install silzila package `pip install silzila`
+
+Activate the new virtual environment `.\<envName>\Scripts\activate`
+
+Once the environment is active, you can then start the silzila app by typing the following command
+in prompt `silzila`
 
 ## Demo
 
