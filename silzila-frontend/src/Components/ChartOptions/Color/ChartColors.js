@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import {
 	setAreaColorOptions,
 	setColorScheme,
+	switchAutotoManualinSteps,
 } from "../../../redux/ChartProperties/actionsChartControls";
 import SliderWithInput from "../SliderWithInput";
 import { ColorSchemes } from "./ColorScheme";
@@ -20,6 +21,7 @@ const ChartColors = ({
 	// dispatch
 	setColorScheme,
 	setAreaColorOptions,
+	switchAutotoManualinSteps,
 }) => {
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 
@@ -27,6 +29,9 @@ const ChartColors = ({
 	const [isColorPopoverOpen, setColorPopOverOpen] = useState(false);
 
 	const resetSelection = (data_value) => {
+		if (chartProperties.properties[propKey].chartType === "gauge") {
+			switchAutotoManualinSteps(propKey, true);
+		}
 		setSelectedMenu(data_value);
 		setColorScheme(propKey, data_value);
 	};
@@ -150,6 +155,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		setColorScheme: (propKey, color) => dispatch(setColorScheme(propKey, color)),
+		switchAutotoManualinSteps: (propKey, value) =>
+			dispatch(switchAutotoManualinSteps(propKey, value)),
 		setAreaColorOptions: (propKey, option, value) =>
 			dispatch(setAreaColorOptions(propKey, option, value)),
 	};

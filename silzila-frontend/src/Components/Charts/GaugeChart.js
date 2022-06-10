@@ -20,6 +20,7 @@ const GaugeChart = ({
 	var chartControl = chartControls.properties[propKey];
 	let chartData = chartControl.chartData ? chartControl.chartData.result : "";
 	const [newData, setNewData] = useState([]);
+	// const []
 
 	var carr = [];
 
@@ -31,16 +32,8 @@ const GaugeChart = ({
 			]);
 		}
 	};
-	getColors();
 
-	// TODO: Priority 1 - Explain why gauge chart margin can't be below 80?
-	var radius = chartControl.chartMargin.radius;
-	useEffect(() => {
-		if (radius < 80) {
-			updateChartMargins(propKey, "radius", 80);
-			radius = 80;
-		}
-	});
+	getColors();
 
 	useEffect(() => {
 		if (chartData) {
@@ -95,7 +88,7 @@ const GaugeChart = ({
 					series: [
 						{
 							type: "gauge",
-							radius: radius + "%",
+							radius: chartControl.chartMargin.radius + "%",
 
 							max: newData[0]
 								? chartControl.axisOptions.gaugeAxisOptions.isMaxAuto

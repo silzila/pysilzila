@@ -161,6 +161,12 @@ export const setTitleAlignment = (propKey, align) => {
 		payload: { propKey, align },
 	};
 };
+export const setTitleSize = (propKey, value) => {
+	return {
+		type: "SET_TITLE_SIZE",
+		payload: { propKey, value },
+	};
+};
 
 export const sortAxes = (propKey, bIndex, dragUId, dropUId) => {
 	return {

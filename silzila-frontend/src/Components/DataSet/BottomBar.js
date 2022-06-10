@@ -258,13 +258,14 @@ const BottomBar = ({
 					}}
 				>
 					<div style={{ fontWeight: "bold", textAlign: "center" }}>
-						CANCEL DATASET CREATION
+						{editMode ? "CANCEL DATASET EDIT" : "CANCEL DATASET CREATION"}
 						<Close style={{ float: "right" }} onClick={() => setOpen(false)} />
 						<br />
 						<br />
 						<p style={{ fontWeight: "normal" }}>
-							Cancel will reset this dataset creation. Do you want to discard the
-							progress?
+							{editMode
+								? "Any unsaved changes will be discarded, do you want to exit anyway?"
+								: "Cancel will reset this dataset creation. Do you want to discard the progress?"}
 						</p>
 					</div>
 					<div

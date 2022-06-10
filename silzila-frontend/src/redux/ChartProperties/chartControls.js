@@ -11,7 +11,13 @@ const chartControl = {
 			areaBackgroundColor: "#22194D",
 			areaOpacity: 0.1,
 
-			colorScale: { colorScaleType: "Automatic", min: 0, max: 0 },
+			colorScale: {
+				colorScaleType: "Automatic",
+				min: 0,
+				max: 0,
+				minColor: "#ffffb3",
+				maxColor: "#b32d00",
+			},
 
 			legendOptions: {
 				showLegend: true,
@@ -143,6 +149,7 @@ const chartControl = {
 				},
 
 				gaugeChartControls: {
+					isStepsAuto: true,
 					stepcolor: [
 						{
 							color: "#3fb1e3",
@@ -252,7 +259,13 @@ const chartControlsReducer = (state = chartControl, action) => {
 						areaBackgroundColor: "#22194D",
 						areaOpacity: 0.1,
 
-						colorScale: { colorScaleType: "Automatic", min: 0, max: 0 },
+						colorScale: {
+							colorScaleType: "Automatic",
+							min: 0,
+							max: 0,
+							minColor: "#ffffb3",
+							maxColor: "#b32d00",
+						},
 
 						legendOptions: {
 							showLegend: true,
@@ -384,6 +397,8 @@ const chartControlsReducer = (state = chartControl, action) => {
 							},
 
 							gaugeChartControls: {
+								isStepsAuto: true,
+
 								stepcolor: [
 									{
 										color: "#3fb1e3",
@@ -494,7 +509,13 @@ const chartControlsReducer = (state = chartControl, action) => {
 						areaBackgroundColor: "#22194D",
 						areaOpacity: 0.1,
 
-						colorScale: { colorScaleType: "Automatic", min: 0, max: 0 },
+						colorScale: {
+							colorScaleType: "Automatic",
+							min: 0,
+							max: 0,
+							minColor: "#ffffb3",
+							maxColor: "#b32d00",
+						},
 
 						legendOptions: {
 							showLegend: true,
@@ -626,6 +647,8 @@ const chartControlsReducer = (state = chartControl, action) => {
 							},
 
 							gaugeChartControls: {
+								isStepsAuto: true,
+
 								stepcolor: [
 									{
 										color: "#3fb1e3",
@@ -1069,6 +1092,18 @@ const chartControlsReducer = (state = chartControl, action) => {
 						axisOptions: {
 							gaugeChartControls: {
 								stepcolor: { $set: action.payload.value },
+							},
+						},
+					},
+				},
+			});
+		case "SWITCH_STEPS_AUTO_MANUAL":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						axisOptions: {
+							gaugeChartControls: {
+								isStepsAuto: { $set: action.payload.value },
 							},
 						},
 					},

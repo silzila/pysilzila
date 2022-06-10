@@ -58,28 +58,7 @@ const GridAndAxes = ({
 		{ name: "End", value: "end" },
 	];
 
-	// ============================================== GRID =====================================================
-	const gridOptions = [
-		{ type: "Enable X-grid", value: "xSplitLine" },
-		{ type: "Enable Y-grid", value: "ySplitLine" },
-	];
-
-	const renderGridOptions = () => {
-		return gridOptions.map((item) => {
-			return (
-				<button
-					className={property[item.value] ? "radioButtonSelected" : "radioButton"}
-					value={item}
-					onClick={() => {
-						enableGrids(propKey, item.value, !property[item.value]);
-					}}
-					key={item.value}
-				>
-					{item.type}
-				</button>
-			);
-		});
-	};
+	console.log(chartProp);
 
 	// ============================================ X-Axis ======================================================
 
@@ -142,10 +121,7 @@ const GridAndAxes = ({
 			======================================================================================================
 			                                        GRID PROPS
 			====================================================================================================== */}
-			<React.Fragment>
-				<div className="optionDescription">GRID</div>
-				<div className="radioButtons">{renderGridOptions()}</div>
-			</React.Fragment>
+
 			{chartProp[propKey].chartType !== "scatterPlot" ? (
 				<>
 					<div className="optionDescription" style={{ padding: "0 6% 5px 4%" }}>
@@ -212,6 +188,51 @@ const GridAndAxes = ({
 				style={{ borderTop: "1px solid rgb(211,211,211)", margin: "0.5rem 6% 1rem" }}
 			></div>
 			<div className="optionDescription">Dimension-Axis</div>
+			{chartProp[propKey].chartType === "multibar" ||
+			chartProp[propKey].chartType === "stackedBar" ? (
+				<>
+					<div className="optionDescription" style={{ padding: "0 6% 5px 4%" }}>
+						<label
+							htmlFor="enableDisable"
+							className="enableDisableLabel"
+							style={{ marginRight: "10px" }}
+						>
+							Enable Dimension-Grid
+						</label>
+						<Switch
+							size="small"
+							id="enableDisable"
+							checked={property.xSplitLine}
+							onClick={() => {
+								enableGrids(propKey, "xSplitLine", !property.xSplitLine);
+							}}
+						/>
+					</div>
+				</>
+			) : (
+				<>
+					{chartProp[propKey].chartType === "horizontalBar" ||
+					chartProp[propKey].chartType === "horizontalStacked" ? (
+						<div className="optionDescription" style={{ padding: "0 6% 5px 4%" }}>
+							<label
+								htmlFor="enableDisable"
+								className="enableDisableLabel"
+								style={{ marginRight: "10px" }}
+							>
+								Enable Dimension-Grid
+							</label>
+							<Switch
+								size="small"
+								id="enableDisable"
+								checked={property.ySplitLine}
+								onClick={() => {
+									enableGrids(propKey, "ySplitLine", !property.ySplitLine);
+								}}
+							/>
+						</div>
+					) : null}
+				</>
+			)}
 
 			<div className="optionDescription" style={{ padding: "0 6% 5px 4%" }}>
 				<label
@@ -385,11 +406,9 @@ const GridAndAxes = ({
 							if (xAxisProps.position === "top") {
 								// CHANGING TICK SIZE OF X-AXIS WHEN POSITION IS TOP
 								updateAxisOptions(propKey, "xAxis", "tickSizeTop", value);
-								// updateAxisOptions(propKey, "xAxis", "tickPaddingTop", value);
 							} else if (xAxisProps.position === "bottom") {
 								// CHANGING TICK SIZE OF X-AXIS WHEN POSITION IS BOTTOM
 								updateAxisOptions(propKey, "xAxis", "tickSizeBottom", value);
-								// updateAxisOptions(propKey, "xAxis", "tickPaddingBottom", value);
 							}
 						}}
 					/>
@@ -442,6 +461,52 @@ const GridAndAxes = ({
 				style={{ borderTop: "1px solid rgb(211,211,211)", margin: "0.5rem 6% 1rem" }}
 			></div>
 			<div className="optionDescription">Measure-Axis</div>
+
+			{chartProp[propKey].chartType === "multibar" ||
+			chartProp[propKey].chartType === "stackedBar" ? (
+				<>
+					<div className="optionDescription" style={{ padding: "0 6% 5px 4%" }}>
+						<label
+							htmlFor="enableDisable"
+							className="enableDisableLabel"
+							style={{ marginRight: "10px" }}
+						>
+							Enable Measure-Grid
+						</label>
+						<Switch
+							size="small"
+							id="enableDisable"
+							checked={property.ySplitLine}
+							onClick={() => {
+								enableGrids(propKey, "ySplitLine", !property.ySplitLine);
+							}}
+						/>
+					</div>
+				</>
+			) : (
+				<>
+					{chartProp[propKey].chartType === "horizontalBar" ||
+					chartProp[propKey].chartType === "horizontalStacked" ? (
+						<div className="optionDescription" style={{ padding: "0 6% 5px 4%" }}>
+							<label
+								htmlFor="enableDisable"
+								className="enableDisableLabel"
+								style={{ marginRight: "10px" }}
+							>
+								Enable Measure-Grid
+							</label>
+							<Switch
+								size="small"
+								id="enableDisable"
+								checked={property.xSplitLine}
+								onClick={() => {
+									enableGrids(propKey, "xSplitLine", !property.xSplitLine);
+								}}
+							/>
+						</div>
+					) : null}
+				</>
+			)}
 			<div className="optionDescription" style={{ padding: "0 6% 5px 4%" }}>
 				<label
 					htmlFor="enableDisable"
@@ -607,11 +672,9 @@ const GridAndAxes = ({
 							if (yAxisProps.position === "left") {
 								// CHANGING Y-AXIS TICK SIZE WHEN POSITION IS INN LEFT
 								updateAxisOptions(propKey, "yAxis", "tickSizeLeft", value);
-								// updateAxisOptions(propKey, "yAxis", "tickPaddingLeft", value);
 							} else if (yAxisProps.position === "right") {
 								//CHANGING Y-AXIS TICK SIZE WHEN POSITION IS IN RIGHT
 								updateAxisOptions(propKey, "yAxis", "tickSizeRight", value);
-								// updateAxisOptions(propKey, "yAxis", "tickPaddingRight", value);
 							}
 						}}
 					/>

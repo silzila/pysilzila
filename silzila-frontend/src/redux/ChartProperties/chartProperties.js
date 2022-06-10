@@ -369,6 +369,15 @@ const chartPropertiesState = (state = chartProperties, action) => {
 				},
 			});
 
+		case "SET_TITLE_SIZE":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						titleOptions: { fontSize: { $set: action.payload.value } },
+					},
+				},
+			});
+
 		// ########################################
 		// Drag and Drop cards between dropzones
 

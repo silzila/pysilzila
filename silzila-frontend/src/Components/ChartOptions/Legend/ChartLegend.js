@@ -65,8 +65,8 @@ const ChartLegend = ({
 		updateLegendOption(propKey, "position", positionSelected);
 	};
 
-	const itemWidthMinMax = { min: 0, max: 200, step: 1 };
-	const itemHeightMinMax = { min: 0, max: 200, step: 1 };
+	const itemWidthMinMax = { min: 5, max: 200, step: 1 };
+	const itemHeightMinMax = { min: 5, max: 200, step: 1 };
 	const itemSpacingMinMax = { min: 0, max: 60, step: 1 };
 	const moveSlider = chartControl.properties[propKey].legendOptions.moveSlider;
 
