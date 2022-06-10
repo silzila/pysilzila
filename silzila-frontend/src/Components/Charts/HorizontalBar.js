@@ -103,7 +103,7 @@ const HorizontalBar = ({
 					},
 					xAxis: {
 						splitLine: {
-							show: chartControl.axisOptions?.xSplitLine,
+							show: chartControl.axisOptions?.ySplitLine,
 						},
 
 						position: chartControl.axisOptions.xAxis.position,
@@ -148,7 +148,7 @@ const HorizontalBar = ({
 					yAxis: {
 						type: "category",
 						splitLine: {
-							show: chartControl.axisOptions?.ySplitLine,
+							show: chartControl.axisOptions?.xSplitLine,
 						},
 						min: chartControl.axisOptions.axisMinMax.enableMin
 							? chartControl.axisOptions.axisMinMax.minValue

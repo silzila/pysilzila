@@ -463,7 +463,9 @@ const GridAndAxes = ({
 			<div className="optionDescription">Measure-Axis</div>
 
 			{chartProp[propKey].chartType === "multibar" ||
-			chartProp[propKey].chartType === "stackedBar" ? (
+			chartProp[propKey].chartType === "stackedBar" ||
+			chartProp[propKey].chartType === "horizontalBar" ||
+			chartProp[propKey].chartType === "horizontalStacked" ? (
 				<>
 					<div className="optionDescription" style={{ padding: "0 6% 5px 4%" }}>
 						<label
@@ -483,30 +485,7 @@ const GridAndAxes = ({
 						/>
 					</div>
 				</>
-			) : (
-				<>
-					{chartProp[propKey].chartType === "horizontalBar" ||
-					chartProp[propKey].chartType === "horizontalStacked" ? (
-						<div className="optionDescription" style={{ padding: "0 6% 5px 4%" }}>
-							<label
-								htmlFor="enableDisable"
-								className="enableDisableLabel"
-								style={{ marginRight: "10px" }}
-							>
-								Enable Measure-Grid
-							</label>
-							<Switch
-								size="small"
-								id="enableDisable"
-								checked={property.xSplitLine}
-								onClick={() => {
-									enableGrids(propKey, "xSplitLine", !property.xSplitLine);
-								}}
-							/>
-						</div>
-					) : null}
-				</>
-			)}
+			) : null}
 			<div className="optionDescription" style={{ padding: "0 6% 5px 4%" }}>
 				<label
 					htmlFor="enableDisable"
