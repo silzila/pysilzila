@@ -10,7 +10,7 @@ import {
 	setTitleAlignment,
 	setTitleSize,
 } from "../../../redux/ChartProperties/actionsChartProperties";
-import SliderWithInput from "../SliderWithInput";
+import InputPositiveNumber from "../CommonFunctions/InputPositiveNumber";
 
 const ChartTitle = ({
 	// state
@@ -82,16 +82,13 @@ const ChartTitle = ({
 			<div className="optionsInfo">
 				<div className="optionDescription">TITLE ALIGN</div>
 				<div className="radioButtons">{renderTitleAlignOptions()}</div>
-				<div className="optionDescription">TITLE SIZE</div>
-				<SliderWithInput
-					percent={false}
-					sliderValue={chartProp.properties[propKey].titleOptions.fontSize}
-					sliderMinMax={{ min: 6, max: 40, step: 1 }}
-					changeValue={(value) => {
-						console.log(value);
-						setTitleSize(propKey, value);
-					}}
-				/>
+				<div className="optionDescription">TITLE FONT SIZE</div>
+				<div className="optionDescription">
+					<InputPositiveNumber
+						value={chartProp.properties[propKey].titleOptions.fontSize}
+						updateValue={(value) => setTitleSize(propKey, value)}
+					/>
+				</div>
 			</div>
 		</React.Fragment>
 	);

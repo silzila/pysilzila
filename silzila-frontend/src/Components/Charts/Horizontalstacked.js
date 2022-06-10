@@ -102,7 +102,7 @@ const Horizontalstacked = ({
 
 					xAxis: {
 						splitLine: {
-							show: chartControl.axisOptions?.xSplitLine,
+							show: chartControl.axisOptions?.ySplitLine,
 						},
 						position: chartControl.axisOptions.xAxis.position,
 						show: chartControl.axisOptions.xAxis.showLabel,
@@ -146,7 +146,7 @@ const Horizontalstacked = ({
 					yAxis: {
 						type: "category",
 						splitLine: {
-							show: chartControl.axisOptions?.ySplitLine,
+							show: chartControl.axisOptions?.xSplitLine,
 						},
 						inverse: chartControl.axisOptions.inverse,
 
