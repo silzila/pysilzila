@@ -24,7 +24,6 @@ const InputPositiveNumber = ({ value, updateValue, disabled }) => {
 		>
 			<input
 				disabled={disabled}
-				autoFocus
 				className="inputValue"
 				type="number"
 				value={inputValue}
