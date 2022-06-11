@@ -20,6 +20,7 @@ const HeatMap = ({
 	const [chartDataKeys, setChartDataKeys] = useState([]);
 
 	const [maxValue, setMaxValue] = useState(0);
+	const [minValue, setMinValue] = useState(0);
 
 	useEffect(() => {
 		if (chartData) {
@@ -29,12 +30,17 @@ const HeatMap = ({
 			var maxFieldName = `${measureField.fieldname}__${measureField.agg}`;
 
 			var max = 0;
+			var min = 100000000;
 			chartData.forEach((element) => {
 				if (element[maxFieldName] > max) {
 					max = element[maxFieldName];
 				}
+				if (element[maxFieldName] < min) {
+					min = element[maxFieldName];
+				}
 			});
 			setMaxValue(max);
+			setMinValue(min);
 		}
 	}, [chartData]);
 
@@ -154,7 +160,7 @@ const HeatMap = ({
 									? chartControl.colorScale.min !== ""
 										? parseInt(chartControl.colorScale.min)
 										: 0
-									: 0,
+									: minValue,
 							max:
 								chartControl.colorScale.colorScaleType === "Manual"
 									? chartControl.colorScale.max !== ""
