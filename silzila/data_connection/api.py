@@ -180,7 +180,7 @@ async def read_sample_records(request: Request, dc_uid: str, schema_name: str, t
     # get User ID from JWT token coming in request
     uid = request.state.uid
     await activate_dc(dc_uid, uid, db)
-    return engine.get_sample_records(dc_uid, schema_name, table_name)
+    return await engine.get_sample_records(dc_uid, schema_name, table_name)
 
 
 # get all data connection list of User
