@@ -41,8 +41,12 @@ const FetchData = async ({ requestType, method, url, data, headers, token }) => 
 				axios({ method, url: serverEndPoint + url, headers, data })
 					.then((res) => resolve({ status: true, data: res.data }))
 					.catch((err) => {
-						console.log(err.response.data);
-						resolve({ status: false, data: err.response.data });
+						console.log(err);
+						if (err?.response?.data) {
+							resolve({ status: false, data: err.response.data });
+						} else {
+							resolve({ status: false, data: { detail: "Unknown error" } });
+						}
 					});
 				break;
 
@@ -50,8 +54,12 @@ const FetchData = async ({ requestType, method, url, data, headers, token }) => 
 				axios({ method, url: serverEndPoint + url, headers })
 					.then((res) => resolve({ status: true, data: res.data }))
 					.catch((err) => {
-						console.log(err.response.data);
-						resolve({ status: false, data: err.response.data });
+						console.log(err);
+						if (err?.response?.data) {
+							resolve({ status: false, data: err.response.data });
+						} else {
+							resolve({ status: false, data: { detail: "Unknown error" } });
+						}
 					});
 				break;
 
