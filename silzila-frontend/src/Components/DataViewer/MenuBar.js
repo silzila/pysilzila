@@ -122,11 +122,11 @@ const MenuBar = ({
 		if (playBookState.playBookUid !== null) {
 			setSaveModal(false);
 			var playBookObj = formatPlayBookData();
-
+			/*	PRS	11/JUN/2022	Removed extra '/'	*/
 			var result = await FetchData({
 				requestType: "withData",
 				method: "PUT",
-				url: `/pb/update-pb/${playBookState.playBookUid}`,
+				url: `pb/update-pb/${playBookState.playBookUid}`,
 				data: playBookObj,
 				headers: { Authorization: `Bearer ${token}` },
 			});
@@ -317,6 +317,7 @@ const MenuBar = ({
 					onClick={() => {
 						setOpenFileMenu(false);
 						setSaveModal(true);
+						playBookState.playBookUid = null;	/*	PRS	11/JUN/2022	*/
 					}}
 				>
 					Save Playbook As
