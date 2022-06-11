@@ -34,8 +34,9 @@ const PrivacyPopover = ({ openPrivacy, setOpenPrivacy }) => {
 				</div>
 				<div>
 					<p>
-						User login and database credentials are encrypted and saved in the user's
-						machine locally. Also, this app doesn't capture any usage data.
+						Any data handled by Silzila App resides in user's machine only and is not
+						shared outside. User login and database credentials are encrypted and saved
+						in the user's machine locally. All computations happen locally.
 					</p>
 					<p>
 						If you want to provide feedback,{" "}

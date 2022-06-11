@@ -1,24 +1,37 @@
 // This component list all color themes available for charts
 
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Popover, Select } from "@mui/material";
 import React, { useState } from "react";
+import { SketchPicker } from "react-color";
 import { connect } from "react-redux";
-import { setColorScheme } from "../../../redux/ChartProperties/actionsChartControls";
+import {
+	setAreaColorOptions,
+	setColorScheme,
+	switchAutotoManualinSteps,
+} from "../../../redux/ChartProperties/actionsChartControls";
+import SliderWithInput from "../SliderWithInput";
 import { ColorSchemes } from "./ColorScheme";
 
 const ChartColors = ({
 	// state
 	chartProp,
 	tabTileProps,
+	chartProperties,
 
 	// dispatch
 	setColorScheme,
+	setAreaColorOptions,
+	switchAutotoManualinSteps,
 }) => {
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 
 	const [selectedMenu, setSelectedMenu] = useState(chartProp.properties[propKey].colorScheme);
+	const [isColorPopoverOpen, setColorPopOverOpen] = useState(false);
 
 	const resetSelection = (data_value) => {
+		if (chartProperties.properties[propKey].chartType === "gauge") {
+			switchAutotoManualinSteps(propKey, true);
+		}
 		setSelectedMenu(data_value);
 		setColorScheme(propKey, data_value);
 	};
@@ -75,6 +88,58 @@ const ChartColors = ({
 					})}
 				</Select>
 			</FormControl>
+			{chartProperties.properties[propKey].chartType === "area" ? (
+				<React.Fragment>
+					<div className="optionDescription">Background Color</div>
+					<div
+						style={{
+							height: "1.25rem",
+							width: "50%",
+							marginLeft: "20px",
+							backgroundColor: chartProp.properties[propKey].areaBackgroundColor,
+							color: chartProp.properties[propKey].areaBackgroundColor,
+							border: "2px solid darkgray",
+							margin: "auto",
+						}}
+						onClick={(e) => {
+							setColorPopOverOpen(!isColorPopoverOpen);
+						}}
+					></div>
+					<div className="optionDescription">Opacity</div>
+					<SliderWithInput
+						pointNumbers={true}
+						sliderValue={chartProp.properties[propKey].areaOpacity}
+						sliderMinMax={{ min: 0, max: 1, step: 0.1 }}
+						changeValue={(value) => {
+							setAreaColorOptions(propKey, "areaOpacity", value);
+						}}
+					/>
+				</React.Fragment>
+			) : null}
+			<Popover
+				open={isColorPopoverOpen}
+				onClose={() => setColorPopOverOpen(false)}
+				onClick={() => setColorPopOverOpen(false)}
+				// anchorEl={anchorEl}
+				anchorReference="anchorPosition"
+				anchorPosition={{ top: 350, left: 1300 }}
+			>
+				<div>
+					<SketchPicker
+						color={chartProp.areaBackgroundColor}
+						className="sketchPicker"
+						width="16rem"
+						styles={{ padding: "0" }}
+						onChangeComplete={(color) => {
+							setAreaColorOptions(propKey, "areaBackgroundColor", color.hex);
+						}}
+						onChange={(color) =>
+							setAreaColorOptions(propKey, "areaBackgroundColor", color.hex)
+						}
+						disableAlpha
+					/>
+				</div>
+			</Popover>
 		</div>
 	);
 };
@@ -83,12 +148,17 @@ const mapStateToProps = (state) => {
 	return {
 		chartProp: state.chartControls,
 		tabTileProps: state.tabTileProps,
+		chartProperties: state.chartProperties,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
 		setColorScheme: (propKey, color) => dispatch(setColorScheme(propKey, color)),
+		switchAutotoManualinSteps: (propKey, value) =>
+			dispatch(switchAutotoManualinSteps(propKey, value)),
+		setAreaColorOptions: (propKey, option, value) =>
+			dispatch(setAreaColorOptions(propKey, option, value)),
 	};
 };
 

@@ -189,13 +189,13 @@ const BottomBar = ({
 				};
 			});
 			//console.log(tablesSelectedInSidebar);
-			const temp1 = [];
-			const temp2 = [];
+			const listOfStartTableNames = [];
+			const listOfEndTableNames = [];
 			arrows.forEach((el) => {
-				temp1.push(el.startTableName);
-				temp2.push(el.endTableName);
+				listOfStartTableNames.push(el.startTableName);
+				listOfEndTableNames.push(el.endTableName);
 			});
-			const tablesWithRelation = [...temp1, ...temp2];
+			const tablesWithRelation = [...listOfStartTableNames, ...listOfEndTableNames];
 
 			//console.log(tablesSelectedInSidebar, tablesWithRelation);
 			checkTableRelationShip(tablesSelectedInSidebar, tablesWithRelation);
@@ -228,7 +228,7 @@ const BottomBar = ({
 					value={fname}
 					onChange={(e) => setFname(e.target.value)}
 					variant="outlined"
-					sx={{ marginRight: "3rem" }}
+					sx={{ marginRight: "3rem", backgroundColor: "white" }}
 				/>
 
 				<Button variant="contained" onClick={onSendData} id="setButton">
@@ -258,13 +258,14 @@ const BottomBar = ({
 					}}
 				>
 					<div style={{ fontWeight: "bold", textAlign: "center" }}>
-						CANCEL DATASET CREATION
+						{editMode ? "CANCEL DATASET EDIT" : "CANCEL DATASET CREATION"}
 						<Close style={{ float: "right" }} onClick={() => setOpen(false)} />
 						<br />
 						<br />
 						<p style={{ fontWeight: "normal" }}>
-							Cancel will reset this dataset creation. Do you want to discard the
-							progress?
+							{editMode
+								? "Any unsaved changes will be discarded, do you want to exit anyway?"
+								: "Cancel will reset this dataset creation. Do you want to discard the progress?"}
 						</p>
 					</div>
 					<div

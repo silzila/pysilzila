@@ -87,7 +87,7 @@ function FormDialog({
 			if (response.status && response.data.message === "Test Seems OK") {
 				setSeverity("success");
 				setOpenAlert(true);
-				setTestMessage("Test Seems Ok");
+				setTestMessage("Test Connection successfull");
 				setTimeout(() => {
 					setOpenAlert(false);
 					setTestMessage("");
@@ -264,6 +264,7 @@ function FormDialog({
 							>
 								<MenuItem value="postgresql">Postgresql</MenuItem>
 								<MenuItem value="mysql">Mysql</MenuItem>
+								<MenuItem value="mssql">Mssql</MenuItem>
 							</Select>
 						</FormControl>
 						<small style={{ color: "red" }}>{account.vendorError}</small>
@@ -321,6 +322,29 @@ function FormDialog({
 							{...{ viewMode, value: account.db_name, lable: "Database" }}
 						/>
 						<small style={{ color: "red" }}>{account.db_nameError}</small>
+
+						<TextFieldComponent
+							onChange={(e) => {
+								setAccount({ ...account, friendly_name: e.target.value });
+								btnEnabelDisable();
+							}}
+							onFocus={() => setAccount({ ...account, friendly_nameError: "" })}
+							onBlur={() => {
+								if (account.friendly_name.length === 0) {
+									setAccount({
+										...account,
+										friendly_nameError: "Friendly Name should not be Empty",
+									});
+									btnEnabelDisable();
+								}
+							}}
+							{...{
+								viewMode,
+								value: account.friendly_name,
+								lable: "Connection name",
+							}}
+						/>
+						<small style={{ color: "red" }}>{account.friendly_nameError}</small>
 						<TextFieldComponent
 							onChange={(e) => {
 								setAccount({ ...account, username: e.target.value });
@@ -339,24 +363,7 @@ function FormDialog({
 							{...{ viewMode, value: account.username, lable: "Username" }}
 						/>
 						<small style={{ color: "red" }}>{account.usernameError}</small>
-						<TextFieldComponent
-							onChange={(e) => {
-								setAccount({ ...account, friendly_name: e.target.value });
-								btnEnabelDisable();
-							}}
-							onFocus={() => setAccount({ ...account, friendly_nameError: "" })}
-							onBlur={() => {
-								if (account.friendly_name.length === 0) {
-									setAccount({
-										...account,
-										friendly_nameError: "Friendly Name should not be Empty",
-									});
-									btnEnabelDisable();
-								}
-							}}
-							{...{ viewMode, value: account.friendly_name, lable: "Friendly name" }}
-						/>
-						<small style={{ color: "red" }}>{account.friendly_nameError}</small>
+
 						<TextFieldComponent
 							onChange={(e) => {
 								setAccount({ ...account, password: e.target.value });

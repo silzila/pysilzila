@@ -19,8 +19,8 @@ const ChartControlObjects = ({
 		"Labels",
 		"Legend",
 		"Margin",
-		"Tooltip",
 		"Grid/Axes",
+		"Tooltip",
 		"Colors",
 		"Format",
 	];
@@ -30,20 +30,20 @@ const ChartControlObjects = ({
 		"Labels",
 		"Legend",
 		"Margin",
-		"Tooltip",
 		"Axis",
+		"Tooltip",
 		"Colors",
 		"Format",
 	];
 	const funnelOptionList = ["Title", "Legend", "Margin", "Tooltip", "Colors", "Format"];
-	const gaugeOptionList = ["Title", "Margin", "Tooltip", "Axis", "Colors", "Format"];
+	const gaugeOptionList = ["Title", "Margin", "Axis", "Tooltip", "Colors", "Format"];
 	const heatmapOptionList = [
 		"Title",
 		"Labels",
 		"Margin",
 		"Colors",
-		"Tooltip",
 		"Grid/Axes",
+		"Tooltip",
 		"Format",
 	];
 	const crossTabOptionList = ["Title", "Tooltip", "Style", "Format"];

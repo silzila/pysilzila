@@ -103,8 +103,15 @@ const HorizontalBar = ({
 					},
 					xAxis: {
 						splitLine: {
-							show: chartControl.axisOptions?.xSplitLine,
+							show: chartControl.axisOptions?.ySplitLine,
 						},
+
+						min: chartControl.axisOptions.axisMinMax.enableMin
+							? chartControl.axisOptions.axisMinMax.minValue
+							: null,
+						max: chartControl.axisOptions.axisMinMax.enableMax
+							? chartControl.axisOptions.axisMinMax.maxValue
+							: null,
 
 						position: chartControl.axisOptions.xAxis.position,
 
@@ -117,6 +124,10 @@ const HorizontalBar = ({
 						name: chartControl.axisOptions.xAxis.name,
 						nameLocation: chartControl.axisOptions.xAxis.nameLocation,
 						nameGap: chartControl.axisOptions.xAxis.nameGap,
+						nameTextStyle: {
+							fontSize: chartControl.axisOptions.xAxis.nameSize,
+							color: chartControl.axisOptions.xAxis.nameColor,
+						},
 
 						axisTick: {
 							alignWithLabel: true,
@@ -144,14 +155,8 @@ const HorizontalBar = ({
 					yAxis: {
 						type: "category",
 						splitLine: {
-							show: chartControl.axisOptions?.ySplitLine,
+							show: chartControl.axisOptions?.xSplitLine,
 						},
-						min: chartControl.axisOptions.axisMinMax.enableMin
-							? chartControl.axisOptions.axisMinMax.minValue
-							: null,
-						max: chartControl.axisOptions.axisMinMax.enableMax
-							? chartControl.axisOptions.axisMinMax.maxValue
-							: null,
 
 						inverse: chartControl.axisOptions.inverse,
 
@@ -185,6 +190,10 @@ const HorizontalBar = ({
 						name: chartControl.axisOptions.yAxis.name,
 						nameLocation: chartControl.axisOptions.yAxis.nameLocation,
 						nameGap: chartControl.axisOptions.yAxis.nameGap,
+						nameTextStyle: {
+							fontSize: chartControl.axisOptions.yAxis.nameSize,
+							color: chartControl.axisOptions.yAxis.nameColor,
+						},
 					},
 					series: seriesData,
 				}}

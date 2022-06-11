@@ -103,6 +103,13 @@ const ScatterChart = ({
 						xAxis: {
 							position: chartControl.axisOptions.xAxis.position,
 
+							min: chartControl.axisOptions.scatterChartMinMax.x_enableMin
+								? chartControl.axisOptions.scatterChartMinMax.x_minValue
+								: null,
+							max: chartControl.axisOptions.scatterChartMinMax.x_enableMax
+								? chartControl.axisOptions.scatterChartMinMax.x_maxValue
+								: null,
+
 							axisLine: {
 								onZero: chartControl.axisOptions.xAxis.onZero,
 							},
@@ -112,6 +119,10 @@ const ScatterChart = ({
 							name: chartControl.axisOptions.xAxis.name,
 							nameLocation: chartControl.axisOptions.xAxis.nameLocation,
 							nameGap: chartControl.axisOptions.xAxis.nameGap,
+							nameTextStyle: {
+								fontSize: chartControl.axisOptions.xAxis.nameSize,
+								color: chartControl.axisOptions.xAxis.nameColor,
+							},
 
 							axisTick: {
 								alignWithLabel: true,
@@ -145,6 +156,13 @@ const ScatterChart = ({
 								onZero: chartControl.axisOptions.yAxis.onZero,
 							},
 
+							min: chartControl.axisOptions.scatterChartMinMax.y_enableMin
+								? chartControl.axisOptions.scatterChartMinMax.y_minValue
+								: null,
+							max: chartControl.axisOptions.scatterChartMinMax.y_enableMax
+								? chartControl.axisOptions.scatterChartMinMax.y_maxValue
+								: null,
+
 							axisTick: {
 								alignWithLabel: true,
 								length:
@@ -158,6 +176,10 @@ const ScatterChart = ({
 							name: chartControl.axisOptions.yAxis.name,
 							nameLocation: chartControl.axisOptions.yAxis.nameLocation,
 							nameGap: chartControl.axisOptions.yAxis.nameGap,
+							nameTextStyle: {
+								fontSize: chartControl.axisOptions.yAxis.nameSize,
+								color: chartControl.axisOptions.yAxis.nameColor,
+							},
 
 							axisLabel: {
 								rotate:

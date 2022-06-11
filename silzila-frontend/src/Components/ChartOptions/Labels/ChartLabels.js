@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import "./chartLabels.css";
 import {
 	updateLabelOption,
+	updateLabelPadding,
 	updateLabelPosition,
 } from "../../../redux/ChartProperties/actionsChartControls";
 import { SketchPicker } from "react-color";
@@ -23,6 +24,7 @@ const ChartLabels = ({
 	// dispatch
 	updateLabelOption,
 	updateLabelPosition,
+	updateLabelPadding,
 }) => {
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 
@@ -103,9 +105,34 @@ const ChartLabels = ({
 										})}
 									</Select>
 								</FormControl>
+								{labelOptions.pieLabel.labelPosition === "outside" ? (
+									<>
+										<div className="optionDescription">LABEL PADDING</div>
+										<SliderWithInput
+											percent={false}
+											sliderValue={labelOptions.pieLabel.labelPadding}
+											sliderMinMax={{ min: 0, max: 40, step: 1 }}
+											changeValue={(value) => {
+												updateLabelPadding(propKey, value);
+											}}
+										/>
+									</>
+								) : null}
 							</React.Fragment>
 						) : null}
-						<div>
+						{/* </div> */}
+						<div
+						// style={{ flex: 1, display: "flex" }}
+						>
+							<div className="optionDescription">LABEL SIZE</div>
+							<SliderWithInput
+								percent={false}
+								sliderValue={chartProp.properties[propKey].labelOptions.fontSize}
+								sliderMinMax={{ min: 8, max: 50, step: 1 }}
+								changeValue={(value) => {
+									updateLabelOption(propKey, "fontSize", value);
+								}}
+							/>
 							<div className="optionDescription">LABEL COLOR</div>
 
 							<div className="optionDescription">
@@ -156,15 +183,6 @@ const ChartLabels = ({
 								) : null}
 							</div>
 						</div>
-						<div className="optionDescription">LABEL SIZE</div>
-						<SliderWithInput
-							percent={false}
-							sliderValue={chartProp.properties[propKey].labelOptions.fontSize}
-							sliderMinMax={{ min: 8, max: 50, step: 1 }}
-							changeValue={(value) => {
-								updateLabelOption(propKey, "fontSize", value);
-							}}
-						/>
 					</div>
 				</React.Fragment>
 			) : null}
@@ -206,6 +224,7 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch(updateLabelOption(propKey, option, value)),
 
 		updateLabelPosition: (propKey, value) => dispatch(updateLabelPosition(propKey, value)),
+		updateLabelPadding: (propKey, value) => dispatch(updateLabelPadding(propKey, value)),
 	};
 };
 

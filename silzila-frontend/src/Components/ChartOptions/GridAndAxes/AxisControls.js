@@ -103,15 +103,6 @@ const GridControls = ({
 									}}
 								/>
 							</div>
-							<div className="optionDescription">Label Padding</div>
-							<SliderWithInput
-								percent={false}
-								sliderValue={property.pieAxisOptions.labelPadding}
-								sliderMinMax={{ min: 0, max: 40, step: 1 }}
-								changeValue={(value) => {
-									updatePieAxisOptions(propKey, "labelPadding", value);
-								}}
-							/>
 						</React.Fragment>
 					) : null}
 				</React.Fragment>

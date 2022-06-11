@@ -8,7 +8,9 @@ import { connect } from "react-redux";
 import {
 	setGenerateTitle,
 	setTitleAlignment,
+	setTitleSize,
 } from "../../../redux/ChartProperties/actionsChartProperties";
+import InputPositiveNumber from "../CommonFunctions/InputPositiveNumber";
 
 const ChartTitle = ({
 	// state
@@ -18,6 +20,7 @@ const ChartTitle = ({
 	// dispatch
 	setGenerateTitleToStore,
 	setTitleAlignment,
+	setTitleSize,
 }) => {
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 
@@ -30,8 +33,8 @@ const ChartTitle = ({
 	];
 
 	var titleAlignOptions = [
-		{ name: "Center", value: "center" },
 		{ name: "Left", value: "left" },
+		{ name: "Center", value: "center" },
 	];
 
 	const setGenerateTitle = (type) => {
@@ -79,6 +82,13 @@ const ChartTitle = ({
 			<div className="optionsInfo">
 				<div className="optionDescription">TITLE ALIGN</div>
 				<div className="radioButtons">{renderTitleAlignOptions()}</div>
+				<div className="optionDescription">TITLE FONT SIZE</div>
+				<div className="optionDescription">
+					<InputPositiveNumber
+						value={chartProp.properties[propKey].titleOptions.fontSize}
+						updateValue={(value) => setTitleSize(propKey, value)}
+					/>
+				</div>
 			</div>
 		</React.Fragment>
 	);
@@ -95,6 +105,7 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		setGenerateTitleToStore: (propKey, option) => dispatch(setGenerateTitle(propKey, option)),
 		setTitleAlignment: (propKey, align) => dispatch(setTitleAlignment(propKey, align)),
+		setTitleSize: (propKey, value) => dispatch(setTitleSize(propKey, value)),
 	};
 };
 

@@ -8,8 +8,16 @@ const chartControl = {
 		1.1: {
 			chartData: "",
 			colorScheme: "walden",
+			areaBackgroundColor: "#22194D",
+			areaOpacity: 0.1,
 
-			colorScale: { colorScaleType: "Automatic", min: 0, max: 0 },
+			colorScale: {
+				colorScaleType: "Automatic",
+				min: 0,
+				max: 0,
+				minColor: "#ffffb3",
+				maxColor: "#b32d00",
+			},
 
 			legendOptions: {
 				showLegend: true,
@@ -89,6 +97,7 @@ const chartControl = {
 				labelColor: "#666666",
 				pieLabel: {
 					labelPosition: "outside",
+					labelPadding: 0,
 				},
 				fontSize: 12,
 				fontStyle: "normal",
@@ -130,24 +139,44 @@ const chartControl = {
 					startAngle: 225,
 					endAngle: -45,
 					showTick: true,
-					tickSize: 15,
+					tickSize: 5,
 					tickPadding: 12,
 					showAxisLabel: true,
-					labelPadding: 12,
-					max: 10000,
+					labelPadding: 17,
+					min: 0,
+					max: 0,
+					isMaxAuto: true,
 				},
 
 				gaugeChartControls: {
+					isStepsAuto: true,
 					stepcolor: [
-						{ stepValue: 4000, color: "#3fb1e3", per: 0.4, isColorAuto: true },
-						{ stepValue: 5000, color: "#6be6c1", per: 0.9, isColorAuto: true },
-						{ stepValue: 1000, color: "#626c91", per: 0.1, isColorAuto: true },
+						{
+							color: "#3fb1e3",
+							per: 0.4,
+							isColorAuto: true,
+							stepValue: 40,
+							value: 100,
+						},
+						{
+							color: "#6be6c1",
+							per: 0.9,
+							isColorAuto: true,
+							stepValue: 40,
+							value: 100,
+						},
+						{
+							color: "#626c91",
+							per: 1,
+							isColorAuto: true,
+							stepValue: 20,
+							value: 100,
+						},
 					],
 				},
 				pieAxisOptions: {
 					pieStartAngle: 90,
 					clockWise: true,
-					labelPadding: 0,
 				},
 				yAxis: {
 					position: "left",
@@ -158,6 +187,8 @@ const chartControl = {
 					name: "",
 					nameLocation: "middle",
 					nameGap: 15,
+					nameColor: "red",
+					nameSize: "20",
 
 					// onZeroLeft: true,
 					tickSizeLeft: 5,
@@ -178,6 +209,8 @@ const chartControl = {
 					name: "",
 					nameLocation: "middle",
 					nameGap: 15,
+					nameColor: "red",
+					nameSize: "20",
 
 					// onZeroBottom: true,
 					tickSizeBottom: 5,
@@ -189,7 +222,23 @@ const chartControl = {
 					tickPaddingTop: 5,
 					tickRotationTop: 0,
 				},
-				axisMinMax: { enableMin: false, minValue: 0, enableMax: false, maxValue: 10000 },
+				scatterChartMinMax: {
+					x_enableMin: false,
+					x_minValue: 0,
+					x_enableMax: false,
+					x_maxValue: 10000,
+					y_enableMin: false,
+					y_minValue: 0,
+					y_enableMax: false,
+					y_maxValue: 10000,
+				},
+
+				axisMinMax: {
+					enableMin: false,
+					minValue: 0,
+					enableMax: false,
+					maxValue: 10000,
+				},
 			},
 		},
 	},
@@ -207,8 +256,16 @@ const chartControlsReducer = (state = chartControl, action) => {
 					[tileKey]: {
 						chartData: "",
 						colorScheme: "walden",
+						areaBackgroundColor: "#22194D",
+						areaOpacity: 0.1,
 
-						colorScale: { colorScaleType: "Automatic", min: 0, max: 0 },
+						colorScale: {
+							colorScaleType: "Automatic",
+							min: 0,
+							max: 0,
+							minColor: "#ffffb3",
+							maxColor: "#b32d00",
+						},
 
 						legendOptions: {
 							showLegend: true,
@@ -236,10 +293,10 @@ const chartControlsReducer = (state = chartControl, action) => {
 							bottom: 25,
 							left: 70,
 						},
+
 						crossTabStyleOptions: {
 							borderWidth: 1,
 						},
-
 						crossTabHeaderLabelOptions: {
 							labelColorManual: false,
 							labelColor: "#666666",
@@ -258,11 +315,11 @@ const chartControlsReducer = (state = chartControl, action) => {
 							fontFamily: "sans-serif",
 							fontWeight: "400",
 						},
+
 						crossTabStyleOptions: {
 							borderWidth: 1,
 							lineHeight: 1,
 						},
-
 						crossTabHeaderLabelOptions: {
 							labelColorManual: false,
 							labelColor: "#666666",
@@ -288,6 +345,7 @@ const chartControlsReducer = (state = chartControl, action) => {
 							labelColor: "#666666",
 							pieLabel: {
 								labelPosition: "outside",
+								labelPadding: 0,
 							},
 							fontSize: 12,
 							fontStyle: "normal",
@@ -329,38 +387,45 @@ const chartControlsReducer = (state = chartControl, action) => {
 								startAngle: 225,
 								endAngle: -45,
 								showTick: true,
-								tickSize: 15,
+								tickSize: 5,
 								tickPadding: 12,
 								showAxisLabel: true,
-								labelPadding: 12,
-								max: 10000,
+								labelPadding: 17,
+								min: 0,
+								max: 0,
+								isMaxAuto: true,
 							},
+
 							gaugeChartControls: {
+								isStepsAuto: true,
+
 								stepcolor: [
 									{
-										stepValue: 4000,
 										color: "#3fb1e3",
 										per: 0.4,
 										isColorAuto: true,
+										stepValue: 40,
+										value: 100,
 									},
 									{
-										stepValue: 5000,
 										color: "#6be6c1",
 										per: 0.9,
 										isColorAuto: true,
+										stepValue: 40,
+										value: 100,
 									},
 									{
-										stepValue: 1000,
 										color: "#626c91",
-										per: 0.1,
+										per: 1,
 										isColorAuto: true,
+										stepValue: 20,
+										value: 100,
 									},
 								],
 							},
 							pieAxisOptions: {
 								pieStartAngle: 90,
 								clockWise: true,
-								labelPadding: 0,
 							},
 							yAxis: {
 								position: "left",
@@ -371,6 +436,8 @@ const chartControlsReducer = (state = chartControl, action) => {
 								name: "",
 								nameLocation: "middle",
 								nameGap: 15,
+								nameColor: "red",
+								nameSize: "20",
 
 								// onZeroLeft: true,
 								tickSizeLeft: 5,
@@ -391,6 +458,8 @@ const chartControlsReducer = (state = chartControl, action) => {
 								name: "",
 								nameLocation: "middle",
 								nameGap: 15,
+								nameColor: "red",
+								nameSize: "20",
 
 								// onZeroBottom: true,
 								tickSizeBottom: 5,
@@ -402,6 +471,17 @@ const chartControlsReducer = (state = chartControl, action) => {
 								tickPaddingTop: 5,
 								tickRotationTop: 0,
 							},
+							scatterChartMinMax: {
+								x_enableMin: false,
+								x_minValue: 0,
+								x_enableMax: false,
+								x_maxValue: 10000,
+								y_enableMin: false,
+								y_minValue: 0,
+								y_enableMax: false,
+								y_maxValue: 10000,
+							},
+
 							axisMinMax: {
 								enableMin: false,
 								minValue: 0,
@@ -426,8 +506,16 @@ const chartControlsReducer = (state = chartControl, action) => {
 					[tileKey2]: {
 						chartData: "",
 						colorScheme: "walden",
+						areaBackgroundColor: "#22194D",
+						areaOpacity: 0.1,
 
-						colorScale: { colorScaleType: "Automatic", min: 0, max: 0 },
+						colorScale: {
+							colorScaleType: "Automatic",
+							min: 0,
+							max: 0,
+							minColor: "#ffffb3",
+							maxColor: "#b32d00",
+						},
 
 						legendOptions: {
 							showLegend: true,
@@ -459,7 +547,6 @@ const chartControlsReducer = (state = chartControl, action) => {
 						crossTabStyleOptions: {
 							borderWidth: 1,
 						},
-
 						crossTabHeaderLabelOptions: {
 							labelColorManual: false,
 							labelColor: "#666666",
@@ -483,7 +570,6 @@ const chartControlsReducer = (state = chartControl, action) => {
 							borderWidth: 1,
 							lineHeight: 1,
 						},
-
 						crossTabHeaderLabelOptions: {
 							labelColorManual: false,
 							labelColor: "#666666",
@@ -509,6 +595,7 @@ const chartControlsReducer = (state = chartControl, action) => {
 							labelColor: "#666666",
 							pieLabel: {
 								labelPosition: "outside",
+								labelPadding: 0,
 							},
 							fontSize: 12,
 							fontStyle: "normal",
@@ -550,38 +637,45 @@ const chartControlsReducer = (state = chartControl, action) => {
 								startAngle: 225,
 								endAngle: -45,
 								showTick: true,
-								tickSize: 15,
+								tickSize: 5,
 								tickPadding: 12,
 								showAxisLabel: true,
-								labelPadding: 12,
-								max: 10000,
+								labelPadding: 17,
+								min: 0,
+								max: 0,
+								isMaxAuto: true,
 							},
+
 							gaugeChartControls: {
+								isStepsAuto: true,
+
 								stepcolor: [
 									{
-										stepValue: 4000,
 										color: "#3fb1e3",
 										per: 0.4,
 										isColorAuto: true,
+										stepValue: 40,
+										value: 100,
 									},
 									{
-										stepValue: 5000,
 										color: "#6be6c1",
-										per: 0.5,
+										per: 0.9,
 										isColorAuto: true,
+										stepValue: 40,
+										value: 100,
 									},
 									{
-										stepValue: 1000,
 										color: "#626c91",
-										per: 0.1,
+										per: 1,
 										isColorAuto: true,
+										stepValue: 20,
+										value: 100,
 									},
 								],
 							},
 							pieAxisOptions: {
 								pieStartAngle: 90,
 								clockWise: true,
-								labelPadding: 0,
 							},
 							yAxis: {
 								position: "left",
@@ -592,6 +686,8 @@ const chartControlsReducer = (state = chartControl, action) => {
 								name: "",
 								nameLocation: "middle",
 								nameGap: 15,
+								nameColor: "red",
+								nameSize: "20",
 
 								// onZeroLeft: true,
 								tickSizeLeft: 5,
@@ -612,6 +708,8 @@ const chartControlsReducer = (state = chartControl, action) => {
 								name: "",
 								nameLocation: "middle",
 								nameGap: 15,
+								nameColor: "red",
+								nameSize: "20",
 
 								// onZeroBottom: true,
 								tickSizeBottom: 5,
@@ -623,6 +721,17 @@ const chartControlsReducer = (state = chartControl, action) => {
 								tickPaddingTop: 5,
 								tickRotationTop: 0,
 							},
+							scatterChartMinMax: {
+								x_enableMin: false,
+								x_minValue: 0,
+								x_enableMax: false,
+								x_maxValue: 10000,
+								y_enableMin: false,
+								y_minValue: 0,
+								y_enableMax: false,
+								y_maxValue: 10000,
+							},
+
 							axisMinMax: {
 								enableMin: false,
 								minValue: 0,
@@ -664,6 +773,14 @@ const chartControlsReducer = (state = chartControl, action) => {
 			return update(state, {
 				properties: {
 					[action.payload.propKey]: { colorScheme: { $set: action.payload.color } },
+				},
+			});
+		case "AREA_COLOR_OPTIONS":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						[action.payload.option]: { $set: action.payload.value },
+					},
 				},
 			});
 
@@ -760,6 +877,19 @@ const chartControlsReducer = (state = chartControl, action) => {
 					[action.payload.propKey]: {
 						axisOptions: {
 							axisMinMax: {
+								[action.payload.axisKey]: { $set: action.payload.axisValue },
+							},
+						},
+					},
+				},
+			});
+
+		case "AXIS_MIN_MAX_FOR_SCATTER":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						axisOptions: {
+							scatterChartMinMax: {
 								[action.payload.axisKey]: { $set: action.payload.axisValue },
 							},
 						},
@@ -881,6 +1011,16 @@ const chartControlsReducer = (state = chartControl, action) => {
 					},
 				},
 			});
+		case "UPDATE_LABEL_PADDING":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						labelOptions: {
+							pieLabel: { labelPadding: { $set: action.payload.value } },
+						},
+					},
+				},
+			});
 		case "UPDATE_REVERSE":
 			return update(state, {
 				properties: {
@@ -952,6 +1092,18 @@ const chartControlsReducer = (state = chartControl, action) => {
 						axisOptions: {
 							gaugeChartControls: {
 								stepcolor: { $set: action.payload.value },
+							},
+						},
+					},
+				},
+			});
+		case "SWITCH_STEPS_AUTO_MANUAL":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						axisOptions: {
+							gaugeChartControls: {
+								isStepsAuto: { $set: action.payload.value },
 							},
 						},
 					},

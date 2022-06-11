@@ -2,6 +2,7 @@ import ReactEcharts from "echarts-for-react";
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { formatChartLabelValue } from "../ChartOptions/Format/NumberFormatter";
+import { ColorSchemes } from "../ChartOptions/Color/ColorScheme";
 
 const HeatMap = ({
 	//props
@@ -19,6 +20,7 @@ const HeatMap = ({
 	const [chartDataKeys, setChartDataKeys] = useState([]);
 
 	const [maxValue, setMaxValue] = useState(0);
+	const [minValue, setMinValue] = useState(0);
 
 	useEffect(() => {
 		if (chartData) {
@@ -28,12 +30,17 @@ const HeatMap = ({
 			var maxFieldName = `${measureField.fieldname}__${measureField.agg}`;
 
 			var max = 0;
+			var min = 100000000;
 			chartData.forEach((element) => {
 				if (element[maxFieldName] > max) {
 					max = element[maxFieldName];
 				}
+				if (element[maxFieldName] < min) {
+					min = element[maxFieldName];
+				}
 			});
 			setMaxValue(max);
+			setMinValue(min);
 		}
 	}, [chartData]);
 
@@ -101,6 +108,10 @@ const HeatMap = ({
 						name: chartControl.axisOptions.xAxis.name,
 						nameLocation: chartControl.axisOptions.xAxis.nameLocation,
 						nameGap: chartControl.axisOptions.xAxis.nameGap,
+						nameTextStyle: {
+							fontSize: chartControl.axisOptions.xAxis.nameSize,
+							color: chartControl.axisOptions.xAxis.nameColor,
+						},
 					},
 					yAxis: {
 						type: "category",
@@ -137,6 +148,10 @@ const HeatMap = ({
 						name: chartControl.axisOptions.yAxis.name,
 						nameLocation: chartControl.axisOptions.yAxis.nameLocation,
 						nameGap: chartControl.axisOptions.yAxis.nameGap,
+						nameTextStyle: {
+							fontSize: chartControl.axisOptions.yAxis.nameSize,
+							color: chartControl.axisOptions.yAxis.nameColor,
+						},
 					},
 					visualMap: [
 						{
@@ -145,13 +160,21 @@ const HeatMap = ({
 									? chartControl.colorScale.min !== ""
 										? parseInt(chartControl.colorScale.min)
 										: 0
-									: 0,
+									: minValue,
 							max:
 								chartControl.colorScale.colorScaleType === "Manual"
 									? chartControl.colorScale.max !== ""
 										? parseInt(chartControl.colorScale.max)
 										: 0
 									: maxValue,
+
+							// TODO: Priority 1 - This property breaks page when switching from other chart types
+							inRange: {
+								color: [
+									chartControl.colorScale.minColor,
+									chartControl.colorScale.maxColor,
+								],
+							},
 						},
 					],
 

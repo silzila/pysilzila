@@ -39,8 +39,8 @@ const chartProperties = {
 
 			titleOptions: {
 				fontSize: 28,
-				titleLeftPadding: "10px",
-				titleAlign: "center",
+				titleLeftPadding: "15px",
+				titleAlign: "left",
 				chartTitle: "",
 				generateTitle: "Auto",
 			},
@@ -365,6 +365,15 @@ const chartPropertiesState = (state = chartProperties, action) => {
 				properties: {
 					[action.payload.propKey]: {
 						titleOptions: { titleAlign: { $set: action.payload.align } },
+					},
+				},
+			});
+
+		case "SET_TITLE_SIZE":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						titleOptions: { fontSize: { $set: action.payload.value } },
 					},
 				},
 			});
