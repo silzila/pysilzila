@@ -239,13 +239,19 @@ def get_table_names(dc_uid: str, schema_name: str):
 
 
 # DB metadata - getting tables top 100 records from DB -> schema -> table
-def get_sample_records(dc_uid: str, schema_name: str, table_name: str):
+async def get_sample_records(dc_uid: str, schema_name: str, table_name: str):
     global db_pool
     if not (db_pool and db_pool.get(dc_uid)):
         raise HTTPException(
             status_code=500, detail="Data Connection is not established")
-    try:
+    # MS SQL dialect - TOP 100
+    dialect = await get_vendor_name_from_db_pool(dc_uid)
+    if dialect == 'mssql':
+        # Other dialects - LIMIT 100
+        qry = text(f"select top 100 * from {schema_name}.{table_name};")
+    else:
         qry = text(f"select * from {schema_name}.{table_name} limit 100;")
+    try:
         records = db_pool[dc_uid]['engine'].execute(qry)
         result = [dict(row) for row in records]
         return result
