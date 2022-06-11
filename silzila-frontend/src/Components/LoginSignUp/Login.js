@@ -108,7 +108,13 @@ const Login = (props) => {
 		<div id="container1">
 			<h2>Welcome to Silzila!</h2>
 
-			<form onSubmit={(e) => handleSubmit(e)} autoComplete="on">
+			<form
+				onSubmit={(e) => {
+					e.preventDefault();
+					handleSubmit(e);
+				}}
+				autoComplete="on"
+			>
 				<div id="formElement">
 					<input
 						ref={inputRef}
@@ -178,7 +184,7 @@ const Login = (props) => {
 									type="submit"
 									value="Login"
 									onClick={(e) => {
-										//console.log("Login button clicked");
+										e.preventDefault();
 										handleSubmit(e);
 									}}
 								>

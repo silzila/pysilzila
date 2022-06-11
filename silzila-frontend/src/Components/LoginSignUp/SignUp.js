@@ -121,7 +121,13 @@ const SignUp = () => {
 	return (
 		<div id="container1">
 			<h2>Welcome to Silzila</h2>
-			<form onSubmit={handleSubmit} autoComplete="on">
+			<form
+				onSubmit={(e) => {
+					e.preventDefault();
+					handleSubmit(e);
+				}}
+				autoComplete="on"
+			>
 				<div id="formElement">
 					<input
 						type="text"
@@ -227,7 +233,7 @@ const SignUp = () => {
 				</div>
 				{signUpStatus ? (
 					<span className="loginSuccess">
-						<h4>Signed in successfully!</h4>
+						<h4>Sign up successfully!</h4>
 						<p>Redirecting to login page....</p>
 					</span>
 				) : (
@@ -239,6 +245,10 @@ const SignUp = () => {
 								variant="contained"
 								type="submit"
 								value="Sign Up"
+								onClick={(e) => {
+									e.preventDefault();
+									handleSubmit(e);
+								}}
 							>
 								sign Up
 							</Button>
