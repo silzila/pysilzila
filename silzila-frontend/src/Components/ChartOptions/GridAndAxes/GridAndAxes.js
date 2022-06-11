@@ -189,7 +189,9 @@ const GridAndAxes = ({
 			></div>
 			<div className="optionDescription">Dimension-Axis</div>
 			{chartProp[propKey].chartType === "multibar" ||
-			chartProp[propKey].chartType === "stackedBar" ? (
+			chartProp[propKey].chartType === "stackedBar" ||
+			chartProp[propKey].chartType === "horizontalBar" ||
+			chartProp[propKey].chartType === "horizontalStacked" ? (
 				<>
 					<div className="optionDescription" style={{ padding: "0 6% 5px 4%" }}>
 						<label
@@ -209,30 +211,7 @@ const GridAndAxes = ({
 						/>
 					</div>
 				</>
-			) : (
-				<>
-					{chartProp[propKey].chartType === "horizontalBar" ||
-					chartProp[propKey].chartType === "horizontalStacked" ? (
-						<div className="optionDescription" style={{ padding: "0 6% 5px 4%" }}>
-							<label
-								htmlFor="enableDisable"
-								className="enableDisableLabel"
-								style={{ marginRight: "10px" }}
-							>
-								Enable Dimension-Grid
-							</label>
-							<Switch
-								size="small"
-								id="enableDisable"
-								checked={property.ySplitLine}
-								onClick={() => {
-									enableGrids(propKey, "ySplitLine", !property.ySplitLine);
-								}}
-							/>
-						</div>
-					) : null}
-				</>
-			)}
+			) : null}
 
 			<div className="optionDescription" style={{ padding: "0 6% 5px 4%" }}>
 				<label
@@ -505,50 +484,58 @@ const GridAndAxes = ({
 			</div>
 			{yAxisProps.showLabel ? (
 				<React.Fragment>
-					<div className="optionDescription">MIN VALUE</div>
-					<div className="optionDescription">
-						<input
-							type="checkbox"
-							id="enableDisable"
-							checked={property.scatterChartMinMax.y_enableMin}
-							onChange={(e) => {
-								updateAxisMinMaxforScatter(
-									propKey,
-									"y_enableMin",
-									!property.scatterChartMinMax.y_enableMin
-								);
-							}}
-						/>
-						<InputNumber
-							value={property.scatterChartMinMax.y_minValue}
-							updateValue={(value) =>
-								updateAxisMinMaxforScatter(propKey, "y_minValue", value)
-							}
-							disabled={property.scatterChartMinMax.y_enableMin ? false : true}
-						/>
-					</div>
-					<div className="optionDescription">MAX VALUE</div>
-					<div className="optionDescription">
-						<input
-							type="checkbox"
-							id="enableDisable"
-							checked={property.scatterChartMinMax.y_enableMax}
-							onChange={(e) => {
-								updateAxisMinMaxforScatter(
-									propKey,
-									"y_enableMax",
-									!property.scatterChartMinMax.y_enableMax
-								);
-							}}
-						/>
-						<InputNumber
-							value={property.scatterChartMinMax.y_maxValue}
-							updateValue={(value) =>
-								updateAxisMinMaxforScatter(propKey, "y_maxValue", value)
-							}
-							disabled={property.scatterChartMinMax.y_enableMax ? false : true}
-						/>
-					</div>
+					{chartProp[propKey].chartType === "scatterPlot" ? (
+						<>
+							<div className="optionDescription">MIN VALUE</div>
+							<div className="optionDescription">
+								<input
+									type="checkbox"
+									id="enableDisable"
+									checked={property.scatterChartMinMax.y_enableMin}
+									onChange={(e) => {
+										updateAxisMinMaxforScatter(
+											propKey,
+											"y_enableMin",
+											!property.scatterChartMinMax.y_enableMin
+										);
+									}}
+								/>
+								<InputNumber
+									value={property.scatterChartMinMax.y_minValue}
+									updateValue={(value) =>
+										updateAxisMinMaxforScatter(propKey, "y_minValue", value)
+									}
+									disabled={
+										property.scatterChartMinMax.y_enableMin ? false : true
+									}
+								/>
+							</div>
+							<div className="optionDescription">MAX VALUE</div>
+							<div className="optionDescription">
+								<input
+									type="checkbox"
+									id="enableDisable"
+									checked={property.scatterChartMinMax.y_enableMax}
+									onChange={(e) => {
+										updateAxisMinMaxforScatter(
+											propKey,
+											"y_enableMax",
+											!property.scatterChartMinMax.y_enableMax
+										);
+									}}
+								/>
+								<InputNumber
+									value={property.scatterChartMinMax.y_maxValue}
+									updateValue={(value) =>
+										updateAxisMinMaxforScatter(propKey, "y_maxValue", value)
+									}
+									disabled={
+										property.scatterChartMinMax.y_enableMax ? false : true
+									}
+								/>
+							</div>
+						</>
+					) : null}
 					<div className="radioButtons">{renderAxisOptionsForY()}</div>
 
 					<div className="optionDescription">Axis Name</div>

@@ -143,6 +143,14 @@ const StackedBar = ({
 						splitLine: {
 							show: chartControl.axisOptions?.ySplitLine,
 						},
+
+						min: chartControl.axisOptions.axisMinMax.enableMin
+							? chartControl.axisOptions.axisMinMax.minValue
+							: null,
+						max: chartControl.axisOptions.axisMinMax.enableMax
+							? chartControl.axisOptions.axisMinMax.maxValue
+							: null,
+
 						inverse: chartControl.axisOptions.inverse,
 
 						position: chartControl.axisOptions.yAxis.position,

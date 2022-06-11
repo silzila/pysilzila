@@ -152,6 +152,13 @@ const LineChart = ({
 							onZero: chartControl.axisOptions.yAxis.onZero,
 						},
 
+						min: chartControl.axisOptions.axisMinMax.enableMin
+							? chartControl.axisOptions.axisMinMax.minValue
+							: null,
+						max: chartControl.axisOptions.axisMinMax.enableMax
+							? chartControl.axisOptions.axisMinMax.maxValue
+							: null,
+
 						axisTick: {
 							alignWithLabel: true,
 							length:
