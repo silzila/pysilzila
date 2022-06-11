@@ -157,7 +157,7 @@ const ChartTypes = ({
 
 				if (newChart === "funnel") {
 					//name: "Measure", allowedNumbers: 12,
-					keepOldData(propKey, true);
+					keepOldData(propKey, false);
 
 					if (oldChartAxes[2].fields.length > 0)
 						newChartAxes[1].fields = oldChartAxes[2].fields; // this will work
