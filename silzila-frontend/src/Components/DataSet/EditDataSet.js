@@ -211,7 +211,7 @@ const EditDataSet = ({
 			);
 			setloadPage(true);
 		} else {
-			console.log(res.data.detail);
+			// console.log(res.data.detail);
 		}
 	};
 

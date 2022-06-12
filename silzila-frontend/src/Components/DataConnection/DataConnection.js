@@ -58,7 +58,7 @@ const DataConnection = (props) => {
 		if (result.status) {
 			setDataConnectionList(result.data);
 		} else {
-			console.log(result.data.detail);
+			// console.log(result.data.detail);
 		}
 	};
 
@@ -109,7 +109,7 @@ const DataConnection = (props) => {
 			setShowForm(true);
 			setViewMode(true);
 		} else {
-			console.log(result.data.detail);
+			// console.log(result.data.detail);
 		}
 	};
 
@@ -154,7 +154,7 @@ const DataConnection = (props) => {
 				}, 3000);
 			}
 		} else {
-			console.log(response);
+			// console.log(response);
 		}
 	};
 
@@ -191,7 +191,7 @@ const DataConnection = (props) => {
 				getInformation();
 			}, 3000);
 		} else {
-			console.log("Update Dc error", response);
+			// console.log("Update Dc error", response);
 			setSeverity("error");
 			setOpenAlert(true);
 			setTestMessage(response.data.detail);

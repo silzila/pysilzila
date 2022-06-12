@@ -97,7 +97,7 @@ const TableList = (props) => {
 			var keys = Object.keys(res.data[0]);
 			setObjKeys([...keys]);
 		} else {
-			console.log("Get Table Data Error".res.data.detail);
+			// console.log("Get Table Data Error".res.data.detail);
 		}
 	};
 

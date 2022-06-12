@@ -94,23 +94,14 @@ const Card = ({
 		},
 
 		end: (dropResult, monitor) => {
-			console.log("***************on DRAG END**************");
+			// console.log("***************on DRAG END**************");
 			const { uId, bIndex, originalIndex } = monitor.getItem();
-			console.log("uId = ", uId);
+			// console.log("uId = ", uId);
 
 			const didDrop = monitor.didDrop();
-			console.log("didDrop = ", didDrop);
+			// console.log("didDrop = ", didDrop);
 
 			if (!didDrop) {
-				console.log("..............no drop..............");
-				console.log(
-					"originalIndex = ",
-					originalIndex,
-					"Bin index = ",
-					bIndex,
-					"revert uId = ",
-					uId
-				);
 				revertAxes(propKey, bIndex, uId, originalIndex);
 			}
 		},
@@ -125,17 +116,6 @@ const Card = ({
 		}),
 		hover({ uId: dragUId, bIndex: fromBIndex }) {
 			if (fromBIndex === bIndex && dragUId !== field.uId) {
-				console.log("============HOVER BLOCK START ===============");
-				console.log(
-					"dragUId = ",
-					dragUId,
-					"\ndrop uId = ",
-					field.uId,
-					"drag Bin = ",
-					fromBIndex,
-					"drop Bin = ",
-					bIndex
-				);
 				sortAxes(propKey, bIndex, dragUId, field.uId);
 				console.log("============HOVER BLOCK END ==============");
 			}

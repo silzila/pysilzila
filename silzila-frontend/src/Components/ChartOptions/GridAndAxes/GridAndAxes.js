@@ -58,7 +58,7 @@ const GridAndAxes = ({
 		{ name: "End", value: "end" },
 	];
 
-	console.log(chartProp);
+	// console.log(chartProp);
 
 	// ============================================ X-Axis ======================================================
 
