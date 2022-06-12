@@ -132,7 +132,7 @@ const MenuBar = ({
 			});
 
 			if (!result.status) {
-				console.log(result.data.detail);
+				// console.log(result.data.detail);
 			} else {
 				setSeverity("success");
 				setOpenAlert(true);
@@ -317,7 +317,7 @@ const MenuBar = ({
 					onClick={() => {
 						setOpenFileMenu(false);
 						setSaveModal(true);
-						playBookState.playBookUid = null;	/*	PRS	11/JUN/2022	*/
+						playBookState.playBookUid = null; /*	PRS	11/JUN/2022	*/
 					}}
 				>
 					Save Playbook As

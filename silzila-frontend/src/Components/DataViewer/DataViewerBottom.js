@@ -34,7 +34,7 @@ export const getTableData = async (dc_uid, schema_name, table_name, token) => {
 	if (res.status) {
 		return res.data;
 	} else {
-		console.log("Get Table Data Error".res.data.detail);
+		// console.log("Get Table Data Error".res.data.detail);
 	}
 };
 
@@ -49,7 +49,7 @@ export const getColumnTypes = async (dc_uid, schema_name, table_name, token) => 
 	if (res.status) {
 		return res.data;
 	} else {
-		console.log("Get Table Columns Error".res.data.detail);
+		// console.log("Get Table Columns Error".res.data.detail);
 	}
 };
 
@@ -120,7 +120,7 @@ const DataViewerBottom = ({
 		if (result.status) {
 			return result.data;
 		} else {
-			console.log(result.data.detail);
+			// console.log(result.data.detail);
 		}
 	};
 

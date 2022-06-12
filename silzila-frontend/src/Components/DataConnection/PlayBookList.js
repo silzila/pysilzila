@@ -65,7 +65,7 @@ const PlayBookList = ({
 		if (result.status) {
 			setPlayBookList(result.data);
 		} else {
-			console.log(result.data.detail);
+			// console.log(result.data.detail);
 		}
 	};
 
@@ -100,7 +100,7 @@ const PlayBookList = ({
 		if (result.status) {
 			return result.data;
 		} else {
-			console.log(result.data.detail);
+			// console.log(result.data.detail);
 		}
 	};
 
@@ -290,7 +290,7 @@ const PlayBookList = ({
 				setTestMessage("");
 			}, 2000);
 		} else {
-			console.log(result.detail);
+			// console.log(result.detail);
 		}
 	};
 

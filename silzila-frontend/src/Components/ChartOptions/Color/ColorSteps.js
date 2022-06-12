@@ -58,7 +58,7 @@ const ColorSteps = ({
 	// TODO: Priority 1 - Color steps value keeps changing every time we come back to it
 	// after clicking on other control tiles
 
-	console.log(chartProp.properties[propKey].axisOptions.gaugeChartControls.stepcolor);
+	// console.log(chartProp.properties[propKey].axisOptions.gaugeChartControls.stepcolor);
 
 	useEffect(() => {
 		var col = [];
@@ -66,7 +66,7 @@ const ColorSteps = ({
 			if (el.name === chartProp.properties[propKey].colorScheme) {
 				setColorsOfScheme(el.colors);
 				col.push(...el.colors);
-				console.log(el.colors);
+				// console.log(el.colors);
 			}
 		});
 		if (chartProp.properties[propKey].axisOptions.gaugeChartControls.isStepsAuto) {
@@ -154,7 +154,7 @@ const ColorSteps = ({
 	};
 
 	const addNewStep = (obj, idx) => {
-		console.log(obj.color);
+		// console.log(obj.color);
 		switchAutotoManualinSteps(propKey, false);
 
 		updateGaugeAxisOptions(propKey, "isMaxAuto", false);
@@ -165,7 +165,7 @@ const ColorSteps = ({
 		);
 
 		newStepAddedArray.splice(idx, 0, obj);
-		// console.log(newStepAddedArray);
+		// // console.log(newStepAddedArray);
 
 		var total = getTotal(newStepAddedArray);
 
@@ -217,19 +217,19 @@ const ColorSteps = ({
 	};
 	const getbgcolor = (index) => {
 		var idx = index;
-		console.log(colorsOfScheme.length, idx);
-		console.log(idx % colorsOfScheme.length);
+		// console.log(colorsOfScheme.length, idx);
+		// console.log(idx % colorsOfScheme.length);
 		var colorValue = "";
 		// console.log(colorsOfScheme);
 		if (idx >= colorsOfScheme.length) {
 			var id2 = idx % colorsOfScheme.length;
-			console.log(id2);
+			// console.log(id2);
 			colorValue = colorsOfScheme[id2];
-			console.log(colorValue);
+			// console.log(colorValue);
 			return colorValue;
 		} else {
 			colorValue = colorsOfScheme[idx];
-			console.log(colorValue);
+			// console.log(colorValue);
 
 			return colorValue;
 		}
@@ -298,7 +298,7 @@ const ColorSteps = ({
 																		isColorAuto: true,
 																		value: 0,
 																	};
-																	console.log(obj);
+																	// console.log(obj);
 
 																	addNewStep(obj, idx);
 																}}
@@ -326,7 +326,7 @@ const ColorSteps = ({
 																	justifyContent: "center",
 																}}
 																onClick={() => {
-																	console.log("removing steps");
+																	// console.log("removing steps");
 																	if (
 																		chartProp.properties[
 																			propKey
@@ -334,9 +334,9 @@ const ColorSteps = ({
 																			.gaugeChartControls
 																			.stepcolor.length === 1
 																	) {
-																		console.log(
-																			"cant remove step"
-																		);
+																		// console.log(
+																		// 	"cant remove step"
+																		// );
 																		setOpenAlert(true);
 																		setSeverity("warning");
 																		setTestMessage(

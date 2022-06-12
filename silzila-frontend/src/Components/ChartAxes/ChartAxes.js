@@ -160,7 +160,6 @@ const ChartAxes = ({
 				if (minReq) {
 					serverCall = true;
 				} else {
-					console.log("Reset chartData");
 					updateChartData(propKey, "");
 				}
 			}

@@ -97,7 +97,7 @@ const Sidebar = ({
 		if (res.status) {
 			setConnectionList(res.data);
 		} else {
-			console.log(res.data.detail);
+			// console.log(res.data.detail);
 		}
 	};
 
@@ -131,11 +131,11 @@ const Sidebar = ({
 				if (res2.status) {
 					setSchemaList(res2.data);
 				} else {
-					console.log(res2.data.detail);
+					// console.log(res2.data.detail);
 				}
 			}
 		} else {
-			console.log(res.data.detail);
+			// console.log(res.data.detail);
 		}
 	};
 
@@ -201,7 +201,7 @@ const Sidebar = ({
 
 			setUserTable(userTable);
 		} else {
-			console.log(res);
+			// console.log(res);
 		}
 	};
 

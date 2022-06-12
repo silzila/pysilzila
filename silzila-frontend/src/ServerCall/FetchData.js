@@ -41,7 +41,7 @@ const FetchData = async ({ requestType, method, url, data, headers, token }) => 
 				axios({ method, url: serverEndPoint + url, headers, data })
 					.then((res) => resolve({ status: true, data: res.data }))
 					.catch((err) => {
-						console.log(err);
+						// console.log(err);
 						if (err?.response?.data) {
 							resolve({ status: false, data: err.response.data });
 						} else {
@@ -54,7 +54,7 @@ const FetchData = async ({ requestType, method, url, data, headers, token }) => 
 				axios({ method, url: serverEndPoint + url, headers })
 					.then((res) => resolve({ status: true, data: res.data }))
 					.catch((err) => {
-						console.log(err);
+						// console.log(err);
 						if (err?.response?.data) {
 							resolve({ status: false, data: err.response.data });
 						} else {
@@ -64,7 +64,7 @@ const FetchData = async ({ requestType, method, url, data, headers, token }) => 
 				break;
 
 			default:
-				console.log("Fetch Data -- No fetch case made");
+				// console.log("Fetch Data -- No fetch case made");
 				break;
 		}
 	});

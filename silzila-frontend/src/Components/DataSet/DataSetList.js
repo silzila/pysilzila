@@ -47,7 +47,7 @@ const DataSetList = ({
 			setDataSetList(result.data);
 			setDataSetListToStore(result.data);
 		} else {
-			console.log(result.data.detail);
+			// console.log(result.data.detail);
 		}
 	};
 
@@ -77,7 +77,7 @@ const DataSetList = ({
 				setTestMessage("");
 			}, 2000);
 		} else {
-			console.log(result.data.detail);
+			// console.log(result.data.detail);
 			setSeverity("error");
 			setOpenAlert(true);
 			setTestMessage(result.data.detail);

@@ -35,7 +35,7 @@ const XAxisFormat = ({
 					}
 					value={formatObject.numberSeparator}
 					onClick={(e) => {
-						console.log(item.value);
+						// console.log(item.value);
 						updateFormat(propKey, "xAxisFormats", "numberSeparator", item.value);
 					}}
 				>

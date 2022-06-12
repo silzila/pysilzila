@@ -52,7 +52,7 @@ const BottomBar = ({
 		if (tablesSelectedInSidebar.length > 1) {
 			tablesSelectedInSidebar.map((el) => {
 				if (tablesWithRelation.includes(el.table_name)) {
-					console.log("----");
+					// console.log("----");
 				} else {
 					tablesWithoutRelation.push(el.table_name);
 				}
