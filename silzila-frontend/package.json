@@ -24,7 +24,7 @@
 		"react-draggable": "^4.4.4",
 		"react-redux": "^7.2.6",
 		"react-rnd": "^10.3.5",
-		"react-router-dom": "^6.2.1",
+		"react-router-dom": "^6.3.0",
 		"react-scripts": "5.0.0",
 		"react-syntax-highlighter": "^15.5.0",
 		"react-tiny-popover": "^7.0.1",

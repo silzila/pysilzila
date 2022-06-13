@@ -27,20 +27,22 @@ const HeatMap = ({
 			setChartDataKeys(Object.keys(chartData[0]));
 
 			var measureField = chartProperty.properties[propKey].chartAxes[3].fields[0];
-			var maxFieldName = `${measureField.fieldname}__${measureField.agg}`;
+			if (measureField) {
+				var maxFieldName = `${measureField.fieldname}__${measureField.agg}`;
 
-			var max = 0;
-			var min = 100000000;
-			chartData.forEach((element) => {
-				if (element[maxFieldName] > max) {
-					max = element[maxFieldName];
-				}
-				if (element[maxFieldName] < min) {
-					min = element[maxFieldName];
-				}
-			});
-			setMaxValue(max);
-			setMinValue(min);
+				var max = 0;
+				var min = 100000000;
+				chartData.forEach((element) => {
+					if (element[maxFieldName] > max) {
+						max = element[maxFieldName];
+					}
+					if (element[maxFieldName] < min) {
+						min = element[maxFieldName];
+					}
+				});
+				setMaxValue(max);
+				setMinValue(min);
+			}
 		}
 	}, [chartData]);
 

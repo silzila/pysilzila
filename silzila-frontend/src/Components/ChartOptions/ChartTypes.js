@@ -95,9 +95,6 @@ const ChartTypes = ({
 			case "horizontalStacked":
 			case "line":
 			case "area":
-			case "pie":
-			case "donut":
-			case "rose":
 				if (
 					[
 						"multibar",
@@ -106,12 +103,15 @@ const ChartTypes = ({
 						"horizontalStacked",
 						"line",
 						"area",
-						"pie",
-						"donut",
-						"rose",
 					].includes(newChart)
 				) {
 					keepOldData(propKey, true);
+
+					return oldChartAxes;
+				}
+
+				if (newChart === "pie" || newChart === "donut" || newChart === "rose") {
+					keepOldData(propKey, false);
 
 					newChartAxes[0].fields = oldChartAxes[0].fields; //Filter
 
@@ -216,6 +216,118 @@ const ChartTypes = ({
 					return newChartAxes;
 				}
 				break;
+
+			case "pie":
+			case "donut":
+			case "rose":
+				if (
+					[
+						"multibar",
+						"stackedBar",
+						"horizontalBar",
+						"horizontalStacked",
+						"line",
+						"area",
+						"pie",
+						"donut",
+						"rose",
+					].includes(newChart)
+				) {
+					keepOldData(propKey, true);
+
+					return oldChartAxes;
+				}
+
+				if (newChart === "scatterPlot") {
+					keepOldData(propKey, false);
+
+					// Map Category to Category
+					if (oldChartAxes[1].fields.length > 0)
+						newChartAxes[1].fields = getFieldsToChartAllowedNumbers(
+							newChart,
+							1,
+							oldChartAxes[1].fields
+						);
+
+					// Map Value to X and Y columns if there are more than one values
+					if (oldChartAxes[2].fields.length > 0) {
+						if (oldChartAxes[2].fields.length > 1) {
+							newChartAxes[2].fields.push(oldChartAxes[2].fields.shift());
+							newChartAxes[3].fields.push(oldChartAxes[2].fields.shift());
+						} else {
+							newChartAxes[2].fields = oldChartAxes[2].fields;
+						}
+					}
+
+					// Map filter to Filter
+					if (oldChartAxes[0].fields.length > 0)
+						newChartAxes[0].fields = oldChartAxes[0].fields;
+
+					return newChartAxes;
+				}
+
+				if (newChart === "funnel") {
+					//name: "Measure", allowedNumbers: 12,
+					keepOldData(propKey, false);
+
+					if (oldChartAxes[2].fields.length > 0)
+						newChartAxes[1].fields = oldChartAxes[2].fields; // this will work
+					//newChartAxes[1].fields = getFieldsToChartAllowedNumbers("funnel", 1, oldChartAxes[2].fields);
+
+					// Map filter to Filter
+					if (oldChartAxes[0].fields.length > 0)
+						newChartAxes[0].fields = oldChartAxes[0].fields;
+
+					return newChartAxes;
+				}
+
+				if (newChart === "gauge") {
+					keepOldData(propKey, false);
+					if (oldChartAxes[2].fields.length > 0)
+						newChartAxes[1].fields.push(oldChartAxes[2].fields[0]);
+
+					// Map filter to Filter
+					if (oldChartAxes[0].fields.length > 0)
+						newChartAxes[0].fields = oldChartAxes[0].fields;
+
+					return newChartAxes;
+				}
+
+				if (newChart === "heatmap" || newChart === "crossTab") {
+					keepOldData(propKey, false);
+					if (oldChartAxes[1].fields.length > 0) {
+						newChartAxes[1].fields.push(oldChartAxes[1].fields[0]);
+					}
+
+					if (oldChartAxes[2].fields.length > 0) {
+						newChartAxes[3].fields.push(oldChartAxes[2].fields[0]);
+					}
+
+					// Map filter to Filter
+					if (oldChartAxes[0].fields.length > 0)
+						newChartAxes[0].fields = oldChartAxes[0].fields;
+
+					return newChartAxes;
+				}
+
+				if (newChart === "crossTab") {
+					keepOldData(propKey, false);
+					if (oldChartAxes[1].fields.length > 0) {
+						newChartAxes[1].fields = oldChartAxes[1].fields;
+					}
+
+					if (oldChartAxes[2].fields.length > 0) {
+						newChartAxes[3].fields = oldChartAxes[2].fields;
+					}
+
+					// Map filter to Filter
+					if (oldChartAxes[0].fields.length > 0)
+						newChartAxes[0].fields = oldChartAxes[0].fields;
+
+					return newChartAxes;
+				}
+				break;
+
 			case "scatterPlot":
 				if (newChart === "scatterPlot") {
 					return oldChartAxes;
