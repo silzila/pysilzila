@@ -38,7 +38,7 @@ def build_select_clause(req: list, select_dim_list: list, group_by_dim_list: lis
                 if val['time_grain'] == 'year':
                     # build SELECT clause
                     field_string = f"DATEPART(YEAR, {val['table_id']}.{val['field_name']})"
-                    alias = f"{val['field_name']}_year"
+                    alias = f"{val['field_name']}__year"
                     select_dim_list.append(f"{field_string} AS {alias}")
                     group_by_dim_list.append(field_string)
                     order_by_dim_list.append(field_string)

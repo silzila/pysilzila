@@ -30,7 +30,7 @@ async def create_user(user: schema.UserIn, db: Session = Depends(get_db)):
     db_user = await service.get_user_by_email(db, email=user.email)
     # if email already exists, send out error
     if db_user:
-        raise HTTPException(status_code=400, detail="Email alreay registered")
+        raise HTTPException(status_code=400, detail="Email already registered")
     # on success, create user in DB and return response
     return await service.create_user(db=db, user=user)
 
