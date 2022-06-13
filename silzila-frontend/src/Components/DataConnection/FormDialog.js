@@ -216,6 +216,10 @@ function FormDialog({
 							flexDirection: "column",
 							rowGap: "10px",
 						}}
+						onSubmit={(e) => {
+							e.preventDefault();
+							onSubmit();
+						}}
 					>
 						<div
 							style={{
@@ -433,7 +437,10 @@ function FormDialog({
 									type="submit"
 									variant="contained"
 									style={{ backgroundColor: "green" }}
-									onClick={onSubmit}
+									onClick={(e) => {
+										e.preventDefault();
+										onSubmit();
+									}}
 									disabled={btnEnable}
 								>
 									{regOrUpdate}
