@@ -18,7 +18,7 @@ to create meaningful visual charts in four easy steps
 
 # Installation
 
-1. Make sure you have Python version XX or higher.
+1. Make sure you have Python version 3.7 or higher.
 
 2. Open command line or terminal and check your version of python by using the following code
    `python --version`
