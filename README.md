@@ -38,11 +38,11 @@ to create meaningful visual charts in four easy steps
 9. Once the environment is active, you can then start the silzila app by typing the following
    command in prompt `silzila`. A new browser window will open up with an instance of silzila app
 
-DataConnections and Datasets can be viewed in the home page
 
-<!-- ![DataHome](silzila-frontend/src/assets/dataHome-ss.png) -->
+Note: When connecting to Database please check if Database service is up and running. For MS SQL Server, please check if you have installed ODBC Driver and TCP/IP is enabled for the database.
 
-<!-- Visit [Silzila](https://silzila.org/) website to learn more -->
+
+
 
 # Demo
 
