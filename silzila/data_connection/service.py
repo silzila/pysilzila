@@ -1,5 +1,5 @@
 from fastapi.exceptions import HTTPException
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.elements import and_
 
@@ -62,8 +62,19 @@ async def update_data_connection(db: Session, dc_uid: str,
     dc_info.username = dc.username
     dc_info.port = dc.port
     dc_info.db_name = dc.db_name
-    db.commit()
-    db.refresh(dc_info)
+    # execute update in DB
+    await db.execute(update(model.DataConnection).values(
+        password=auth.encrypt_password(dc.password),
+        friendly_name=dc.friendly_name,
+        vendor=dc.vendor,
+        url=dc.url,
+        username=dc.username,
+        port=dc.port,
+        db_name=dc.db_name
+    ).where(
+        model.DataConnection.dc_uid == dc_uid
+    ))
+    await db.flush()
     return dc_info
 
 

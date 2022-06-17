@@ -1,6 +1,6 @@
 from unicodedata import name
 from fastapi.exceptions import HTTPException
-from sqlalchemy import text, select
+from sqlalchemy import text, select, update
 from sqlalchemy.orm import Session, Bundle
 from sqlalchemy.sql.elements import and_
 
@@ -73,12 +73,18 @@ async def update_pb(uid: str, pb_uid: str, db: Session, pb: PlayBook):
         raise HTTPException(
             status_code=400, detail="Play Book Name is already taken"
         )
+
     # preparing play book data to be modified
     pb_info.name = pb.name
     pb_info.description = pb.description
     pb_info.content = pb.content
-    db.commit()
-    db.refresh(pb_info)
+    # execute update in DB
+    await db.execute(update(PlayBook).values(
+        name=pb.name, description=pb.description, content=pb.content).where(
+        PlayBook.pb_uid == pb_uid
+    ))
+    await db.flush()
+
     # returning of model will be thrown error because of serialization of pb_info, so custom dict
     # return pb_info
     resp = {
@@ -86,8 +92,8 @@ async def update_pb(uid: str, pb_uid: str, db: Session, pb: PlayBook):
         "name": pb_info.name,
         "description": pb_info.description,
         "content": pb_info.content,
-        "time_created": pb_info.time_created,
-        "time_updated": pb_info.time_updated
+        # "time_created": pb_info.time_created,
+        # "time_updated": pb_info.time_updated
     }
     return resp
 
