@@ -30,6 +30,11 @@ export const addControl = (tabId, nextTileId, newTab) => {
 	}
 };
 
+export const duplicateControl = (propKey, chartControl) => {
+	console.log(propKey, chartControl);
+	return { type: "DUPLICATE_CHART_CONTROL", payload: { propKey, chartControl } };
+};
+
 export const removeChartControls = (tabId, tileId, propKey, tileIndex) => {
 	return { type: "DELETE_CONTROLS", payload: { tabId, tileId, propKey, tileIndex } };
 };
