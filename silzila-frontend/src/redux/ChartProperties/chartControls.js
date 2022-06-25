@@ -46,6 +46,30 @@ const chartControl = {
 				left: 70,
 			},
 
+			calendarStyleOptions: {
+				showSplitLine: true,
+				splitLineColor: "black",
+				splitLineWidth: 1,
+				splitLineType: "solid",
+				showDayLabel: true,
+				firstDay: 0,
+				dayLabelMargin: 5,
+				dayLabelPosition: "start",
+				dayLabelColor: "black",
+				dayLabelFontSize: 12,
+				showMonthLabel: true,
+				monthLabelMargin: 5,
+				monthLabelPosition: "start",
+				monthLabelColor: "black",
+				monthLabelFontSize: 12,
+				showYearLabel: true,
+				yearLabelMargin: 24,
+				yearLabelPosition: "left",
+				yearLabelColor: "black",
+				yearLabelFontSize: 12,
+				calendarGap: 30,
+			},
+
 			crossTabStyleOptions: {
 				borderWidth: 1,
 			},
@@ -292,6 +316,30 @@ const chartControlsReducer = (state = chartControl, action) => {
 							right: 40,
 							bottom: 25,
 							left: 70,
+						},
+
+						calendarStyleOptions: {
+							showSplitLine: true,
+							splitLineColor: "black",
+							splitLineWidth: 1,
+							splitLineType: "solid",
+							showDayLabel: true,
+							firstDay: 0,
+							dayLabelMargin: 5,
+							dayLabelPosition: "start",
+							dayLabelColor: "black",
+							dayLabelFontSize: 12,
+							showMonthLabel: true,
+							monthLabelMargin: 5,
+							monthLabelPosition: "start",
+							monthLabelColor: "black",
+							monthLabelFontSize: 12,
+							showYearLabel: true,
+							yearLabelMargin: 24,
+							yearLabelPosition: "left",
+							yearLabelColor: "black",
+							yearLabelFontSize: 12,
+							calendarGap: 30,
 						},
 
 						crossTabStyleOptions: {
@@ -542,6 +590,30 @@ const chartControlsReducer = (state = chartControl, action) => {
 							right: 40,
 							bottom: 25,
 							left: 70,
+						},
+
+						calendarStyleOptions: {
+							showSplitLine: true,
+							splitLineColor: "black",
+							splitLineWidth: 1,
+							splitLineType: "solid",
+							showDayLabel: true,
+							firstDay: 0,
+							dayLabelMargin: 5,
+							dayLabelPosition: "start",
+							dayLabelColor: "black",
+							dayLabelFontSize: 12,
+							showMonthLabel: true,
+							monthLabelMargin: 5,
+							monthLabelPosition: "start",
+							monthLabelColor: "black",
+							monthLabelFontSize: 12,
+							showYearLabel: true,
+							yearLabelMargin: 24,
+							yearLabelPosition: "left",
+							yearLabelColor: "black",
+							yearLabelFontSize: 12,
+							calendarGap: 30,
 						},
 
 						crossTabStyleOptions: {
@@ -1104,6 +1176,18 @@ const chartControlsReducer = (state = chartControl, action) => {
 						axisOptions: {
 							gaugeChartControls: {
 								isStepsAuto: { $set: action.payload.value },
+							},
+						},
+					},
+				},
+			});
+		case "UPDATE_CALENDER_STYLE_OPTIONS":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						calendarStyleOptions: {
+							[action.payload.option]: {
+								$set: action.payload.value,
 							},
 						},
 					},
