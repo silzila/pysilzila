@@ -37,6 +37,7 @@ import { toggleGraphSize } from "../../redux/TabTile/actionsTabTile";
 import HorizontalBar from "../Charts/HorizontalBar";
 import Horizontalstacked from "../Charts/Horizontalstacked";
 import RoseChart from "../Charts/RoseChart";
+import GeoChart from "../Charts/GeoChart";
 
 const GraphArea = ({
 	// state
@@ -227,6 +228,15 @@ const GraphArea = ({
 			case "heatmap":
 				return (
 					<HeatMap
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
+					/>
+				);
+
+			case "geoChart":
+				return (
+					<GeoChart
 						propKey={propKey}
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
 						graphTileSize={tileState.tiles[propKey].graphSizeFull}
