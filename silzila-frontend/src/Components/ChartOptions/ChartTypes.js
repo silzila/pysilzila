@@ -25,9 +25,9 @@ import heatMapIcon from "../../assets/heat_map.png";
 import ChartsInfo from "../ChartAxes/ChartsInfo2";
 import CrossTabIcon from "../../assets/crosstab.png";
 import roseChartIcon from "../../assets/rose_chart.svg";
+import geoChartIcon from "../../assets/earth.svg";
 import stackedAreaChartIcon from "../../assets/stacked_Area_Chart.svg";
 import calendarChartIcon from "../../assets/calendar_chart.svg";
-
 import "./ChartOptions.css";
 import { updateChartData } from "../../redux/ChartProperties/actionsChartControls";
 
@@ -47,7 +47,8 @@ export const chartTypes = [
 	{ name: "scatterPlot", icon: scatterPlotIcon, value: " Scatter Plot" },
 	{ name: "gauge", icon: gaugeChartIcon, value: "Gauge Chart" },
 	{ name: "funnel", icon: funnelChartIcon, value: "Funnel Chart" },
-	{ name: "heatmap", icon: heatMapIcon, value: " Heat Map" },
+	{ name: "heatmap", icon: heatMapIcon, value: "Heat Map" },
+	// { name: "geoChart", icon: geoChartIcon, value: "Geo Chart" },
 	{ name: "calendar", icon: calendarChartIcon, value: "Calendar Chart" },
 ];
 
@@ -111,6 +112,7 @@ const ChartTypes = ({
 						"horizontalStacked",
 						"line",
 						"area",
+						"geoChart",
 						"stackedArea",
 					].includes(newChart)
 				) {
@@ -834,6 +836,7 @@ const ChartTypes = ({
 						"pie",
 						"donut",
 						"rose",
+						"geoChart",
 						"stackedArea",
 					].includes(newChart)
 				) {
@@ -998,10 +1001,13 @@ const ChartTypes = ({
 							"heatmap",
 
 							"crossTab",
+
+							"geoChart",
 							"stackedArea",
 							"calendar",
 						].includes(chart.name)
 					) {
+						console.log(chart.name, " clicked");
 						const newChartAxes = switchAxesForCharts(
 							chartProp.properties[propKey].chartType,
 							chart.name

@@ -37,6 +37,7 @@ import { toggleGraphSize } from "../../redux/TabTile/actionsTabTile";
 import HorizontalBar from "../Charts/HorizontalBar";
 import Horizontalstacked from "../Charts/Horizontalstacked";
 import RoseChart from "../Charts/RoseChart";
+import GeoChart from "../Charts/GeoChart";
 import StackedAreaChart from "../Charts/StackedAreaChart";
 import CalendarChart from "../Charts/CalendarChart";
 
@@ -234,6 +235,10 @@ const GraphArea = ({
 						graphTileSize={tileState.tiles[propKey].graphSizeFull}
 					/>
 				);
+
+			case "geoChart":
+				return (
+					<GeoChart
 			case "stackedArea":
 				return (
 					<StackedAreaChart
@@ -250,6 +255,7 @@ const GraphArea = ({
 						graphTileSize={tileState.tiles[propKey].graphSizeFull}
 					/>
 				);
+
 			default:
 				return <h2>Work in progress</h2>;
 		}
