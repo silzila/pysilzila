@@ -239,6 +239,11 @@ const GraphArea = ({
 			case "geoChart":
 				return (
 					<GeoChart
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
+					/>
+				);
 			case "stackedArea":
 				return (
 					<StackedAreaChart
