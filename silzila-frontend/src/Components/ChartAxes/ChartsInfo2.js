@@ -116,6 +116,19 @@ const ChartsInfo = {
 		],
 		showSwap: true,
 	},
+	stackedArea: {
+		dropZones: [
+			{ name: "Filter", allowedNumbers: 64, min: 0 },
+			{
+				name: "Dimension",
+				allowedNumbers: 1,
+				min: 1,
+				dataType: ["text", "string", "timestamp"],
+			},
+			{ name: "Measure", allowedNumbers: 4, min: 1, dataType: ["int", "float", "double"] },
+		],
+		showSwap: true,
+	},
 	scatterPlot: {
 		dropZones: [
 			{ name: "Filter", allowedNumbers: 64, min: 0 },

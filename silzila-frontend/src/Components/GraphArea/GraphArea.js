@@ -38,6 +38,8 @@ import HorizontalBar from "../Charts/HorizontalBar";
 import Horizontalstacked from "../Charts/Horizontalstacked";
 import RoseChart from "../Charts/RoseChart";
 import GeoChart from "../Charts/GeoChart";
+import StackedAreaChart from "../Charts/StackedAreaChart";
+import CalendarChart from "../Charts/CalendarChart";
 
 const GraphArea = ({
 	// state
@@ -237,6 +239,17 @@ const GraphArea = ({
 			case "geoChart":
 				return (
 					<GeoChart
+			case "stackedArea":
+				return (
+					<StackedAreaChart
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
+					/>
+				);
+			case "calendar":
+				return (
+					<CalendarChart
 						propKey={propKey}
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
 						graphTileSize={tileState.tiles[propKey].graphSizeFull}

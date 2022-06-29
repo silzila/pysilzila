@@ -195,3 +195,9 @@ export const updateAxisOptions = (propKey, axis, option, value) => {
 export const updateGaugeAxisOptions = (propKey, option, value) => {
 	return { type: "UPDATE_GAUGE_AXIS_OPTIONS", payload: { propKey, option, value } };
 };
+
+//==================== calender chart ======================================
+
+export const updateCalendarStyleOptions = (propKey, option, value) => {
+	return { type: "UPDATE_CALENDER_STYLE_OPTIONS", payload: { propKey, option, value } };
+};

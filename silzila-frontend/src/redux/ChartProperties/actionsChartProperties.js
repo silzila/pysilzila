@@ -138,8 +138,8 @@ export const changeChartAxes = (propKey, newAxes) => {
 export const changeChartTypeAndAxes = ({ propKey, chartType, newAxes }) => {
 	return (dispatch) => {
 		dispatch(toggleAxesEdited(propKey, true));
-		dispatch(changeChartType(propKey, chartType));
 		dispatch(changeChartAxes(propKey, newAxes));
+		dispatch(changeChartType(propKey, chartType));
 	};
 };
 
