@@ -154,7 +154,6 @@ const ChartAxes = ({
 		if (chartProp.properties[propKey].axesEdited) {
 			if (chartProp.properties[propKey].reUseData) {
 				serverCall = false;
-				resetStore();
 			} else {
 				var minReq = checkMinRequiredCards(chartProp, propKey);
 				if (minReq) {
@@ -163,6 +162,7 @@ const ChartAxes = ({
 					updateChartData(propKey, "");
 				}
 			}
+			resetStore();
 		}
 
 		if (chartProp.properties[propKey].chartType === "scatterPlot") {

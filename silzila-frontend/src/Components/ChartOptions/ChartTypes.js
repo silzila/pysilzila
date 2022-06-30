@@ -25,8 +25,11 @@ import heatMapIcon from "../../assets/heat_map.png";
 import ChartsInfo from "../ChartAxes/ChartsInfo2";
 import CrossTabIcon from "../../assets/crosstab.png";
 import roseChartIcon from "../../assets/rose_chart.svg";
-
+import geoChartIcon from "../../assets/earth.svg";
+import stackedAreaChartIcon from "../../assets/stacked_Area_Chart.svg";
+import calendarChartIcon from "../../assets/calendar_chart.svg";
 import "./ChartOptions.css";
+import { updateChartData } from "../../redux/ChartProperties/actionsChartControls";
 
 export const chartTypes = [
 	{ name: "crossTab", icon: CrossTabIcon, value: " Cross Tab" },
@@ -40,10 +43,13 @@ export const chartTypes = [
 
 	{ name: "line", icon: lineChartIcon, value: "Line Chart" },
 	{ name: "area", icon: areaChartIcon, value: "Area Chart" },
+	{ name: "stackedArea", icon: stackedAreaChartIcon, value: "Stacked Area Chart" },
 	{ name: "scatterPlot", icon: scatterPlotIcon, value: " Scatter Plot" },
 	{ name: "gauge", icon: gaugeChartIcon, value: "Gauge Chart" },
 	{ name: "funnel", icon: funnelChartIcon, value: "Funnel Chart" },
-	{ name: "heatmap", icon: heatMapIcon, value: " Heat Map" },
+	{ name: "heatmap", icon: heatMapIcon, value: "Heat Map" },
+	// { name: "geoChart", icon: geoChartIcon, value: "Geo Chart" },
+	{ name: "calendar", icon: calendarChartIcon, value: "Calendar Chart" },
 ];
 
 const ChartTypes = ({
@@ -56,6 +62,7 @@ const ChartTypes = ({
 	//dispatch
 	updateChartTypeAndAxes,
 	keepOldData,
+	updateChartData,
 }) => {
 	var selectedChart = chartProp.properties[propKey].chartType;
 
@@ -95,6 +102,8 @@ const ChartTypes = ({
 			case "horizontalStacked":
 			case "line":
 			case "area":
+			case "stackedArea":
+			case "calendar":
 				if (
 					[
 						"multibar",
@@ -103,11 +112,57 @@ const ChartTypes = ({
 						"horizontalStacked",
 						"line",
 						"area",
+						"geoChart",
+						"stackedArea",
 					].includes(newChart)
 				) {
 					keepOldData(propKey, true);
 
 					return oldChartAxes;
+				}
+
+				if (newChart === "calendar") {
+					console.log(oldChartAxes);
+					if (oldChartAxes[1].fields.length > 0) {
+						if (
+							oldChartAxes[1].fields[0].dataType === "date" ||
+							oldChartAxes[1].fields[0].dataType === "timestamp"
+						) {
+							if (oldChartAxes[1].fields[0].time_grain === "date") {
+								keepOldData(propKey, true);
+								return oldChartAxes;
+							} else {
+								console.log(oldChartAxes);
+								keepOldData(propKey, false);
+								updateChartData(propKey, "");
+
+								newChartAxes[0].fields = oldChartAxes[0].fields;
+								newChartAxes[1].fields = [
+									{
+										dataType: oldChartAxes[1].fields[0].dataType,
+										displayname: oldChartAxes[1].fields[0].displayname,
+										fieldname: oldChartAxes[1].fields[0].fieldname,
+										tableId: oldChartAxes[1].fields[0].tableId,
+										uId: oldChartAxes[1].fields[0].uId,
+										time_grain: "date",
+									},
+								];
+								newChartAxes[2].fields = oldChartAxes[2].fields;
+								console.log(newChartAxes);
+								return newChartAxes;
+							}
+						} else {
+							keepOldData(propKey, false);
+
+							newChartAxes[1].fields = [];
+							newChartAxes[2].fields.push(oldChartAxes[2].fields[0]);
+							console.log(newChartAxes);
+							return newChartAxes;
+						}
+					} else {
+						keepOldData(propKey, true);
+						return oldChartAxes;
+					}
 				}
 
 				if (newChart === "pie" || newChart === "donut" || newChart === "rose") {
@@ -182,7 +237,7 @@ const ChartTypes = ({
 					return newChartAxes;
 				}
 
-				if (newChart === "heatmap" || newChart === "crossTab") {
+				if (newChart === "heatmap") {
 					keepOldData(propKey, false);
 					if (oldChartAxes[1].fields.length > 0) {
 						newChartAxes[1].fields.push(oldChartAxes[1].fields[0]);
@@ -231,11 +286,56 @@ const ChartTypes = ({
 						"pie",
 						"donut",
 						"rose",
+						"stackedArea",
 					].includes(newChart)
 				) {
 					keepOldData(propKey, true);
 
 					return oldChartAxes;
+				}
+
+				if (newChart === "calendar") {
+					console.log(oldChartAxes);
+					if (oldChartAxes[1].fields.length > 0) {
+						if (
+							oldChartAxes[1].fields[0].dataType === "date" ||
+							oldChartAxes[1].fields[0].dataType === "timestamp"
+						) {
+							if (oldChartAxes[1].fields[0].time_grain === "date") {
+								keepOldData(propKey, true);
+								return oldChartAxes;
+							} else {
+								console.log(oldChartAxes);
+								keepOldData(propKey, false);
+								updateChartData(propKey, "");
+
+								newChartAxes[0].fields = oldChartAxes[0].fields;
+								newChartAxes[1].fields = [
+									{
+										dataType: oldChartAxes[1].fields[0].dataType,
+										displayname: oldChartAxes[1].fields[0].displayname,
+										fieldname: oldChartAxes[1].fields[0].fieldname,
+										tableId: oldChartAxes[1].fields[0].tableId,
+										uId: oldChartAxes[1].fields[0].uId,
+										time_grain: "date",
+									},
+								];
+								newChartAxes[2].fields = oldChartAxes[2].fields;
+								console.log(newChartAxes);
+								return newChartAxes;
+							}
+						} else {
+							keepOldData(propKey, false);
+
+							newChartAxes[1].fields = [];
+							newChartAxes[2].fields.push(oldChartAxes[2].fields[0]);
+							console.log(newChartAxes);
+							return newChartAxes;
+						}
+					} else {
+						keepOldData(propKey, true);
+						return oldChartAxes;
+					}
 				}
 
 				if (newChart === "scatterPlot") {
@@ -344,6 +444,7 @@ const ChartTypes = ({
 						"pie",
 						"donut",
 						"rose",
+						"stackedArea",
 					].includes(newChart)
 				) {
 					keepOldData(propKey, true);
@@ -362,6 +463,36 @@ const ChartTypes = ({
 					// Map filter to Filter
 					if (oldChartAxes[0].fields.length > 0)
 						newChartAxes[0].fields = oldChartAxes[0].fields;
+					return newChartAxes;
+				}
+
+				if (newChart === "calendar") {
+					// console.log(oldChartAxes);
+
+					keepOldData(propKey, false);
+
+					if (oldChartAxes[0].fields.length > 0) {
+						newChartAxes[0].fields = oldChartAxes[0].fields;
+					}
+
+					if (oldChartAxes[1].fields.length > 0) {
+						if (
+							oldChartAxes[1].fields[0].dataType === "date" ||
+							oldChartAxes[1].fields[0].dataType === "timestamp"
+						) {
+							newChartAxes[1].fields = oldChartAxes[1].fields;
+							newChartAxes[1].fields[0].time_grain = "date";
+						} else {
+							newChartAxes[1].fields = [];
+						}
+					}
+
+					newChartAxes[2].fields = getFieldsToChartAllowedNumbers(newChart, 2, [
+						...oldChartAxes[2].fields,
+						...oldChartAxes[3].fields,
+					]);
+
+					updateChartData(propKey, "");
 					return newChartAxes;
 				}
 
@@ -429,6 +560,8 @@ const ChartTypes = ({
 						"pie",
 						"donut",
 						"rose",
+						"stackedArea",
+						"calendar",
 					].includes(newChart)
 				) {
 					keepOldData(propKey, false);
@@ -506,6 +639,8 @@ const ChartTypes = ({
 						"pie",
 						"donut",
 						"rose",
+						"stackedArea",
+						"calendar",
 					].includes(newChart)
 				) {
 					keepOldData(propKey, false);
@@ -581,6 +716,7 @@ const ChartTypes = ({
 						"pie",
 						"donut",
 						"rose",
+						"stackedArea",
 					].includes(newChart)
 				) {
 					keepOldData(propKey, false);
@@ -600,6 +736,39 @@ const ChartTypes = ({
 							2,
 							oldChartAxes[3].fields
 						);
+
+					return newChartAxes;
+				}
+
+				if (newChart === "calendar") {
+					keepOldData(propKey, false);
+					if (oldChartAxes[0].fields.length > 0) {
+						newChartAxes[0].fields = oldChartAxes[0].fields;
+					}
+					if (oldChartAxes[1].fields.length > 0) {
+						const row = oldChartAxes[1].fields.filter((el) => {
+							return el.dataType === "date" || el.dataType === "timestamp";
+						});
+						const column = oldChartAxes[2].fields.filter((el) => {
+							return el.dataType === "date" || el.dataType === "timestamp";
+						});
+
+						newChartAxes[1].fields = getFieldsToChartAllowedNumbers(newChart, 1, [
+							...row,
+							...column,
+						]);
+						newChartAxes[1].fields[0].time_grain = "date";
+					}
+					console.log(newChartAxes[1]);
+
+					if (oldChartAxes[3].fields.length > 0) {
+						newChartAxes[2].fields = getFieldsToChartAllowedNumbers(
+							newChart,
+							2,
+							oldChartAxes[3].fields
+						);
+					}
+					updateChartData(propKey, "");
 
 					return newChartAxes;
 				}
@@ -667,6 +836,8 @@ const ChartTypes = ({
 						"pie",
 						"donut",
 						"rose",
+						"geoChart",
+						"stackedArea",
 					].includes(newChart)
 				) {
 					// Map filter to Filter
@@ -687,6 +858,42 @@ const ChartTypes = ({
 							2,
 							oldChartAxes[3].fields
 						);
+
+					return newChartAxes;
+				}
+
+				if (newChart === "calendar") {
+					// console.log(oldChartAxes);
+
+					keepOldData(propKey, false);
+					if (oldChartAxes[0].fields.length > 0) {
+						newChartAxes[0].fields = oldChartAxes[0].fields;
+					}
+
+					if (oldChartAxes[1].fields.length > 0) {
+						const row = oldChartAxes[1].fields.filter((el) => {
+							return el.dataType === "date" || el.dataType === "timestamp";
+						});
+						const column = oldChartAxes[2].fields.filter((el) => {
+							return el.dataType === "date" || el.dataType === "timestamp";
+						});
+
+						newChartAxes[1].fields = getFieldsToChartAllowedNumbers(newChart, 1, [
+							...row,
+							...column,
+						]);
+						newChartAxes[1].fields[0].time_grain = "date";
+					}
+					// console.log(newChartAxes[1]);
+
+					if (oldChartAxes[3].fields.length > 0) {
+						newChartAxes[2].fields = getFieldsToChartAllowedNumbers(
+							newChart,
+							2,
+							oldChartAxes[3].fields
+						);
+					}
+					updateChartData(propKey, "");
 
 					return newChartAxes;
 				}
@@ -794,8 +1001,13 @@ const ChartTypes = ({
 							"heatmap",
 
 							"crossTab",
+
+							"geoChart",
+							"stackedArea",
+							"calendar",
 						].includes(chart.name)
 					) {
+						console.log(chart.name, " clicked");
 						const newChartAxes = switchAxesForCharts(
 							chartProp.properties[propKey].chartType,
 							chart.name
@@ -824,6 +1036,7 @@ const mapDispatchToProps = (dispatch) => {
 		updateChartTypeAndAxes: (propKey, chartType, newAxes) =>
 			dispatch(changeChartTypeAndAxes({ propKey, chartType, newAxes })),
 		keepOldData: (propKey, reUseData) => dispatch(canReUseData(propKey, reUseData)),
+		updateChartData: (propKey, chartData) => dispatch(updateChartData(propKey, chartData)),
 	};
 };
 

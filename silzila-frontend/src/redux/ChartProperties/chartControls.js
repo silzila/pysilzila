@@ -46,28 +46,30 @@ const chartControl = {
 				left: 70,
 			},
 
-			crossTabStyleOptions: {
-				borderWidth: 1,
+			calendarStyleOptions: {
+				showSplitLine: true,
+				splitLineColor: "black",
+				splitLineWidth: 1,
+				splitLineType: "solid",
+				showDayLabel: true,
+				firstDay: 0,
+				dayLabelMargin: 5,
+				dayLabelPosition: "start",
+				dayLabelColor: "black",
+				dayLabelFontSize: 12,
+				showMonthLabel: true,
+				monthLabelMargin: 5,
+				monthLabelPosition: "start",
+				monthLabelColor: "black",
+				monthLabelFontSize: 12,
+				showYearLabel: true,
+				yearLabelMargin: 24,
+				yearLabelPosition: "left",
+				yearLabelColor: "black",
+				yearLabelFontSize: 12,
+				calendarGap: 30,
 			},
-			crossTabHeaderLabelOptions: {
-				labelColorManual: false,
-				labelColor: "#666666",
-				fontSize: 14,
-				fontStyle: "normal",
-				fontWeigth: "normal",
-				fontFamily: "sans-serif",
-				fontWeight: "500",
-			},
-			crossTabCellLabelOptions: {
-				labelColorManual: false,
-				labelColor: "#666666",
-				fontSize: 12,
-				fontStyle: "normal",
-				fontWeigth: "normal",
-				fontFamily: "sans-serif",
-				fontWeight: "400",
-			},
-
+      
 			crossTabStyleOptions: {
 				borderWidth: 1,
 				lineHeight: 1,
@@ -294,8 +296,28 @@ const chartControlsReducer = (state = chartControl, action) => {
 							left: 70,
 						},
 
-						crossTabStyleOptions: {
-							borderWidth: 1,
+						calendarStyleOptions: {
+							showSplitLine: true,
+							splitLineColor: "black",
+							splitLineWidth: 1,
+							splitLineType: "solid",
+							showDayLabel: true,
+							firstDay: 0,
+							dayLabelMargin: 5,
+							dayLabelPosition: "start",
+							dayLabelColor: "black",
+							dayLabelFontSize: 12,
+							showMonthLabel: true,
+							monthLabelMargin: 5,
+							monthLabelPosition: "start",
+							monthLabelColor: "black",
+							monthLabelFontSize: 12,
+							showYearLabel: true,
+							yearLabelMargin: 24,
+							yearLabelPosition: "left",
+							yearLabelColor: "black",
+							yearLabelFontSize: 12,
+							calendarGap: 30,
 						},
 						crossTabHeaderLabelOptions: {
 							labelColorManual: false,
@@ -306,28 +328,9 @@ const chartControlsReducer = (state = chartControl, action) => {
 							fontFamily: "sans-serif",
 							fontWeight: "500",
 						},
-						crossTabCellLabelOptions: {
-							labelColorManual: false,
-							labelColor: "#666666",
-							fontSize: 12,
-							fontStyle: "normal",
-							fontWeigth: "normal",
-							fontFamily: "sans-serif",
-							fontWeight: "400",
-						},
-
 						crossTabStyleOptions: {
 							borderWidth: 1,
 							lineHeight: 1,
-						},
-						crossTabHeaderLabelOptions: {
-							labelColorManual: false,
-							labelColor: "#666666",
-							fontSize: 14,
-							fontStyle: "normal",
-							fontWeigth: "normal",
-							fontFamily: "sans-serif",
-							fontWeight: "500",
 						},
 						crossTabCellLabelOptions: {
 							labelColorManual: false,
@@ -544,8 +547,28 @@ const chartControlsReducer = (state = chartControl, action) => {
 							left: 70,
 						},
 
-						crossTabStyleOptions: {
-							borderWidth: 1,
+						calendarStyleOptions: {
+							showSplitLine: true,
+							splitLineColor: "black",
+							splitLineWidth: 1,
+							splitLineType: "solid",
+							showDayLabel: true,
+							firstDay: 0,
+							dayLabelMargin: 5,
+							dayLabelPosition: "start",
+							dayLabelColor: "black",
+							dayLabelFontSize: 12,
+							showMonthLabel: true,
+							monthLabelMargin: 5,
+							monthLabelPosition: "start",
+							monthLabelColor: "black",
+							monthLabelFontSize: 12,
+							showYearLabel: true,
+							yearLabelMargin: 24,
+							yearLabelPosition: "left",
+							yearLabelColor: "black",
+							yearLabelFontSize: 12,
+							calendarGap: 30,
 						},
 						crossTabHeaderLabelOptions: {
 							labelColorManual: false,
@@ -556,28 +579,9 @@ const chartControlsReducer = (state = chartControl, action) => {
 							fontFamily: "sans-serif",
 							fontWeight: "500",
 						},
-						crossTabCellLabelOptions: {
-							labelColorManual: false,
-							labelColor: "#666666",
-							fontSize: 12,
-							fontStyle: "normal",
-							fontWeigth: "normal",
-							fontFamily: "sans-serif",
-							fontWeight: "400",
-						},
-
 						crossTabStyleOptions: {
 							borderWidth: 1,
 							lineHeight: 1,
-						},
-						crossTabHeaderLabelOptions: {
-							labelColorManual: false,
-							labelColor: "#666666",
-							fontSize: 14,
-							fontStyle: "normal",
-							fontWeigth: "normal",
-							fontFamily: "sans-serif",
-							fontWeight: "500",
 						},
 						crossTabCellLabelOptions: {
 							labelColorManual: false,
@@ -764,6 +768,12 @@ const chartControlsReducer = (state = chartControl, action) => {
 						chartData: { $set: action.payload.chartData },
 					},
 				},
+			});
+
+		case "DUPLICATE_CHART_CONTROL":
+			console.log(action.payload);
+			return update(state, {
+				properties: { [action.payload.propKey]: { $set: action.payload.chartControl } },
 			});
 
 		// ########################################
@@ -1104,6 +1114,18 @@ const chartControlsReducer = (state = chartControl, action) => {
 						axisOptions: {
 							gaugeChartControls: {
 								isStepsAuto: { $set: action.payload.value },
+							},
+						},
+					},
+				},
+			});
+		case "UPDATE_CALENDER_STYLE_OPTIONS":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						calendarStyleOptions: {
+							[action.payload.option]: {
+								$set: action.payload.value,
 							},
 						},
 					},
