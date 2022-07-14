@@ -40,6 +40,7 @@ import RoseChart from "../Charts/RoseChart";
 import GeoChart from "../Charts/GeoChart";
 import StackedAreaChart from "../Charts/StackedAreaChart";
 import CalendarChart from "../Charts/CalendarChart";
+import BoxPlotChart from "../Charts/BoxPlotChart";
 
 const GraphArea = ({
 	// state
@@ -255,6 +256,14 @@ const GraphArea = ({
 			case "calendar":
 				return (
 					<CalendarChart
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
+					/>
+				);
+			case "boxPlot":
+				return (
+					<BoxPlotChart
 						propKey={propKey}
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
 						graphTileSize={tileState.tiles[propKey].graphSizeFull}

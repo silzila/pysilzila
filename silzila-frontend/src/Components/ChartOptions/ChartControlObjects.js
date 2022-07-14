@@ -47,6 +47,7 @@ const ChartControlObjects = ({
 		"Format",
 	];
 	const crossTabOptionList = ["Title", "Tooltip", "Style", "Format"];
+	const boxPlotOptionsList = ["Title", "Tooltip", "Margin", "Colors", "Grid/Axes", "Style"];
 	const calendarOptionList = [
 		"Title",
 		"Labels",
@@ -118,6 +119,22 @@ const ChartControlObjects = ({
 					);
 				});
 
+			case "boxPlot":
+				return boxPlotOptionsList.map((option) => {
+					return (
+						<div
+							key={option}
+							className={
+								chartProp.properties[propKey].chartOptionSelected === option
+									? "optionImageSelected"
+									: "optionImage"
+							}
+							onClick={() => changeChartOption(propKey, option)}
+						>
+							{option}
+						</div>
+					);
+				});
 			case "funnel":
 				return funnelOptionList.map((option) => {
 					return (

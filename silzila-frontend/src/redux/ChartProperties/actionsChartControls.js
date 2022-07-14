@@ -201,3 +201,7 @@ export const updateGaugeAxisOptions = (propKey, option, value) => {
 export const updateCalendarStyleOptions = (propKey, option, value) => {
 	return { type: "UPDATE_CALENDER_STYLE_OPTIONS", payload: { propKey, option, value } };
 };
+
+export const updateBoxPlotStyleOptions = (propKey, option, value) => {
+	return { type: "UPDATE_BOXPLOT_STYLE_OPTIONS", payload: { propKey, option, value } };
+};

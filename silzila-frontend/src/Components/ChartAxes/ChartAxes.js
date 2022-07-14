@@ -176,7 +176,8 @@ const ChartAxes = ({
 
 		if (
 			chartProp.properties[propKey].chartType === "heatmap" ||
-			chartProp.properties[propKey].chartType === "crossTab"
+			chartProp.properties[propKey].chartType === "crossTab" ||
+			chartProp.properties[propKey].chartType === "boxPlot"
 		) {
 			var combinedValues = { name: "Dimension", fields: [] };
 			var values1 = axesValues[1].fields;
