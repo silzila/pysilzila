@@ -69,7 +69,15 @@ const chartControl = {
 				yearLabelFontSize: 12,
 				calendarGap: 30,
 			},
-      
+
+			boxPlotChartControls: {
+				colorBy: "series", // or data,
+				minBoxWidth: 10, // px or %,
+				maxBoxWidth: 30,
+				boxborderWidth: "2", //px
+				flipAxis: false,
+			},
+
 			crossTabStyleOptions: {
 				borderWidth: 1,
 				lineHeight: 1,
@@ -318,6 +326,14 @@ const chartControlsReducer = (state = chartControl, action) => {
 							yearLabelColor: "black",
 							yearLabelFontSize: 12,
 							calendarGap: 30,
+						},
+
+						boxPlotChartControls: {
+							colorBy: "series", // or data,
+							minBoxWidth: 10, // px or %,
+							maxBoxWidth: 30,
+							boxborderWidth: "2", //px
+							flipAxis: false,
 						},
 						crossTabHeaderLabelOptions: {
 							labelColorManual: false,
@@ -569,6 +585,14 @@ const chartControlsReducer = (state = chartControl, action) => {
 							yearLabelColor: "black",
 							yearLabelFontSize: 12,
 							calendarGap: 30,
+						},
+
+						boxPlotChartControls: {
+							colorBy: "series", // or data,
+							minBoxWidth: 10, // px or %,
+							maxBoxWidth: 30,
+							boxborderWidth: "2", //px
+							flipAxis: false,
 						},
 						crossTabHeaderLabelOptions: {
 							labelColorManual: false,
@@ -1124,6 +1148,19 @@ const chartControlsReducer = (state = chartControl, action) => {
 				properties: {
 					[action.payload.propKey]: {
 						calendarStyleOptions: {
+							[action.payload.option]: {
+								$set: action.payload.value,
+							},
+						},
+					},
+				},
+			});
+
+		case "UPDATE_BOXPLOT_STYLE_OPTIONS":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						boxPlotChartControls: {
 							[action.payload.option]: {
 								$set: action.payload.value,
 							},

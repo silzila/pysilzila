@@ -140,14 +140,14 @@ const ChartMargin = ({
 						/>
 						<div className="optionDescription">Left:</div>
 						<SliderWithInput
-							percent={true}
+							percent={false}
 							sliderValue={chartControl.properties[propKey].chartMargin.left}
 							sliderMinMax={{ min: 10, max: 100, step: 1 }}
 							changeValue={(value) => updateMargin(propKey, "left", value)}
 						/>
 						<div className="optionDescription">Calendar gap</div>
 						<SliderWithInput
-							percent={true}
+							percent={false}
 							sliderValue={
 								chartControl.properties[propKey].calendarStyleOptions.calendarGap
 							}
@@ -165,7 +165,7 @@ const ChartMargin = ({
 			case "scatterPlot":
 			case "heatmap":
 			case "crosstab":
-				// case "calendar":
+			case "boxPlot":
 				return (
 					<React.Fragment>
 						<div className="optionDescription">MARGIN RESIZE:</div>

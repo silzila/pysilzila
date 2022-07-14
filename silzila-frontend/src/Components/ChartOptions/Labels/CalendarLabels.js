@@ -22,6 +22,7 @@ const CalendarLabels = ({
 
 	return (
 		<div className="optionsInfo">
+			<div className="optionDescription">YEAR LABEL</div>
 			<div className="optionDescription" style={{ padding: "0 6% 5px 4%" }}>
 				<label
 					htmlFor="enableDisable"
@@ -66,7 +67,7 @@ const CalendarLabels = ({
 							onChange={(e) => {
 								updateCalendarStyleOptions(
 									propKey,
-									"yearLabelPostition",
+									"yearLabelPosition",
 									e.target.value
 								);
 							}}
@@ -125,6 +126,11 @@ const CalendarLabels = ({
 					/>
 				</>
 			) : null}
+			<div
+				style={{ borderTop: "1px solid rgb(211,211,211)", margin: "0.5rem 6% 0.5rem" }}
+			></div>
+			<div className="optionDescription">MONTH LABEL</div>
+
 			<div className="optionDescription" style={{ padding: "0 6% 5px 4%" }}>
 				<label
 					htmlFor="enableDisable"
@@ -149,10 +155,6 @@ const CalendarLabels = ({
 
 			{calStyle.showMonthLabel ? (
 				<>
-					{/* 1.labelMargine
-            2.labelPosition
-            3.color
-            4.fontSize */}
 					<div className="optionDescription">Label Margin</div>
 					<SliderWithInput
 						percent={false}
@@ -174,7 +176,7 @@ const CalendarLabels = ({
 							onChange={(e) => {
 								updateCalendarStyleOptions(
 									propKey,
-									"monthLabelPostition",
+									"monthLabelPosition",
 									e.target.value
 								);
 							}}
@@ -227,6 +229,11 @@ const CalendarLabels = ({
 					/>
 				</>
 			) : null}
+			<div
+				style={{ borderTop: "1px solid rgb(211,211,211)", margin: "0.5rem 6% 0.5rem" }}
+			></div>
+			<div className="optionDescription">DAY LABEL</div>
+
 			<div className="optionDescription" style={{ padding: "0 6% 5px 4%" }}>
 				<label
 					htmlFor="enableDisable"
@@ -267,7 +274,7 @@ const CalendarLabels = ({
 							onChange={(e) => {
 								updateCalendarStyleOptions(
 									propKey,
-									"dayLabelPostition",
+									"dayLabelPosition",
 									e.target.value
 								);
 							}}

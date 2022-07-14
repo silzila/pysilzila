@@ -16,6 +16,7 @@ import ChartStyle from "./Style/ChartStyle";
 import ColorSteps from "./Color/ColorSteps";
 import CalendarLabels from "./Labels/CalendarLabels";
 import CalendarChartStyles from "./Style/CalendarChartStyles";
+import BoxPlotChartStyles from "./Style/BoxPlotChartStyles";
 
 const ControlDetail = ({ chartProp, tabTileProps }) => {
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
@@ -65,6 +66,8 @@ const ControlDetail = ({ chartProp, tabTileProps }) => {
 			case "Style":
 				if (chartType === "calendar") {
 					return <CalendarChartStyles />;
+				} else if (chartType === "boxPlot") {
+					return <BoxPlotChartStyles />;
 				} else {
 					return <ChartStyle />;
 				}
