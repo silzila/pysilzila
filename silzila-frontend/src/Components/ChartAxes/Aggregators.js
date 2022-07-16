@@ -93,6 +93,15 @@ const measurePrefixes = {
 	},
 };
 
+const geoPrefixes = {
+	integer: [{ name: "ISO-Num", id: "isoNum" }],
+	text: [
+		{ name: "Full Name", id: "name" },
+		{ name: "ISO-2", id: "iso2" },
+		{ name: "ISO-3", id: "iso3" },
+		{ name: "ISO-Numeric", id: "isoNum" },
+	],
+};
 
 const Aggregators = {
 	Dimension: dimensionPrefixes,
@@ -101,8 +110,8 @@ const Aggregators = {
 	Measure: measurePrefixes,
 	X: measurePrefixes,
 	Y: measurePrefixes,
+	Location: geoPrefixes,
 };
-
 
 export const AggregatorKeys = {
 	sum: "Sum",
@@ -122,6 +131,11 @@ export const AggregatorKeys = {
 	dayofmonth: "Day Mn",
 	dayofweek: "Day Wk",
 	date: "Date",
+
+	name: "Name",
+	iso2: "ISO-2",
+	iso3: "ISO-3",
+	isoNum: "ISO-Num",
 };
 
 export default Aggregators;

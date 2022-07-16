@@ -145,6 +145,11 @@ const Card = ({
 			}
 		}
 
+		if (axisTitle === "Location") {
+			console.log(axisTitle, field.dataType);
+			options = options.concat(Aggregators[axisTitle][field.dataType]);
+		}
+
 		return (
 			<Menu
 				id="basic-menu"

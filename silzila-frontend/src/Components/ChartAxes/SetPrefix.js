@@ -10,11 +10,17 @@ export const setPrefix = (fieldData, binName, chartType) => {
 			if (binName === "Measure" || binName === "X" || binName === "Y") {
 				data.agg = "sum";
 			}
+			if (binName === "Location") {
+				data.agg = "isoNum";
+			}
 			break;
 
 		case "text":
 			if (binName === "Measure" || binName === "X" || binName === "Y") {
 				data.agg = "count";
+			}
+			if ((binName = "Location")) {
+				data.agg = "name";
 			}
 			break;
 

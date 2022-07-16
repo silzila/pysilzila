@@ -10,7 +10,12 @@ import DropZone from "./DropZone";
 import FetchData from "../../ServerCall/FetchData";
 import { updateChartData } from "../../redux/ChartProperties/actionsChartControls";
 import LoadingPopover from "../CommonFunctions/PopOverComponents/LoadingPopover";
-import { canReUseData, toggleAxesEdited } from "../../redux/ChartProperties/actionsChartProperties";
+import {
+	canReUseData,
+	changeGeoLocation,
+	toggleAxesEdited,
+} from "../../redux/ChartProperties/actionsChartProperties";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 // format the chartAxes into the way it is needed for api call
 export const getChartData = async (axesValues, chartProp, propKey, token) => {
@@ -132,6 +137,7 @@ const ChartAxes = ({
 	updateChartData,
 	toggleAxesEdit,
 	reUseOldData,
+	changeLocation,
 }) => {
 	const [loading, setLoading] = useState(false);
 
@@ -202,6 +208,32 @@ const ChartAxes = ({
 
 	return (
 		<div className="charAxesArea">
+			{chartProp.properties[propKey].chartType === "geoChart" && (
+				<div
+					style={{ backgroundColor: "#d3d3d3", display: "flex", flexDirection: "column" }}
+				>
+					<span className="axisTitle"></span>
+					<FormControl size="small" sx={{ margin: "0.5rem" }}>
+						<InputLabel sx={{ fontSize: "12px", lineHeight: "1.5rem" }}>
+							Select Map
+						</InputLabel>
+						<Select
+							sx={{ fontSize: "14px", height: "1.5rem", backgroundColor: "white" }}
+							label="Select Map"
+							value={chartProp.properties[propKey].geoLocation}
+							onChange={(e) => {
+								console.log(e.target.value);
+								changeLocation(propKey, e.target.value);
+							}}
+						>
+							<MenuItem value="world">World</MenuItem>
+							<MenuItem value="india">India</MenuItem>
+							<MenuItem value="usa">USA</MenuItem>
+							<MenuItem value="hongKong">HongKong</MenuItem>
+						</Select>
+					</FormControl>
+				</div>
+			)}
 			{dropZones.map((zone, zoneI) => (
 				<DropZone bIndex={zoneI} name={zone} propKey={propKey} key={zoneI} />
 			))}
@@ -224,6 +256,7 @@ const mapDispatchToProps = (dispatch) => {
 		updateChartData: (propKey, chartData) => dispatch(updateChartData(propKey, chartData)),
 		toggleAxesEdit: (propKey) => dispatch(toggleAxesEdited(propKey, false)),
 		reUseOldData: (propKey) => dispatch(canReUseData(propKey, false)),
+		changeLocation: (propKey, location) => dispatch(changeGeoLocation(propKey, location)),
 	};
 };
 

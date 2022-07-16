@@ -81,7 +81,7 @@ const ChartsInfo = {
 		dropZones: [
 			{ name: "Filter", allowedNumbers: 64, min: 0 },
 			{
-				name: "Dimension",
+				name: "Location",
 				allowedNumbers: 1,
 				min: 1,
 				dataType: ["text", "string", "timestamp"],

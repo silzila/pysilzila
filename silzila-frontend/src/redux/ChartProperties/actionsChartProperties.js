@@ -125,10 +125,11 @@ export const editChartPropItem = ({ action, details }) => {
 };
 
 export const changeChartType = (propKey, chartType) => {
-	return {
-		type: "CHANGE_CHART_TYPE",
-		payload: { propKey, chartType },
-	};
+	return { type: "CHANGE_CHART_TYPE", payload: { propKey, chartType } };
+};
+
+export const changeGeoLocation = (propKey, geoLocation) => {
+	return { type: "CHANGE_GEO_LOCATION", payload: { propKey, geoLocation } };
 };
 
 export const changeChartAxes = (propKey, newAxes) => {

@@ -48,8 +48,8 @@ export const chartTypes = [
 	{ name: "gauge", icon: gaugeChartIcon, value: "Gauge Chart" },
 	{ name: "funnel", icon: funnelChartIcon, value: "Funnel Chart" },
 	{ name: "heatmap", icon: heatMapIcon, value: "Heat Map" },
-	// { name: "geoChart", icon: geoChartIcon, value: "Geo Chart" },
 	{ name: "calendar", icon: calendarChartIcon, value: "Calendar Chart" },
+	{ name: "geoChart", icon: geoChartIcon, value: "Geo Chart" },
 ];
 
 const ChartTypes = ({
