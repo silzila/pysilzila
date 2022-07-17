@@ -97,27 +97,32 @@ class Field(BaseModel):
 
 
 class Filter(BaseModel):
-    filter_type: Literal['binary_user_selection', 'text_user_selection', 'number_user_selection',
+    filter_type: Literal['text_user_selection', 'text_search', 'number_user_selection',
                          'number_search', 'date_user_selection', 'date_search']
     table_id: str
     field_name: str
-    display_name: str
     data_type: Literal['text', 'integer',
                        'decimal', 'boolean', 'date', 'timestamp']
-    negate: Optional[bool]
-    user_selection: Optional[List[Any]]
-    search_type: Optional[Literal['equal_to', 'not_equal_to', 'greater_than', 'less_than',
-                                  'greater_than_equal_to', 'less_than_equal_to', 'between']]
-    search_condition: Optional[List[Any]]
-    time_grain: Optional[Literal['year',
-                                 'month', 'quarter', 'dayofweek', 'day']]
+    exclude: Optional[bool]
+    time_grain: Optional[Literal['year', 'quarter', 'month',
+                                 'yearquarter', 'yearmonth', 'date', 'dayofmonth', 'dayofweek']]
+    condition: Optional[Literal['equal_to', 'not_equal_to', 'greater_than', 'less_than',
+                                'greater_than_or_equal_to', 'less_than_or_equal_to', 'between',
+                                'begins_with', 'ends_with', 'contains']]
+    user_selection: List[Any]
+
+
+class FiltersPanel(BaseModel):
+    panel_name: str
+    any_condition_match: bool
+    filters: List[Filter]
 
 
 class Query(BaseModel):
     dims: Optional[List[Dim]]
     measures: Optional[List[Measure]]
     fields: Optional[List[Field]]
-    filters: Optional[List[Filter]]
+    filters: Optional[List[FiltersPanel]]
 
 
 ############################################################################
@@ -182,15 +187,15 @@ class ColumnFilterRegular(BaseModel):
 
 
 class ColumnFilter(BaseModel):
-    filter_type: Literal['binary_user_selection', 'text_user_selection', 'number_user_selection',
-                         'number_search', 'date_user_selection', 'date_search']
+    filter_type: Literal['text_user_selection', 'number_user_selection',
+                         'number_search', 'date_user_selection', 'date_search', 'today', 'tomorrow', 'yesterday', 'column_latest_date']
     table_id: Optional[str]
     field_name: Optional[str]
     display_name: Optional[str]
-    data_type: Literal['text', 'integer',
-                       'decimal', 'boolean', 'date', 'timestamp']
-    # filter_type: Literal['pick_from_list',
-    #                      'search_condition', 'aggregate_level_match']
+    data_type: Optional[Literal['text', 'integer',
+                                'decimal', 'boolean', 'date', 'timestamp']]
+    # filter_type: Optional[Literal['pick_from_list',
+    #                      'search_condition', 'aggregate_level_match']]
     # aggr: Optional[Literal['sum', 'avg', 'min', 'max', 'count',
     #                        'countnn', 'countn', 'countu']]
     time_grain: Optional[Literal['year', 'quarter',

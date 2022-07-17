@@ -23,9 +23,17 @@ async def build_relationship(req, data_schema) -> str:
 
     # populate unique_tables
     for key, value in (req).items():
-        for table in value:
-            if table["table_id"] not in unique_tables.get(key):
-                unique_tables.get(key).append(table["table_id"])
+        # dims, measures, fields are simple lists but filters is a little nested to get table_id
+        if key in ('dims', 'measures', 'fields'):
+            for table in value:
+                if table["table_id"] not in unique_tables.get(key):
+                    unique_tables.get(key).append(table["table_id"])
+        elif key == 'filters':
+            for panel in value:
+                for table in panel["filters"]:
+                    if table["table_id"] not in unique_tables.get(key):
+                        unique_tables.get(key).append(table["table_id"])
+
     unique_tables["all"].extend(unique_tables["dims"] + unique_tables["fields"] +
                                 unique_tables["filters"] + unique_tables["measures"])
     unique_tables["all"] = list(set(unique_tables["all"]))
