@@ -72,7 +72,6 @@ def build_where_clause(filter_list: list, vendor_name: str) -> str:
     in Query, "WHERE" key word should be kept only if there is Where condition expression
     Dialect specific and each dialect is handled as separate sections below
     """
-    print("filter list ==========", filter_list)
 
     WHERE = ""  # holds final where clause string
     _where = []  # holds individual condition as list
@@ -210,12 +209,12 @@ def build_where_clause(filter_list: list, vendor_name: str) -> str:
                     #         where = f"{_exclude}(EXTRACT(DOW FROM {val['table_id']}.{val['field_name']})::INTEGER) + 1 {EXPRSN} {val['user_selection'][0]}"
 
                     if val['time_grain'] in ('year', 'quarter', 'month', 'dayofmonth'):
-                        field_string = f"{_exclude}(EXTRACT({period_dict_postgres[val['time_grain']]} FROM {val['table_id']}.{val['field_name']})::INTEGER)"
+                        field_string = f"(EXTRACT({period_dict_postgres[val['time_grain']]} FROM {val['table_id']}.{val['field_name']})::INTEGER)"
                     elif val['time_grain'] == 'date':
-                        field_string = f"{_exclude}DATE({val['table_id']}.{val['field_name']})"
+                        field_string = f"DATE({val['table_id']}.{val['field_name']})"
                     # In postgres, dayofweek starts at 0 not 1, so need to add 1 to the function
                     elif val['time_grain'] == 'dayofweek':
-                        field_string = f"{_exclude}(EXTRACT(DOW FROM {val['table_id']}.{val['field_name']})::INTEGER) + 1"
+                        field_string = f"(EXTRACT(DOW FROM {val['table_id']}.{val['field_name']})::INTEGER) + 1"
 
                     # range expression condition
                     if val['condition'] == 'between':
