@@ -10,8 +10,8 @@ async def get_filter_values_pg(req, FROM_TBL):
     # get distinct values - binary, text & number fields
     ##############################################
     if req['filter_type'] in ['binary_user_selection', 'text_user_selection', 'number_user_selection']:
-        if req['table_id'] and req['field_name'] and req['display_name']:
-            if (req['data_type'] in ('text', 'boolean') or (req['data_type'] in ('integer', 'decimal'))):
+        if req['table_id'] and req['field_name']:
+            if req['data_type'] in ('text', 'boolean') or (req['data_type'] in ('integer', 'decimal')):
                 _select = f"{req['table_id']}.{req['field_name']}"
                 QUERY = f"SELECT DISTINCT {_select} FROM {FROM_TBL} ORDER BY 1"
             else:
@@ -25,7 +25,7 @@ async def get_filter_values_pg(req, FROM_TBL):
     # range values - number fields
     ##############################################
     elif req['filter_type'] == 'number_search':
-        if req['table_id'] and req['field_name'] and req['display_name']:
+        if req['table_id'] and req['field_name']:
             if req['data_type'] in ('integer', 'decimal'):
                 _min = f"SELECT MIN({req['table_id']}.{req['field_name']}) AS colmn FROM {FROM_TBL}"
                 _max = f"SELECT MAX({req['table_id']}.{req['field_name']}) AS colmn FROM {FROM_TBL}"
@@ -38,6 +38,24 @@ async def get_filter_values_pg(req, FROM_TBL):
                 status_code=400, detail="Number Search filter - mandatory field is missing")
 
     ##############################################
+    # DATE - get date value for Today, Yesterday, Tomorrow or latest date from a column
+    ##############################################
+    elif req['filter_type'] == 'today':
+        QUERY = f"SELECT CURRENT_DATE AS colmn"
+    elif req['filter_type'] == 'yesterday':
+        QUERY = f"SELECT CURRENT_DATE - 1 AS colmn"
+    elif req['filter_type'] == 'tomorrow':
+        QUERY = f"SELECT CURRENT_DATE + 1 AS colmn"
+    elif req['filter_type'] == 'column_latest_date':
+        if req['data_type'] not in ('date', 'timestamp'):
+            raise HTTPException(
+                status_code=400, detail="Data Type should be Date/Timestamp")
+        if not (req['table_id'] and req['field_name']):
+            raise HTTPException(
+                status_code=400, detail="Column Latest Date - mandatory field is missing")
+        QUERY = f"SELECT MAX({req['table_id']}.{req['field_name']})::DATE AS colmn FROM {FROM_TBL}"
+
+    ##############################################
     # DATE - dictinct values & Search
     ##############################################
     elif req['data_type'] in ('date', 'timestamp'):
@@ -45,10 +63,11 @@ async def get_filter_values_pg(req, FROM_TBL):
         # Date - dictinct values
         ###########################
         if req['filter_type'] == 'date_user_selection':
-            if req['table_id'] and req['field_name'] and req['display_name'] and req['time_grain']:
+            if req['table_id'] and req['field_name'] and req['time_grain']:
+
                 if req['time_grain'] == 'year':
-                    _select = f"EXTRACT(YEAR FROM {req['table_id']}.{req['field_name']})::INTEGER AS colmn"
-                    QUERY = f"SELECT DISTINCT {_select} FROM {FROM_TBL} ORDER BY 1"
+                    field = f"EXTRACT(YEAR FROM {req['table_id']}.{req['field_name']})::INTEGER AS colmn"
+                    QUERY = f"SELECT DISTINCT {field} FROM {FROM_TBL} ORDER BY 1"
 
                 elif req['time_grain'] == 'quarter':
                     field = f"CONCAT('Q', EXTRACT(QUARTER FROM {req['table_id']}.{req['field_name']})::INTEGER) AS colmn"
@@ -70,6 +89,7 @@ async def get_filter_values_pg(req, FROM_TBL):
                 elif req['time_grain'] == 'date':
                     field = f"DATE({req['table_id']}.{req['field_name']})"
                     QUERY = f"SELECT DISTINCT {field} FROM {FROM_TBL} ORDER BY 1"
+
                 # in postgres, dayofweek starts from 0. So we add +1 to be consistent across DB
                 elif req['time_grain'] == 'dayofweek':
                     field1 = f"EXTRACT(DOW FROM {req['table_id']}.{req['field_name']})::INTEGER +1"
@@ -77,8 +97,8 @@ async def get_filter_values_pg(req, FROM_TBL):
                     QUERY = f"SELECT {field2} AS dayofweek FROM {FROM_TBL} GROUP BY {field1},{field2} ORDER BY {field1}"
 
                 elif req['time_grain'] == 'dayofmonth':
-                    _select = f"EXTRACT(DAY FROM {req['table_id']}.{req['field_name']})::INTEGER AS colmn"
-                    QUERY = f"SELECT DISTINCT {_select} FROM {FROM_TBL} ORDER BY 1"
+                    field = f"EXTRACT(DAY FROM {req['table_id']}.{req['field_name']})::INTEGER AS colmn"
+                    QUERY = f"SELECT DISTINCT {field} FROM {FROM_TBL} ORDER BY 1"
 
                 else:
                     raise HTTPException(
@@ -90,21 +110,22 @@ async def get_filter_values_pg(req, FROM_TBL):
         # Date - Search
         ###########################
         elif req['filter_type'] == 'date_search':
-            if req['table_id'] and req['field_name'] and req['display_name'] and req['time_grain']:
+            if req['table_id'] and req['field_name'] and req['time_grain']:
+
                 if req['time_grain'] == 'year':
                     _col = f"EXTRACT(YEAR FROM {req['table_id']}.{req['field_name']})::INTEGER"
                     _min = f"SELECT MIN({_col}) AS colmn FROM {FROM_TBL}"
                     _max = f"SELECT MAX({_col}) AS colmn FROM {FROM_TBL}"
                     QUERY = f"{_min} UNION ALL {_max} ORDER BY 1"
 
-                elif req['time_grain'] == 'month':
-                    _col = f"EXTRACT(MONTH FROM {req['table_id']}.{req['field_name']})::INTEGER"
+                elif req['time_grain'] == 'quarter':
+                    _col = f"EXTRACT(QUARTER FROM {req['table_id']}.{req['field_name']})::INTEGER"
                     _min = f"SELECT MIN({_col}) AS colmn FROM {FROM_TBL}"
                     _max = f"SELECT MAX({_col}) AS colmn FROM {FROM_TBL}"
                     QUERY = f"{_min} UNION ALL {_max} ORDER BY 1"
 
-                elif req['time_grain'] == 'quarter':
-                    _col = f"EXTRACT(QUARTER FROM {req['table_id']}.{req['field_name']})::INTEGER"
+                elif req['time_grain'] == 'month':
+                    _col = f"EXTRACT(MONTH FROM {req['table_id']}.{req['field_name']})::INTEGER"
                     _min = f"SELECT MIN({_col}) AS colmn FROM {FROM_TBL}"
                     _max = f"SELECT MAX({_col}) AS colmn FROM {FROM_TBL}"
                     QUERY = f"{_min} UNION ALL {_max} ORDER BY 1"
@@ -126,6 +147,7 @@ async def get_filter_values_pg(req, FROM_TBL):
                     _min = f"SELECT MIN({_col}) AS colmn FROM {FROM_TBL}"
                     _max = f"SELECT MAX({_col}) AS colmn FROM {FROM_TBL}"
                     QUERY = f"{_min} UNION ALL {_max} ORDER BY 1"
+
                 else:
                     raise HTTPException(
                         status_code=400, detail="Aggregation is wrong")
@@ -141,4 +163,5 @@ async def get_filter_values_pg(req, FROM_TBL):
 
     # print(" =============== Filter Options QUERY ==================================")
     # print(QUERY)
+
     return QUERY

@@ -116,6 +116,7 @@ const CalendarChart = ({
 		}
 	}, [chartControl, chartControl.chartData]);
 
+	console.log(chartData);
 	function getVirtulData(year) {
 		let objKey =
 			chartProperty.properties[propKey].chartAxes[1].fields[0].fieldname +

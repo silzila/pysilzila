@@ -175,14 +175,14 @@ async def query(request: Request, query: schema.Query, dc_uid: str, ds_uid: str,
     uid = request.state.uid
     vendor_name = await activate_dc_ds(dc_uid, ds_uid, uid, db)
     qry_composed = await query_composer.compose_query(query, dc_uid, ds_uid, vendor_name)
-    # print("^^^^^^^^^^^^^^^^ final Query ^^^^^^^^^^\n", qry_composed)
+    print("^^^^^^^^^^^^^^^^ final Query ^^^^^^^^^^\n", qry_composed)
     try:
         qry_result = await engine.run_query(dc_uid, qry_composed)
         return {"query": qry_composed, "result": qry_result}
     except Exception as error:
         # logger.exception("Something Wrong in query execution")
         raise HTTPException(
-            status_code=401, detail="something went wrong in running query")
+            status_code=401, detail=error)  # "something went wrong in running query")
 
 
 # Future Development
