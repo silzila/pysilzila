@@ -54,8 +54,8 @@ const EditDataSet = ({
 						isNewTable: false,
 
 						table_position: {
-							x: tbl.table_position.x,
-							y: tbl.table_position.y,
+							x: tbl.table_position ? tbl.table_position.x : "",
+							y: tbl.table_position ? tbl.table_position.y : "",
 						},
 					};
 				})
