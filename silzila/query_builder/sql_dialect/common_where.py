@@ -76,20 +76,16 @@ def build_where_clause(filter_list: list, vendor_name: str) -> str:
     WHERE = ""  # holds final where clause string
     _where = []  # holds individual condition as list
 
+    # when there is no filter condition
+    if len(filter_list) == 0:
+        return ""
+    # when at least one filter is supplied
     for val in filter_list[0]['filters']:
-
         # 1. DIRECT MATCH filter, eg. city = 'Paris',  sales = 210.5
         if val['filter_type'] in ('text_user_selection' 'number_user_selection') and val['data_type'] in ('text', 'integer', 'decimal', 'boolean'):
             # check if Negative match or Positive match
             _exclude = make_exclude_operator(
                 val['exclude'], val['user_selection'])
-            # if val['exclude'] == True:
-            #     # a. exclude single value, eg. city != 'Paris'
-            #     if len(val['user_selection']) == 1:
-            #         _exclude = "!"
-            #     # b. exclude multiple values, eg. city NOT IN ('Paris', 'Chennai')
-            #     elif len(val['user_selection']) > 1:
-            #         _exclude = "NOT"
 
             # a. match single value, eg. city = 'Paris'
             if len(val['user_selection']) == 1:
@@ -183,30 +179,6 @@ def build_where_clause(filter_list: list, vendor_name: str) -> str:
                             map(str, val['user_selection']))
 
                     _exclude = make_exclude_string(val['exclude'])
-
-                    # this code is simplified, so not needed.
-                    # # range expression condition
-                    # if val['condition'] == 'between':
-                    #     if val['time_grain'] in ('year', 'quarter', 'month', 'dayofmonth'):
-                    #         where = f"{_exclude}(EXTRACT({period_dict_postgres[val['time_grain']]} FROM {val['table_id']}.{val['field_name']})::INTEGER) BETWEEN {val['user_selection'][0]} AND {val['user_selection'][1]}"
-                    #     elif val['time_grain'] == 'date':
-                    #         where = f"{_exclude}DATE({val['table_id']}.{val['field_name']}) BETWEEN '{val['user_selection'][0]}' AND '{val['user_selection'][1]}'"
-                    #     # In postgres, dayofweek starts at 0 not 1, so need to add 1 to the function
-                    #     elif val['time_grain'] == 'dayofweek':
-                    #         where = f"{_exclude}(EXTRACT(DOW FROM {val['table_id']}.{val['field_name']})::INTEGER) + 1 BETWEEN {val['user_selection'][0]} AND {val['user_selection'][1]}"
-
-                    # # single (expresssion) condition
-                    # elif val['condition'] in ('equal_to', 'not_equal_to', 'greater_than', 'less_than', 'greater_than_or_equal_to', 'less_than_or_equal_to'):
-                    #     EXPRSN = comparison_operator_name_to_symbol(
-                    #         val['condition'])
-
-                    #     if val['time_grain'] in ('year', 'quarter', 'month', 'dayofmonth'):
-                    #         where = f"{_exclude}(EXTRACT({period_dict_postgres[val['time_grain']]} FROM {val['table_id']}.{val['field_name']})::INTEGER) {EXPRSN} {val['user_selection'][0]}"
-                    #     elif val['time_grain'] == 'date':
-                    #         where = f"{_exclude}DATE({val['table_id']}.{val['field_name']}) {EXPRSN} '{val['user_selection'][0]}'"
-                    #     # In postgres, dayofweek starts at 0 not 1, so need to add 1 to the function
-                    #     elif val['time_grain'] == 'dayofweek':
-                    #         where = f"{_exclude}(EXTRACT(DOW FROM {val['table_id']}.{val['field_name']})::INTEGER) + 1 {EXPRSN} {val['user_selection'][0]}"
 
                     if val['time_grain'] in ('year', 'quarter', 'month', 'dayofmonth'):
                         field_string = f"(EXTRACT({period_dict_postgres[val['time_grain']]} FROM {val['table_id']}.{val['field_name']})::INTEGER)"
