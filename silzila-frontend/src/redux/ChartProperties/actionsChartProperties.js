@@ -75,7 +75,7 @@ export const toggleAxesEdited = (propKey, axesEdited) => {
 
 export const editChartPropItem = ({ action, details }) => {
 	return (dispatch) => {
-		dispatch(toggleAxesEdited(details.propKey, true));
+		if (details.toggle !== false) dispatch(toggleAxesEdited(details.propKey, true));
 		switch (action) {
 			case "update":
 				dispatch(

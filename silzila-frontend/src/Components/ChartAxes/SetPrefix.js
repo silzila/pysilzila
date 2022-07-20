@@ -11,7 +11,7 @@ export const setPrefix = (fieldData, binName, chartType) => {
 				data.agg = "sum";
 			}
 			if (binName === "Location") {
-				data.agg = "isoNum";
+				data.agg = "fullName";
 			}
 			break;
 
@@ -20,7 +20,7 @@ export const setPrefix = (fieldData, binName, chartType) => {
 				data.agg = "count";
 			}
 			if ((binName = "Location")) {
-				data.agg = "name";
+				data.agg = "fullName";
 			}
 			break;
 

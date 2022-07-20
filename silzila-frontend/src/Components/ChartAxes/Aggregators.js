@@ -94,13 +94,31 @@ const measurePrefixes = {
 };
 
 const geoPrefixes = {
-	integer: [{ name: "ISO-Num", id: "isoNum" }],
-	text: [
-		{ name: "Full Name", id: "name" },
+	// integer: [{ name: "ISO-Num", id: "isoNum" }],
+	world: [
+		{ name: "Full Name", id: "fullName" },
+		{ name: "Short Name", id: "shortName" },
 		{ name: "ISO-2", id: "iso2" },
 		{ name: "ISO-3", id: "iso3" },
 		{ name: "ISO-Numeric", id: "isoNum" },
 	],
+	india: [
+		{ name: "Full Name", id: "fullName" },
+		{ name: "State Code", id: "stateCode" },
+	],
+	usa: [
+		{ name: "Full Name", id: "fullName" },
+		{ name: "ISO Code", id: "iso_code" },
+	],
+
+	// world: [
+	// 	{ name: "Countries", id: "countries" },
+	// 	{ name: "Cities", id: "cities" },
+	// ],
+	// singleCountry: [
+	// 	{ name: "States", id: "states" },
+	// 	{ name: "Cities", id: "cities" },
+	// ],
 };
 
 const Aggregators = {
@@ -132,10 +150,16 @@ export const AggregatorKeys = {
 	dayofweek: "Day Wk",
 	date: "Date",
 
-	name: "Name",
+	fullName: "Full Name",
 	iso2: "ISO-2",
 	iso3: "ISO-3",
 	isoNum: "ISO-Num",
+	shortName: "Short Name",
+	stateCode: "St code",
+
+	// countries: "Country",
+	// state: "State",
+	// cities: "City",
 };
 
 export default Aggregators;

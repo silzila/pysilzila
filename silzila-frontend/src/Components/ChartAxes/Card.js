@@ -72,6 +72,31 @@ const Card = ({
 		}
 	};
 
+	// var chartType = chartProp.properties[propKey].chartType;
+	// var geoLocation = chartProp.properties[propKey].geoLocation;
+
+	// const [selectedGeoPrefix, setSelectedGeoPrefix] = useState("");
+	// const [geoAnchorEl, setGeoAnchorEl] = useState(null);
+	// const openGeo = Boolean(geoAnchorEl);
+	// const geoOptions = [
+	// 	{ name: "Full Name", id: "name" },
+	// 	{ name: "ISO-2", id: "iso2" },
+	// 	{ name: "ISO-3", id: "iso3" },
+	// 	{ name: "ISO-Numeric", id: "isoNum" },
+	// ];
+
+	// const handleGeoMouseOver = (e) => {
+	// 	console.log(e.target.value);
+	// 	// setSelectedGeoPrefix(name);
+	// 	console.log(e.target);
+	// 	setGeoAnchorEl(e.target);
+	// };
+	// console.log(geoAnchorEl);
+
+	// const handleGeoClose = () => {
+	// 	setGeoAnchorEl(null);
+	// };
+
 	var menuStyle = { fontSize: "12px", padding: "2px 1rem" };
 	var menuSelectedStyle = {
 		fontSize: "12px",
@@ -122,6 +147,37 @@ const Card = ({
 		},
 	});
 
+	// const RenderGeoMenu = useCallback(() => {
+	// 	return (
+	// 		<Menu
+	// 			id="basic-menu"
+	// 			anchorEl={geoAnchorEl}
+	// 			open={openGeo}
+	// 			onClose={() => handleGeoClose()}
+	// 			// onClose={() => handleClose("clickOutside")}
+	// 			MenuListProps={{
+	// 				"aria-labelledby": "basic-button",
+	// 			}}
+	// 		>
+	// 			{geoOptions.map((opt) => {
+	// 				return (
+	// 					<MenuItem
+	// 						// onClose={() => handleGeoClose()}
+	// 						// onMouseOver={(e) => handleGeoMouseOver(e)}
+	// 						// onClick={() => handleClose("agg", opt.id)}
+	// 						sx={menuStyle}
+	// 						key={opt.id}
+	// 					>
+	// 						{opt.name}
+	// 					</MenuItem>
+	// 				);
+	// 			})}
+	// 		</Menu>
+	// 	);
+	// });
+
+	var geoLocation = chartProp.properties[propKey].geoLocation;
+
 	// List of options to show at the end of each card
 	// (like, year, month, day, or Count, sum, avg etc)
 	const RenderMenu = useCallback(() => {
@@ -147,7 +203,11 @@ const Card = ({
 
 		if (axisTitle === "Location") {
 			console.log(axisTitle, field.dataType);
-			options = options.concat(Aggregators[axisTitle][field.dataType]);
+			options = options.concat(Aggregators[axisTitle][geoLocation]);
+
+			// options = options.concat(
+			// 	Aggregators[axisTitle][geoLocation === "world" ? "world" : "singleCountry"]
+			// );
 		}
 
 		return (
@@ -160,6 +220,27 @@ const Card = ({
 					"aria-labelledby": "basic-button",
 				}}
 			>
+				{/* {chartType === "geoChart" && axisTitle === "Location" ? (
+					options.length > 0 ? (
+						options.map((opt) => {
+							console.log(opt);
+							return (
+								<MenuItem
+									onMouseOver={handleGeoMouseOver}
+									// onClick={() => handleClose("agg", opt.id)}
+									sx={
+										opt.id === selectedGeoPrefix ? menuSelectedStyle : menuStyle
+									}
+									key={opt.id}
+									value={opt.name}
+								>
+									{opt.name}
+								</MenuItem>
+							);
+						})
+					) : null
+				) : ( */}
+
 				{options.length > 0
 					? options.map((opt) => {
 							return (
@@ -197,6 +278,8 @@ const Card = ({
 						<i>-- No options --</i>
 					</MenuItem>
 				) : null}
+
+				{/* )} */}
 			</Menu>
 		);
 	});
@@ -240,6 +323,7 @@ const Card = ({
 				<KeyboardArrowDownRoundedIcon style={{ fontSize: "14px", margin: "auto" }} />
 			</button>
 			<RenderMenu />
+			{/* <RenderGeoMenu /> */}
 		</div>
 	) : null;
 };
@@ -262,7 +346,7 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch(
 				editChartPropItem({
 					action: "updateQuery",
-					details: { propKey, binIndex, itemIndex, item },
+					details: { propKey, binIndex, itemIndex, item, toggle: false },
 				})
 			),
 

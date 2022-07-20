@@ -5,9 +5,11 @@ import worldMap from "./Data/world_low_res.json";
 import usaMap from "./Data/USA.json";
 import indiaMap from "./Data/india.json";
 import hongKongMap from "./Data/HongKong.json";
-import { usaData, indiaData } from "../data";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { connect, useSelector } from "react-redux";
+
+import countryCodes from "./Data/country-codes.json";
+import indiaCodes from "./Data/india-codes.json";
+import usaCodes from "./Data/usa-codes.json";
 
 var usaAcc = {
 	Alaska: {
@@ -25,12 +27,6 @@ var usaAcc = {
 		top: 26,
 		width: 2,
 	},
-};
-
-var locationCodesMapping = {
-	world: { name: "name", iso2: "", iso3: "", isoNum: "" },
-	india: { name: "name", iso2: "", iso3: "", isoNum: "" },
-	usa: { name: "name", iso2: "", iso3: "", isoNum: "" },
 };
 
 // // "scalerank": 1,
@@ -109,27 +105,62 @@ const GeoChart = ({
 	chartProp,
 	chartControls,
 }) => {
-	// var locAggregator = chartProp.properties[propKey].chartAxes[1].fields[0].agg;
-	// console.log(locAggregator);
+	var locAggregator = chartProp.properties[propKey].chartAxes[1].fields[0]
+		? chartProp.properties[propKey].chartAxes[1].fields[0].agg
+		: "";
+	console.log(locAggregator);
 
 	var chartControl = chartControls.properties[propKey];
 	let chartData = chartControl.chartData ? chartControl.chartData.result : "";
-	console.log(chartData);
 
 	const geoLocation = useSelector(
 		(state) => state.chartProperties.properties[propKey].geoLocation
 	);
 
-	// console.log(worldCovidData);
 	var formattedData = [];
-	var dataValues = [];
+	var dataValues = []; // used for computing min max values
+
 	var dataKeys = chartData && Object.keys(chartData[0]);
 	console.log(dataKeys);
 	chartData &&
 		chartData.forEach((dt) => {
-			var cntData = { name: dt[dataKeys[0]], value: dt[dataKeys[1]] };
-			formattedData.push(cntData);
 			dataValues.push(dt[dataKeys[1]]);
+
+			switch (geoLocation) {
+				case "india":
+					var indObj = indiaCodes.filter(
+						(obj) => obj[locAggregator] === dt[dataKeys[0]]
+					)[0];
+					if (indObj) {
+						console.log(indObj);
+						var indiaData = { name: indObj.fullName, value: dt[dataKeys[1]] };
+						formattedData.push(indiaData);
+					}
+					break;
+
+				case "usa":
+					var usaObj = usaCodes.filter(
+						(obj) => obj[locAggregator] === dt[dataKeys[0]]
+					)[0];
+					console.log(usaObj);
+					if (usaObj) {
+						var usaData = { name: usaObj.fullName, value: dt[dataKeys[1]] };
+						formattedData.push(usaData);
+					}
+					break;
+
+				case "world":
+				default:
+					var cntrObj = countryCodes.filter(
+						(obj) => obj[locAggregator] === dt[dataKeys[0]]
+					)[0];
+
+					if (cntrObj) {
+						var cntData = { name: cntrObj.shortName, value: dt[dataKeys[1]] };
+						formattedData.push(cntData);
+					}
+					break;
+			}
 		});
 
 	const [minMax, setMinMax] = useState({ min: 0, max: 1 });
@@ -153,30 +184,6 @@ const GeoChart = ({
 	};
 
 	registerMap(geoLocation, selectedAreaMap[geoLocation], geoLocation === "usa" ? usaAcc : null);
-
-	// Get first three features from geomap
-	var geoFeature = selectedAreaMap[geoLocation].features.slice(0, 3);
-
-	// Get properties of first three features in a new array
-	var geoProperties = [];
-	geoFeature.forEach((ftr) => {
-		geoProperties.push(ftr.properties);
-	});
-	console.log(geoProperties);
-
-	// Get all the key values of a geoProperty
-	var unfilteredGeoPropKeys = Object.keys(geoProperties[0]);
-	unfilteredGeoPropKeys.forEach((key) => {
-		var tempPropValuesArray = [];
-		tempPropValuesArray.push(geoProperties[0][key]);
-		tempPropValuesArray.push(geoProperties[1][key]);
-		tempPropValuesArray.push(geoProperties[2][key]);
-		// console.log(key, tempPropValuesArray);
-		let unique = [...new Set(tempPropValuesArray)];
-		if (unique.length > 1) {
-			console.log(key, unique);
-		}
-	});
 
 	return (
 		<>

@@ -1,0 +1,146 @@
+[
+  {
+    "fullName": "Telangana",
+    "state_code": 0
+  },
+  {
+    "fullName": "Andaman & Nicobar Island",
+    "state_code": 35
+  },
+  {
+    "fullName": "Andhra Pradesh",
+    "state_code": 28
+  },
+  {
+    "fullName": "Arunanchal Pradesh",
+    "state_code": 12
+  },
+  {
+    "fullName": "Assam",
+    "state_code": 18
+  },
+  {
+    "fullName": "Bihar",
+    "state_code": 10
+  },
+  {
+    "fullName": "Chhattisgarh",
+    "state_code": 22
+  },
+  {
+    "fullName": "Daman & Diu",
+    "state_code": 25
+  },
+  {
+    "fullName": "Goa",
+    "state_code": 30
+  },
+  {
+    "fullName": "Gujarat",
+    "state_code": 24
+  },
+  {
+    "fullName": "Haryana",
+    "state_code": 6
+  },
+  {
+    "fullName": "Himachal Pradesh",
+    "state_code": 2
+  },
+  {
+    "fullName": "Jammu & Kashmir",
+    "state_code": 1
+  },
+  {
+    "fullName": "Jharkhand",
+    "state_code": 20
+  },
+  {
+    "fullName": "Karnataka",
+    "state_code": 29
+  },
+  {
+    "fullName": "Kerala",
+    "state_code": 32
+  },
+  {
+    "fullName": "Lakshadweep",
+    "state_code": 31
+  },
+  {
+    "fullName": "Madhya Pradesh",
+    "state_code": 23
+  },
+  {
+    "fullName": "Maharashtra",
+    "state_code": 27
+  },
+  {
+    "fullName": "Manipur",
+    "state_code": 14
+  },
+  {
+    "fullName": "Chandigarh",
+    "state_code": 4
+  },
+  {
+    "fullName": "Puducherry",
+    "state_code": 34
+  },
+  {
+    "fullName": "Punjab",
+    "state_code": 3
+  },
+  {
+    "fullName": "Rajasthan",
+    "state_code": 8
+  },
+  {
+    "fullName": "Sikkim",
+    "state_code": 11
+  },
+  {
+    "fullName": "Tamil Nadu",
+    "state_code": 33
+  },
+  {
+    "fullName": "Tripura",
+    "state_code": 16
+  },
+  {
+    "fullName": "Uttar Pradesh",
+    "state_code": 9
+  },
+  {
+    "fullName": "Uttarakhand",
+    "state_code": 5
+  },
+  {
+    "fullName": "West Bengal",
+    "state_code": 19
+  },
+  {
+    "fullName": "Odisha",
+    "state_code": 21
+  },
+  {
+    "fullName": "Dadara & Nagar Havelli",
+    "state_code": 26
+  },
+  {
+    "fullName": "Meghalaya",
+    "state_code": 17
+  },
+  {
+    "fullName": "Mizoram",
+    "state_code": 15
+  },
+  {
+    "fullName": "Nagaland",
+    "state_code": 13
+  },
+  {
+    "fullName": "NCT of Delhi",
+    "state_code": 7
+  }
+]

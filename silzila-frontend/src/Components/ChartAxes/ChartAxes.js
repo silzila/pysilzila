@@ -31,6 +31,10 @@ export const getChartData = async (axesValues, chartProp, propKey, token) => {
 				dim = "dims";
 				break;
 
+			case "Location":
+				dim = "dims";
+				break;
+
 			case "Measure":
 				dim = "measures";
 				break;

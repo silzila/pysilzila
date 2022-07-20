@@ -87,7 +87,9 @@ const chartPropertiesState = (state = chartProperties, action) => {
 						// General Tab Info
 						tabId: action.payload.tabId,
 						tileId: action.payload.tileId,
+
 						chartType: "crossTab",
+						geoLocation: "world",
 
 						// Left Column
 						axesEdited: false,
@@ -140,7 +142,9 @@ const chartPropertiesState = (state = chartProperties, action) => {
 						// General Tab Info
 						tabId: action.payload.tabId,
 						tileId: action.payload.tileId,
+
 						chartType: "crossTab",
+						geoLocation: "world",
 
 						// Left Column
 						axesEdited: false,
