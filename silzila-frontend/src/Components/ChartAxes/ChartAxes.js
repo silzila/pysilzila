@@ -14,6 +14,98 @@ import { canReUseData, toggleAxesEdited } from "../../redux/ChartProperties/acti
 
 // format the chartAxes into the way it is needed for api call
 export const getChartData = async (axesValues, chartProp, propKey, token) => {
+
+/*	PRS 21/07/2022	Construct filter object for service call */	
+const getChartLeftFilter = () => {
+  let _type = {};
+
+  let _chartProp = chartProp.properties[propKey].chartAxes[0];
+
+  _type.panel_name = "chart_filters";
+  _type.any_condition_match = _chartProp.any_condition_match || false;
+  _type.filters = [];
+
+  /*	To determine filter type	*/
+  const _getFilterType = (item) => {
+    let _type = "";
+
+    switch (item.dataType) {
+      case "integer":
+      case "decimal":
+        _type = "number";
+        break;
+      case "timestamp":
+      case "date":
+        _type = "date";
+        break;
+      default:
+        _type = "text";
+        break;
+    }
+
+    return _type.concat(
+      "_",
+      item.fieldtypeoption === "Search Condition" ? "search" : "user_selection"
+    );
+  };
+
+  /*	Set User Selection property */
+  const _getUserSelection = (item) => {
+    if (item.fieldtypeoption === "Search Condition") {
+      if (item.exprType === "between" && (item.greaterThanOrEqualTo || item.lessThanOrEqualTo)) {
+        return [item.greaterThanOrEqualTo, item.lessThanOrEqualTo];
+      } else if (item.exprInput) {
+        return [item.exprInput];
+      } else {
+        return [""];
+      }
+    } else {
+      return item.userSelection;
+    }
+  };
+
+  /*	Determine whether to add a particular field	*/
+  const _getIsFilterValidToAdd = (item) => {
+    if (item.fieldtypeoption === "Pick List" && item.userSelection) {
+      return !item.userSelection.includes("(All)");
+    }
+
+    return true;
+  };
+
+  /*	Iterate through each fileds added in the Filter Dropzone	*/
+  _chartProp.fields.forEach((item) => {
+    let _filter = {};
+    _filter.filter_type = _getFilterType(item);
+    _filter.table_id = item.tableId;
+    _filter.field_name = item.fieldname;
+    _filter.data_type = item.dataType;
+    _filter.exclude = item.includeexclude === "Exclude";
+
+    if (item.fieldtypeoption === "Search Condition") {
+      if (item.exprType) {
+        _filter.condition = item.exprType;
+      } else {
+        _filter.condition = item.dataType === "text" ? "begins_with" : "greater_than";
+      }
+    }
+
+    if (item.dataType === "timestamp" || item.dataType === "date") {
+      _filter.time_grain = item.prefix;
+    }
+
+    _filter.user_selection = _getUserSelection(item);
+
+    if (_getIsFilterValidToAdd(item)) {
+      _type.filters.push(_filter);
+    }
+  });
+
+  return _type;
+};
+
+/*	PRS 21/07/2022 */
+
 	var formattedAxes = {};
 	axesValues.forEach((axis) => {
 		var dim = "";
@@ -72,6 +164,18 @@ export const getChartData = async (axesValues, chartProp, propKey, token) => {
 
 	formattedAxes.filters = [];
 
+	/*	PRS 21/07/2022	Get filter object and pushed to request body object	*/
+
+	let _filterObj = getChartLeftFilter();
+
+	if(_filterObj.filters.length > 0){
+		formattedAxes.filters.push(_filterObj);
+	}
+
+	console.log(JSON.stringify(formattedAxes));
+
+	/*	PRS 21/07/2022	*/
+
 	var res = await FetchData({
 		requestType: "withData",
 		method: "POST",
@@ -85,7 +189,14 @@ export const getChartData = async (axesValues, chartProp, propKey, token) => {
 	});
 
 	if (res.status) {
-		return res.data;
+		if(res.data && res.data.result.length > 0)
+		{
+			return res.data;
+		}
+		else{
+			console.log("Change filter conditions.");
+		}
+		
 	} else {
 		console.log("Get Table Data Error", res.data.detail);
 	}

@@ -18,19 +18,27 @@ const chartProperties = {
 				{
 					name: "Filter",
 					fields: [],
+					isCollapsed: false,
+					any_condition_match: false
 				},
 				{
 					name: "Row",
 					fields: [],
+					isCollapsed: false,
 				},
 				{
 					name: "Column",
 					fields: [],
+					isCollapsed: false,
 				},
 				{
 					name: "Measure",
 					fields: [],
+					isCollapsed: false,
 				},
+			],
+			chartFilters: [
+
 			],
 
 			// DataViewerBottom Dataset selected and tables to list
@@ -94,20 +102,26 @@ const chartPropertiesState = (state = chartProperties, action) => {
 							{
 								name: "Filter",
 								fields: [],
+								isCollapsed: false,
+								any_condition_match: false
 							},
 							{
 								name: "Row",
 								fields: [],
+								isCollapsed: false
 							},
 							{
 								name: "Column",
 								fields: [],
+								isCollapsed: false
 							},
 							{
 								name: "Measure",
 								fields: [],
+								isCollapsed: false
 							},
 						],
+						chartFilters:[],
 
 						selectedDs: action.payload.selectedDs,
 						selectedTable: action.payload.selectedTablesInDs,
@@ -147,20 +161,26 @@ const chartPropertiesState = (state = chartProperties, action) => {
 							{
 								name: "Filter",
 								fields: [],
+								isCollapsed: false,
+								any_condition_match: false
 							},
 							{
 								name: "Row",
 								fields: [],
+								isCollapsed: false
 							},
 							{
 								name: "Column",
 								fields: [],
+								isCollapsed: false
 							},
 							{
 								name: "Measure",
 								fields: [],
+								isCollapsed: false
 							},
 						],
+						chartFilters:[],
 						selectedDs: action.payload.selectedDs,
 						selectedTable: action.payload.selectedTablesInDs,
 
@@ -177,6 +197,8 @@ const chartPropertiesState = (state = chartProperties, action) => {
 				},
 				propList: { ...state.propList, [action.payload.tabId]: [tileKey2] },
 			};
+
+		
 
 		case "DELETE_PROP":
 			return update(state, {
@@ -210,6 +232,51 @@ const chartPropertiesState = (state = chartProperties, action) => {
 		// ########################################################################################################################
 		// ########################################################################################################################
 		// Chart Axes Operations
+
+		case "CLEAR_DROPZONE_FIELDS":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						chartAxes: {
+							[action.payload.bIndex]: {
+								fields: {
+									$set:  [] 
+								},
+							},
+						},
+					},
+				},
+			});
+
+		case "UPDATE_DROPZONE_EXPAND_COLLAPSE":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						chartAxes: {
+							[action.payload.bIndex]: {
+								isCollapsed: {
+									$set:  action.payload.isCollapsed
+								},
+							},
+						},
+					},
+				},
+			});
+
+			case "UPDATE_FILTER_ANY_CONDITION_MATCH":
+				return update(state, {
+					properties: {
+						[action.payload.propKey]: {
+							chartAxes: {
+								[action.payload.bIndex]: {
+									any_condition_match: {
+										$set:  action.payload.any_condition_match
+									},
+								},
+							},
+						},
+					},
+				});
 
 		case "UPDATE_PROP":
 			if (
@@ -448,6 +515,23 @@ const chartPropertiesState = (state = chartProperties, action) => {
 		case "RESET_CHART_PROPERTY":
 			return chartProperties;
 
+		case "UPDATE_LEFT_FILTER_ITEM":
+			var cardIndex = findCardIndex(action.payload.propKey, action.payload.bIndex, action.payload.item.uId);
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						chartAxes: {
+							[action.payload.bIndex]: {
+								fields: {
+									$splice: [[cardIndex, 1, action.payload.item]],
+								},
+							},
+						},
+
+						axesEdited: { $set: true },
+					},
+				},
+			});
 		default:
 			return state;
 	}

@@ -2,13 +2,23 @@
 // Each Dropzone can have allowed number of cards.
 // Cards can be moved between dropzones & also sorted within a dropzone
 
-import React from "react";
+import React, {useState} from "react";
+import ReactDOM from "react-dom";
 import { useDrop } from "react-dnd";
 import { connect } from "react-redux";
-import { editChartPropItem } from "../../redux/ChartProperties/actionsChartProperties";
+import { editChartPropItem, updateDropZoneExpandCollapsePropLeft,updateFilterAnyContidionMatchPropLeft,clearDropZoneFieldsChartPropLeft } from "../../redux/ChartProperties/actionsChartProperties";
 import Card from "./Card";
 import ChartsInfo from "./ChartsInfo2";
 import { setPrefix } from "./SetPrefix";
+import UserFilterCard from '../ChartFieldFilter/UserFilterCard';
+import expandIcon from "../../assets/expand.png";
+import collapseIcon from "../../assets/collapse.png";
+import dotIcon from "../../assets/dot.png";
+import tickIcon from "../../assets/tick.png";
+
+import { Menu, MenuItem ,Divider} from "@mui/material";
+//import { StyledEngineProvider } from '@mui/material/styles';
+
 
 const DropZone = ({
 	// props
@@ -20,6 +30,9 @@ const DropZone = ({
 	chartProp,
 
 	// dispatch
+	clearDropZoneFieldsChartPropLeft,
+	updateDropZoneExpandCollapsePropLeft,
+	updateFilterAnyContidionMatchPropLeft,
 	updateDropZoneItems,
 	moveItemChartProp,
 }) => {
@@ -32,6 +45,8 @@ const DropZone = ({
 		}),
 	});
 
+
+
 	const uIdGenerator = () => {
 		return Math.floor((1 + Math.random()) * 0x10000)
 			.toString(16)
@@ -42,75 +57,177 @@ const DropZone = ({
 
 	const handleDrop = (item, bIndex) => {
 		var allowedNumbers = ChartsInfo[chartType].dropZones[bIndex].allowedNumbers;
+		let newFieldData = {}
 
 		if (item.bIndex === 99) {
 			const uID = uIdGenerator();
 			var fieldData = item.fieldData;
 			fieldData.uId = uID;
 
-			let newFieldData = JSON.parse(JSON.stringify(setPrefix(fieldData, name, chartType)));
-			// console.log(newFieldData);
-
+			 newFieldData = JSON.parse(JSON.stringify(setPrefix(fieldData, name, chartType)));
+			// console.log(newFieldData);		
 			updateDropZoneItems(propKey, bIndex, newFieldData, allowedNumbers);
 		} else if (item.bIndex !== bIndex) {
 			// console.log("-------moving item from within------");
 
-			let newFieldData = JSON.parse(JSON.stringify(setPrefix(item, name, chartType)));
+			 newFieldData = JSON.parse(JSON.stringify(setPrefix(item, name, chartType)));
 			["type", "bIndex"].forEach((e) => delete newFieldData[e]);
 			moveItemChartProp(propKey, item.bIndex, item.uId, newFieldData, bIndex, allowedNumbers);
 		}
+
+		if(name === "Filter"){
+			setModalData(newFieldData);
+		}
+
 	};
 
-	return bIndex === 0 ? null : (
-		<div ref={drop} className="chartAxis mt-2">
-			<span className="axisTitle">{name}</span>
+    const [anchorEl, setAnchorEl] = useState(null);
+	const open = Boolean(anchorEl);
 
-			{/* The subtext displayed under each dropzone  */}
-			{/* How many minimum fields required & maximum allowed  */}
-			{bIndex === 0 ? (
-				<span className="axisInfo">
-					{" "}
-					Drop (0 - max {ChartsInfo[chartType].dropZones[bIndex]?.allowedNumbers})
-					field(s) here
-				</span>
-			) : null}
-			{bIndex === 1 && ChartsInfo[chartType]?.dropZones[bIndex]?.allowedNumbers === 1 ? (
-				<span className="axisInfo"> Drop (1) field(s) here</span>
-			) : null}
-			{bIndex === 1 && ChartsInfo[chartType]?.dropZones[bIndex]?.allowedNumbers > 1 ? (
-				<span className="axisInfo">
-					{" "}
-					Drop (atleast {ChartsInfo[chartType].dropZones[bIndex]?.min} - max{" "}
-					{ChartsInfo[chartType].dropZones[bIndex]?.allowedNumbers}) field(s) here
-				</span>
-			) : null}
-			{bIndex === 2 && ChartsInfo[chartType]?.dropZones[bIndex]?.allowedNumbers === 1 ? (
-				<span className="axisInfo"> Drop (1) field(s) here</span>
-			) : null}
-			{bIndex === 2 && ChartsInfo[chartType]?.dropZones[bIndex]?.allowedNumbers > 1 ? (
-				<span className="axisInfo">
-					{" "}
-					Drop (atleast {ChartsInfo[chartType].dropZones[bIndex]?.min} - max{" "}
-					{ChartsInfo[chartType].dropZones[bIndex]?.allowedNumbers}) field(s) here
-				</span>
-			) : null}
+	const handleClose = async(closeFrom, queryParam) => {
+		// console.log(closeFrom);
+		setAnchorEl(null);
+		//setShowOptions(false);	
 
-			{bIndex === 3 &&
-			ChartsInfo[chartType].dropZones[bIndex] &&
-			ChartsInfo[chartType].dropZones[bIndex].min === 0 ? (
-				<span className="axisInfo">
-					{" "}
-					Drop (atleast {ChartsInfo[chartType].dropZones[bIndex]?.min} - max{" "}
-					{ChartsInfo[chartType].dropZones[bIndex]?.allowedNumbers}) here
-				</span>
-			) : null}
-			{bIndex === 3 &&
-			ChartsInfo[chartType].dropZones[bIndex] &&
-			ChartsInfo[chartType].dropZones[bIndex].allowedNumbers === 1 ? (
-				<span className="axisInfo"> Drop (1) field(s) here</span>
-			) : null}
+        if(closeFrom === "opt1" && queryParam === "Clear"){
+			clearDropZoneFieldsChartPropLeft(propKey, bIndex)
+		}
+   
+       // updateLeftFilterItem(propKey,0,constructChartAxesFieldObject());
+	};
 
-			{/* ChartsInfo[chartType].dropZones[bIndex].allowedNumbers === 1 && ChartsInfo[chartType].dropZones[bIndex].min === 1 ? (
+	const RenderMenu = () => {
+
+		var options = ["Clear"];
+		var options1 = [];
+
+		if(bIndex === 0){
+			options1 = ["AND", "OR"];
+		}
+		else{
+			options1 = [];
+		}
+
+		return (
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={() => handleClose("clickOutside")}
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+      >
+        {options.length > 0
+          ? options.map((opt, index) => {
+              return (
+                <div style={{ display: "flex" }} onClick={() => handleClose("opt1", opt)}>
+                  <MenuItem key={index}>{opt}</MenuItem>                  
+                </div>
+              );
+            })
+          : null}      
+
+		  <Divider />
+
+		  {bIndex === 0 && options1.length > 0
+			? options1.map((opt, index) => {
+				return (
+				  <div style={{ display: "flex" }} onClick={() => {
+					setAnchorEl(null);
+					updateFilterAnyContidionMatchPropLeft(propKey,0, !chartProp.properties[propKey].chartAxes[0].any_condition_match)}}>
+					<MenuItem key={index}>{opt}</MenuItem>
+					{opt === (chartProp.properties[propKey].chartAxes[0].any_condition_match ? "OR" : "AND") ? (
+					  <img
+						src={tickIcon}
+						alt="Selected"
+						style={{ height: "16px", width: "16px" }}
+						title="Selected"
+					  />
+					) : null}
+				  </div>
+				);
+			  })
+			: null}  
+
+      </Menu>
+    );
+	};
+
+    const [modalData, setModalData] = useState(null);
+
+    const handleClick = (event) => {
+		setAnchorEl(event.currentTarget);
+	};
+
+	const handleModalClose = () => {
+        setModalData(null);
+    };
+
+	return (
+    <div ref={drop} className="chartAxis mt-2">
+      <div style={{ display: "flex" }}>
+        <span className="axisTitle">{name}</span>
+        <div style={{ float: "right" }}>
+          <img
+            src={chartProp.properties[propKey].chartAxes[bIndex].isCollapsed?   expandIcon : collapseIcon}
+            alt="Collapse"
+            style={{ height: "16px", width: "16px" }}
+            title="Collapse"
+			onClick={() => {
+				updateDropZoneExpandCollapsePropLeft(propKey, bIndex, !chartProp.properties[propKey].chartAxes[bIndex].isCollapsed);
+			  }}
+          />
+          <img src={dotIcon}   onClick={handleClick} alt="Menu" style={{ height: "16px", width: "16px" }} title="Mune" />
+        </div>
+      </div>
+
+	  {!chartProp.properties[propKey].chartAxes[bIndex].isCollapsed? <>
+      {/* The subtext displayed under each dropzone  */}
+      {/* How many minimum fields required & maximum allowed  */}
+      {bIndex === 0 ? (
+        <span className="axisInfo">
+          {" "}
+          Drop (0 - max {ChartsInfo[chartType].dropZones[bIndex]?.allowedNumbers}) field(s) here
+        </span>
+      ) : null}
+      {bIndex === 1 && ChartsInfo[chartType]?.dropZones[bIndex]?.allowedNumbers === 1 ? (
+        <span className="axisInfo"> Drop (1) field(s) here</span>
+      ) : null}
+      {bIndex === 1 && ChartsInfo[chartType]?.dropZones[bIndex]?.allowedNumbers > 1 ? (
+        <span className="axisInfo">
+          {" "}
+          Drop (atleast {ChartsInfo[chartType].dropZones[bIndex]?.min} - max{" "}
+          {ChartsInfo[chartType].dropZones[bIndex]?.allowedNumbers}) field(s) here
+        </span>
+      ) : null}
+      {bIndex === 2 && ChartsInfo[chartType]?.dropZones[bIndex]?.allowedNumbers === 1 ? (
+        <span className="axisInfo"> Drop (1) field(s) here</span>
+      ) : null}
+      {bIndex === 2 && ChartsInfo[chartType]?.dropZones[bIndex]?.allowedNumbers > 1 ? (
+        <span className="axisInfo">
+          {" "}
+          Drop (atleast {ChartsInfo[chartType].dropZones[bIndex]?.min} - max{" "}
+          {ChartsInfo[chartType].dropZones[bIndex]?.allowedNumbers}) field(s) here
+        </span>
+      ) : null}
+
+      {bIndex === 3 &&
+      ChartsInfo[chartType].dropZones[bIndex] &&
+      ChartsInfo[chartType].dropZones[bIndex].min === 0 ? (
+        <span className="axisInfo">
+          {" "}
+          Drop (atleast {ChartsInfo[chartType].dropZones[bIndex]?.min} - max{" "}
+          {ChartsInfo[chartType].dropZones[bIndex]?.allowedNumbers}) here
+        </span>
+      ) : null}
+      {bIndex === 3 &&
+      ChartsInfo[chartType].dropZones[bIndex] &&
+      ChartsInfo[chartType].dropZones[bIndex].allowedNumbers === 1 ? (
+        <span className="axisInfo"> Drop (1) field(s) here</span>
+      ) : null}
+
+      {/* ChartsInfo[chartType].dropZones[bIndex].allowedNumbers === 1 && ChartsInfo[chartType].dropZones[bIndex].min === 1 ? (
 				<span className="axisInfo"> Drop (1) field(s) here</span>
 			) : ChartsInfo[chartType].dropZones[bIndex].allowedNumbers > 1 && ChartsInfo[chartType].dropZones[bIndex].min === 1 ? (
 				<span className="axisInfo"> Drop (atleast 1 - max {ChartsInfo[chartType].dropZones[bIndex].allowedNumbers}) field(s) here</span>
@@ -118,18 +235,32 @@ const DropZone = ({
 				<span className="axisInfo"> Drop (0 - max {ChartsInfo[chartType].dropZones[bIndex].allowedNumbers}) field(s) here</span>
 			) : null */}
 
-			{chartProp.properties[propKey].chartAxes[bIndex]?.fields?.map((field, index) => (
-				<Card
-					field={field}
-					bIndex={bIndex}
-					axisTitle={name}
-					key={index}
-					itemIndex={index}
-					propKey={propKey}
-				/>
-			))}
-		</div>
-	);
+      {bIndex == 0
+        ? chartProp.properties[propKey].chartAxes[bIndex]?.fields?.map((field, index) => (
+            <UserFilterCard
+              field={field}
+              bIndex={bIndex}
+              axisTitle={name}
+              key={index}
+              itemIndex={index}
+              propKey={propKey}
+            />
+          ))
+        : chartProp.properties[propKey].chartAxes[bIndex]?.fields?.map((field, index) => (
+            <Card
+              field={field}
+              bIndex={bIndex}
+              axisTitle={name}
+              key={index}
+              itemIndex={index}
+              propKey={propKey}
+            />
+          ))}
+		  </> : null}
+
+		  <RenderMenu />
+    </div>
+  );
 };
 
 const mapStateToProps = (state) => {
@@ -140,6 +271,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
+		clearDropZoneFieldsChartPropLeft : (propKey, bIndex) =>dispatch(clearDropZoneFieldsChartPropLeft(propKey, bIndex)),
+		updateDropZoneExpandCollapsePropLeft : (propKey, bIndex, isCollapsed) =>dispatch(updateDropZoneExpandCollapsePropLeft(propKey, bIndex, isCollapsed)),
+		updateFilterAnyContidionMatchPropLeft : (propKey, bIndex, any_condition_match) =>dispatch(updateFilterAnyContidionMatchPropLeft(propKey, 0, any_condition_match)),
+
 		updateDropZoneItems: (propKey, bIndex, item, allowedNumbers) =>
 			dispatch(
 				editChartPropItem({

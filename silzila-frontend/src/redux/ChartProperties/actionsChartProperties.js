@@ -40,6 +40,19 @@ export const setSelectedTableInTile = (propKey, selectedTable) => {
 
 // Actions From Chart Axes Dustbin
 
+export const updateDropZoneExpandCollapsePropLeft = (propKey, bIndex, isCollapsed) => {
+	return { type: "UPDATE_DROPZONE_EXPAND_COLLAPSE", payload: { propKey, bIndex, isCollapsed } };
+};
+
+export const updateFilterAnyContidionMatchPropLeft = (propKey, bIndex, any_condition_match) => {
+	return { type: "UPDATE_FILTER_ANY_CONDITION_MATCH", payload: { propKey, bIndex, any_condition_match } };
+};
+
+export const clearDropZoneFieldsChartPropLeft = (propKey, bIndex) => {
+	return { type: "CLEAR_DROPZONE_FIELDS", payload: { propKey, bIndex } };
+};
+
+
 export const updateChartPropLeft = (propKey, bIndex, item, allowedNumbers) => {
 	return { type: "UPDATE_PROP", payload: { propKey, bIndex, item, allowedNumbers } };
 };
@@ -202,4 +215,9 @@ export const loadChartProperties = (chartProperties) => {
 
 export const resetChartProperties = () => {
 	return { type: "RESET_CHART_PROPERTY" };
+};
+
+export const updateLeftFilterItem = (propKey, bIndex, item) => {
+    console.log("UPDATE_LEFT_FILTER_ITEM");
+    return { type: "UPDATE_LEFT_FILTER_ITEM", payload: { propKey, bIndex, item } };
 };

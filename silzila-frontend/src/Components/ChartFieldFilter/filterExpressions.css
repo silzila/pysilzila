@@ -1,0 +1,14 @@
+.modal-content{min-width:750px;min-height:600px}
+.modal-title{font-size:16px;font-weight:bold}
+.modal-dialog{max-width:750px;margin:1.75rem auto;
+    z-index: 1000;
+    opacity: 1;
+    background-color: white;
+    border: red 2px solid;
+    width: fit-content;
+    height: fit-content;
+    left: 15%;
+    position: relative;
+    top: 15%;}
+.modal-body{overflow-y:auto;background-color:#fad5b770}
+.MuiTypography-root{font-size:10px !important;color:black;font-weight:500 !important}.nav-link{font-size:14px;font-weight:600}.nav-tabs .nav-link.active{font-size:15px !important;font-weight:650 !important}.checkboxes{display:block !important;width:100%;padding-right:5px}.SelectionArea{border:#5367dd 2px solid;box-shadow:3px 5px #888888;background-color:#cdf8c794;padding-top:10px;padding-bottom:10px;padding-left:20px;margin-top:10px;margin-bottom:10px;max-height:300px;overflow-y:auto}.InculeExCludeArea{border:teal 2px solid;box-shadow:3px 5px #888888;background-color:rgba(221,251,251,0.568);padding-top:10px;padding-bottom:10px;margin-top:10px;margin-bottom:15px;display:flex;justify-content:space-evenly;flex-flow:row wrap}.RadioButtonCollection{border:#03ad88 2px solid;box-shadow:3px 5px #888888;background-color:rgba(251,251,178,0.918);padding-top:10px;padding-bottom:10px;margin-top:10px;margin-bottom:15px;padding-left:20px;display:flex;justify-content:space-evenly;flex-flow:row wrap}.RadioButtonCollection>label{white-space:nowrap}.RadioButtonCollection>input{padding-left:5px}.TextFieldDiv{display:flex;justify-content:space-evenly}.MuiFormControl-root{margin-top:25px}.ValueTextBox{background-color:white;width:300px}.ValueErrorText{color:red;font-size:14px;font-weight:bolder}
