@@ -10,8 +10,8 @@ def comparison_operator_name_to_symbol(exprs):
         EXPRSN = '>'
     elif exprs == 'less_than':
         EXPRSN = '<'
-    elif exprs == 'greater_than_equal_to':
+    elif exprs == 'greater_than_or_equal_to':
         EXPRSN = '>='
-    elif exprs == 'less_than_equal_to':
+    elif exprs == 'less_than_or_equal_to':
         EXPRSN = '<='
     return EXPRSN

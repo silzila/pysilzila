@@ -265,7 +265,6 @@ const ChartAxes = ({
 		if (chartProp.properties[propKey].axesEdited) {
 			if (chartProp.properties[propKey].reUseData) {
 				serverCall = false;
-				resetStore();
 			} else {
 				var minReq = checkMinRequiredCards(chartProp, propKey);
 				if (minReq) {
@@ -274,6 +273,7 @@ const ChartAxes = ({
 					updateChartData(propKey, "");
 				}
 			}
+			resetStore();
 		}
 
 		if (chartProp.properties[propKey].chartType === "scatterPlot") {
@@ -287,7 +287,8 @@ const ChartAxes = ({
 
 		if (
 			chartProp.properties[propKey].chartType === "heatmap" ||
-			chartProp.properties[propKey].chartType === "crossTab"
+			chartProp.properties[propKey].chartType === "crossTab" ||
+			chartProp.properties[propKey].chartType === "boxPlot"
 		) {
 			var combinedValues = { name: "Dimension", fields: [] };
 			var values1 = axesValues[1].fields;
