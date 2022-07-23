@@ -279,6 +279,7 @@ const chartPropertiesState = (state = chartProperties, action) => {
 									},
 								},
 							},
+							axesEdited: { $set: true },
 						},
 					},
 				});

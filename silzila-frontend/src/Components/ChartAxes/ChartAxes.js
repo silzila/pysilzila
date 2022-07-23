@@ -69,6 +69,13 @@ const getChartLeftFilter = () => {
     if (item.fieldtypeoption === "Pick List" && item.userSelection) {
       return !item.userSelection.includes("(All)");
     }
+	else  if (item.fieldtypeoption === "Search Condition") {
+		if (item.exprType === "between" && (!item.greaterThanOrEqualTo || !item.lessThanOrEqualTo)) {
+			return false
+		  } else if (!item.exprInput) {
+			return false
+		  }
+	}
 
     return true;
   };

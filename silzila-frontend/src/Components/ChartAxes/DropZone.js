@@ -7,7 +7,6 @@ import React from "react";
 import { useState } from "react";
 import { useDrop } from "react-dnd";
 import { connect } from "react-redux";
-import { editChartPropItem } from "../../redux/ChartProperties/actionsChartProperties";
 import { NotificationDialog } from "../CommonFunctions/DialogComponents";
 import Card from "./Card";
 import ChartsInfo from "./ChartsInfo2";
