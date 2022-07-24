@@ -68,14 +68,27 @@ const getChartLeftFilter = () => {
   const _getIsFilterValidToAdd = (item) => {
     if (item.fieldtypeoption === "Pick List" && item.userSelection) {
       return !item.userSelection.includes("(All)");
+    } else if (item.fieldtypeoption === "Search Condition") {
+      if (
+        item.exprType === "between" &&
+        item.greaterThanOrEqualTo &&
+        item.lessThanOrEqualTo &&
+        item.rawselectmembers?.length > 0
+      ) {
+        if (
+          item.greaterThanOrEqualTo <= item.rawselectmembers[1] &&
+          item.lessThanOrEqualTo >= item.rawselectmembers[item.rawselectmembers.length - 1]
+        )
+          return false;
+      } else if (
+        item.exprType === "between" &&
+        (!item.greaterThanOrEqualTo || !item.lessThanOrEqualTo)
+      ) {
+        return false;
+      } else if (!item.exprInput) {
+        return false;
+      }
     }
-	else  if (item.fieldtypeoption === "Search Condition") {
-		if (item.exprType === "between" && (!item.greaterThanOrEqualTo || !item.lessThanOrEqualTo)) {
-			return false
-		  } else if (!item.exprInput) {
-			return false
-		  }
-	}
 
     return true;
   };

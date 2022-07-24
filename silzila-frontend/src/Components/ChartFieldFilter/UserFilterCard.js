@@ -456,6 +456,11 @@ const UserFilterCard = ({
 
       sliderRange = [filterFieldData.greaterThanOrEqualTo, filterFieldData.lessThanOrEqualTo];
     }
+    else if(["date","timestamp" ].includes(dataType) && filterFieldData.prefix !== "date"){
+      filterFieldData.greaterThanOrEqualTo = filterFieldData.rawselectmembers[1];
+      filterFieldData.lessThanOrEqualTo =
+        filterFieldData.rawselectmembers[filterFieldData.rawselectmembers.length - 1];
+    }
   };
 
   ///Search condition Silder on change handler
@@ -473,7 +478,7 @@ const UserFilterCard = ({
     filterFieldData["exprType"] = event.target.value;
     // filterFieldData = _modifiedResultForServerRequest(filterFieldData);
 
-    if (!filterFieldData.rawselectmembers && filterFieldData.exprType === "between") {
+    if (filterFieldData.exprType === "between") {
       //setLoading(true);
       await GetPickListItems();
       setSliderRange();
@@ -507,6 +512,7 @@ const UserFilterCard = ({
     setLoading(true);
     await GetPickListItems();
     setLoading(false);
+    setSliderRange();
     // }
 
     updateLeftFilterItem(propKey, 0, constructChartAxesFieldObject());
