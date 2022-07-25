@@ -25,6 +25,8 @@ const DropZone = ({
 	updateDropZoneItems,
 	moveItemChartProp,
 }) => {
+	var geoLocation = chartProp.properties[propKey].geoLocation;
+
 	const [severity, setSeverity] = useState("success");
 	const [openAlert, setOpenAlert] = useState(false);
 	const [testMessage, setTestMessage] = useState("Testing alert");
@@ -55,7 +57,7 @@ const DropZone = ({
 			fieldData.uId = uID;
 			if (bIndex === 1) {
 				if (chartType === "calendar") {
-					if (fieldData.dataType === "date") {
+					if (fieldData.dataType === "date" || fieldData.dataType === "timestamp") {
 						let newFieldData = JSON.parse(
 							JSON.stringify(setPrefix(fieldData, name, chartType))
 						);
@@ -72,6 +74,11 @@ const DropZone = ({
 							setTestMessage("");
 						}, 3000);
 					}
+				} else if (chartType === "geoMaps") {
+					let newFieldData = JSON.parse(
+						JSON.stringify(setPrefix(fieldData, name, chartType))
+					);
+					updateDropZoneItems(propKey, bIndex, newFieldData, allowedNumbers, geoLocation);
 				} else {
 					let newFieldData = JSON.parse(
 						JSON.stringify(setPrefix(fieldData, name, chartType))

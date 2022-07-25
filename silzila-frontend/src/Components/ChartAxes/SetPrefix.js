@@ -1,4 +1,4 @@
-export const setPrefix = (fieldData, binName, chartType) => {
+export const setPrefix = (fieldData, binName, chartType, geoLocation) => {
 	if (!fieldData) {
 		return fieldData;
 	}
@@ -11,7 +11,8 @@ export const setPrefix = (fieldData, binName, chartType) => {
 				data.agg = "sum";
 			}
 			if (binName === "Location") {
-				data.agg = "fullName";
+				if (geoLocation === "world") data.agg = "fullName";
+				else data.agg = "stateName";
 			}
 			break;
 
@@ -19,8 +20,9 @@ export const setPrefix = (fieldData, binName, chartType) => {
 			if (binName === "Measure" || binName === "X" || binName === "Y") {
 				data.agg = "count";
 			}
-			if ((binName = "Location")) {
-				data.agg = "fullName";
+			if (binName === "Location") {
+				if (geoLocation === "world") data.agg = "fullName";
+				else data.agg = "stateName";
 			}
 			break;
 

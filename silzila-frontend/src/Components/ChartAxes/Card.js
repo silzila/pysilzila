@@ -72,7 +72,7 @@ const Card = ({
 		}
 	};
 
-	// var chartType = chartProp.properties[propKey].chartType;
+	var chartType = chartProp.properties[propKey].chartType;
 	// var geoLocation = chartProp.properties[propKey].geoLocation;
 
 	// const [selectedGeoPrefix, setSelectedGeoPrefix] = useState("");
@@ -102,6 +102,27 @@ const Card = ({
 		fontSize: "12px",
 		padding: "2px 1rem",
 		backgroundColor: "rgba(25, 118, 210, 0.08)",
+	};
+
+	var menuWithExamplesStyle = {
+		display: "flex",
+		flexDirection: "column",
+		padding: "2px 1rem",
+		alignItems: "start",
+	};
+
+	var menuWithExamplesSelectedStyle = {
+		display: "flex",
+		flexDirection: "column",
+		padding: "2px 1rem",
+		alignItems: "start",
+		backgroundColor: "rgba(25, 118, 210, 0.08)",
+	};
+	var menuName = { fontSize: "12px", textAlign: "left" };
+	var menuExample = {
+		fontSize: "10px",
+		textAlign: "left",
+		color: "#999",
 	};
 
 	// Properties and behaviour when a card is dragged
@@ -210,6 +231,8 @@ const Card = ({
 			// );
 		}
 
+		// console.log(options, options2);
+
 		return (
 			<Menu
 				id="basic-menu"
@@ -220,28 +243,30 @@ const Card = ({
 					"aria-labelledby": "basic-button",
 				}}
 			>
-				{/* {chartType === "geoChart" && axisTitle === "Location" ? (
-					options.length > 0 ? (
-						options.map((opt) => {
+				{options.length > 0 && chartType === "geoChart" && axisTitle === "Location"
+					? options.map((opt) => {
 							console.log(opt);
 							return (
+								// TODO: Changing aggregate during a geoChart will call server again. Fix this issue
 								<MenuItem
-									onMouseOver={handleGeoMouseOver}
-									// onClick={() => handleClose("agg", opt.id)}
+									onClick={() => handleClose("agg", opt.id)}
 									sx={
-										opt.id === selectedGeoPrefix ? menuSelectedStyle : menuStyle
+										opt.id === field.agg
+											? menuWithExamplesSelectedStyle
+											: menuWithExamplesStyle
 									}
 									key={opt.id}
 									value={opt.name}
 								>
-									{opt.name}
+									<div style={menuName}>{opt.name}</div>
+									<div style={menuExample}>
+										{`${opt.examples[0]}, ${opt.examples[1]}, ${opt.examples[2]}`}
+									</div>
 								</MenuItem>
 							);
-						})
-					) : null
-				) : ( */}
-
-				{options.length > 0
+					  })
+					: null}
+				{options.length > 0 && chartType !== "geoChart"
 					? options.map((opt) => {
 							return (
 								<MenuItem
@@ -254,7 +279,6 @@ const Card = ({
 							);
 					  })
 					: null}
-
 				{options.length > 0 && options2.length > 0 ? <Divider /> : null}
 
 				{options2.length > 0
@@ -278,8 +302,6 @@ const Card = ({
 						<i>-- No options --</i>
 					</MenuItem>
 				) : null}
-
-				{/* )} */}
 			</Menu>
 		);
 	});
@@ -346,7 +368,7 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch(
 				editChartPropItem({
 					action: "updateQuery",
-					details: { propKey, binIndex, itemIndex, item, toggle: false },
+					details: { propKey, binIndex, itemIndex, item, toggle: true },
 				})
 			),
 
