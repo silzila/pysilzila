@@ -96,19 +96,55 @@ const measurePrefixes = {
 const geoPrefixes = {
 	// integer: [{ name: "ISO-Num", id: "isoNum" }],
 	world: [
-		{ name: "Full Name", id: "fullName" },
-		{ name: "Short Name", id: "shortName" },
-		{ name: "ISO-2", id: "iso2" },
-		{ name: "ISO-3", id: "iso3" },
-		{ name: "ISO-Numeric", id: "isoNum" },
+		{
+			name: "Full Name",
+			id: "fullName",
+			examples: ["Commonwealth of the Bahamas", "Republic of Costa Rica", "Republic of Cuba"],
+		},
+		{
+			name: "Short Name",
+			id: "shortName",
+			examples: ["Bahamas", "Costa Rica", "Cuba"],
+		},
+		{
+			name: "ISO-2",
+			id: "iso2",
+			examples: ["BS", "CR", "CU"],
+		},
+		{
+			name: "ISO-3",
+			id: "iso3",
+			examples: ["BHS", "CRI", "CUB"],
+		},
+		{
+			name: "ISO-Numeric",
+			id: "isoNum",
+			examples: ["044", "188", "192"],
+		},
 	],
 	india: [
-		{ name: "Full Name", id: "fullName" },
-		{ name: "State Code", id: "stateCode" },
+		{
+			name: "State Name",
+			id: "stateName",
+			examples: ["Telangana", "Andaman & Nicobar Island", "Arunanchal Pradesh"],
+		},
+		{
+			name: "State Code",
+			id: "stateCode",
+			examples: [0, 35, 12],
+		},
 	],
 	usa: [
-		{ name: "Full Name", id: "fullName" },
-		{ name: "ISO Code", id: "iso_code" },
+		{
+			name: "State Name",
+			id: "stateName",
+			examples: ["Alabama", "Alaska", "Arizona"],
+		},
+		{
+			name: "ISO Code",
+			id: "iso_code",
+			examples: ["US-AL", "US-AK", "US-AZ"],
+		},
 	],
 
 	// world: [
@@ -156,6 +192,7 @@ export const AggregatorKeys = {
 	isoNum: "ISO-Num",
 	shortName: "Short Name",
 	stateCode: "St code",
+	stateName: "State Name",
 
 	// countries: "Country",
 	// state: "State",

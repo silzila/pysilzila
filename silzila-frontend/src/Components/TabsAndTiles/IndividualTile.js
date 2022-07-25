@@ -44,7 +44,6 @@ function IndividualTile({
 
 	const dispatch = useDispatch();
 	const state = useSelector((state) => state);
-	console.log(state);
 
 	const handleDuplicateTile = () => {
 		handleClose();

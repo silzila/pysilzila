@@ -121,7 +121,7 @@ const GeoChart = ({
 	var dataValues = []; // used for computing min max values
 
 	var dataKeys = chartData && Object.keys(chartData[0]);
-	console.log(dataKeys);
+	// console.log(dataKeys);
 	chartData &&
 		chartData.forEach((dt) => {
 			dataValues.push(dt[dataKeys[1]]);
@@ -132,8 +132,8 @@ const GeoChart = ({
 						(obj) => obj[locAggregator] === dt[dataKeys[0]]
 					)[0];
 					if (indObj) {
-						console.log(indObj);
-						var indiaData = { name: indObj.fullName, value: dt[dataKeys[1]] };
+						// console.log(indObj);
+						var indiaData = { name: indObj.stateName, value: dt[dataKeys[1]] };
 						formattedData.push(indiaData);
 					}
 					break;
@@ -142,9 +142,9 @@ const GeoChart = ({
 					var usaObj = usaCodes.filter(
 						(obj) => obj[locAggregator] === dt[dataKeys[0]]
 					)[0];
-					console.log(usaObj);
+					// console.log(usaObj);
 					if (usaObj) {
-						var usaData = { name: usaObj.fullName, value: dt[dataKeys[1]] };
+						var usaData = { name: usaObj.stateName, value: dt[dataKeys[1]] };
 						formattedData.push(usaData);
 					}
 					break;
@@ -158,6 +158,8 @@ const GeoChart = ({
 					if (cntrObj) {
 						var cntData = { name: cntrObj.shortName, value: dt[dataKeys[1]] };
 						formattedData.push(cntData);
+					} else {
+						console.log("Unmatched location", dt[dataKeys[0]]);
 					}
 					break;
 			}
@@ -174,7 +176,7 @@ const GeoChart = ({
 		}
 	}, [chartData]);
 
-	console.log(formattedData);
+	// console.log(formattedData);
 
 	const selectedAreaMap = {
 		usa: usaMap,
@@ -201,16 +203,6 @@ const GeoChart = ({
 						: "1px solid rgb(238,238,238)",
 				}}
 				option={{
-					geo: {
-						map: geoLocation,
-						selectMode: "multiple",
-						roam: true,
-						zoom: 1.2,
-						itemStyle: {},
-						zlevel: 1,
-						// regions: { emphasis: { itemStyle: { areaColor: "red" } } },
-					},
-
 					tooltip: {
 						trigger: "item",
 						formatter: "{b}<br/>{c} ",
@@ -231,11 +223,17 @@ const GeoChart = ({
 						{
 							name: "foo",
 							type: "map",
+							map: geoLocation,
 							geoIndex: 0,
-							label: { show: true },
 							data: formattedData,
-
-							zlevel: 3,
+							// roam: true,
+							// zlevel: 3,
+							emphasis: {
+								itemStyle: {
+									areaColor: "white",
+									botderType: "solid",
+								},
+							},
 						},
 					],
 				}}

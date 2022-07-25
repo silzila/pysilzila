@@ -1,146 +1,146 @@
 [
   {
-    "fullName": "Telangana",
+    "stateName": "Telangana",
     "state_code": 0
   },
   {
-    "fullName": "Andaman & Nicobar Island",
+    "stateName": "Andaman & Nicobar Island",
     "state_code": 35
   },
   {
-    "fullName": "Andhra Pradesh",
+    "stateName": "Andhra Pradesh",
     "state_code": 28
   },
   {
-    "fullName": "Arunanchal Pradesh",
+    "stateName": "Arunanchal Pradesh",
     "state_code": 12
   },
   {
-    "fullName": "Assam",
+    "stateName": "Assam",
     "state_code": 18
   },
   {
-    "fullName": "Bihar",
+    "stateName": "Bihar",
     "state_code": 10
   },
   {
-    "fullName": "Chhattisgarh",
+    "stateName": "Chhattisgarh",
     "state_code": 22
   },
   {
-    "fullName": "Daman & Diu",
+    "stateName": "Daman & Diu",
     "state_code": 25
   },
   {
-    "fullName": "Goa",
+    "stateName": "Goa",
     "state_code": 30
   },
   {
-    "fullName": "Gujarat",
+    "stateName": "Gujarat",
     "state_code": 24
   },
   {
-    "fullName": "Haryana",
+    "stateName": "Haryana",
     "state_code": 6
   },
   {
-    "fullName": "Himachal Pradesh",
+    "stateName": "Himachal Pradesh",
     "state_code": 2
   },
   {
-    "fullName": "Jammu & Kashmir",
+    "stateName": "Jammu & Kashmir",
     "state_code": 1
   },
   {
-    "fullName": "Jharkhand",
+    "stateName": "Jharkhand",
     "state_code": 20
   },
   {
-    "fullName": "Karnataka",
+    "stateName": "Karnataka",
     "state_code": 29
   },
   {
-    "fullName": "Kerala",
+    "stateName": "Kerala",
     "state_code": 32
   },
   {
-    "fullName": "Lakshadweep",
+    "stateName": "Lakshadweep",
     "state_code": 31
   },
   {
-    "fullName": "Madhya Pradesh",
+    "stateName": "Madhya Pradesh",
     "state_code": 23
   },
   {
-    "fullName": "Maharashtra",
+    "stateName": "Maharashtra",
     "state_code": 27
   },
   {
-    "fullName": "Manipur",
+    "stateName": "Manipur",
     "state_code": 14
   },
   {
-    "fullName": "Chandigarh",
+    "stateName": "Chandigarh",
     "state_code": 4
   },
   {
-    "fullName": "Puducherry",
+    "stateName": "Puducherry",
     "state_code": 34
   },
   {
-    "fullName": "Punjab",
+    "stateName": "Punjab",
     "state_code": 3
   },
   {
-    "fullName": "Rajasthan",
+    "stateName": "Rajasthan",
     "state_code": 8
   },
   {
-    "fullName": "Sikkim",
+    "stateName": "Sikkim",
     "state_code": 11
   },
   {
-    "fullName": "Tamil Nadu",
+    "stateName": "Tamil Nadu",
     "state_code": 33
   },
   {
-    "fullName": "Tripura",
+    "stateName": "Tripura",
     "state_code": 16
   },
   {
-    "fullName": "Uttar Pradesh",
+    "stateName": "Uttar Pradesh",
     "state_code": 9
   },
   {
-    "fullName": "Uttarakhand",
+    "stateName": "Uttarakhand",
     "state_code": 5
   },
   {
-    "fullName": "West Bengal",
+    "stateName": "West Bengal",
     "state_code": 19
   },
   {
-    "fullName": "Odisha",
+    "stateName": "Odisha",
     "state_code": 21
   },
   {
-    "fullName": "Dadara & Nagar Havelli",
+    "stateName": "Dadara & Nagar Havelli",
     "state_code": 26
   },
   {
-    "fullName": "Meghalaya",
+    "stateName": "Meghalaya",
     "state_code": 17
   },
   {
-    "fullName": "Mizoram",
+    "stateName": "Mizoram",
     "state_code": 15
   },
   {
-    "fullName": "Nagaland",
+    "stateName": "Nagaland",
     "state_code": 13
   },
   {
-    "fullName": "NCT of Delhi",
+    "stateName": "NCT of Delhi",
     "state_code": 7
   }
 ]
