@@ -19,6 +19,7 @@ import {
 } from "../../redux/ChartProperties/actionsChartProperties";
 import LoadingPopover from "../CommonFunctions/PopOverComponents/LoadingPopover";
 import FetchData from "../../ServerCall/FetchData";
+import moment from 'moment';
 
 import expandIcon from "../../assets/expand.png";
 import collapseIcon from "../../assets/collapse.png";
@@ -476,6 +477,27 @@ const UserFilterCard = ({
     updateLeftFilterItem(propKey, 0, constructChartAxesFieldObject());
   };
 
+  const setDefaultDate = (key, value)=>{
+   // if(filterFieldData[key] && !moment.isDate(filterFieldData[key])){
+    if(!filterFieldData[key]){
+      filterFieldData[key] = value ? value : new Date();
+    }
+  }
+
+  const setSearchConditionDate = ()=>{
+    if(["date","timestamp" ].includes(dataType) && filterFieldData.prefix === "date"){
+      if (filterFieldData.exprType === "between") {
+        // filterFieldData.greaterThanOrEqualTo = 
+        // filterFieldData.lessThanOrEqualTo
+        setDefaultDate("greaterThanOrEqualTo");
+        setDefaultDate("lessThanOrEqualTo");
+      }
+      else{      
+        setDefaultDate("exprInput");
+      }
+    }   
+  }
+
   ///Search Condition Dropdown list on change handler
   const handleDropDownForPatternOnChange = async (event) => {
     // let filterObj = userFilterGroup[propName].chartUserFilters.find((usrfilter) => usrfilter.uId == data.uid);
@@ -488,7 +510,9 @@ const UserFilterCard = ({
       await GetPickListItems();
       setSliderRange();
       // setLoading(false);
-    }
+    }   
+
+    setSearchConditionDate();
 
     updateLeftFilterItem(propKey, 0, constructChartAxesFieldObject());
   };
@@ -519,6 +543,7 @@ const UserFilterCard = ({
     setLoading(false);
     setSliderRange();
     // }
+    setSearchConditionDate();
 
     updateLeftFilterItem(propKey, 0, constructChartAxesFieldObject());
   };
