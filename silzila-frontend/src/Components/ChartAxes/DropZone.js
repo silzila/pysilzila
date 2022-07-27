@@ -2,7 +2,8 @@
 // Each Dropzone can have allowed number of cards.
 // Cards can be moved between dropzones & also sorted within a dropzone
 
-import { editChartPropItem, updateDropZoneExpandCollapsePropLeft,updateFilterAnyContidionMatchPropLeft,clearDropZoneFieldsChartPropLeft } from "../../redux/ChartProperties/actionsChartProperties";
+import { editChartPropItem, updateDropZoneExpandCollapsePropLeft,updateIsAutoFilterEnabledPropLeft,
+	updateFilterAnyContidionMatchPropLeft,clearDropZoneFieldsChartPropLeft,toggleFilterRunState } from "../../redux/ChartProperties/actionsChartProperties";
 import React from "react";
 import { useState } from "react";
 import { useDrop } from "react-dnd";
@@ -33,9 +34,11 @@ const DropZone = ({
 	// dispatch
 	clearDropZoneFieldsChartPropLeft,
 	updateDropZoneExpandCollapsePropLeft,
+	updateIsAutoFilterEnabledPropLeft,
 	updateFilterAnyContidionMatchPropLeft,
 	updateDropZoneItems,
 	moveItemChartProp,
+	toggleFilterRunState
 }) => {
 	const [severity, setSeverity] = useState("success");
 	const [openAlert, setOpenAlert] = useState(false);
@@ -179,13 +182,15 @@ const DropZone = ({
        // updateLeftFilterItem(propKey,0,constructChartAxesFieldObject());
 	};
 
-	const RenderMenu = () => {
+	const RenderMenu = ({name}) => {
 
 		var options = ["Clear"];
 		var options1 = [];
+		var options2 = [];
 
 		if(bIndex === 0){
-			options1 = ["AND", "OR"];
+			options1 = ["All Conditions Met", "Any Condition Met"];
+			options2 = ["Auto Refresh", "Manual Run"];
 		}
 		else{
 			options1 = [];
@@ -205,7 +210,7 @@ const DropZone = ({
           ? options.map((opt, index) => {
               return (
                 <div style={{ display: "flex" }} onClick={() => handleClose("opt1", opt)}>
-                  <MenuItem key={index}>{opt}</MenuItem>                  
+                  <MenuItem key={index}>{opt +" "+ name}</MenuItem>                  
                 </div>
               );
             })
@@ -220,7 +225,7 @@ const DropZone = ({
 					setAnchorEl(null);
 					updateFilterAnyContidionMatchPropLeft(propKey,0, !chartProp.properties[propKey].chartAxes[0].any_condition_match)}}>
 					<MenuItem key={index}>{opt}</MenuItem>
-					{opt === (chartProp.properties[propKey].chartAxes[0].any_condition_match ? "OR" : "AND") ? (
+					{opt === (chartProp.properties[propKey].chartAxes[0].any_condition_match ? "Any Condition Met" : "All Conditions Met") ? (
 					  <img
 						src={tickIcon}
 						alt="Selected"
@@ -232,6 +237,29 @@ const DropZone = ({
 				);
 			  })
 			: null}  
+
+			<Divider />
+
+			
+			{bIndex === 0 && options2.length > 0
+				? options2.map((opt, index) => {
+					return (
+					  <div style={{ display: "flex" }} onClick={() => {
+						setAnchorEl(null);
+						updateIsAutoFilterEnabledPropLeft(propKey,0, !chartProp.properties[propKey].chartAxes[0].is_auto_filter_enabled)}}>
+						<MenuItem key={index}>{opt}</MenuItem>
+						{opt === (chartProp.properties[propKey].chartAxes[0].is_auto_filter_enabled ? "Auto Refresh" : "Manual Run") ? (
+						  <img
+							src={tickIcon}
+							alt="Selected"
+							style={{ height: "16px", width: "16px" }}
+							title="Selected"
+						  />
+						) : null}
+					  </div>
+					);
+				  })
+				: null}  
 
       </Menu>
     );
@@ -249,7 +277,7 @@ const DropZone = ({
 
 	return (
     <div ref={drop} className="chartAxis mt-2">
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex" }} className="chartAxisHeader">
         <span className="axisTitle">{name}</span>
         <div style={{ float: "right" }}>
           <img
@@ -262,10 +290,11 @@ const DropZone = ({
 			  }}
           />
           <img src={dotIcon}   onClick={handleClick} alt="Menu" style={{ height: "16px", width: "16px" }} title="Mune" />
+		  {bIndex === 0 && chartProp.properties[propKey].chartAxes[0].is_auto_filter_enabled === false ? <button onClick={e=>toggleFilterRunState(propKey,!chartProp.properties[propKey].filterRunState)}>Run</button>:null}
         </div>
       </div>
 
-	  {!chartProp.properties[propKey].chartAxes[bIndex].isCollapsed? <>
+	  {!chartProp.properties[propKey].chartAxes[bIndex].isCollapsed? <div className="chartAxisBody">
       {/* The subtext displayed under each dropzone  */}
       {/* How many minimum fields required & maximum allowed  */}
       {bIndex === 0 ? (
@@ -318,6 +347,8 @@ const DropZone = ({
 				<span className="axisInfo"> Drop (0 - max {ChartsInfo[chartType].dropZones[bIndex].allowedNumbers}) field(s) here</span>
 			) : null */}
 
+	
+
 
       {bIndex == 0
         ? chartProp.properties[propKey].chartAxes[bIndex]?.fields?.map((field, index) => (
@@ -340,7 +371,7 @@ const DropZone = ({
               propKey={propKey}
             />
           ))}
-		  </> : null}
+		  </div> : null}
 
 		  <NotificationDialog
 		  onCloseAlert={() => {
@@ -352,7 +383,8 @@ const DropZone = ({
 		  openAlert={openAlert}
 		  />
 
-		  <RenderMenu />
+		  <RenderMenu name={ChartsInfo[chartType].dropZones[bIndex]?.name}/>
+		  
     </div>
   );
 
@@ -369,7 +401,8 @@ const mapDispatchToProps = (dispatch) => {
 		clearDropZoneFieldsChartPropLeft : (propKey, bIndex) =>dispatch(clearDropZoneFieldsChartPropLeft(propKey, bIndex)),
 		updateDropZoneExpandCollapsePropLeft : (propKey, bIndex, isCollapsed) =>dispatch(updateDropZoneExpandCollapsePropLeft(propKey, bIndex, isCollapsed)),
 		updateFilterAnyContidionMatchPropLeft : (propKey, bIndex, any_condition_match) =>dispatch(updateFilterAnyContidionMatchPropLeft(propKey, 0, any_condition_match)),
-
+		updateIsAutoFilterEnabledPropLeft : (propKey, bIndex, is_auto_filter_enabled) =>dispatch(updateIsAutoFilterEnabledPropLeft(propKey, 0, is_auto_filter_enabled)),
+		toggleFilterRunState: (propKey, runState) => dispatch(toggleFilterRunState(propKey, runState)),
 		updateDropZoneItems: (propKey, bIndex, item, allowedNumbers) =>
 			dispatch(
 				editChartPropItem({

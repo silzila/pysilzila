@@ -71,6 +71,15 @@
     color: black;
 }
 
+.ErrorText{
+    float: left;
+    color: red;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+
+
 /*
 .UserFilterCard{
     width: 100%;
@@ -282,8 +291,5 @@
     transition: transform 0.3s linear;
 }
 
-.ErrorText{
-    float: left;
-    color: red;
-}
+
 */

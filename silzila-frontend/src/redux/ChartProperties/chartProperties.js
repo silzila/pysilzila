@@ -14,12 +14,15 @@ const chartProperties = {
 
 			// Left Column
 			axesEdited: false,
+			filterRunState:false,
 			chartAxes: [
 				{
 					name: "Filter",
 					fields: [],
 					isCollapsed: false,
-					any_condition_match: false
+					any_condition_match: false,
+					is_auto_filter_enabled: true
+					
 				},
 				{
 					name: "Row",
@@ -98,12 +101,14 @@ const chartPropertiesState = (state = chartProperties, action) => {
 
 						// Left Column
 						axesEdited: false,
+						filterRunState:false,
 						chartAxes: [
 							{
 								name: "Filter",
 								fields: [],
 								isCollapsed: false,
-								any_condition_match: false
+								any_condition_match: false,
+								is_auto_filter_enabled: true
 							},
 							{
 								name: "Row",
@@ -157,12 +162,14 @@ const chartPropertiesState = (state = chartProperties, action) => {
 
 						// Left Column
 						axesEdited: false,
+						filterRunState:false,
 						chartAxes: [
 							{
 								name: "Filter",
 								fields: [],
 								isCollapsed: false,
-								any_condition_match: false
+								any_condition_match: false,
+								is_auto_filter_enabled: true
 							},
 							{
 								name: "Row",
@@ -268,21 +275,36 @@ const chartPropertiesState = (state = chartProperties, action) => {
 				},
 			});
 
-			case "UPDATE_FILTER_ANY_CONDITION_MATCH":
-				return update(state, {
-					properties: {
-						[action.payload.propKey]: {
-							chartAxes: {
-								[action.payload.bIndex]: {
-									any_condition_match: {
-										$set:  action.payload.any_condition_match
-									},
+		case "UPDATE_FILTER_ANY_CONDITION_MATCH":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						chartAxes: {
+							[action.payload.bIndex]: {
+								any_condition_match: {
+									$set:  action.payload.any_condition_match
 								},
 							},
-							axesEdited: { $set: true },
 						},
+						axesEdited: { $set: true },
 					},
-				});
+				},
+			});
+
+		case "UPDATE_IS_AUTO_FILTER_ENABLED":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						chartAxes: {
+							[action.payload.bIndex]: {
+								is_auto_filter_enabled: {
+									$set:  action.payload.is_auto_filter_enabled
+								},
+							},
+						},								
+					},
+				},
+			});
 
 		case "UPDATE_PROP":
 			if (
@@ -373,6 +395,13 @@ const chartPropertiesState = (state = chartProperties, action) => {
 			return update(state, {
 				properties: {
 					[action.payload.propKey]: { axesEdited: { $set: action.payload.axesEdited } },
+				},
+			});
+		
+		case "TOGGLE_FILTER_RUN_STATE":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: { filterRunState: { $set: action.payload.filterRunState } },
 				},
 			});
 
@@ -533,7 +562,6 @@ const chartPropertiesState = (state = chartProperties, action) => {
 								},
 							},
 						},
-
 						axesEdited: { $set: true },
 					},
 				},

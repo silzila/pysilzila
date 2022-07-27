@@ -88,7 +88,7 @@ const UserFilterCard = ({
     { key: "greater_than_or_equal_to", value: ">= Greater than or Equal to" },
     { key: "less_than_or_equal_to", value: "<= Less than or Equal to" },
     { key: "equal_to", value: "= Equal to" },
-    { key: "not_equal_to", value: "Not Equal to" },
+    { key: "not_equal_to", value: "<> Not Equal to" },
     { key: "between", value: ">= Between <=" },
   ];
 
@@ -365,6 +365,7 @@ const UserFilterCard = ({
     if (closeFrom === "opt2") {
       if (!filterFieldData.rawselectmembers || filterFieldData.fieldtypeoption !== queryParam) {
         filterFieldData["fieldtypeoption"] = queryParam;
+       
         setLoading(true);
         await GetPickListItems();
         setLoading(false);
@@ -374,6 +375,10 @@ const UserFilterCard = ({
 
       if (filterFieldData.fieldtypeoption === "Pick List") {
         filterFieldData["userSelection"] = [...filterFieldData.rawselectmembers];
+        filterFieldData.isInValidData = false;
+      }
+      else{
+        checkForValidData();
       }
     } else if (closeFrom === "opt1") {
       filterFieldData.includeexclude = queryParam;
@@ -518,33 +523,40 @@ const UserFilterCard = ({
     updateLeftFilterItem(propKey, 0, constructChartAxesFieldObject());
   };
 
+
+  const checkForValidData = ()=>{
+    if (
+      filterFieldData.prefix === "date" &&
+      new Date(filterFieldData.greaterThanOrEqualTo) > new Date(filterFieldData.lessThanOrEqualTo)
+    ) {
+      filterFieldData["isInValidData"] = true;
+    } else {
+      if (
+        parseInt(filterFieldData.greaterThanOrEqualTo) >
+        parseInt(filterFieldData.lessThanOrEqualTo)
+      ) {
+        filterFieldData["isInValidData"] = true;
+      }
+    }
+  }
+
   ///Search Condition user input change handler
   const handleCustomRequiredValueOnBlur = (val, key) => {
     key = key || "exprInput";
-    filterFieldData[key] = val;
-    filterFieldData["isInValidData"] = false;
-
-    if (key !== "exprInput") {
-      if (
-        filterFieldData.prefix === "date" &&
-        new Date(filterFieldData.greaterThanOrEqualTo) > new Date(filterFieldData.lessThanOrEqualTo)
-      ) {
-        filterFieldData["isInValidData"] = true;
-      } else {
-        if (
-          parseInt(filterFieldData.greaterThanOrEqualTo) >
-          parseInt(filterFieldData.lessThanOrEqualTo)
-        ) {
-          filterFieldData["isInValidData"] = true;
-        }
+    if(!filterFieldData[key] ||  filterFieldData[key] !== val){
+      filterFieldData[key] = val;
+      filterFieldData["isInValidData"] = false;
+  
+      if (key !== "exprInput") {
+        checkForValidData();
       }
-    }
-
-    if (filterFieldData.exprType === "between") {
-      sliderRange = [filterFieldData.greaterThanOrEqualTo, filterFieldData.lessThanOrEqualTo];
-    }
-
-    updateLeftFilterItem(propKey, 0, constructChartAxesFieldObject());
+  
+      if (filterFieldData.exprType === "between") {
+        sliderRange = [filterFieldData.greaterThanOrEqualTo, filterFieldData.lessThanOrEqualTo];
+      }
+  
+      updateLeftFilterItem(propKey, 0, constructChartAxesFieldObject());
+    }  
   };
 
   ///Render Search Condition Custom Input Control
@@ -559,7 +571,7 @@ const UserFilterCard = ({
         onBlur={(e) => handleCustomRequiredValueOnBlur(e.target.value)}
       />
       {filterFieldData.isInValidData ? (
-        <span className="ErrorText">Entered incorrect value.</span>
+        <span className="ErrorText">Please enter valid data.</span>
       ) : null}
     </>
     );
@@ -606,7 +618,7 @@ const UserFilterCard = ({
           }}
         />
         {filterFieldData.isInValidData ? (
-          <span className="ErrorText">Entered incorrect value.</span>
+          <span className="ErrorText">Please enter valid data.</span>
         ) : null}
       </>
     );
@@ -632,7 +644,7 @@ const UserFilterCard = ({
         />
       </LocalizationProvider>
       {filterFieldData.isInValidData ? (
-        <span className="ErrorText">Entered incorrect value.</span>
+        <span className="ErrorText">Please enter valid data.</span>
       ) : null}
     </div>
     );
@@ -672,7 +684,7 @@ const UserFilterCard = ({
                     />
                   </LocalizationProvider>
                   {filterFieldData.isInValidData ? (
-                    <span className="ErrorText">Entered incorrect value.</span>
+                    <span className="ErrorText">Please enter valid data.</span>
                   ) : null}
                 </div>
               );
@@ -802,7 +814,7 @@ const ExpandCollaseIconSwitch = ()=>{
   };
 
   return (
-    <div ref={(node) => drag(drop(node))} className="UserFilterCard">
+    <div ref={(node) => drag(drop(node))} className="UserFilterCard" style={filterFieldData.isInValidData? {border:"2px red solid", backgroundColor:"lightpink"}:null}>
       {loading ? <LoadingPopover /> : null}
 
       <div className="axisFilterField">
@@ -814,7 +826,7 @@ const ExpandCollaseIconSwitch = ()=>{
         >
           <CloseRoundedIcon style={{ fontSize: "13px", margin: "auto" }} />
         </button>
-        <span className="columnName">{field.fieldname}</span>
+        <span className="columnName" style={filterFieldData.includeexclude === "Exclude"? {backgroundColor:"orange"}:null}>{field.fieldname}</span>
         <ExpandCollaseIconSwitch></ExpandCollaseIconSwitch>
         <button
           type="button"
@@ -830,9 +842,9 @@ const ExpandCollaseIconSwitch = ()=>{
 
       {!filterFieldData.isCollapsed ? (
         <>
-          <div className="UserSelectionDiv">
+          <div className="UserSelectionDiv" style={filterFieldData.isInValidData? {border:"2px red solid", backgroundColor:"lightpink"}:null}>
             {filterFieldData.dataType === "timestamp" || filterFieldData.dataType === "date" ? (
-              <div className="CustomRequiredField">
+              <div className="CustomRequiredField" >
                 {filterFieldData.fieldtypeoption === "Pick List" ? (
                   <DropDownForDatePattern items={datePatternCollections}></DropDownForDatePattern>
                 ) : (

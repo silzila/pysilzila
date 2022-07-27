@@ -64,31 +64,41 @@ const getChartLeftFilter = () => {
     }
   };
 
+  const _isInvalidValue = (val)=>{
+
+	if(val === undefined || val === null || val === "")
+	{
+		return true
+	}
+
+	return false;
+  }
+
   /*	Determine whether to add a particular field	*/
   const _getIsFilterValidToAdd = (item) => {
     if (item.fieldtypeoption === "Pick List" && item.userSelection) {
       return !item.userSelection.includes("(All)");
     } else if (item.fieldtypeoption === "Search Condition") {
-      if (
-        item.exprType === "between" &&
-        item.greaterThanOrEqualTo &&
-        item.lessThanOrEqualTo &&
-        item.rawselectmembers?.length > 0
-      ) {
-        if (
-          item.greaterThanOrEqualTo <= item.rawselectmembers[1] &&
-          item.lessThanOrEqualTo >= item.rawselectmembers[item.rawselectmembers.length - 1]
-        )
-          return false;
-      } else if (
-        item.exprType === "between" &&
-        (!item.greaterThanOrEqualTo || !item.lessThanOrEqualTo)
-      ) {
-        return false;
-      } else if (!item.exprInput) {
-        return false;
-      }
-    }
+    //   if (
+    //     item.exprType === "between" &&
+    //     item.greaterThanOrEqualTo &&
+    //     item.lessThanOrEqualTo &&
+    //     item.rawselectmembers?.length > 0
+    //   ) {
+    //     if (
+    //       item.greaterThanOrEqualTo <= item.rawselectmembers[1] &&
+    //       item.lessThanOrEqualTo >= item.rawselectmembers[item.rawselectmembers.length - 1]
+    //     ){
+    //       return false;
+	// 	}
+    //   } else 
+	  
+		if (item.exprType === "between" && (_isInvalidValue(item.greaterThanOrEqualTo) || _isInvalidValue(item.lessThanOrEqualTo))) {
+			return false;
+		} else if (item.exprType !== "between" && _isInvalidValue(item.exprInput)) {
+			return false;
+		}
+	}
 
     return true;
   };
@@ -186,40 +196,49 @@ const getChartLeftFilter = () => {
 
 	/*	PRS 21/07/2022	Get filter object and pushed to request body object	*/
 
-	let _filterObj = getChartLeftFilter();
+	let _filterZoneFields = chartProp.properties[propKey].chartAxes[0].fields;
+	let _hasInvalidFilterData = _filterZoneFields.filter(field=> field.isInValidData);
 
-	if(_filterObj.filters.length > 0){
-		formattedAxes.filters.push(_filterObj);
+	if(_filterZoneFields.length > 0 && _hasInvalidFilterData && _hasInvalidFilterData.length > 0){
+		console.log("Filter has invalid data.");
 	}
+	else{
+		let _filterObj = getChartLeftFilter();
 
-	console.log(JSON.stringify(formattedAxes));
-
-	/*	PRS 21/07/2022	*/
-
-	var res = await FetchData({
-		requestType: "withData",
-		method: "POST",
-		url:
-			"ds/query/" +
-			chartProp.properties[propKey].selectedDs.dc_uid +
-			"/" +
-			chartProp.properties[propKey].selectedDs.ds_uid,
-		headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-		data: formattedAxes,
-	});
-
-	if (res.status) {
-		if(res.data && res.data.result.length > 0)
-		{
-			return res.data;
+		if(_filterObj.filters.length > 0){
+			formattedAxes.filters.push(_filterObj);
 		}
-		else{
-			console.log("Change filter conditions.");
+	
+		console.log(JSON.stringify(formattedAxes));
+	
+		/*	PRS 21/07/2022	*/
+	
+	
+		var res = await FetchData({
+			requestType: "withData",
+			method: "POST",
+			url:
+				"ds/query/" +
+				chartProp.properties[propKey].selectedDs.dc_uid +
+				"/" +
+				chartProp.properties[propKey].selectedDs.ds_uid,
+			headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+			data: formattedAxes,
+		});
+	
+		if (res.status) {
+			if(res.data && res.data.result.length > 0)
+			{
+				return res.data;
+			}
+			else{
+				console.log("Change filter conditions.");
+			}
+			
+		} else {
+			console.log("Get Table Data Error", res.data.detail);
 		}
-		
-	} else {
-		console.log("Get Table Data Error", res.data.detail);
-	}
+	}	
 };
 
 // given chart type, check if the dropzones have required number of fields

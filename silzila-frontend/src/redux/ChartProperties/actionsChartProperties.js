@@ -51,6 +51,10 @@ export const updateFilterAnyContidionMatchPropLeft = (propKey, bIndex, any_condi
 	return { type: "UPDATE_FILTER_ANY_CONDITION_MATCH", payload: { propKey, bIndex, any_condition_match } };
 };
 
+export const updateIsAutoFilterEnabledPropLeft = (propKey, bIndex, is_auto_filter_enabled) => {
+	return { type: "UPDATE_IS_AUTO_FILTER_ENABLED", payload: { propKey, bIndex, is_auto_filter_enabled } };
+};
+
 export const clearDropZoneFieldsChartPropLeft = (propKey, bIndex) => {
 	return { type: "CLEAR_DROPZONE_FIELDS", payload: { propKey, bIndex } };
 };
@@ -84,6 +88,10 @@ export const updateAxesQueryParam = (propKey, binIndex, itemIndex, item) => {
 
 export const toggleAxesEdited = (propKey, axesEdited) => {
 	return { type: "TOGGLE_AXES_EDITED", payload: { propKey, axesEdited } };
+};
+
+export const toggleFilterRunState = (propKey, filterRunState) => {
+	return { type: "TOGGLE_FILTER_RUN_STATE", payload: { propKey, filterRunState } };
 };
 
 export const editChartPropItem = ({ action, details }) => {
