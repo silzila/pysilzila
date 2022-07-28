@@ -69,7 +69,7 @@ const chartControl = {
 				yearLabelFontSize: 12,
 				calendarGap: 30,
 			},
-      
+
 			crossTabStyleOptions: {
 				borderWidth: 1,
 				lineHeight: 1,
@@ -97,10 +97,9 @@ const chartControl = {
 				showLabel: true,
 				labelColorManual: false,
 				labelColor: "#666666",
-				pieLabel: {
-					labelPosition: "outside",
-					labelPadding: 0,
-				},
+				pieLabel: { labelPosition: "outside", labelPadding: 0 },
+				geoRotation: 0,
+				geoFormatter: "value",
 				fontSize: 12,
 				fontStyle: "normal",
 				fontWeigth: "normal",
@@ -131,6 +130,7 @@ const chartControl = {
 
 			mouseOver: {
 				enable: true,
+				formatter: "location",
 			},
 
 			axisOptions: {
@@ -346,10 +346,9 @@ const chartControlsReducer = (state = chartControl, action) => {
 							showLabel: true,
 							labelColorManual: false,
 							labelColor: "#666666",
-							pieLabel: {
-								labelPosition: "outside",
-								labelPadding: 0,
-							},
+							pieLabel: { labelPosition: "outside", labelPadding: 0 },
+							geoRotation: "hori",
+							geoFormatter: "value",
 							fontSize: 12,
 							fontStyle: "normal",
 							fontWeigth: "normal",
@@ -380,6 +379,7 @@ const chartControlsReducer = (state = chartControl, action) => {
 
 						mouseOver: {
 							enable: true,
+							formatter: "location",
 						},
 
 						axisOptions: {
@@ -597,10 +597,9 @@ const chartControlsReducer = (state = chartControl, action) => {
 							showLabel: true,
 							labelColorManual: false,
 							labelColor: "#666666",
-							pieLabel: {
-								labelPosition: "outside",
-								labelPadding: 0,
-							},
+							pieLabel: { labelPosition: "outside", labelPadding: 0 },
+							geoRotation: "hori",
+							geoFormatter: "value",
 							fontSize: 12,
 							fontStyle: "normal",
 							fontWeigth: "normal",
@@ -631,6 +630,7 @@ const chartControlsReducer = (state = chartControl, action) => {
 
 						mouseOver: {
 							enable: true,
+							formatter: "location",
 						},
 
 						axisOptions: {
@@ -845,6 +845,15 @@ const chartControlsReducer = (state = chartControl, action) => {
 				properties: {
 					[action.payload.propKey]: {
 						mouseOver: { enable: { $set: action.payload.enable } },
+					},
+				},
+			});
+
+		case "GEO_MOUSE_OVER_FORMAT":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						mouseOver: { formatter: { $set: action.payload.value } },
 					},
 				},
 			});

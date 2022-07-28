@@ -1,4 +1,5 @@
 export const setPrefix = (fieldData, binName, chartType, geoLocation) => {
+	console.log(fieldData, binName, chartType, geoLocation);
 	if (!fieldData) {
 		return fieldData;
 	}
@@ -11,7 +12,7 @@ export const setPrefix = (fieldData, binName, chartType, geoLocation) => {
 				data.agg = "sum";
 			}
 			if (binName === "Location") {
-				if (geoLocation === "world") data.agg = "fullName";
+				if (geoLocation === "world") data.agg = "shortName";
 				else data.agg = "stateName";
 			}
 			break;
@@ -21,7 +22,7 @@ export const setPrefix = (fieldData, binName, chartType, geoLocation) => {
 				data.agg = "count";
 			}
 			if (binName === "Location") {
-				if (geoLocation === "world") data.agg = "fullName";
+				if (geoLocation === "world") data.agg = "shortName";
 				else data.agg = "stateName";
 			}
 			break;

@@ -204,8 +204,30 @@ const GeoChart = ({
 				}}
 				option={{
 					tooltip: {
+						show: chartControl.mouseOver.enable,
 						trigger: "item",
-						formatter: "{b}<br/>{c} ",
+						formatter: (value) => {
+							console.log(value);
+							console.log(value.value, value.name, chartControl.mouseOver.formatter);
+
+							if (!isNaN(value.value)) {
+								switch (chartControl.mouseOver.formatter) {
+									case "value":
+										return value.value;
+
+									case "location":
+										return value.name;
+
+									case "both":
+										return `${value.name} : ${value.value}`;
+
+									case "none":
+										return "";
+								}
+							} else {
+								return "";
+							}
+						},
 					},
 
 					visualMap: {
@@ -227,13 +249,48 @@ const GeoChart = ({
 							geoIndex: 0,
 							data: formattedData,
 							// roam: true,
-							// zlevel: 3,
-							emphasis: {
-								itemStyle: {
-									areaColor: "white",
-									botderType: "solid",
+							label: {
+								show: chartControl.labelOptions.showLabel,
+								fontSize: chartControl.labelOptions.fontSize,
+								color: chartControl.labelOptions.labelColorManual
+									? chartControl.labelOptions.labelColor
+									: null,
+								rotate: chartControl.labelOptions.geoRotation,
+								position: "bottom",
+								formatter: (value) => {
+									if (!isNaN(value.value)) {
+										switch (chartControl.labelOptions.geoFormatter) {
+											case "value":
+												return value.value;
+
+											case "location":
+												return value.name;
+
+											case "both":
+												return `${value.name} : ${value.value}`;
+
+											case "none":
+												return "";
+										}
+									} else {
+										return "";
+									}
 								},
 							},
+							zoom: 1,
+							selectedMode: "single",
+							// emphasis: {
+							// 	itemStyle: {
+							// 		areaColor: "white",
+							// 		botderType: "dashed",
+							// 		borderWidth: 1,
+							// 	},
+							// },
+							// itemStyle: {
+							// 	areaColor: "white",
+							// 	botderType: "dotted",
+							// },
+							// silent: true,
 						},
 					],
 				}}

@@ -57,6 +57,8 @@ const ChartControlObjects = ({
 		"Style",
 	];
 
+	const geoChartOptionList = ["Title", "Labels", "Tooltip"];
+
 	const RenderOptions = () => {
 		switch (selectedChart) {
 			case "multibar":
@@ -171,6 +173,23 @@ const ChartControlObjects = ({
 
 			case "crossTab":
 				return crossTabOptionList.map((option) => {
+					return (
+						<div
+							key={option}
+							className={
+								chartProp.properties[propKey].chartOptionSelected === option
+									? "optionImageSelected"
+									: "optionImage"
+							}
+							onClick={() => changeChartOption(propKey, option)}
+						>
+							{option}
+						</div>
+					);
+				});
+
+			case "geoChart":
+				return geoChartOptionList.map((option) => {
 					return (
 						<div
 							key={option}

@@ -242,6 +242,8 @@ const ChartTypes2 = ({
 				}
 			});
 
+			// TODO Priority 1
+			// Changing from geo to gauge chart without a dimension and one measure doesn't call server for data
 			if (
 				JSON.stringify(oldDimensionFields) === JSON.stringify(newDimensionFields) &&
 				JSON.stringify(oldMeasureFields) === JSON.stringify(newMeasureFields) &&

@@ -155,6 +155,10 @@ export const enableMouseOver = (propKey, enable) => {
 	return { type: "ENABLE_MOUSE_OVER", payload: { propKey, enable } };
 };
 
+export const geoMouseOverFormat = (propKey, value) => {
+	return { type: "GEO_MOUSE_OVER_FORMAT", payload: { propKey, value } };
+};
+
 // ==============================
 // Grid & Axis
 

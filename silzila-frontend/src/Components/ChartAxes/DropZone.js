@@ -74,11 +74,11 @@ const DropZone = ({
 							setTestMessage("");
 						}, 3000);
 					}
-				} else if (chartType === "geoMaps") {
+				} else if (chartType === "geoChart") {
 					let newFieldData = JSON.parse(
-						JSON.stringify(setPrefix(fieldData, name, chartType))
+						JSON.stringify(setPrefix(fieldData, name, chartType, geoLocation))
 					);
-					updateDropZoneItems(propKey, bIndex, newFieldData, allowedNumbers, geoLocation);
+					updateDropZoneItems(propKey, bIndex, newFieldData, allowedNumbers);
 				} else {
 					let newFieldData = JSON.parse(
 						JSON.stringify(setPrefix(fieldData, name, chartType))
