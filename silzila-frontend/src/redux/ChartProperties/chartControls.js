@@ -19,6 +19,14 @@ const chartControl = {
 				maxColor: "#b32d00",
 			},
 
+			colorScaleGeo: {
+				colorScaleType: "Automatic",
+				min: 0,
+				max: 0,
+				minColor: "#22c1c3",
+				maxColor: "#155799",
+			},
+
 			legendOptions: {
 				showLegend: true,
 				moveSlider: "Width",
@@ -267,6 +275,14 @@ const chartControlsReducer = (state = chartControl, action) => {
 							max: 0,
 							minColor: "#ffffb3",
 							maxColor: "#b32d00",
+						},
+
+						colorScaleGeo: {
+							colorScaleType: "Automatic",
+							min: 0,
+							max: 0,
+							minColor: "#22c1c3",
+							maxColor: "#155799",
 						},
 
 						legendOptions: {
@@ -518,6 +534,14 @@ const chartControlsReducer = (state = chartControl, action) => {
 							max: 0,
 							minColor: "#ffffb3",
 							maxColor: "#b32d00",
+						},
+
+						colorScaleGeo: {
+							colorScaleType: "Automatic",
+							min: 0,
+							max: 0,
+							minColor: "#22c1c3",
+							maxColor: "#155799",
 						},
 
 						legendOptions: {
@@ -920,6 +944,17 @@ const chartControlsReducer = (state = chartControl, action) => {
 				properties: {
 					[action.payload.propKey]: {
 						colorScale: {
+							[action.payload.option]: { $set: action.payload.value },
+						},
+					},
+				},
+			});
+
+		case "SET_COLOR_SCALE_GEO_OPTION":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						colorScaleGeo: {
 							[action.payload.option]: { $set: action.payload.value },
 						},
 					},

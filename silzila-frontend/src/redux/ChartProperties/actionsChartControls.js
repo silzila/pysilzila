@@ -52,6 +52,13 @@ export const setColorScaleOption = (option, value, propKey) => {
 	};
 };
 
+export const setColorScaleGeoOption = (option, value, propKey) => {
+	return {
+		type: "SET_COLOR_SCALE_GEO_OPTION",
+		payload: { option: option, value: value, propKey: propKey },
+	};
+};
+
 export const addingNewStep = (propkey, index, value) => {
 	return {
 		type: "ADDING_NEW_STEP",

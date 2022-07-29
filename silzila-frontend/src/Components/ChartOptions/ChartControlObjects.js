@@ -57,7 +57,7 @@ const ChartControlObjects = ({
 		"Style",
 	];
 
-	const geoChartOptionList = ["Title", "Labels", "Tooltip"];
+	const geoChartOptionList = ["Title", "Labels", "Tooltip", "Colors"];
 
 	const RenderOptions = () => {
 		switch (selectedChart) {
