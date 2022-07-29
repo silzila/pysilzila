@@ -231,13 +231,26 @@ const GeoChart = ({
 					},
 
 					visualMap: {
-						min: minMax.min,
-						max: minMax.max,
+						min:
+							chartControl.colorScaleGeo.colorScaleType === "Manual"
+								? chartControl.colorScaleGeo.min !== ""
+									? parseInt(chartControl.colorScaleGeo.min)
+									: 0
+								: minMax.min,
+						max:
+							chartControl.colorScaleGeo.colorScaleType === "Manual"
+								? chartControl.colorScaleGeo.max !== ""
+									? parseInt(chartControl.colorScaleGeo.max)
+									: 0
+								: minMax.max,
 						text: ["High", "Low"],
 						realtime: false,
 						calculable: true,
 						inRange: {
-							color: ["#22c1c3", "#155799"],
+							color: [
+								chartControl.colorScaleGeo.minColor,
+								chartControl.colorScaleGeo.maxColor,
+							],
 						},
 					},
 
