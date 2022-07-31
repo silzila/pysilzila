@@ -11,6 +11,8 @@ from ..user.api import router as user_router
 from ..data_connection.api import router as dc_router
 from ..data_set.api import router as ds_router
 from ..play_book.api import router as pb_router
+from ..file_data.api import router as fd_router
+
 
 # ROUTERS to be added to the APP
 app = FastAPI()
@@ -18,6 +20,7 @@ app.include_router(user_router)
 app.include_router(dc_router)
 app.include_router(ds_router)
 app.include_router(pb_router)
+app.include_router(fd_router)
 
 # Exceptions for CORS
 origins = [
