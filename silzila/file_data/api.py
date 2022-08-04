@@ -53,18 +53,63 @@ async def upload_file(file: UploadFile = File(...)):
 async def upload_change_metadata(request: Request, meta_info: schema.EditTableSchema, db: Session = Depends(get_db)):
     # get User ID from JWT token coming in request
     uid = request.state.uid
+    # first check if table name already exists for the user
+    db_fd = await service.get_fd_by_name(db, meta_info.table_name, uid)
+    print("after calling get_fd_by_name fn -----------")
+    if db_fd:
+        print("if fd row is present - get_fd_by_name fn -----------")
+        raise HTTPException(
+            status_code=400, detail="File Data Name is already used")
     try:
         sample_data = await edit_table(meta_info)
-        file_meta = {'fd_uid': sample_data['table_id'],
-                     'table_name': sample_data['table_name']}
-        # return sample_data
-        db_record = await service.create_file_data(db, file_meta, uid)
-        if db_record:
-            return sample_data
-        else:
-            raise HTTPException(
-                status_code=500, detail="failed to save in database")
+
     except Exception as ex:
         print("exception ==============\n", ex)
         raise HTTPException(
             status_code=500, detail="Something error in changing metadataa")
+
+    file_meta = {'fd_uid': sample_data['table_id'],
+                 'table_name': sample_data['table_name'], 'meta_data': sample_data['meta_cols'], 'sample_records': sample_data['sample_records']}
+
+    # return sample_data
+    db_record = await service.create_file_data(db, file_meta, uid)
+    if db_record:
+        return sample_data
+    else:
+        raise HTTPException(
+            status_code=500, detail="failed to save in database")
+
+
+@router.post("/check-fd-name-exists/{fd_name}")
+async def check_fd_name_exists(request: Request, fd_name: str, db: Session = Depends(get_db)):
+    # get User ID from JWT token coming in request
+    uid = request.state.uid
+    db_fd = await service.get_fd_by_name(db, fd_name, uid)
+    if db_fd:
+        return {'message': True}
+    else:
+        return {'message': False}
+
+
+# list all file data of a user
+@router.get("/get-all-fd")
+async def get_all_fd(request: Request, db: Session = Depends(get_db)):
+    # get User ID from JWT token coming in request
+    uid = request.state.uid
+    fd_list = await service.get_all_fd(db, uid)
+    if fd_list is None or len(fd_list) == 0:
+        raise HTTPException(
+            status_code=404, detail="No File Data exists")
+    return fd_list
+
+
+# get File Data by it's ID
+@router.get("/get-fd/{fd_uid}")
+async def read_fd(request: Request, fd_uid: str, db: Session = Depends(get_db)):
+    # get User ID from JWT token coming in request
+    uid = request.state.uid
+    db_ds = await service.get_fd_by_id(db, fd_uid, uid)
+    if db_ds is None:
+        raise HTTPException(
+            status_code=404, detail="No File Data exists")
+    return db_ds

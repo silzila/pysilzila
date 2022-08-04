@@ -74,7 +74,7 @@ async def edit_table(meta_info: schema.EditTableSchema):
     print("inside edit table function**********")
     global df_holder
     global spark
-    df_holder[meta_info.file_id].show(2)
+    # df_holder[meta_info.file_id].show(2)
     if not df_holder.get(meta_info.file_id):
         raise HTTPException(
             status_code=500, detail="Data File is not loaded")
