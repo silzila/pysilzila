@@ -2,7 +2,7 @@
 // Number of dropzones and its name is returned according to the chart type selected.
 // Once minimum number of fields are met for the given chart type, server call is made to get chart data and saved in store
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { connect } from "react-redux";
 import ChartsInfo from "./ChartsInfo2";
 import "./ChartAxes.css";
@@ -11,6 +11,7 @@ import FetchData from "../../ServerCall/FetchData";
 import { updateChartData } from "../../redux/ChartProperties/actionsChartControls";
 import LoadingPopover from "../CommonFunctions/PopOverComponents/LoadingPopover";
 import { canReUseData, toggleAxesEdited } from "../../redux/ChartProperties/actionsChartProperties";
+
 
 // format the chartAxes into the way it is needed for api call
 export const getChartData = async (axesValues, chartProp, propKey, token) => {
@@ -291,6 +292,20 @@ const ChartAxes = ({
 		dropZones.push(ChartsInfo[chartProp.properties[propKey].chartType].dropZones[i].name);
 	}
 
+
+	// const usePrevious = (value) => {
+	// 	const ref = useRef();
+	// 	useEffect(() => {
+	// 	  ref.current = value;
+	// 	});
+	// 	return ref.current;
+	// }
+	
+	
+
+	//   const {chartFilter} = chartProp.properties[propKey].chartAxes[0];
+	//   const prevFilter = usePrevious({chartFilter});
+
 	// every time chartAxes or chartType is changed, check if
 	// new data must be obtained from server
 	// check for minimum requirements in each dropzone for the given chart type
@@ -298,6 +313,8 @@ const ChartAxes = ({
 
 	useEffect(() => {
 		const axesValues = JSON.parse(JSON.stringify(chartProp.properties[propKey].chartAxes));
+
+		console.log(prevFilter);
 
 		let serverCall = false;
 
@@ -344,7 +361,7 @@ const ChartAxes = ({
 				setLoading(false);
 			});
 		}
-	}, [chartProp.properties[propKey].chartAxes, chartProp.properties[propKey].chartType]);
+	}, [chartProp.properties[propKey].chartAxes, chartProp.properties[propKey].chartType,chartProp.properties[propKey].filterRunState]);
 
 	const resetStore = () => {
 		toggleAxesEdit(propKey);

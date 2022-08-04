@@ -477,23 +477,32 @@ const UserFilterCard = ({
     updateLeftFilterItem(propKey, 0, constructChartAxesFieldObject());
   };
 
+  const checkValidDate = (val)=>{
+    if(["date","timestamp" ].includes(dataType) && filterFieldData.prefix === "date" && val.includes("-")){
+      return true;
+    }
+
+    return false;
+  }
+
   const setDefaultDate = (key, value)=>{
-   // if(filterFieldData[key] && !moment.isDate(filterFieldData[key])){
-    if(!filterFieldData[key]){
+    if(filterFieldData[key]){
       filterFieldData[key] = value ? value : new Date();
     }
   }
 
   const setSearchConditionDate = ()=>{
     if(["date","timestamp" ].includes(dataType) && filterFieldData.prefix === "date"){
-      if (filterFieldData.exprType === "between") {
-        // filterFieldData.greaterThanOrEqualTo = 
-        // filterFieldData.lessThanOrEqualTo
-        setDefaultDate("greaterThanOrEqualTo");
-        setDefaultDate("lessThanOrEqualTo");
+      if (filterFieldData.exprType === "between") {       
+        if(checkValidDate(filterFieldData.exprInput)){
+          setDefaultDate("greaterThanOrEqualTo", filterFieldData.exprInput);
+          setDefaultDate("lessThanOrEqualTo", filterFieldData.exprInput);
+        }      
       }
-      else{      
-        setDefaultDate("exprInput");
+      else{   
+        if(checkValidDate(filterFieldData.lessThanOrEqualTo)){   
+        setDefaultDate("exprInput", filterFieldData.lessThanOrEqualTo);
+        }
       }
     }   
   }
@@ -617,13 +626,13 @@ const UserFilterCard = ({
 
     return (
       <>
-        <StyledSlider
+        {/*<StyledSlider
           value={sliderRange}
           onChange={handleSliderRangeOnChange}
           min={filterFieldData.greaterThanOrEqualTo}
           max={filterFieldData.lessThanOrEqualTo}
           marks={_marks}
-        />
+           />*/}
         <input
           placeholder="Greater than or Equal to"
           type="number"

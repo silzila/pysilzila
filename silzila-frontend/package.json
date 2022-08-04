@@ -2,8 +2,7 @@
 	"name": "silzila-frontend",
 	"version": "0.1.0",
 	"private": true,
-	"dependencies": {		
-		"date-fns": "latest",
+	"dependencies": {
 		"@emotion/react": "^11.7.1",
 		"@emotion/styled": "^11.6.0",
 		"@mui/icons-material": "^5.3.1",
@@ -14,11 +13,12 @@
 		"@testing-library/react": "^12.1.2",
 		"@testing-library/user-event": "^13.5.0",
 		"axios": "^0.24.0",
+		"date-fns": "latest",
 		"echarts": "^5.3.1",
 		"echarts-for-react": "^3.0.2",
 		"immutability-helper": "^3.1.1",
 		"jwt-decode": "^3.1.2",
-		"moment": "^2.29.3",
+		"moment": "^2.29.4",
 		"prop-types": "^15.8.1",
 		"react": "^17.0.2",
 		"react-color": "^2.19.3",

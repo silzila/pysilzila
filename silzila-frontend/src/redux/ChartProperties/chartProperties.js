@@ -401,7 +401,10 @@ const chartPropertiesState = (state = chartProperties, action) => {
 		case "TOGGLE_FILTER_RUN_STATE":
 			return update(state, {
 				properties: {
-					[action.payload.propKey]: { filterRunState: { $set: action.payload.filterRunState } },
+					[action.payload.propKey]: { 
+						filterRunState: { $set: action.payload.filterRunState },
+						axesEdited: { $set: true } 
+					},
 				},
 			});
 
