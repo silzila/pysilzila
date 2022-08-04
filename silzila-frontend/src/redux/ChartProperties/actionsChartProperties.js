@@ -43,6 +43,23 @@ export const setSelectedTableInTile = (propKey, selectedTable) => {
 
 // Actions From Chart Axes Dustbin
 
+export const updateDropZoneExpandCollapsePropLeft = (propKey, bIndex, isCollapsed) => {
+	return { type: "UPDATE_DROPZONE_EXPAND_COLLAPSE", payload: { propKey, bIndex, isCollapsed } };
+};
+
+export const updateFilterAnyContidionMatchPropLeft = (propKey, bIndex, any_condition_match) => {
+	return { type: "UPDATE_FILTER_ANY_CONDITION_MATCH", payload: { propKey, bIndex, any_condition_match } };
+};
+
+export const updateIsAutoFilterEnabledPropLeft = (propKey, bIndex, is_auto_filter_enabled) => {
+	return { type: "UPDATE_IS_AUTO_FILTER_ENABLED", payload: { propKey, bIndex, is_auto_filter_enabled } };
+};
+
+export const clearDropZoneFieldsChartPropLeft = (propKey, bIndex) => {
+	return { type: "CLEAR_DROPZONE_FIELDS", payload: { propKey, bIndex } };
+};
+
+
 export const updateChartPropLeft = (propKey, bIndex, item, allowedNumbers) => {
 	return { type: "UPDATE_PROP", payload: { propKey, bIndex, item, allowedNumbers } };
 };
@@ -71,6 +88,10 @@ export const updateAxesQueryParam = (propKey, binIndex, itemIndex, item) => {
 
 export const toggleAxesEdited = (propKey, axesEdited) => {
 	return { type: "TOGGLE_AXES_EDITED", payload: { propKey, axesEdited } };
+};
+
+export const toggleFilterRunState = (propKey, filterRunState) => {
+	return { type: "TOGGLE_FILTER_RUN_STATE", payload: { propKey, filterRunState } };
 };
 
 export const editChartPropItem = ({ action, details }) => {
@@ -205,4 +226,9 @@ export const loadChartProperties = (chartProperties) => {
 
 export const resetChartProperties = () => {
 	return { type: "RESET_CHART_PROPERTY" };
+};
+
+export const updateLeftFilterItem = (propKey, bIndex, item) => {
+    console.log("UPDATE_LEFT_FILTER_ITEM");
+    return { type: "UPDATE_LEFT_FILTER_ITEM", payload: { propKey, bIndex, item } };
 };

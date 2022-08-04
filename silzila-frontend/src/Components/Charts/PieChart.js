@@ -19,7 +19,8 @@ const PieChart = ({
 	updateChartMargins,
 }) => {
 	var chartControl = chartControls.properties[propKey];
-	let chartData = chartControl.chartData ? chartControl.chartData.result : "";
+	let chartData = chartControl.chartData && chartControl.chartData.result && chartControl.chartData.result.length >0 ?
+						 chartControl.chartData.result : "";
 	const [chartDataKeys, setChartDataKeys] = useState([]);
 
 	useEffect(() => {
