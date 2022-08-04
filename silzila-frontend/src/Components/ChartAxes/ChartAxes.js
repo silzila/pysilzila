@@ -314,7 +314,7 @@ const ChartAxes = ({
 	useEffect(() => {
 		const axesValues = JSON.parse(JSON.stringify(chartProp.properties[propKey].chartAxes));
 
-		console.log(prevFilter);
+		//console.log(prevFilter);
 
 		let serverCall = false;
 
