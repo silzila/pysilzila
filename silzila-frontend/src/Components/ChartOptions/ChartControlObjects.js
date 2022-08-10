@@ -24,6 +24,15 @@ const ChartControlObjects = ({
 		"Colors",
 		"Format",
 	];
+	const treemapOptionsList = [
+		"Title",
+		"Labels",
+		"Legend",
+		"Margin",
+		"Tooltip",
+		"Colors",
+		"Style",
+	];
 
 	const pieOptionsList = [
 		"Title",
@@ -68,7 +77,7 @@ const ChartControlObjects = ({
 			case "area":
 			case "scatterPlot":
 			case "stakedArea":
-				return barOptionsList.map((option) => {
+				return barOptionsList.map(option => {
 					return (
 						<div
 							key={option}
@@ -84,7 +93,8 @@ const ChartControlObjects = ({
 					);
 				});
 			case "calendar":
-				return calendarOptionList.map((option) => {
+			case "sankey":
+				return calendarOptionList.map(option => {
 					return (
 						<div
 							key={option}
@@ -103,7 +113,7 @@ const ChartControlObjects = ({
 			case "pie":
 			case "donut":
 			case "rose":
-				return pieOptionsList.map((option) => {
+				return pieOptionsList.map(option => {
 					return (
 						<div
 							key={option}
@@ -120,7 +130,7 @@ const ChartControlObjects = ({
 				});
 
 			case "boxPlot":
-				return boxPlotOptionsList.map((option) => {
+				return boxPlotOptionsList.map(option => {
 					return (
 						<div
 							key={option}
@@ -136,7 +146,7 @@ const ChartControlObjects = ({
 					);
 				});
 			case "funnel":
-				return funnelOptionList.map((option) => {
+				return funnelOptionList.map(option => {
 					return (
 						<div
 							key={option}
@@ -153,7 +163,7 @@ const ChartControlObjects = ({
 				});
 
 			case "gauge":
-				return gaugeOptionList.map((option) => {
+				return gaugeOptionList.map(option => {
 					return (
 						<div
 							key={option}
@@ -170,7 +180,23 @@ const ChartControlObjects = ({
 				});
 
 			case "heatmap":
-				return heatmapOptionList.map((option) => {
+				return heatmapOptionList.map(option => {
+					return (
+						<div
+							key={option}
+							className={
+								chartProp.properties[propKey].chartOptionSelected === option
+									? "optionImageSelected"
+									: "optionImage"
+							}
+							onClick={() => changeChartOption(propKey, option)}
+						>
+							{option}
+						</div>
+					);
+				});
+			case "treeMap":
+				return treemapOptionsList.map(option => {
 					return (
 						<div
 							key={option}
@@ -187,7 +213,7 @@ const ChartControlObjects = ({
 				});
 
 			case "crossTab":
-				return crossTabOptionList.map((option) => {
+				return crossTabOptionList.map(option => {
 					return (
 						<div
 							key={option}
@@ -211,7 +237,7 @@ const ChartControlObjects = ({
 	return (
 		<>
 			<div className="axisInfo">
-				for {chartTypes.filter((chart) => chart.name === selectedChart)[0].value}
+				for {chartTypes.filter(chart => chart.name === selectedChart)[0].value}
 			</div>
 			<div className="chartOptionImagesContainer">
 				<RenderOptions />
@@ -220,11 +246,11 @@ const ChartControlObjects = ({
 	);
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return { chartProp: state.chartProperties, tabTileProps: state.tabTileProps };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
 		changeChartOption: (propKey, chartOption) =>
 			dispatch(changeChartOptionSelected(propKey, chartOption)),

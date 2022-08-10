@@ -5,6 +5,7 @@ import { updateCalendarStyleOptions } from "../../../redux/ChartProperties/actio
 import { FormControl, MenuItem, Popover, Select, Switch } from "@mui/material";
 import SliderWithInput from "../SliderWithInput";
 import { SketchPicker } from "react-color";
+import SwitchWithInput from "../SwitchWithInput";
 
 const CalendarLabels = ({
 	// state
@@ -31,11 +32,9 @@ const CalendarLabels = ({
 				>
 					Show Year Label
 				</label>
-				<Switch
-					size="small"
-					id="enableDisable"
-					checked={calStyle.showYearLabel}
-					onClick={() => {
+				<SwitchWithInput
+					isChecked={calStyle.showYearLabel}
+					onSwitch={() => {
 						updateCalendarStyleOptions(
 							propKey,
 							"showYearLabel",
@@ -51,7 +50,7 @@ const CalendarLabels = ({
 						percent={false}
 						sliderValue={calStyle.yearLabelMargin}
 						sliderMinMax={{ min: 0, max: 60, step: 1 }}
-						changeValue={(value) =>
+						changeValue={value =>
 							updateCalendarStyleOptions(propKey, "yearLabelMargin", value)
 						}
 					/>
@@ -64,7 +63,7 @@ const CalendarLabels = ({
 						<Select
 							value={calStyle.yearLabelPosition}
 							variant="outlined"
-							onChange={(e) => {
+							onChange={e => {
 								updateCalendarStyleOptions(
 									propKey,
 									"yearLabelPosition",
@@ -106,7 +105,7 @@ const CalendarLabels = ({
 								border: "2px solid darkgray",
 								margin: "auto",
 							}}
-							onClick={(e) => {
+							onClick={e => {
 								setColorPopOverOpen(!isColorPopoverOpen);
 								setColorPickerFor("yearLabelColor");
 							}}
@@ -120,7 +119,7 @@ const CalendarLabels = ({
 						percent={false}
 						sliderValue={calStyle.yearLabelFontSize}
 						sliderMinMax={{ min: 0, max: 60, step: 1 }}
-						changeValue={(value) =>
+						changeValue={value =>
 							updateCalendarStyleOptions(propKey, "yearLabelFontSize", value)
 						}
 					/>
@@ -139,11 +138,9 @@ const CalendarLabels = ({
 				>
 					Show Month Label
 				</label>
-				<Switch
-					size="small"
-					id="enableDisable"
-					checked={calStyle.showMonthLabel}
-					onClick={() => {
+				<SwitchWithInput
+					isChecked={calStyle.showMonthLabel}
+					onSwitch={() => {
 						updateCalendarStyleOptions(
 							propKey,
 							"showMonthLabel",
@@ -160,7 +157,7 @@ const CalendarLabels = ({
 						percent={false}
 						sliderValue={calStyle.monthLabelMargin}
 						sliderMinMax={{ min: 0, max: 60, step: 1 }}
-						changeValue={(value) =>
+						changeValue={value =>
 							updateCalendarStyleOptions(propKey, "monthLabelMargin", value)
 						}
 					/>
@@ -173,7 +170,7 @@ const CalendarLabels = ({
 						<Select
 							value={calStyle.monthLabelPosition}
 							variant="outlined"
-							onChange={(e) => {
+							onChange={e => {
 								updateCalendarStyleOptions(
 									propKey,
 									"monthLabelPosition",
@@ -209,7 +206,7 @@ const CalendarLabels = ({
 								border: "2px solid darkgray",
 								margin: "auto",
 							}}
-							onClick={(e) => {
+							onClick={e => {
 								setColorPopOverOpen(!isColorPopoverOpen);
 								setColorPickerFor("monthLabelColor");
 							}}
@@ -223,7 +220,7 @@ const CalendarLabels = ({
 						percent={false}
 						sliderValue={calStyle.monthLabelFontSize}
 						sliderMinMax={{ min: 0, max: 60, step: 1 }}
-						changeValue={(value) =>
+						changeValue={value =>
 							updateCalendarStyleOptions(propKey, "monthLabelFontSize", value)
 						}
 					/>
@@ -242,11 +239,9 @@ const CalendarLabels = ({
 				>
 					Show Day Label
 				</label>
-				<Switch
-					size="small"
-					id="enableDisable"
-					checked={calStyle.showDayLabel}
-					onClick={() => {
+				<SwitchWithInput
+					isChecked={calStyle.showDayLabel}
+					onSwitch={() => {
 						updateCalendarStyleOptions(propKey, "showDayLabel", !calStyle.showDayLabel);
 					}}
 				/>
@@ -258,7 +253,7 @@ const CalendarLabels = ({
 						percent={false}
 						sliderValue={calStyle.dayLabelMargin}
 						sliderMinMax={{ min: 0, max: 60, step: 1 }}
-						changeValue={(value) =>
+						changeValue={value =>
 							updateCalendarStyleOptions(propKey, "dayLabelMargin", value)
 						}
 					/>
@@ -271,7 +266,7 @@ const CalendarLabels = ({
 						<Select
 							value={calStyle.dayLabelPosition}
 							variant="outlined"
-							onChange={(e) => {
+							onChange={e => {
 								updateCalendarStyleOptions(
 									propKey,
 									"dayLabelPosition",
@@ -308,7 +303,7 @@ const CalendarLabels = ({
 								border: "2px solid darkgray",
 								margin: "auto",
 							}}
-							onClick={(e) => {
+							onClick={e => {
 								setColorPopOverOpen(!isColorPopoverOpen);
 								setColorPickerFor("dayLabelColor");
 							}}
@@ -322,7 +317,7 @@ const CalendarLabels = ({
 						percent={false}
 						sliderValue={calStyle.dayLabelFontSize}
 						sliderMinMax={{ min: 0, max: 60, step: 1 }}
-						changeValue={(value) =>
+						changeValue={value =>
 							updateCalendarStyleOptions(propKey, "dayLabelFontSize", value)
 						}
 					/>
@@ -341,10 +336,10 @@ const CalendarLabels = ({
 						className="sketchPicker"
 						width="16rem"
 						styles={{ padding: "0" }}
-						onChangeComplete={(color) => {
+						onChangeComplete={color => {
 							updateCalendarStyleOptions(propKey, colorPickerFor, color.hex);
 						}}
-						onChange={(color) =>
+						onChange={color =>
 							updateCalendarStyleOptions(propKey, colorPickerFor, color.hex)
 						}
 						disableAlpha
@@ -354,7 +349,7 @@ const CalendarLabels = ({
 		</div>
 	);
 };
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		chartProp: state.chartControls,
 		tabTileProps: state.tabTileProps,
@@ -362,7 +357,7 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
 		updateCalendarStyleOptions: (propKey, option, value) =>
 			dispatch(updateCalendarStyleOptions(propKey, option, value)),

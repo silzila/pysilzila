@@ -21,60 +21,44 @@ const BoxPlotChart = ({
 
 	let chartData = chartControl.chartData ? chartControl.chartData.result : "";
 
-	const [seriesData, setSeriesData] = useState([]);
 	const [dimensionData, setDimensionData] = useState([]);
 	const [sourceData, setSourceData] = useState([]);
-	const [categoryName, setCategoryName] = useState("");
 
+	// to track  the axis swap and assign axis name accordingly
 	const axisName1 = chartControl.boxPlotChartControls.flipAxis ? "yAxis" : "xAxis";
 	const axisName2 = !chartControl.boxPlotChartControls.flipAxis ? "yAxis" : "xAxis";
 
 	useEffect(() => {
 		if (chartData) {
-			// console.log(chartProperty.properties[propKey]);
-			if (
-				chartProperty.properties[propKey].chartAxes[1].fields.length !== 0 &&
-				chartProperty.properties[propKey].chartAxes[2].fields.length !== 0
-			) {
-				var dimValue = chartProperty.properties[propKey].chartAxes[1].fields[0].fieldname;
-				// console.log(dimValue);
-				// setCategoryName(dimValue);
-				var dimArray = chartData.map((el) => {
-					return el[dimValue];
-				});
-				// console.log(DimArray);
-				setDimensionData([...new Set(dimArray)]);
+			// distribution value
+			var dimValue = chartProperty.properties[propKey].chartAxes[1].fields[0].fieldname;
 
-				var measureValue = `${chartProperty.properties[propKey].chartAxes[3].fields[0].fieldname}__${chartProperty.properties[propKey].chartAxes[3].fields[0].agg}`;
-				console.log(measureValue);
+			var dimArray = chartData.map((el) => {
+				return el[dimValue];
+			});
+			setDimensionData([...new Set(dimArray)]);
 
-				var SerArray = [];
+			var measureValue = `${chartProperty.properties[propKey].chartAxes[3].fields[0].fieldname}__${chartProperty.properties[propKey].chartAxes[3].fields[0].agg}`;
 
-				// console.log(dimArray);
+			var arrayPoints = [];
 
-				var arrayPoints = [];
+			// getting array points
 
-				[...new Set(dimArray)].map((el) => {
-					var temp = [];
-					chartData.map((elm) => {
-						if (el === elm[dimValue]) {
-							console.log(elm[measureValue], el);
-							temp.push(elm[measureValue]);
-						}
-					});
-
-					console.log(temp);
-					arrayPoints.push(temp);
+			[...new Set(dimArray)].map((el) => {
+				var temp = [];
+				chartData.map((elm) => {
+					if (el === elm[dimValue]) {
+						// console.log(elm[measureValue], el);
+						temp.push(elm[measureValue]);
+					}
 				});
 
-				console.log(arrayPoints);
-				setSourceData(arrayPoints);
-			}
+				arrayPoints.push(temp);
+			});
+
+			setSourceData(arrayPoints);
 		}
 	}, [chartData, chartControl]);
-
-	console.log(dimensionData);
-	console.log(sourceData);
 
 	const RenderChart = () => {
 		return (
@@ -107,17 +91,17 @@ const BoxPlotChart = ({
 						orient: chartControl.legendOptions?.orientation,
 					},
 					grid: {
-						left: chartControl.chartMargin.left,
-						right: chartControl.chartMargin.right,
-						top: chartControl.chartMargin.top,
-						bottom: chartControl.chartMargin.bottom,
+						left: chartControl.chartMargin.left + "%",
+						right: chartControl.chartMargin.right + "%",
+						top: chartControl.chartMargin.top + "%",
+						bottom: chartControl.chartMargin.bottom + "%",
 					},
 
 					tooltip: {
 						show: chartControl.mouseOver.enable,
 						trigger: "item",
+						// just formating data to shown in tooltiop in required formate
 						formatter: function (params) {
-							// console.log(params);
 							if (params.seriesName === "boxplot") {
 								return `${params.name} <br/> ${params.seriesName} <br/> <table>
 								<th>
@@ -164,6 +148,7 @@ const BoxPlotChart = ({
 						{
 							transform: {
 								type: "boxplot",
+								//to  show dimension value as axes value
 								config: {
 									itemNameFormatter: function (params) {
 										return dimensionData[params.value];

@@ -262,6 +262,45 @@ const ChartsInfo = {
 		],
 		showSwap: false,
 	},
+	treeMap: {
+		dropZones: [
+			{ name: "Filter", allowedNumbers: 64, min: 0 },
+			{
+				name: "Dimension",
+				allowedNumbers: 4,
+				min: 1,
+				dataType: ["text", "string", "timestamp"],
+			},
+			{ name: "Measure", allowedNumbers: 1, min: 1, dataType: ["int", "float", "double"] },
+		],
+		showSwap: false,
+	},
+	sankey: {
+		dropZones: [
+			{ name: "Filter", allowedNumbers: 64, min: 0 },
+			{
+				name: "Dimension",
+				allowedNumbers: 2,
+				min: 1,
+				dataType: ["text", "string", "timestamp"],
+			},
+			{ name: "Measure", allowedNumbers: 1, min: 1, dataType: ["int", "float", "double"] },
+		],
+		showSwap: false,
+	},
+	textEditor: {
+		dropZones: [
+			{ name: "Filter", allowedNumbers: 64, min: 0 },
+			{
+				name: "Dimension",
+				allowedNumbers: 2,
+				min: 1,
+				dataType: ["text", "string", "timestamp"],
+			},
+			{ name: "Measure", allowedNumbers: 1, min: 1, dataType: ["int", "float", "double"] },
+		],
+		showSwap: false,
+	},
 };
 
 export default ChartsInfo;
