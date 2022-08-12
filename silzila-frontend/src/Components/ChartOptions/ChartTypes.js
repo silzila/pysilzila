@@ -32,6 +32,8 @@ import "./ChartOptions.css";
 import { updateChartData } from "../../redux/ChartProperties/actionsChartControls";
 import boxPlotIcon from "../../assets/box_plot.svg";
 import TreeMapIcon from "../../assets/treemap.svg";
+import TextEditor from "../../assets/text_editor.svg";
+import Sankey from "../../assets/sankey.svg";
 
 export const chartTypes = [
 	{ name: "crossTab", icon: CrossTabIcon, value: " Cross Tab" },
@@ -50,10 +52,12 @@ export const chartTypes = [
 	{ name: "gauge", icon: gaugeChartIcon, value: "Gauge Chart" },
 	{ name: "funnel", icon: funnelChartIcon, value: "Funnel Chart" },
 	{ name: "heatmap", icon: heatMapIcon, value: "Heat Map" },
-	{ name: "treemap", icon: TreeMapIcon, value: "Tree Map" },
+	{ name: "treeMap", icon: TreeMapIcon, value: "Tree Map" },
 	// { name: "geoChart", icon: geoChartIcon, value: "Geo Chart" },
 	{ name: "calendar", icon: calendarChartIcon, value: "Calendar Chart" },
 	{ name: "boxPlot", icon: boxPlotIcon, value: "Box Plot Chart" },
+	{ name: "texteditor", icon: TextEditor, value: "Text Editor" },
+	{ name: "sankey", icon: Sankey, value: "Sankey Chart" },
 ];
 
 const ChartTypes = ({
@@ -107,6 +111,9 @@ const ChartTypes = ({
 			case "line":
 			case "area":
 			case "stackedArea":
+			case "treeMap":
+			// case "textEditor":
+			case "sankey":
 				if (
 					[
 						"multibar",
@@ -117,6 +124,9 @@ const ChartTypes = ({
 						"area",
 						"geoChart",
 						"stackedArea",
+						"treeMap",
+						// "textEditor",
+						"sankey",
 					].includes(newChart)
 				) {
 					keepOldData(propKey, true);
@@ -290,6 +300,8 @@ const ChartTypes = ({
 						"area",
 						"geoChart",
 						"stackedArea",
+						"treeMap",
+						"sankey",
 					].includes(newChart)
 				) {
 					keepOldData(propKey, true);
@@ -419,6 +431,8 @@ const ChartTypes = ({
 						"donut",
 						"rose",
 						"stackedArea",
+						"treeMap",
+						"sankey",
 					].includes(newChart)
 				) {
 					keepOldData(propKey, true);
@@ -577,6 +591,8 @@ const ChartTypes = ({
 						"donut",
 						"rose",
 						"stackedArea",
+						"treeMap",
+						"sankey",
 					].includes(newChart)
 				) {
 					keepOldData(propKey, true);
@@ -694,6 +710,8 @@ const ChartTypes = ({
 						"rose",
 						"stackedArea",
 						"calendar",
+						"treeMap",
+						"sankey",
 					].includes(newChart)
 				) {
 					keepOldData(propKey, false);
@@ -773,6 +791,8 @@ const ChartTypes = ({
 						"rose",
 						"stackedArea",
 						"calendar",
+						"treeMap",
+						"sankey",
 					].includes(newChart)
 				) {
 					keepOldData(propKey, false);
@@ -850,6 +870,8 @@ const ChartTypes = ({
 						"donut",
 						"rose",
 						"stackedArea",
+						"treeMap",
+						"sankey",
 					].includes(newChart)
 				) {
 					keepOldData(propKey, false);
@@ -879,10 +901,10 @@ const ChartTypes = ({
 						newChartAxes[0].fields = oldChartAxes[0].fields;
 					}
 					if (oldChartAxes[1].fields.length > 0) {
-						const row = oldChartAxes[1].fields.filter((el) => {
+						const row = oldChartAxes[1].fields.filter(el => {
 							return el.dataType === "date" || el.dataType === "timestamp";
 						});
-						const column = oldChartAxes[2].fields.filter((el) => {
+						const column = oldChartAxes[2].fields.filter(el => {
 							return el.dataType === "date" || el.dataType === "timestamp";
 						});
 
@@ -972,7 +994,8 @@ const ChartTypes = ({
 						"rose",
 						"geoChart",
 						"stackedArea",
-						// "boxPlot",
+						"treeMap",
+						"sankey",
 					].includes(newChart)
 				) {
 					// Map filter to Filter
@@ -1006,10 +1029,10 @@ const ChartTypes = ({
 					}
 
 					if (oldChartAxes[1].fields.length > 0) {
-						const row = oldChartAxes[1].fields.filter((el) => {
+						const row = oldChartAxes[1].fields.filter(el => {
 							return el.dataType === "date" || el.dataType === "timestamp";
 						});
-						const column = oldChartAxes[2].fields.filter((el) => {
+						const column = oldChartAxes[2].fields.filter(el => {
 							return el.dataType === "date" || el.dataType === "timestamp";
 						});
 
@@ -1108,7 +1131,7 @@ const ChartTypes = ({
 		}
 	};
 
-	const renderChartTypes = chartTypes.map((chart) => {
+	const renderChartTypes = chartTypes.map(chart => {
 		return (
 			<img
 				key={chart.name}
@@ -1141,6 +1164,9 @@ const ChartTypes = ({
 							"stackedArea",
 							"calendar",
 							"boxPlot",
+							"treeMap",
+							"sankey",
+							"textEditor",
 						].includes(chart.name)
 					) {
 						console.log(chart.name, " clicked");
@@ -1162,12 +1188,12 @@ const ChartTypes = ({
 		</React.Fragment>
 	);
 };
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		chartProp: state.chartProperties,
 	};
 };
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
 		updateChartTypeAndAxes: (propKey, chartType, newAxes) =>
 			dispatch(changeChartTypeAndAxes({ propKey, chartType, newAxes })),

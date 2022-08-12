@@ -28,13 +28,8 @@ const CalendarChart = ({
 	const [chartDataKeys, setChartDataKeys] = useState([]);
 
 	useEffect(() => {
-		console.log(chartControl?.chartData?.result);
 		if (chartData) {
-			// if (chartProperty.properties[propKey].reUseData) {
-			console.log(chartData);
-			// }
 			if (chartProperty.properties[propKey].chartAxes[1].fields.length > 0) {
-				console.log(chartData);
 				setChartDataKeys(Object.keys(chartData[0]));
 
 				let objKey =
@@ -43,15 +38,16 @@ const CalendarChart = ({
 					chartProperty.properties[propKey].chartAxes[1].fields[0].time_grain;
 
 				// getting years of dates
-				chartData.map((el) => {
-					const ts = new Date(el[objKey]);
-					const year = ts.getFullYear();
+				chartData.map(el => {
+					const timestampformate = new Date(el[objKey]);
+					const year = timestampformate.getFullYear();
 					yearsArray.push(JSON.stringify(year));
 				});
 
 				// getting unique values
 				uniqueYears = [...new Set(yearsArray)];
 
+				// setting props for each value
 				const calendarArrayValues = uniqueYears.map((yr, i) => {
 					return {
 						top:
@@ -100,6 +96,8 @@ const CalendarChart = ({
 
 				setCalendarArray(calendarArrayValues);
 
+				// setting individual year props and data
+
 				const seriesArrayValues = uniqueYears.map((yr, index) => {
 					return {
 						type: "heatmap",
@@ -116,23 +114,23 @@ const CalendarChart = ({
 		}
 	}, [chartControl, chartControl.chartData]);
 
-	console.log(chartData);
 	function getVirtulData(year) {
 		let objKey =
 			chartProperty.properties[propKey].chartAxes[1].fields[0].fieldname +
 			"__" +
 			chartProperty.properties[propKey].chartAxes[1].fields[0].time_grain;
-		var vData = [];
+		var virtualData = [];
 
-		chartData.map((el) => {
+		// getting measure value as day value for individual year
+		chartData.map(el => {
 			var elYear = new Date(el[objKey]).getFullYear();
 			if (year === JSON.stringify(elYear)) {
-				vData.push(Object.values(el));
+				virtualData.push(Object.values(el));
 			}
 		});
 
-		console.log(vData);
-		return vData;
+		console.log(virtualData);
+		return virtualData;
 	}
 
 	const RenderChart = () => {
@@ -176,7 +174,7 @@ const CalendarChart = ({
 
 	return chartData ? <RenderChart /> : null;
 };
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		chartControls: state.chartControls,
 		chartProperty: state.chartProperties,

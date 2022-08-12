@@ -20,7 +20,6 @@ const GaugeChart = ({
 	var chartControl = chartControls.properties[propKey];
 	let chartData = chartControl.chartData ? chartControl.chartData.result : "";
 	const [newData, setNewData] = useState([]);
-	// const []
 
 	var carr = [];
 

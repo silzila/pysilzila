@@ -4,6 +4,7 @@ import "./chartStyle.css";
 import { updateBoxPlotStyleOptions } from "../../../redux/ChartProperties/actionsChartControls";
 import SliderWithInput from "../SliderWithInput";
 import { Switch, TextField } from "@mui/material";
+import SwitchWithInput from "../SwitchWithInput";
 
 const textFieldInputProps = {
 	style: {
@@ -37,11 +38,9 @@ const BoxPlotChartStyles = ({
 				>
 					Flip Axis
 				</label>
-				<Switch
-					size="small"
-					id="enableDisable"
-					checked={boxStyle.flipAxis}
-					onClick={() => {
+				<SwitchWithInput
+					isChecked={boxStyle.flipAxis}
+					onSwitch={() => {
 						updateBoxPlotStyleOptions(propKey, "flipAxis", !boxStyle.flipAxis);
 					}}
 				/>
@@ -52,7 +51,7 @@ const BoxPlotChartStyles = ({
 					<TextField
 						type="number"
 						value={boxStyle.minBoxWidth}
-						onChange={(e) => {
+						onChange={e => {
 							updateBoxPlotStyleOptions(propKey, "minBoxWidth", e.target.value);
 						}}
 						label="Min"
@@ -62,7 +61,7 @@ const BoxPlotChartStyles = ({
 					<TextField
 						type="number"
 						value={boxStyle.maxBoxWidth}
-						onChange={(e) => {
+						onChange={e => {
 							updateBoxPlotStyleOptions(propKey, "maxBoxWidth", e.target.value);
 						}}
 						label="Max"
@@ -77,12 +76,12 @@ const BoxPlotChartStyles = ({
 				percent={false}
 				sliderValue={boxStyle.boxborderWidth}
 				sliderMinMax={{ min: 1, max: 10, step: 1 }}
-				changeValue={(value) => updateBoxPlotStyleOptions(propKey, "boxborderWidth", value)}
+				changeValue={value => updateBoxPlotStyleOptions(propKey, "boxborderWidth", value)}
 			/>
 		</div>
 	);
 };
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		chartProp: state.chartControls,
 		tabTileProps: state.tabTileProps,
@@ -90,7 +89,7 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
 		updateBoxPlotStyleOptions: (propKey, option, value) =>
 			dispatch(updateBoxPlotStyleOptions(propKey, option, value)),

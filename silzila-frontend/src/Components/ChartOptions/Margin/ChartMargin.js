@@ -25,7 +25,7 @@ const ChartMargin = ({
 
 	const marginSlider = chartControl.properties[propKey].chartMargin.selectedMargin;
 
-	const marginMinMax = { min: 0, max: 200, step: 1 };
+	const marginMinMax = { min: 0, max: 50, step: 1 };
 
 	const marginOptionsForCharts = () => {
 		switch (chartProperties.properties[propKey].chartType) {
@@ -42,7 +42,7 @@ const ChartMargin = ({
 								max: 100,
 								step: 1,
 							}}
-							changeValue={(value) => {
+							changeValue={value => {
 								//console.log(value);
 								updateMargin(propKey, "radius", value);
 							}}
@@ -63,7 +63,7 @@ const ChartMargin = ({
 								max: 90,
 								step: 1,
 							}}
-							changeValue={(value) => {
+							changeValue={value => {
 								//console.log(value);
 								updateMargin(propKey, "innerRadius", value);
 							}}
@@ -77,7 +77,7 @@ const ChartMargin = ({
 								max: 100,
 								step: 1,
 							}}
-							changeValue={(value) => {
+							changeValue={value => {
 								//console.log(value);
 								updateMargin(propKey, "outerRadius", value);
 							}}
@@ -91,31 +91,31 @@ const ChartMargin = ({
 						<div className="optionDescription">MARGIN RESIZE:</div>
 						<div className="optionDescription">Top:</div>
 						<SliderWithInput
-							percent={false}
+							percent={true}
 							sliderValue={chartControl.properties[propKey].chartMargin.top}
 							sliderMinMax={marginMinMax}
-							changeValue={(value) => updateMargin(propKey, "top", value)}
+							changeValue={value => updateMargin(propKey, "top", value)}
 						/>
 						<div className="optionDescription">Bottom:</div>
 						<SliderWithInput
-							percent={false}
+							percent={true}
 							sliderValue={chartControl.properties[propKey].chartMargin.bottom}
 							sliderMinMax={marginMinMax}
-							changeValue={(value) => updateMargin(propKey, "bottom", value)}
+							changeValue={value => updateMargin(propKey, "bottom", value)}
 						/>
 						<div className="optionDescription">Left:</div>
 						<SliderWithInput
 							percent={true}
 							sliderValue={chartControl.properties[propKey].chartMargin.funnelLeft}
-							sliderMinMax={{ min: 0, max: 50, step: 1 }}
-							changeValue={(value) => updateMargin(propKey, "funnelLeft", value)}
+							sliderMinMax={marginMinMax}
+							changeValue={value => updateMargin(propKey, "funnelLeft", value)}
 						/>
 						<div className="optionDescription">Right:</div>
 						<SliderWithInput
 							percent={true}
 							sliderValue={chartControl.properties[propKey].chartMargin.funnelRight}
-							sliderMinMax={{ min: 0, max: 50, step: 1 }}
-							changeValue={(value) => updateMargin(propKey, "funnelRight", value)}
+							sliderMinMax={marginMinMax}
+							changeValue={value => updateMargin(propKey, "funnelRight", value)}
 						/>
 					</React.Fragment>
 				);
@@ -125,34 +125,34 @@ const ChartMargin = ({
 						<div className="optionDescription">MARGIN RESIZE:</div>
 						<div className="optionDescription">Calender Height:</div>
 						<SliderWithInput
-							percent={false}
+							percent={true}
 							sliderValue={chartControl.properties[propKey].chartMargin.top}
 							sliderMinMax={{ min: 10, max: 80, step: 1 }}
-							changeValue={(value) => updateMargin(propKey, "top", value)}
+							changeValue={value => updateMargin(propKey, "top", value)}
 						/>
 
 						<div className="optionDescription">Right:</div>
 						<SliderWithInput
-							percent={false}
+							percent={true}
 							sliderValue={chartControl.properties[propKey].chartMargin.right}
 							sliderMinMax={{ min: 10, max: 100, step: 1 }}
-							changeValue={(value) => updateMargin(propKey, "right", value)}
+							changeValue={value => updateMargin(propKey, "right", value)}
 						/>
 						<div className="optionDescription">Left:</div>
 						<SliderWithInput
-							percent={false}
+							percent={true}
 							sliderValue={chartControl.properties[propKey].chartMargin.left}
 							sliderMinMax={{ min: 10, max: 100, step: 1 }}
-							changeValue={(value) => updateMargin(propKey, "left", value)}
+							changeValue={value => updateMargin(propKey, "left", value)}
 						/>
 						<div className="optionDescription">Calendar gap</div>
 						<SliderWithInput
-							percent={false}
+							percent={true}
 							sliderValue={
 								chartControl.properties[propKey].calendarStyleOptions.calendarGap
 							}
 							sliderMinMax={{ min: 10, max: 80, step: 1 }}
-							changeValue={(value) =>
+							changeValue={value =>
 								updateCalendarStyleOptions(propKey, "calendarGap", value)
 							}
 						/>
@@ -166,36 +166,38 @@ const ChartMargin = ({
 			case "heatmap":
 			case "crosstab":
 			case "boxPlot":
+			case "treeMap":
+			case "sankey":
 				return (
 					<React.Fragment>
 						<div className="optionDescription">MARGIN RESIZE:</div>
 						<div className="optionDescription">Top:</div>
 						<SliderWithInput
-							percent={false}
+							percent={true}
 							sliderValue={chartControl.properties[propKey].chartMargin.top}
 							sliderMinMax={marginMinMax}
-							changeValue={(value) => updateMargin(propKey, "top", value)}
+							changeValue={value => updateMargin(propKey, "top", value)}
 						/>
 						<div className="optionDescription">Right:</div>
 						<SliderWithInput
-							percent={false}
+							percent={true}
 							sliderValue={chartControl.properties[propKey].chartMargin.right}
 							sliderMinMax={marginMinMax}
-							changeValue={(value) => updateMargin(propKey, "right", value)}
+							changeValue={value => updateMargin(propKey, "right", value)}
 						/>
 						<div className="optionDescription"> Bottom:</div>
 						<SliderWithInput
-							percent={false}
+							percent={true}
 							sliderValue={chartControl.properties[propKey].chartMargin.bottom}
 							sliderMinMax={marginMinMax}
-							changeValue={(value) => updateMargin(propKey, "bottom", value)}
+							changeValue={value => updateMargin(propKey, "bottom", value)}
 						/>
 						<div className="optionDescription">Left:</div>
 						<SliderWithInput
-							percent={false}
+							percent={true}
 							sliderValue={chartControl.properties[propKey].chartMargin.left}
 							sliderMinMax={marginMinMax}
-							changeValue={(value) => updateMargin(propKey, "left", value)}
+							changeValue={value => updateMargin(propKey, "left", value)}
 						/>
 					</React.Fragment>
 				);
@@ -205,7 +207,7 @@ const ChartMargin = ({
 	return <div className="optionsInfo">{marginOptionsForCharts()}</div>;
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		chartControl: state.chartControls,
 		tabTileProps: state.tabTileProps,
@@ -213,7 +215,7 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
 		setMargin: (propKey, margin) => dispatch(setSelectedMargin(propKey, margin)),
 

@@ -40,10 +40,10 @@ const chartControl = {
 				funnelLeft: 10,
 				// for others
 				selectedMargin: "top",
-				top: 30,
-				right: 40,
-				bottom: 25,
-				left: 70,
+				top: 5,
+				right: 5,
+				bottom: 5,
+				left: 5,
 			},
 
 			calendarStyleOptions: {
@@ -76,6 +76,41 @@ const chartControl = {
 				maxBoxWidth: 30,
 				boxborderWidth: "2", //px
 				flipAxis: false,
+			},
+
+			treeMapChartControls: {
+				treeMapWidth: 80, //%
+				treeMapHeight: 80, //%
+				leafDepth: 1,
+				labelPosition: "insideTopLeft",
+				labelRotate: 0, //dropDown hori,verti,vertiflip
+				horizondalAlign: "right",
+				verticleAlign: "bottom",
+				overFlow: "truncate",
+				borderWidth: 0,
+				gapWidth: 2,
+				showBreadCrumb: true,
+				bcHeight: 22,
+				bcWidth: 25,
+				bcColor: "rgba(0,0,0,0.7)",
+			},
+
+			sankeyControls: {
+				nodeWidth: 10,
+				nodeGap: 8,
+				nodeAlign: "justify",
+				orient: "horizontal",
+				draggable: true,
+				labelDistance: 5,
+				labelRotate: 0,
+				overFlow: "truncate",
+
+				labelPosition: "inside",
+				opacity: 20,
+				curveness: 50,
+				nodeColor: "#f589b8",
+				linkColor: "grey",
+				nodesAndColors: [],
 			},
 
 			crossTabStyleOptions: {
@@ -298,10 +333,10 @@ const chartControlsReducer = (state = chartControl, action) => {
 							funnelLeft: 10,
 							// for others
 							selectedMargin: "top",
-							top: 30,
-							right: 40,
-							bottom: 25,
-							left: 70,
+							top: 5,
+							right: 5,
+							bottom: 5,
+							left: 5,
 						},
 
 						calendarStyleOptions: {
@@ -335,6 +370,46 @@ const chartControlsReducer = (state = chartControl, action) => {
 							boxborderWidth: "2", //px
 							flipAxis: false,
 						},
+
+						treeMapChartControls: {
+							treeMapWidth: 80, //%
+							treeMapHeight: 80, //%
+							leafDepth: 1,
+							labelPosition: "insideTopLeft",
+							labelRotate: 0, //dropDown hori,verti,vertiflip
+							horizondalAlign: "right",
+							verticleAlign: "bottom",
+							overFlow: "truncate",
+							borderWidth: 0,
+							gapWidth: 2,
+							showBreadCrumb: true,
+							bcHeight: 22,
+							bcWidth: 25,
+							bcColor: "rgba(0,0,0,0.7)",
+						},
+
+						sankeyControls: {
+							nodeWidth: 10,
+							nodeGap: 8,
+							nodeAlign: "justify",
+							orient: "horizontal",
+							draggable: true,
+							labelDistance: 5,
+							labelRotate: 0,
+							overFlow: "truncate",
+
+							labelPosition: "inside",
+							opacity: 20,
+							curveness: 50,
+							nodeColor: "#f589b8",
+							linkColor: "grey",
+							nodesAndColors: [],
+						},
+
+						crossTabStyleOptions: {
+							borderWidth: 1,
+							lineHeight: 1,
+						},
 						crossTabHeaderLabelOptions: {
 							labelColorManual: false,
 							labelColor: "#666666",
@@ -343,10 +418,6 @@ const chartControlsReducer = (state = chartControl, action) => {
 							fontWeigth: "normal",
 							fontFamily: "sans-serif",
 							fontWeight: "500",
-						},
-						crossTabStyleOptions: {
-							borderWidth: 1,
-							lineHeight: 1,
 						},
 						crossTabCellLabelOptions: {
 							labelColorManual: false,
@@ -417,7 +488,6 @@ const chartControlsReducer = (state = chartControl, action) => {
 
 							gaugeChartControls: {
 								isStepsAuto: true,
-
 								stepcolor: [
 									{
 										color: "#3fb1e3",
@@ -557,10 +627,10 @@ const chartControlsReducer = (state = chartControl, action) => {
 							funnelLeft: 10,
 							// for others
 							selectedMargin: "top",
-							top: 30,
-							right: 40,
-							bottom: 25,
-							left: 70,
+							top: 5,
+							right: 5,
+							bottom: 5,
+							left: 5,
 						},
 
 						calendarStyleOptions: {
@@ -594,6 +664,46 @@ const chartControlsReducer = (state = chartControl, action) => {
 							boxborderWidth: "2", //px
 							flipAxis: false,
 						},
+
+						treeMapChartControls: {
+							treeMapWidth: 80, //%
+							treeMapHeight: 80, //%
+							leafDepth: 1,
+							labelPosition: "insideTopLeft",
+							labelRotate: 0, //dropDown hori,verti,vertiflip
+							horizondalAlign: "right",
+							verticleAlign: "bottom",
+							overFlow: "truncate",
+							borderWidth: 0,
+							gapWidth: 2,
+							showBreadCrumb: true,
+							bcHeight: 22,
+							bcWidth: 25,
+							bcColor: "rgba(0,0,0,0.7)",
+						},
+
+						sankeyControls: {
+							nodeWidth: 10,
+							nodeGap: 8,
+							nodeAlign: "justify",
+							orient: "horizontal",
+							draggable: true,
+							labelDistance: 5,
+							labelRotate: 0,
+							overFlow: "truncate",
+
+							labelPosition: "inside",
+							opacity: 20,
+							curveness: 50,
+							nodeColor: "#f589b8",
+							linkColor: "grey",
+							nodesAndColors: [],
+						},
+
+						crossTabStyleOptions: {
+							borderWidth: 1,
+							lineHeight: 1,
+						},
 						crossTabHeaderLabelOptions: {
 							labelColorManual: false,
 							labelColor: "#666666",
@@ -602,10 +712,6 @@ const chartControlsReducer = (state = chartControl, action) => {
 							fontWeigth: "normal",
 							fontFamily: "sans-serif",
 							fontWeight: "500",
-						},
-						crossTabStyleOptions: {
-							borderWidth: 1,
-							lineHeight: 1,
 						},
 						crossTabCellLabelOptions: {
 							labelColorManual: false,
@@ -676,7 +782,6 @@ const chartControlsReducer = (state = chartControl, action) => {
 
 							gaugeChartControls: {
 								isStepsAuto: true,
-
 								stepcolor: [
 									{
 										color: "#3fb1e3",
@@ -1161,6 +1266,30 @@ const chartControlsReducer = (state = chartControl, action) => {
 				properties: {
 					[action.payload.propKey]: {
 						boxPlotChartControls: {
+							[action.payload.option]: {
+								$set: action.payload.value,
+							},
+						},
+					},
+				},
+			});
+		case "UPDATE_TREEMAP_STYLE_OPTIONS":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						treeMapChartControls: {
+							[action.payload.option]: {
+								$set: action.payload.value,
+							},
+						},
+					},
+				},
+			});
+		case "UPDATE_SANKEY_STYLE_OPTIONS":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						sankeyControls: {
 							[action.payload.option]: {
 								$set: action.payload.value,
 							},

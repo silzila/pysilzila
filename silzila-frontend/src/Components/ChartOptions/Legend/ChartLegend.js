@@ -10,6 +10,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { updateLegendOptions } from "../../../redux/ChartProperties/actionsChartControls";
 import SliderWithInput from "../SliderWithInput";
+import SwitchWithInput from "../SwitchWithInput";
 
 const ChartLegend = ({
 	// state
@@ -25,7 +26,7 @@ const ChartLegend = ({
 
 	const orientation = chartControl.properties[propKey].legendOptions.orientation;
 
-	const setOrient = (item) => {
+	const setOrient = item => {
 		updateLegendOption(propKey, "orientation", item);
 	};
 	const orientOption = [
@@ -33,7 +34,7 @@ const ChartLegend = ({
 		{ name: "Vertical", key: "vertical" },
 	];
 	const renderOrientation = () => {
-		return orientOption.map((item) => {
+		return orientOption.map(item => {
 			return (
 				<div
 					className={item.key === orientation ? "radioButtonSelected" : "radioButton"}
@@ -59,8 +60,8 @@ const ChartLegend = ({
 	];
 	const selectedPosition = chartControl.properties[propKey].legendOptions.position;
 
-	const updateSelectedPosition = (selectedValue) => {
-		var positionSelected = positions.filter((pos) => pos.pos === selectedValue)[0];
+	const updateSelectedPosition = selectedValue => {
+		var positionSelected = positions.filter(pos => pos.pos === selectedValue)[0];
 
 		updateLegendOption(propKey, "position", positionSelected);
 	};
@@ -70,7 +71,7 @@ const ChartLegend = ({
 	const itemSpacingMinMax = { min: 0, max: 60, step: 1 };
 	const moveSlider = chartControl.properties[propKey].legendOptions.moveSlider;
 
-	const setSlider = (item) => {
+	const setSlider = item => {
 		updateLegendOption(propKey, "moveSlider", item);
 	};
 	// const moveSliderToRender = () => {
@@ -127,11 +128,9 @@ const ChartLegend = ({
 				>
 					SHOW LEGEND
 				</label>
-				<Switch
-					size="small"
-					id="enableDisable"
-					checked={showLegend}
-					onClick={(e) => {
+				<SwitchWithInput
+					isChecked={showLegend}
+					onSwitch={() => {
 						updateLegendOption(propKey, "showLegend", !showLegend);
 					}}
 				/>
@@ -149,7 +148,7 @@ const ChartLegend = ({
 								label=""
 								value={selectedPosition?.pos}
 								variant="outlined"
-								onChange={(e) => {
+								onChange={e => {
 									updateSelectedPosition(e.target.value);
 								}}
 								sx={{
@@ -161,7 +160,7 @@ const ChartLegend = ({
 									color: "#404040",
 								}}
 							>
-								{positions.map((position) => {
+								{positions.map(position => {
 									return (
 										<MenuItem
 											value={position.pos}
@@ -185,19 +184,19 @@ const ChartLegend = ({
 					<SliderWithInput
 						sliderValue={chartControl.properties[propKey].legendOptions.symbolWidth}
 						sliderMinMax={itemWidthMinMax}
-						changeValue={(value) => updateLegendOption(propKey, "symbolWidth", value)}
+						changeValue={value => updateLegendOption(propKey, "symbolWidth", value)}
 					/>
 					<div className="optionDescription">Height</div>
 					<SliderWithInput
 						sliderValue={chartControl.properties[propKey].legendOptions.symbolHeight}
 						sliderMinMax={itemHeightMinMax}
-						changeValue={(value) => updateLegendOption(propKey, "symbolHeight", value)}
+						changeValue={value => updateLegendOption(propKey, "symbolHeight", value)}
 					/>
 					<div className="optionDescription">Item Gap</div>
 					<SliderWithInput
 						sliderValue={chartControl.properties[propKey].legendOptions.itemGap}
 						sliderMinMax={itemSpacingMinMax}
-						changeValue={(value) => updateLegendOption(propKey, "itemGap", value)}
+						changeValue={value => updateLegendOption(propKey, "itemGap", value)}
 					/>
 					{/* <div className="radioButtons2">{renderMoveLegend()}</div> */}
 					{/* {moveSliderToRender()} */}
@@ -207,14 +206,14 @@ const ChartLegend = ({
 	);
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		chartControl: state.chartControls,
 		tabTileProps: state.tabTileProps,
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
 		updateLegendOption: (propKey, option, value) =>
 			dispatch(updateLegendOptions(propKey, option, value)),

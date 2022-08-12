@@ -66,10 +66,10 @@ const HeatMap = ({
 					animation: chartArea ? false : true,
 					legend: {},
 					grid: {
-						left: chartControl.chartMargin.left,
-						right: chartControl.chartMargin.right,
-						top: chartControl.chartMargin.top,
-						bottom: chartControl.chartMargin.bottom,
+						left: chartControl.chartMargin.left + "%",
+						right: chartControl.chartMargin.right + "%",
+						top: chartControl.chartMargin.top + "%",
+						bottom: chartControl.chartMargin.bottom + "%",
 					},
 
 					// label: { show: true, fontSize: 14 },
