@@ -210,6 +210,12 @@ const ChartAxes = ({
 		reUseOldData(propKey);
 	};
 
+	var menuItemStyle = {
+		fontSize: "12px",
+		padding: "2px 1rem",
+		// borderBottom: "1px solid lightgray",
+	};
+
 	return (
 		<div className="charAxesArea">
 			{chartProp.properties[propKey].chartType === "geoChart" && (
@@ -230,10 +236,40 @@ const ChartAxes = ({
 								changeLocation(propKey, e.target.value);
 							}}
 						>
-							<MenuItem value="world">World</MenuItem>
-							<MenuItem value="india">India</MenuItem>
-							<MenuItem value="usa">USA</MenuItem>
-							<MenuItem value="hongKong">HongKong</MenuItem>
+							<MenuItem sx={menuItemStyle} value="world">
+								World
+							</MenuItem>
+
+							<MenuItem sx={menuItemStyle} value="brazil">
+								Brazil
+							</MenuItem>
+							<MenuItem sx={menuItemStyle} value="china">
+								China
+							</MenuItem>
+							<MenuItem sx={menuItemStyle} value="france">
+								France
+							</MenuItem>
+							<MenuItem sx={menuItemStyle} value="germany">
+								Germany
+							</MenuItem>
+							<MenuItem sx={menuItemStyle} value="india">
+								India
+							</MenuItem>
+							<MenuItem sx={menuItemStyle} value="japan">
+								Japan
+							</MenuItem>
+							<MenuItem sx={menuItemStyle} value="nigeria">
+								Nigeria
+							</MenuItem>
+							<MenuItem sx={menuItemStyle} value="southAfrica">
+								South Africa
+							</MenuItem>
+							<MenuItem sx={menuItemStyle} value="uk">
+								United Kingdom
+							</MenuItem>
+							<MenuItem sx={menuItemStyle} value="usa">
+								USA
+							</MenuItem>
 						</Select>
 					</FormControl>
 				</div>

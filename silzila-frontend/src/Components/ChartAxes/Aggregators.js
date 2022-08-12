@@ -94,7 +94,6 @@ const measurePrefixes = {
 };
 
 const geoPrefixes = {
-	// integer: [{ name: "ISO-Num", id: "isoNum" }],
 	world: [
 		{
 			name: "Full Name",
@@ -126,12 +125,12 @@ const geoPrefixes = {
 		{
 			name: "State Name",
 			id: "stateName",
-			examples: ["Telangana", "Andaman & Nicobar Island", "Arunanchal Pradesh"],
+			examples: ["Telangana", "ArunachalPradesh", "Assam"],
 		},
 		{
-			name: "State Code",
-			id: "stateCode",
-			examples: [0, 35, 12],
+			name: "ISO Code",
+			id: "iso_code",
+			examples: ["IN-TG", "IN-AR", "IN-AS"],
 		},
 	],
 	usa: [
@@ -146,6 +145,14 @@ const geoPrefixes = {
 			examples: ["US-AL", "US-AK", "US-AZ"],
 		},
 	],
+	germany: [],
+	china: [],
+	france: [],
+	uk: [],
+	japan: [],
+	southAfrica: [],
+	nigeria: [],
+	brazil: [],
 
 	// world: [
 	// 	{ name: "Countries", id: "countries" },

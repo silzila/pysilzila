@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { registerMap } from "echarts";
 import ReactEcharts from "echarts-for-react";
-import worldMap from "./Data/world_low_res.json";
-import usaMap from "./Data/USA.json";
-import indiaMap from "./Data/india.json";
-import hongKongMap from "./Data/HongKong.json";
 import { connect, useSelector } from "react-redux";
+
+import worldMap from "./Data/world_low_res.json";
+
+import indiaMap from "./Data/india1_gadm.json";
+import germanyMap from "./Data/germany1_gadm.json";
+import usa1Map from "./Data/usa1_gadm.json";
+import chinaMap from "./Data/china1_gadm.json";
+import franceMap from "./Data/france1_gadm.json";
+import ukMap from "./Data/uk1_gadm.json";
+import japanMap from "./Data/japan1_gadm.json";
+import southAfricaMap from "./Data/southAfrica1_gadm.json";
+import nigeriaMap from "./Data/nigeria1_gadm.json";
+import brazilMap from "./Data/brazil1_gadm.json";
 
 import countryCodes from "./Data/country-codes.json";
 import indiaCodes from "./Data/india-codes.json";
@@ -20,7 +29,7 @@ var usaAcc = {
 	Hawaii: {
 		left: -110,
 		top: 25,
-		width: 5,
+		width: 10,
 	},
 	"Puerto Rico": {
 		left: -76,
@@ -28,71 +37,6 @@ var usaAcc = {
 		width: 2,
 	},
 };
-
-// // "scalerank": 1,
-// // "featurecla": "Admin-0 country",
-// // "labelrank": 2,
-// // "sovereignt": "India",
-// // "sov_a3": "IND",
-// // "adm0_dif": 0,
-// // "level": 2,
-// // "type": "Sovereign country",
-// "admin": "India",
-// // "adm0_a3": "IND",
-// // "geou_dif": 0,
-// // "geounit": "India",
-// // "gu_a3": "IND",
-// // "su_dif": 0,
-// // "subunit": "India",
-// // "su_a3": "IND",
-// // "brk_diff": 0,
-// "name": "India",
-// "name_long": "India",
-// // "brk_a3": "IND",
-// // "brk_name": "India",
-// // "brk_group": null,
-// "abbrev": "India",
-// // "postal": "IND",
-// "formal_en": "Republic of India",
-// // "formal_fr": null,
-// // "note_adm0": null,
-// // "note_brk": null,
-// // "name_sort": "India",
-// // "name_alt": null,
-// // "mapcolor7": 1,
-// // "mapcolor8": 3,
-// // "mapcolor9": 2,
-// // "mapcolor13": 2,
-// // "pop_est": 1166079220,
-// // "gdp_md_est": 3297000,
-// // "pop_year": -99,
-// // "lastcensus": 2011,
-// // "gdp_year": -99,
-// // "economy": "3. Emerging region: BRIC",
-// // "income_grp": "4. Lower middle income",
-// // "wikipedia": -99,
-// // "fips_10": null,
-// "iso_a2": "IN",
-// "iso_a3": "IND",
-// "iso_n3": "356",
-// // "un_a3": "356",
-// // "wb_a2": "IN",
-// // "wb_a3": "IND",
-// // "woe_id": -99,
-// // "adm0_a3_is": "IND",
-// // "adm0_a3_us": "IND",
-// // "adm0_a3_un": -99,
-// // "adm0_a3_wb": -99,
-// "continent": "Asia",
-// // "region_un": "Asia",
-// "subregion": "Southern Asia",
-// "region_wb": "South Asia",
-// // "name_len": 5,
-// // "long_len": 5,
-// // "abbrev_len": 5,
-// // "tiny": -99,
-// // "homepart": 1,
-// // "filename": "IND.geojson"
 
 const GeoChart = ({
 	// props
@@ -179,10 +123,17 @@ const GeoChart = ({
 	// console.log(formattedData);
 
 	const selectedAreaMap = {
-		usa: usaMap,
+		usa: usa1Map,
 		world: worldMap,
 		india: indiaMap,
-		hongKong: hongKongMap,
+		germany: germanyMap,
+		china: chinaMap,
+		france: franceMap,
+		uk: ukMap,
+		japan: japanMap,
+		southAfrica: southAfricaMap,
+		nigeria: nigeriaMap,
+		brazil: brazilMap,
 	};
 
 	registerMap(geoLocation, selectedAreaMap[geoLocation], geoLocation === "usa" ? usaAcc : null);
@@ -213,7 +164,7 @@ const GeoChart = ({
 							if (!isNaN(value.value)) {
 								switch (chartControl.mouseOver.formatter) {
 									case "value":
-										return value.value;
+										return value.value.toString();
 
 									case "location":
 										return value.name;
@@ -225,7 +176,15 @@ const GeoChart = ({
 										return "";
 								}
 							} else {
-								return "";
+								switch (chartControl.mouseOver.formatter) {
+									case "both":
+									case "location":
+										return value.name;
+
+									case "value":
+									case "none":
+										return "";
+								}
 							}
 						},
 					},
@@ -261,6 +220,7 @@ const GeoChart = ({
 							map: geoLocation,
 							geoIndex: 0,
 							data: formattedData,
+							nameProperty: "NAME_1",
 							// roam: true,
 							label: {
 								show: chartControl.labelOptions.showLabel,
@@ -286,24 +246,20 @@ const GeoChart = ({
 												return "";
 										}
 									} else {
-										return "";
+										switch (chartControl.labelOptions.geoFormatter) {
+											case "location":
+												return value.name;
+
+											case "both":
+											case "none":
+											case "value":
+												return "";
+										}
 									}
 								},
 							},
 							zoom: 1,
 							selectedMode: "single",
-							// emphasis: {
-							// 	itemStyle: {
-							// 		areaColor: "white",
-							// 		botderType: "dashed",
-							// 		borderWidth: 1,
-							// 	},
-							// },
-							// itemStyle: {
-							// 	areaColor: "white",
-							// 	botderType: "dotted",
-							// },
-							// silent: true,
 						},
 					],
 				}}
