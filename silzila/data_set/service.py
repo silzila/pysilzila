@@ -61,17 +61,24 @@ def create_alias_names_for_tables(tables: list) -> list:
     the same letter then numbers are suffixed.
     eg. product AS p, process AS p2, pointofsales as p3
     if table names have hyphen symbol, then first letters are combined
-    eg. point_of_sales AS pos, sub_category AS sc
+    alias names are in lower case as SQL is case in-sensitive. 
+    eg. Point_of_sales AS pos, sub_category AS sc
     """
-    table_names = [table['table_name'] for table in tables]
+    table_names = [table['table_name'].lower() for table in tables]
     alias_names = []
     alias_names_without_suffix_number = {}
     # iterate incoming list to get table names
     for table_name in table_names:
         # split table name to list. eg. sub_category will be split into ['sub', 'category']
-        table_name_split_array = table_name.split('_')
-        alias_name = ""
+        # if there is a space between words then split by space
+        if ' ' in table_name:
+            table_name_split_array = table_name.split(' ')
+        elif '_' in table_name:
+            table_name_split_array = table_name.split('_')
+        else:
+            table_name_split_array = [table_name]
 
+        alias_name = ""
         ################ To take one or multiple letters #################
         # if the split list has one word, get first letter of the word
         if len(table_name_split_array) == 1:
@@ -110,7 +117,7 @@ def create_alias_names_for_tables(tables: list) -> list:
 
 
 # create Data Set
-async def create_ds(db: Session, ds: schema.DataSetIn):
+async def create_ds(db: Session, ds: schema.DataSetIn, uid: str):
     data_schema = ds.dict()['data_schema']
 
     # get & add alias names as id2
@@ -121,6 +128,7 @@ async def create_ds(db: Session, ds: schema.DataSetIn):
     _rel = {}
     for i, rel in enumerate(data_schema['relationships']):
         for tbl in data_schema['tables']:
+            # table1 is the left table and table2 is the right table in a relationship
             if rel['table1'] == tbl['id']:
                 if i in _rel:
                     _rel[i]['table1'] = tbl['id2']
@@ -143,12 +151,15 @@ async def create_ds(db: Session, ds: schema.DataSetIn):
 
     ds_item = model.DataSet(dc_uid=ds.dc_uid,
                             friendly_name=ds.friendly_name,
+                            is_file_data=ds.is_file_data,
+                            user_uid=uid,
                             data_schema=data_schema)
     db.add(ds_item)
     await db.flush()
-    resp = {"dc_uid": ds_item.dc_uid,
+    resp = {"ds_uid": ds_item.ds_uid,
+            "dc_uid": ds_item.dc_uid,
             "friendly_name": ds_item.friendly_name,
-            "ds_uid": ds_item.ds_uid,
+            "is_file_data": ds_item.is_file_data,
             "data_schema": ds_item.data_schema}
     return resp
 
@@ -209,14 +220,17 @@ async def update_data_set(db: Session, ds_uid: str, ds: schema.DataSetIn, uid: s
     await db.flush()
 
     # if the DS is already loded into in-memory, then need to load updated DS
-    is_reloaded = engine.reload_ds(ds_info)
-    if is_reloaded is None:
-        raise HTTPException(
-            status_code=404, detail="Data Set Could not be Reloaded")
+    if ds.is_file_data == False:
+        is_reloaded = engine.reload_ds(ds_info)
+        if is_reloaded is None:
+            raise HTTPException(
+                status_code=404, detail="Data Set Could not be Reloaded")
+    # TODO to load file based DS
 
     # returning of model will be thrown error because of serialization of data_schema, so custom dict
     resp = {"dc_uid": ds_info.dc_uid,
             "friendly_name": ds_info.friendly_name,
+            "is_file_data": ds_info.is_file_data,
             "ds_uid": ds_info.ds_uid,
             "data_schema": ds_info.data_schema}
     return resp
@@ -244,8 +258,8 @@ async def delete_ds(db: Session, ds_uid: str, uid: str):
 
 # gets all data set for the user
 async def get_all_ds(db: Session, user_id: str):
-    stmt = select(Bundle("dataset", DataSet.friendly_name, DataSet.dc_uid, DataSet.ds_uid)).join(DataConnection).where(
-        DataConnection.user_id == user_id
+    stmt = select(Bundle("dataset", DataSet.friendly_name, DataSet.dc_uid, DataSet.ds_uid, DataSet.is_file_data)).where(
+        DataSet.user_uid == user_id
     )
     all_ds = await db.execute(stmt)
     return all_ds.scalars().all()
@@ -253,7 +267,7 @@ async def get_all_ds(db: Session, user_id: str):
 
 # get Data Set by ID
 async def get_ds_by_id(db: Session, ds_uid: str):
-    stmt = select(Bundle("dataset", DataSet.friendly_name, DataSet.dc_uid, DataSet.ds_uid, DataSet.data_schema)).where(
+    stmt = select(Bundle("dataset", DataSet.friendly_name, DataSet.dc_uid, DataSet.ds_uid, DataSet.is_file_data, DataSet.data_schema)).where(
         model.DataSet.ds_uid == ds_uid
     )
     ds = await db.execute(stmt)

@@ -5,6 +5,7 @@ from sqlalchemy.orm.session import Session
 from starlette.requests import Request
 import os
 import datetime
+import csv
 
 from ..database.service import get_db
 from . import model, schema, service
@@ -18,14 +19,12 @@ router = APIRouter(prefix="/fd", tags=["File Data"],
                    dependencies=[Depends(JWTBearer())])
 
 
-@router.get("/hello")
-async def hello():
-    return "hello there"
-
-
 @router.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
     file_name, file_extension = os.path.splitext(file.filename)
+    if file_extension not in ('.csv', '.txt'):
+        raise HTTPException(
+            status_code=400, detail="Only CSV or TXT files are allowed")
     # remove special characters
     file_name = "".join(x for x in file_name if (x.isalnum() or x in "_"))
     timestamp = datetime.datetime.now().strftime("%Y%m%dT%H%M%S")
@@ -40,13 +39,40 @@ async def upload_file(file: UploadFile = File(...)):
         with open(save_file_path, 'wb+') as file_obj:
             file_obj.write(file.file.read())
 
-        sample_data = await read_csv(file_name, new_file_name)
-        return sample_data
+        records = []
+        with open(save_file_path) as csv_file:
+            csv_reader = csv.DictReader(csv_file)
+            line_count = 0
+            for row in csv_reader:
+                records.append(row)
+                line_count += 1
+                if line_count > 99:
+                    break
+        # get column names
+        meta_cols = []
+        if len(records) == 0 and len(records[0]) == 0:
+            raise HTTPException(
+                status_code=400, detail="file is empty")
+        col_names = [key for key in records[0].keys()]
+        for col in col_names:
+            _dict = {}
+            _dict['column_name'] = col
+            _dict['data_type'] = 'text'
+            _dict['include'] = True
+            meta_cols.append(_dict)
+        return {"file_id": new_file_name,
+                "table_name": file_name,
+                "date_format": "MM/dd/yyyy",
+                "timestamp_format": "yyyy-MM-dd HH:mm:ss[.SSS]",
+                "timestamp_with_timezone_format": "yyyy-MM-dd'T'HH:mm:ss[.SSS][XXX]",
+                "meta_cols": meta_cols,
+                "sample_records": records}
 
     except Exception as ex:
+
         print("exception ==============\n", ex)
         raise HTTPException(
-            status_code=500, detail="Something error in uploading File")
+            status_code=500, detail="Error in uploading File")
 
 
 @router.post("/upload-change-metadata")
@@ -109,6 +135,30 @@ async def read_fd(request: Request, fd_uid: str, db: Session = Depends(get_db)):
     # get User ID from JWT token coming in request
     uid = request.state.uid
     db_ds = await service.get_fd_by_id(db, fd_uid, uid)
+    if db_ds is None:
+        raise HTTPException(
+            status_code=404, detail="No File Data exists")
+    return db_ds
+
+
+# get File Data column metadata by it's ID
+@router.get("/columns/{fd_uid}")
+async def fd_saple_records(request: Request, fd_uid: str, db: Session = Depends(get_db)):
+    # get User ID from JWT token coming in request
+    uid = request.state.uid
+    db_ds = await service.get_fd_meta_data_by_id(db, fd_uid, uid)
+    if db_ds is None:
+        raise HTTPException(
+            status_code=404, detail="No File Data exists")
+    return db_ds
+
+
+# get File Data Sample Records by it's ID
+@router.get("/sample-records/{fd_uid}")
+async def fd_saple_records(request: Request, fd_uid: str, db: Session = Depends(get_db)):
+    # get User ID from JWT token coming in request
+    uid = request.state.uid
+    db_ds = await service.get_fd_sample_records_by_id(db, fd_uid, uid)
     if db_ds is None:
         raise HTTPException(
             status_code=404, detail="No File Data exists")

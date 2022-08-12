@@ -47,3 +47,27 @@ async def get_fd_by_id(db: Session, fd_uid: str, uid: str):
         )
     ))
     return dc.scalars().first()
+
+
+# gets sample records by file data ID
+async def get_fd_sample_records_by_id(db: Session, fd_uid: str, uid: str):
+    stmt = select(Bundle("filedata", FileData.fd_uid, FileData.table_name, FileData.sample_records)).where(
+        and_(
+            FileData.fd_uid == fd_uid,
+            FileData.user_id == uid
+        )
+    )
+    dc = await db.execute(stmt)
+    return dc.scalars().first()
+
+
+# gets table metadata by file data ID
+async def get_fd_meta_data_by_id(db: Session, fd_uid: str, uid: str):
+    stmt = select(Bundle("filedata", FileData.fd_uid, FileData.table_name, FileData.meta_data)).where(
+        and_(
+            FileData.fd_uid == fd_uid,
+            FileData.user_id == uid
+        )
+    )
+    dc = await db.execute(stmt)
+    return dc.scalars().first()

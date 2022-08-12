@@ -9,6 +9,7 @@ from ..database.service import get_db
 from . import model, schema, service
 from ..user.auth import JWTBearer
 from ..data_connection import engine
+from ..file_data import spark_engine
 from ..data_connection.service import get_dc_by_id
 
 # any API in this route gets /ds Prefix and requires TOKEN
@@ -21,18 +22,20 @@ router = APIRouter(prefix="/ds", tags=["Data Set"],
 async def create_ds(request: Request, ds: schema.DataSetIn, db: Session = Depends(get_db)):
     # get User ID from JWT token coming in request
     uid = request.state.uid
-    # check if DC exists
-    db_dc = await get_dc_by_id(db, ds.dc_uid, uid)
-    if db_dc is None:
-        raise HTTPException(
-            status_code=404, detail="Data Connection not exists")
+
+    # check if DC exists. File Data sets don't have DC
+    if ds.is_file_data != True:
+        db_dc = await get_dc_by_id(db, ds.dc_uid, uid)
+        if db_dc is None:
+            raise HTTPException(
+                status_code=404, detail="Data Connection not exists")
     # check if friendly name is already taken
     friendly_name_taken = await service.get_ds_by_friendly_name(db, uid, ds.friendly_name)
     if friendly_name_taken:
         raise HTTPException(
             status_code=400, detail="Friendlly Name is already used")
     # add DS record to table
-    db_ds = await service.create_ds(db, ds)
+    db_ds = await service.create_ds(db, ds, uid)
     if db_ds is None:
         raise HTTPException(
             status_code=500, detail="Something went wrong in server")
@@ -126,40 +129,59 @@ async def activate_dc_ds(dc_uid: str, ds_uid: str, uid: str, db: Session) -> str
 
     RUNNING QUERY requires 4 steps:
     1. create DB pool for the DC (One time. Subsequently used from in-memorry for fast operation)
+       for flat file based DS, need to create Spark Session
     2. Load Schema of DS (One time. Subsequently used from in-memorry for fast operation)
+       for flat file DS, need to create data frame of all files used in DS
     3. Get Vendor (Dialect) Name and Build Query (Every time. Query is built based on Dialect)
-    4. Run the built query with the DB Pool
+       for flat file DS, SPARK is the SQL dialect
+    4. Run the built query with the DB Pool or Spark Session
 
-    if pool available for the DC, get dialect name
-    else activate pool for the DC and then get dialect name
-    dialect name (vendor name) is required to custom build query
     """
-    vendor_name = False
-    vendor_name = await engine.get_vendor_name_from_db_pool(dc_uid)
-    if vendor_name == False:
-        db_dc = await get_dc_by_id(db, dc_uid, uid)
-        if db_dc is None:
-            raise HTTPException(
-                status_code=404, detail="Data Connection not exists")
-        connected = await engine.create_connection(db_dc)
-        if not connected:
-            raise HTTPException(
-                status_code=500, detail="Could not make Data Connection")
+    # if pool available for the DC, get dialect name
+    # else activate pool for the DC and then get dialect name
+    # dialect name (vendor name) is required to custom build query
+
+    ############################## for DB query #######################
+    if dc_uid is not None:
+        vendor_name = False
         vendor_name = await engine.get_vendor_name_from_db_pool(dc_uid)
-    #################################################################################
-    # loads DS. checks if already loaded, if not loaded, loads it
-    is_ds_loaded = await engine.is_ds_active(dc_uid, ds_uid)
-    if is_ds_loaded == False:
+        if vendor_name == False:
+            db_dc = await get_dc_by_id(db, dc_uid, uid)
+            if db_dc is None:
+                raise HTTPException(
+                    status_code=404, detail="Data Connection not exists")
+            connected = await engine.create_connection(db_dc)
+            if not connected:
+                raise HTTPException(
+                    status_code=500, detail="Could not make Data Connection")
+            vendor_name = await engine.get_vendor_name_from_db_pool(dc_uid)
+        #################################################################################
+        # loads DS. checks if already loaded, if not loaded, loads it
+        is_ds_loaded = await engine.is_ds_active(dc_uid, ds_uid)
+        if is_ds_loaded == False:
+            # first, check if DS available
+            db_ds = await service.get_ds_by_id(db, ds_uid)
+            if db_ds is None:
+                raise HTTPException(
+                    status_code=404, detail="Data Set not exists")
+            is_activated = await engine.activate_ds(db_ds)
+            if is_activated is None:
+                raise HTTPException(
+                    status_code=404, detail="Data Set Could not be activated")
+        return vendor_name
+
+    ############################## for Spark Query #######################
+    elif dc_uid is None:
+        # activate spark engine if not before
+        await spark_engine.create_spark_engine()
+        vendor_name = 'spark'
+
         # first, check if DS available
         db_ds = await service.get_ds_by_id(db, ds_uid)
         if db_ds is None:
             raise HTTPException(
                 status_code=404, detail="Data Set not exists")
-        is_activated = await engine.activate_ds(db_ds)
-        if is_activated is None:
-            raise HTTPException(
-                status_code=404, detail="Data Set Could not be activated")
-    return vendor_name
+        pass
 
 
 # gets user interaction as DIMS and Measure and

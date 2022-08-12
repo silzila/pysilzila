@@ -15,6 +15,7 @@ class Table(BaseModel):
     table_name: str
     schema_name: str
     id: str
+    file_data_id: Optional[str]
     alias: str
     table_position: Optional[TablePosition]
 
@@ -52,15 +53,17 @@ class DataSchemaOut(BaseModel):
 
 
 class DataSetIn(BaseModel):
-    dc_uid: str
+    dc_uid: Optional[str]
     friendly_name: str
+    is_file_data: bool
     data_schema: DataSchema
 
 
 class DataSetOut(BaseModel):
-    dc_uid: str
+    dc_uid: Optional[str]
     ds_uid: str
     friendly_name: str
+    is_file_data: bool
     data_schema: DataSchemaOut
 
 ####################### Data Set Query #########################

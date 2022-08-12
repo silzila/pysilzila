@@ -13,12 +13,20 @@ class Column(BaseModel):
     decimal_place: Optional[List[int]]
     new_column_name: Optional[str]
     column_format: Optional[str]
+    include: Optional[bool]
+
+
+class Columns(BaseModel):
+    __root__: List[Column]
 
 
 class EditTableSchema(BaseModel):
     file_id: str
     table_name: str
-    meta_cols: Optional[List[Column]]
+    date_format: Optional[str]
+    timestamp_format: Optional[str]
+    timestamp_with_timezone_format: Optional[str]
+    meta_cols: List[Column]
 
 
 class FileData(BaseModel):
