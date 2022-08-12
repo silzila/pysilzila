@@ -38,9 +38,9 @@ const CalendarChart = ({
 					chartProperty.properties[propKey].chartAxes[1].fields[0].time_grain;
 
 				// getting years of dates
-				chartData.map((el) => {
-					const ts = new Date(el[objKey]);
-					const year = ts.getFullYear();
+				chartData.map(el => {
+					const timestampformate = new Date(el[objKey]);
+					const year = timestampformate.getFullYear();
 					yearsArray.push(JSON.stringify(year));
 				});
 
@@ -114,7 +114,6 @@ const CalendarChart = ({
 		}
 	}, [chartControl, chartControl.chartData]);
 
-	console.log(chartData);
 	function getVirtulData(year) {
 		let objKey =
 			chartProperty.properties[propKey].chartAxes[1].fields[0].fieldname +
@@ -123,7 +122,7 @@ const CalendarChart = ({
 		var virtualData = [];
 
 		// getting measure value as day value for individual year
-		chartData.map((el) => {
+		chartData.map(el => {
 			var elYear = new Date(el[objKey]).getFullYear();
 			if (year === JSON.stringify(elYear)) {
 				virtualData.push(Object.values(el));
@@ -175,7 +174,7 @@ const CalendarChart = ({
 
 	return chartData ? <RenderChart /> : null;
 };
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		chartControls: state.chartControls,
 		chartProperty: state.chartProperties,

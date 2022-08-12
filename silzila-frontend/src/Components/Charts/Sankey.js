@@ -150,7 +150,7 @@ const Sankey = ({
 	}, [chartData, chartControl]);
 
 	const RenderChart = () => {
-		console.log(nodes, links);
+		// console.log(nodes, links);
 		return (
 			<ReactEcharts
 				opts={{ renderer: "svg" }}

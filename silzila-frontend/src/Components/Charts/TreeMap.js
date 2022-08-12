@@ -27,45 +27,46 @@ const Treemap = ({
 	const formatUtil = echarts.format;
 
 	const getRecursiveData = ({ data, i, measure }) => {
-		var temp = [];
-		if (i === dimensionsKeys.length - 1) {
-			//This will be the final level of parsing
-			var childrenArray = [];
+		if (i !== dimensionsKeys.length) {
+			if (i === dimensionsKeys.length - 1) {
+				//This will be the final level of parsing
+				var childrenArray = [];
 
-			var finalTotal = 0;
-			data.map(item => {
-				var finalObj = { name: item[dimensionsKeys[i]], value: item[measure] };
-				finalTotal = finalTotal + item[measure];
-				childrenArray.push(finalObj);
-			});
-
-			// temp = [childrenArray,finalTotal];
-			return [childrenArray, finalTotal];
-		}
-
-		// On all other conditions
-		else {
-			var dimValues = data.map(dt => dt[dimensionsKeys[i]]); // All values of next dimension
-			var uniqueDimValues = [...new Set(dimValues)]; // Unique values of next dimension. These are the parent objects
-
-			var formattedData = [];
-			var total = 0;
-			uniqueDimValues.forEach(val => {
-				var parentObj = { name: val, value: 0, children: [] }; // Define parent structure (second,third,... dimension)
-				var filteredData = data.filter(dt => dt[dimensionsKeys[i]] === val); // Filter data only for this parent
-
-				var [children, finalTotal] = getRecursiveData({
-					data: filteredData,
-					i: i + 1,
-					measure,
+				var finalTotal = 0;
+				data.map(item => {
+					var finalObj = { name: item[dimensionsKeys[i]], value: item[measure] };
+					finalTotal = finalTotal + item[measure];
+					childrenArray.push(finalObj);
 				});
-				parentObj.children = children;
-				parentObj.value = finalTotal;
-				total = total + finalTotal;
-				formattedData.push(parentObj);
-			});
-			temp.push();
-			return [formattedData, total];
+
+				return [childrenArray, finalTotal];
+			}
+
+			// On all other conditions
+			else {
+				var dimValues = data.map(dt => dt[dimensionsKeys[i]]); // All values of next dimension
+				var uniqueDimValues = [...new Set(dimValues)]; // Unique values of next dimension. These are the parent objects
+
+				var formattedData = [];
+				var total = 0;
+				uniqueDimValues.forEach(val => {
+					var parentObj = { name: val, value: 0, children: [] }; // Define parent structure (second,third,... dimension)
+					var filteredData = data.filter(dt => dt[dimensionsKeys[i]] === val); // Filter data only for this parent
+
+					var [children, finalTotal] = getRecursiveData({
+						data: filteredData,
+						i: i + 1,
+						measure,
+					});
+					parentObj.children = children;
+					parentObj.value = finalTotal;
+					total = total + finalTotal;
+					formattedData.push(parentObj);
+				});
+				return [formattedData, total];
+			}
+		} else {
+			console.log("its more than or equal to dimlenght", i, dimensionsKeys.length);
 		}
 	};
 
@@ -76,7 +77,7 @@ const Treemap = ({
 
 			// columns in dimension
 			dimensionsKeys = chartProperty.properties[propKey].chartAxes[1].fields.map(el => {
-				if (el.dataType === "date") {
+				if (el.dataType === "date" || el.dataType === "timeStamp") {
 					return `${el.fieldname}__${el.time_grain}`;
 				} else {
 					return el.fieldname;
@@ -92,28 +93,38 @@ const Treemap = ({
 			var dimValues = chartData.map(dt => dt[dimensionsKeys[0]]); // All values of first dimension
 			var uniqueDimValues = [...new Set(dimValues)]; // Unique values of first dimension. These are the parent objects
 
-			// For each of the parent objects, find what are their children
-			uniqueDimValues.forEach(val => {
-				var parentObj = { name: val, value: 0, children: [] }; // Define parent structure
-				var filteredData = chartData.filter(dt => dt[dimensionsKeys[0]] === val); // Filter data only for this parent
+			if (dimensionsKeys.length === 1) {
+				console.log("only one Dimenstion");
+				var childrenArray = [];
+				chartData.map(item => {
+					var finalObj = { name: item[dimensionsKeys[0]], value: item[measure] };
+					childrenArray.push(finalObj);
+				});
+				setsourceData(childrenArray);
+				console.log(childrenArray);
+			} else {
+				// For each of the parent objects, find what are their children
+				uniqueDimValues.forEach(val => {
+					var parentObj = { name: val, value: 0, children: [] }; // Define parent structure
+					var filteredData = chartData.filter(dt => dt[dimensionsKeys[0]] === val); // Filter data only for this parent
 
-				var [children, total] = getRecursiveData({ data: filteredData, i: 1, measure });
-				parentObj.children = children;
-				parentObj.value = total;
-				formattedData.push(parentObj);
-			});
-
-			setsourceData(formattedData);
-			console.log(formattedData);
+					var [children, total] = getRecursiveData({ data: filteredData, i: 1, measure });
+					parentObj.children = children;
+					parentObj.value = total;
+					formattedData.push(parentObj);
+				});
+				setsourceData(formattedData);
+				console.log(formattedData);
+			}
 		}
 	}, [chartData, chartControl]);
 
-	console.log(sourceData);
+	// console.log(sourceData);
 
 	useEffect(() => {
-		console.log(dimensionsKeys);
+		// console.log(dimensionsKeys);
 		updateTreeMapStyleOptions(propKey, "leafDepth", dimensionsKeys.length);
-	}, [chartProperty.properties[propKey].chartType]);
+	}, [chartControlState.properties[propKey], chartData]);
 
 	function getTooltipData(treePath, value, info) {
 		const dimsLength = chartProperty.properties[propKey].chartAxes[1].fields.map(el => {
@@ -132,6 +143,11 @@ const Treemap = ({
 			return `${info.data.name}`;
 		}
 	}
+
+	const getSourceData = () => {
+		console.log(sourceData);
+		return sourceData;
+	};
 
 	const RenderChart = () => {
 		return (
@@ -209,7 +225,7 @@ const Treemap = ({
 								},
 							},
 							leafDepth: chartControl.treeMapChartControls.leafDepth,
-							data: sourceData,
+							data: getSourceData(),
 						},
 					],
 				}}
