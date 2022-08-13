@@ -52,7 +52,6 @@ const GeoChart = ({
 	var locAggregator = chartProp.properties[propKey].chartAxes[1].fields[0]
 		? chartProp.properties[propKey].chartAxes[1].fields[0].agg
 		: "";
-	console.log(locAggregator);
 
 	var chartControl = chartControls.properties[propKey];
 	let chartData = chartControl.chartData ? chartControl.chartData.result : "";
@@ -61,66 +60,20 @@ const GeoChart = ({
 		(state) => state.chartProperties.properties[propKey].geoLocation
 	);
 
-	var formattedData = [];
-	var dataValues = []; // used for computing min max values
-
-	var dataKeys = chartData && Object.keys(chartData[0]);
-	// console.log(dataKeys);
-	chartData &&
-		chartData.forEach((dt) => {
-			dataValues.push(dt[dataKeys[1]]);
-
-			switch (geoLocation) {
-				case "india":
-					var indObj = indiaCodes.filter(
-						(obj) => obj[locAggregator] === dt[dataKeys[0]]
-					)[0];
-					if (indObj) {
-						// console.log(indObj);
-						var indiaData = { name: indObj.stateName, value: dt[dataKeys[1]] };
-						formattedData.push(indiaData);
-					}
-					break;
-
-				case "usa":
-					var usaObj = usaCodes.filter(
-						(obj) => obj[locAggregator] === dt[dataKeys[0]]
-					)[0];
-					// console.log(usaObj);
-					if (usaObj) {
-						var usaData = { name: usaObj.stateName, value: dt[dataKeys[1]] };
-						formattedData.push(usaData);
-					}
-					break;
-
-				case "world":
-				default:
-					var cntrObj = countryCodes.filter(
-						(obj) => obj[locAggregator] === dt[dataKeys[0]]
-					)[0];
-
-					if (cntrObj) {
-						var cntData = { name: cntrObj.shortName, value: dt[dataKeys[1]] };
-						formattedData.push(cntData);
-					} else {
-						console.log("Unmatched location", dt[dataKeys[0]]);
-					}
-					break;
-			}
-		});
-
-	const [minMax, setMinMax] = useState({ min: 0, max: 1 });
-
-	useEffect(() => {
-		if (chartData) {
-			console.log("Setting min max");
-			var min = Math.min.apply(null, dataValues);
-			var max = Math.max.apply(null, dataValues);
-			setMinMax({ min, max });
-		}
-	}, [chartData]);
-
-	// console.log(formattedData);
+	var mockData = [
+		{
+			state: "IN-AP",
+			sales__sum: 170,
+		},
+		{
+			state: "IN-BR",
+			sales__sum: 250,
+		},
+		{
+			state: "IN-GJ",
+			sales__sum: 310,
+		},
+	];
 
 	const selectedAreaMap = {
 		usa: usa1Map,
@@ -135,6 +88,40 @@ const GeoChart = ({
 		nigeria: nigeriaMap,
 		brazil: brazilMap,
 	};
+
+	var formattedData = [];
+	var nameMapFormatted = {};
+	var dataValues = []; // used for computing min max values
+
+	var dataKeys = chartData && Object.keys(chartData[0]);
+	// console.log(dataKeys);
+	chartData &&
+		chartData.forEach((dt) => {
+			dataValues.push(dt[dataKeys[1]]);
+
+			formattedData.push({ name: dt[dataKeys[0]], value: dt[dataKeys[1]] });
+
+			var locObj = selectedAreaMap[geoLocation].features.filter(
+				(feature) =>
+					feature.properties[locAggregator].toLowerCase() ===
+					dt[dataKeys[0]].toLowerCase()
+			);
+			if (locObj.length > 0)
+				nameMapFormatted[locObj[0].properties.NAME_1] = locObj[0].properties[locAggregator];
+		});
+
+	const [minMax, setMinMax] = useState({ min: 0, max: 1 });
+
+	useEffect(() => {
+		if (chartData) {
+			console.log("Setting min max");
+			var min = Math.min.apply(null, dataValues);
+			var max = Math.max.apply(null, dataValues);
+			setMinMax({ min, max });
+		}
+	}, [chartData]);
+
+	// console.log(formattedData);
 
 	registerMap(geoLocation, selectedAreaMap[geoLocation], geoLocation === "usa" ? usaAcc : null);
 
@@ -221,6 +208,7 @@ const GeoChart = ({
 							geoIndex: 0,
 							data: formattedData,
 							nameProperty: "NAME_1",
+							nameMap: nameMapFormatted,
 							// roam: true,
 							label: {
 								show: chartControl.labelOptions.showLabel,

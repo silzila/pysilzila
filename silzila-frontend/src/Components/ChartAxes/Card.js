@@ -223,8 +223,12 @@ const Card = ({
 		}
 
 		if (axisTitle === "Location") {
-			console.log(axisTitle, field.dataType);
-			options = options.concat(Aggregators[axisTitle][geoLocation]);
+			if (geoLocation === "world") {
+				console.log(axisTitle, field.dataType);
+				options = options.concat(Aggregators[axisTitle][geoLocation]);
+			} else {
+				options = options.concat(Aggregators[axisTitle].singleCountry);
+			}
 
 			// options = options.concat(
 			// 	Aggregators[axisTitle][geoLocation === "world" ? "world" : "singleCountry"]
@@ -259,9 +263,9 @@ const Card = ({
 									value={opt.name}
 								>
 									<div style={menuName}>{opt.name}</div>
-									<div style={menuExample}>
+									{/* <div style={menuExample}>
 										{`${opt.examples[0]}, ${opt.examples[1]}, ${opt.examples[2]}`}
-									</div>
+									</div> */}
 								</MenuItem>
 							);
 					  })

@@ -97,71 +97,36 @@ const geoPrefixes = {
 	world: [
 		{
 			name: "Full Name",
-			id: "fullName",
+			id: "formal_en",
 			examples: ["Commonwealth of the Bahamas", "Republic of Costa Rica", "Republic of Cuba"],
 		},
 		{
 			name: "Short Name",
-			id: "shortName",
+			id: "admin",
 			examples: ["Bahamas", "Costa Rica", "Cuba"],
 		},
 		{
 			name: "ISO-2",
-			id: "iso2",
+			id: "iso_a2",
 			examples: ["BS", "CR", "CU"],
 		},
 		{
 			name: "ISO-3",
-			id: "iso3",
+			id: "iso_a3",
 			examples: ["BHS", "CRI", "CUB"],
 		},
 		{
 			name: "ISO-Numeric",
-			id: "isoNum",
+			id: "un_a3",
 			examples: ["044", "188", "192"],
 		},
 	],
-	india: [
-		{
-			name: "State Name",
-			id: "stateName",
-			examples: ["Telangana", "ArunachalPradesh", "Assam"],
-		},
-		{
-			name: "ISO Code",
-			id: "iso_code",
-			examples: ["IN-TG", "IN-AR", "IN-AS"],
-		},
-	],
-	usa: [
-		{
-			name: "State Name",
-			id: "stateName",
-			examples: ["Alabama", "Alaska", "Arizona"],
-		},
-		{
-			name: "ISO Code",
-			id: "iso_code",
-			examples: ["US-AL", "US-AK", "US-AZ"],
-		},
-	],
-	germany: [],
-	china: [],
-	france: [],
-	uk: [],
-	japan: [],
-	southAfrica: [],
-	nigeria: [],
-	brazil: [],
 
-	// world: [
-	// 	{ name: "Countries", id: "countries" },
-	// 	{ name: "Cities", id: "cities" },
-	// ],
-	// singleCountry: [
-	// 	{ name: "States", id: "states" },
-	// 	{ name: "Cities", id: "cities" },
-	// ],
+	singleCountry: [
+		{ name: "States", id: "NAME_1" },
+		{ name: "ISO Code", id: "ISO_1" },
+		{ name: "Two Letter Code", id: "2char" },
+	],
 };
 
 const Aggregators = {
@@ -193,17 +158,15 @@ export const AggregatorKeys = {
 	dayofweek: "Day Wk",
 	date: "Date",
 
-	fullName: "Full Name",
-	iso2: "ISO-2",
+	formal_en: "Full Name",
+	iso_a2: "ISO-2",
 	iso3: "ISO-3",
-	isoNum: "ISO-Num",
-	shortName: "Short Name",
-	stateCode: "St code",
-	stateName: "State Name",
+	un_a3: "ISO-Num",
+	admin: "Short Name",
 
-	// countries: "Country",
-	// state: "State",
-	// cities: "City",
+	NAME_1: "State Name",
+	ISO_1: "ISO Code",
+	"2char": "2 Char",
 };
 
 export default Aggregators;
