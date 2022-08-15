@@ -16,10 +16,6 @@ import southAfricaMap from "./Data/southAfrica1_gadm.json";
 import nigeriaMap from "./Data/nigeria1_gadm.json";
 import brazilMap from "./Data/brazil1_gadm.json";
 
-import countryCodes from "./Data/country-codes.json";
-import indiaCodes from "./Data/india-codes.json";
-import usaCodes from "./Data/usa-codes.json";
-
 var usaAcc = {
 	Alaska: {
 		left: -131,
@@ -52,6 +48,8 @@ const GeoChart = ({
 	var locAggregator = chartProp.properties[propKey].chartAxes[1].fields[0]
 		? chartProp.properties[propKey].chartAxes[1].fields[0].agg
 		: "";
+
+	console.log(locAggregator);
 
 	var chartControl = chartControls.properties[propKey];
 	let chartData = chartControl.chartData ? chartControl.chartData.result : "";
@@ -103,11 +101,12 @@ const GeoChart = ({
 
 			var locObj = selectedAreaMap[geoLocation].features.filter(
 				(feature) =>
-					feature.properties[locAggregator].toLowerCase() ===
+					feature.properties[locAggregator]?.toLowerCase() ===
 					dt[dataKeys[0]].toLowerCase()
 			);
 			if (locObj.length > 0)
 				nameMapFormatted[locObj[0].properties.NAME_1] = locObj[0].properties[locAggregator];
+			else console.log("Unmapped location", dt[dataKeys[0]]);
 		});
 
 	const [minMax, setMinMax] = useState({ min: 0, max: 1 });
@@ -145,9 +144,6 @@ const GeoChart = ({
 						show: chartControl.mouseOver.enable,
 						trigger: "item",
 						formatter: (value) => {
-							console.log(value);
-							console.log(value.value, value.name, chartControl.mouseOver.formatter);
-
 							if (!isNaN(value.value)) {
 								switch (chartControl.mouseOver.formatter) {
 									case "value":
@@ -160,6 +156,7 @@ const GeoChart = ({
 										return `${value.name} : ${value.value}`;
 
 									case "none":
+									default:
 										return "";
 								}
 							} else {
@@ -170,6 +167,7 @@ const GeoChart = ({
 
 									case "value":
 									case "none":
+									default:
 										return "";
 								}
 							}
@@ -231,6 +229,7 @@ const GeoChart = ({
 												return `${value.name} : ${value.value}`;
 
 											case "none":
+											default:
 												return "";
 										}
 									} else {
@@ -241,6 +240,7 @@ const GeoChart = ({
 											case "both":
 											case "none":
 											case "value":
+											default:
 												return "";
 										}
 									}

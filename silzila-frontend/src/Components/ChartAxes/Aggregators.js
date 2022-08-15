@@ -102,7 +102,7 @@ const geoPrefixes = {
 		},
 		{
 			name: "Short Name",
-			id: "admin",
+			id: "name_long",
 			examples: ["Bahamas", "Costa Rica", "Cuba"],
 		},
 		{
@@ -162,7 +162,7 @@ export const AggregatorKeys = {
 	iso_a2: "ISO-2",
 	iso3: "ISO-3",
 	un_a3: "ISO-Num",
-	admin: "Short Name",
+	name_long: "Short Name",
 
 	NAME_1: "State Name",
 	ISO_1: "ISO Code",
