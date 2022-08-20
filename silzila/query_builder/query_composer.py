@@ -55,5 +55,5 @@ async def compose_query(req: schema.Query, dc_uid: str, ds_uid: str, vendor_name
     # if request has only measures then no need of group by and order by clause
     elif req["measures"]:
         QUERY = f"SELECT {SELECT}\nFROM\n{FROM_TBL}{WHERE}"
-
+    # print('query ============\n', QUERY)
     return QUERY

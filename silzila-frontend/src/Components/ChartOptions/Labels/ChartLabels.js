@@ -10,10 +10,14 @@ import {
 	updateLabelOption,
 	updateLabelPadding,
 	updateLabelPosition,
+	updateTreeMapStyleOptions,
 } from "../../../redux/ChartProperties/actionsChartControls";
 import { SketchPicker } from "react-color";
 import SliderWithInput from "../SliderWithInput";
 import { FormControl, MenuItem, Popover, Select, Switch } from "@mui/material";
+import TreeMapLabelOptions from "./TreeMapLabelOptions";
+import SnakeyLabelOptions from "./SnakeyLabelOptions";
+import SwitchWithInput from "../SwitchWithInput";
 
 const ChartLabels = ({
 	// state
@@ -25,6 +29,7 @@ const ChartLabels = ({
 	updateLabelOption,
 	updateLabelPosition,
 	updateLabelPadding,
+	updateTreeMapStyleOptions,
 }) => {
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 
@@ -49,7 +54,7 @@ const ChartLabels = ({
 			return (
 				<button
 					value={item.value}
-					onClick={(e) => updateLabelOption(propKey, "showLabel", item.value)}
+					onClick={e => updateLabelOption(propKey, "showLabel", item.value)}
 					className={item.value === showLabel ? "radioButtonSelected" : "radioButton"}
 					key={i}
 				>
@@ -119,7 +124,7 @@ const ChartLabels = ({
 						{chartDetail[propKey].chartType === "pie" ||
 						chartDetail[propKey].chartType === "donut" ? (
 							<React.Fragment>
-								<div className="optionDescription">LABEL POSITION</div>
+								<div className="optionDescription">Label Position</div>
 								<FormControl
 									fullWidth
 									size="small"
@@ -128,7 +133,7 @@ const ChartLabels = ({
 									<Select
 										value={labelOptions.pieLabel.labelPosition}
 										variant="outlined"
-										onChange={(e) => {
+										onChange={e => {
 											updateLabelPosition(propKey, e.target.value);
 										}}
 										sx={{
@@ -140,7 +145,7 @@ const ChartLabels = ({
 											color: "#404040",
 										}}
 									>
-										{labelPositionOptions.map((position) => {
+										{labelPositionOptions.map(position => {
 											return (
 												<MenuItem
 													value={position.value}
@@ -158,12 +163,12 @@ const ChartLabels = ({
 								</FormControl>
 								{labelOptions.pieLabel.labelPosition === "outside" ? (
 									<>
-										<div className="optionDescription">LABEL PADDING</div>
+										<div className="optionDescription">Label Padding</div>
 										<SliderWithInput
 											percent={false}
 											sliderValue={labelOptions.pieLabel.labelPadding}
 											sliderMinMax={{ min: 0, max: 40, step: 1 }}
-											changeValue={(value) => {
+											changeValue={value => {
 												updateLabelPadding(propKey, value);
 											}}
 										/>
@@ -171,20 +176,18 @@ const ChartLabels = ({
 								) : null}
 							</React.Fragment>
 						) : null}
-						{/* </div> */}
-						<div
-						// style={{ flex: 1, display: "flex" }}
-						>
-							<div className="optionDescription">LABEL SIZE</div>
+
+						<div>
+							<div className="optionDescription">Label Size</div>
 							<SliderWithInput
 								percent={false}
 								sliderValue={chartProp.properties[propKey].labelOptions.fontSize}
 								sliderMinMax={{ min: 8, max: 50, step: 1 }}
-								changeValue={(value) => {
+								changeValue={value => {
 									updateLabelOption(propKey, "fontSize", value);
 								}}
 							/>
-							<div className="optionDescription">LABEL COLOR</div>
+							<div className="optionDescription">Label Color</div>
 
 							<div className="optionDescription">
 								<label
@@ -194,13 +197,11 @@ const ChartLabels = ({
 								>
 									Manual
 								</label>
-								<Switch
-									size="small"
-									checked={
+								<SwitchWithInput
+									isChecked={
 										chartProp.properties[propKey].labelOptions.labelColorManual
 									}
-									id="enableDisable"
-									onChange={() => {
+									onSwitch={() => {
 										updateLabelOption(
 											propKey,
 											"labelColorManual",
@@ -224,7 +225,7 @@ const ChartLabels = ({
 											border: "2px solid darkgray",
 											margin: "auto",
 										}}
-										onClick={(e) => {
+										onClick={e => {
 											setColorPopOverOpen(!isColorPopoverOpen);
 											setAnchorEl(e.currentTarget);
 										}}
@@ -233,6 +234,28 @@ const ChartLabels = ({
 									</div>
 								) : null}
 							</div>
+							{chartDetail[propKey].chartType === "treeMap" ? (
+								<>
+									<div
+										style={{
+											borderTop: "1px solid rgb(211,211,211)",
+											margin: "0.5rem 6% 1rem",
+										}}
+									></div>
+									<TreeMapLabelOptions />
+								</>
+							) : null}
+							{chartDetail[propKey].chartType === "sankey" ? (
+								<>
+									<div
+										style={{
+											borderTop: "1px solid rgb(211,211,211)",
+											margin: "0.5rem 6% 1rem",
+										}}
+									></div>
+									<SnakeyLabelOptions />
+								</>
+							) : null}
 						</div>
 						{chartDetail[propKey].chartType === "geoChart" ? (
 							<>
@@ -248,7 +271,7 @@ const ChartLabels = ({
 			<Popover
 				open={isColorPopoverOpen}
 				onClose={() => setColorPopOverOpen(false)}
-				// anchorEl={anchorEl}
+				onClick={() => setColorPopOverOpen(false)}
 				anchorReference="anchorPosition"
 				anchorPosition={{ top: 350, left: 1300 }}
 			>
@@ -258,10 +281,10 @@ const ChartLabels = ({
 						className="sketchPicker"
 						width="16rem"
 						styles={{ padding: "0" }}
-						onChangeComplete={(color) => {
+						onChangeComplete={color => {
 							updateLabelOption(propKey, "labelColor", color.hex);
 						}}
-						onChange={(color) => updateLabelOption(propKey, "labelColor", color.hex)}
+						onChange={color => updateLabelOption(propKey, "labelColor", color.hex)}
 						disableAlpha
 					/>
 				</div>
@@ -269,7 +292,7 @@ const ChartLabels = ({
 		</div>
 	);
 };
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		chartProp: state.chartControls,
 		tabTileProps: state.tabTileProps,
@@ -277,13 +300,15 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
 		updateLabelOption: (propKey, option, value) =>
 			dispatch(updateLabelOption(propKey, option, value)),
 
 		updateLabelPosition: (propKey, value) => dispatch(updateLabelPosition(propKey, value)),
 		updateLabelPadding: (propKey, value) => dispatch(updateLabelPadding(propKey, value)),
+		updateTreeMapStyleOptions: (propKey, option, value) =>
+			dispatch(updateTreeMapStyleOptions(propKey, option, value)),
 	};
 };
 

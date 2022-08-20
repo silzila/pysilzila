@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { duplicateControl } from "../../redux/ChartProperties/actionsChartControls";
 import { duplicateChartProperty } from "../../redux/ChartProperties/actionsChartProperties";
-import { actionsToAddTile } from "../../redux/TabTile/actionsTabTile";
+import { actionsToAddTile, renameTile } from "../../redux/TabTile/actionsTabTile";
 import "./individualTile.css";
 
 function IndividualTile({
@@ -44,6 +44,19 @@ function IndividualTile({
 
 	const dispatch = useDispatch();
 	const state = useSelector((state) => state);
+	// console.log(state);
+
+	function setDuplicateName(fromTileName, newName, count, tabId, nextTileId) {
+		state.tileState.tileList[tabId].map((tileKey) => {
+			console.log(tileKey);
+			if (state.tileState.tiles[tileKey].tileName === newName) {
+				count = count + 1;
+				newName = `${fromTileName} - copy(${count})`;
+				setDuplicateName(fromTileName, newName, count, tabId, nextTileId);
+			}
+		});
+		dispatch(renameTile(tabId, nextTileId, newName));
+	}
 
 	const handleDuplicateTile = () => {
 		handleClose();
@@ -52,7 +65,9 @@ function IndividualTile({
 		// give a unique tile name
 
 		let tabObj = state.tabState.tabs[state.tabTileProps.selectedTabId];
+
 		var propKey = `${state.tabTileProps.selectedTabId}.${state.tabTileProps.selectedTileId}`;
+
 		var nextPropKey = `${state.tabTileProps.selectedTabId}.${tabObj.nextTileId}`;
 
 		dispatch(
@@ -79,6 +94,12 @@ function IndividualTile({
 				JSON.parse(JSON.stringify(state.chartProperties.properties[propKey]))
 			)
 		);
+
+		var count = 0;
+		var fromTileName = state.tileState.tiles[propKey].tileName;
+		var newName = `${fromTileName} - copy`;
+
+		setDuplicateName(fromTileName, newName, count, tabObj.tabId, tabObj.nextTileId);
 	};
 
 	const RightClickMenu = () => {

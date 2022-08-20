@@ -11,6 +11,7 @@ import {
 	updatePieAxisOptions,
 } from "../../../redux/ChartProperties/actionsChartControls";
 import SliderWithInput from "../SliderWithInput";
+import SwitchWithInput from "../SwitchWithInput";
 
 const textFieldStyleProps = {
 	style: {
@@ -49,7 +50,7 @@ const GridControls = ({
 						value={property.gaugeAxisOptions.startAngle}
 						variant="outlined"
 						type="number"
-						onChange={(e) => {
+						onChange={e => {
 							updateGaugeAxisOptions(propKey, "startAngle", e.target.value);
 						}}
 						InputProps={{ ...textFieldStyleProps }}
@@ -65,7 +66,7 @@ const GridControls = ({
 								value={property.pieAxisOptions.pieStartAngle}
 								variant="outlined"
 								type="number"
-								onChange={(e) => {
+								onChange={e => {
 									updatePieAxisOptions(propKey, "pieStartAngle", e.target.value);
 								}}
 								InputProps={{ ...textFieldStyleProps }}
@@ -90,11 +91,9 @@ const GridControls = ({
 								</label>
 								{/* <div className="optionDescription">ClockWise</div> */}
 
-								<Switch
-									size="small"
-									id="enableDisable"
-									checked={property.pieAxisOptions.clockWise}
-									onChange={(e) => {
+								<SwitchWithInput
+									isChecked={property.pieAxisOptions.clockWise}
+									onSwitch={e => {
 										updatePieAxisOptions(
 											propKey,
 											"clockWise",
@@ -116,7 +115,7 @@ const GridControls = ({
 						value={property.gaugeAxisOptions.endAngle}
 						variant="outlined"
 						type="number"
-						onChange={(e) => {
+						onChange={e => {
 							// changing value of end angle
 							updateGaugeAxisOptions(propKey, "endAngle", e.target.value);
 						}}
@@ -128,7 +127,7 @@ const GridControls = ({
 							type="checkbox"
 							id="enableDisable"
 							checked={property.gaugeAxisOptions.showTick}
-							onChange={(e) => {
+							onChange={e => {
 								updateGaugeAxisOptions(
 									propKey,
 									"showTick",
@@ -147,7 +146,7 @@ const GridControls = ({
 								percent={true}
 								sliderValue={property.gaugeAxisOptions.tickSize}
 								sliderMinMax={{ min: 0, max: 99, step: 1 }}
-								changeValue={(value) => {
+								changeValue={value => {
 									updateGaugeAxisOptions(propKey, "tickSize", value);
 								}}
 							/>
@@ -156,7 +155,7 @@ const GridControls = ({
 								percent={false}
 								sliderValue={property.gaugeAxisOptions.tickPadding}
 								sliderMinMax={{ min: 0, max: 90, step: 1 }}
-								changeValue={(value) => {
+								changeValue={value => {
 									updateGaugeAxisOptions(propKey, "tickPadding", value);
 								}}
 							/>
@@ -168,7 +167,7 @@ const GridControls = ({
 							type="checkbox"
 							id="enableDisable"
 							checked={property.gaugeAxisOptions.showAxisLabel}
-							onChange={(e) => {
+							onChange={e => {
 								updateGaugeAxisOptions(
 									propKey,
 									"showAxisLabel",
@@ -187,7 +186,7 @@ const GridControls = ({
 								percent={false}
 								sliderValue={property.gaugeAxisOptions.labelPadding}
 								sliderMinMax={{ min: 0, max: 90, step: 1 }}
-								changeValue={(value) => {
+								changeValue={value => {
 									updateGaugeAxisOptions(propKey, "labelPadding", value);
 								}}
 							/>
@@ -199,7 +198,7 @@ const GridControls = ({
 	);
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		chartControl: state.chartControls,
 		tabTileProps: state.tabTileProps,
@@ -207,7 +206,7 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
 		updateGaugeAxisOptions: (propKey, option, value) =>
 			dispatch(updateGaugeAxisOptions(propKey, option, value)),

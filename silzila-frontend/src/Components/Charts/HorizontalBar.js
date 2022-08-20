@@ -89,10 +89,10 @@ const HorizontalBar = ({
 						orient: chartControl.legendOptions?.orientation,
 					},
 					grid: {
-						left: chartControl.chartMargin.left,
-						right: chartControl.chartMargin.right,
-						top: chartControl.chartMargin.top,
-						bottom: chartControl.chartMargin.bottom,
+						left: chartControl.chartMargin.left + "%",
+						right: chartControl.chartMargin.right + "%",
+						top: chartControl.chartMargin.top + "%",
+						bottom: chartControl.chartMargin.bottom + "%",
 					},
 
 					tooltip: { show: chartControl.mouseOver.enable },

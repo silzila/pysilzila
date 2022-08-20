@@ -40,6 +40,10 @@ import RoseChart from "../Charts/RoseChart";
 import StackedAreaChart from "../Charts/StackedAreaChart";
 import CalendarChart from "../Charts/CalendarChart";
 import GeoChart from "../Charts/GeoChart/GeoChart";
+import BoxPlotChart from "../Charts/BoxPlotChart";
+import TreeMap from "../Charts/TreeMap";
+import TextEditor from "../Charts/TextEditor";
+import Sankey from "../Charts/Sankey";
 
 const GraphArea = ({
 	// state
@@ -107,7 +111,7 @@ const GraphArea = ({
 		tileState.tiles[propKey].graphSizeFull,
 	]);
 
-	const removeFullScreen = (e) => {
+	const removeFullScreen = e => {
 		//console.log(e.keyCode);
 		if (e.keyCode === 27) {
 			setFullScreen(false);
@@ -260,6 +264,38 @@ const GraphArea = ({
 						graphTileSize={tileState.tiles[propKey].graphSizeFull}
 					/>
 				);
+			case "boxPlot":
+				return (
+					<BoxPlotChart
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
+					/>
+				);
+			case "treeMap":
+				return (
+					<TreeMap
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
+					/>
+				);
+			case "sankey":
+				return (
+					<Sankey
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
+					/>
+				);
+			case "textEditor":
+				return (
+					<TextEditor
+						propKey={propKey}
+						graphDimension={fullScreen ? graphDimension2 : graphDimension}
+						graphTileSize={tileState.tiles[propKey].graphSizeFull}
+					/>
+				);
 
 			default:
 				return <h2>Work in progress</h2>;
@@ -306,7 +342,7 @@ const GraphArea = ({
 			var title = "";
 
 			// Concatenate field names in dims / measures
-			const concatenateFields = (fields) => {
+			const concatenateFields = fields => {
 				if (fields.length > 0) {
 					var tempTitle = "";
 					fields.forEach((element, index) => {
@@ -366,7 +402,7 @@ const GraphArea = ({
 	}, [chartProperties.properties[propKey].titleOptions.chartTitle]);
 
 	const [inputTitleText, setTitleText] = useState("");
-	const handleTitleChange = (e) => {
+	const handleTitleChange = e => {
 		setTitleText(e.target.value);
 	};
 
@@ -438,7 +474,7 @@ const GraphArea = ({
 				{editTitle ? (
 					<form
 						style={{ width: "100%" }}
-						onSubmit={(evt) => {
+						onSubmit={evt => {
 							evt.currentTarget.querySelector("input").blur();
 							evt.preventDefault();
 						}}
@@ -530,7 +566,7 @@ const GraphArea = ({
 					tabIndex="0"
 					id="graphFullScreen"
 					className="graphFullScreen"
-					onKeyDown={(e) => {
+					onKeyDown={e => {
 						//console.log("Key pressed");
 						removeFullScreen(e);
 					}}
@@ -557,7 +593,7 @@ const GraphArea = ({
 	);
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		tileState: state.tileState,
 		tabState: state.tabState,
@@ -567,7 +603,7 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
 		setChartTitle: (propKey, title) => dispatch(setChartTitle(propKey, title)),
 		setGenerateTitleToStore: (propKey, option) => dispatch(setGenerateTitle(propKey, option)),

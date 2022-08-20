@@ -18,6 +18,7 @@ import {
 import SliderWithInput from "../SliderWithInput";
 import InputNumber from "../CommonFunctions/InputNumber";
 import { SketchPicker } from "react-color";
+import SwitchWithInput from "../SwitchWithInput";
 
 const textFieldStyleProps = {
 	style: {
@@ -68,7 +69,7 @@ const GridAndAxes = ({
 	];
 
 	const renderAxisOptionsForX = () => {
-		return axisOptionsForX.map((item) => {
+		return axisOptionsForX.map(item => {
 			return (
 				<div
 					key={item.value}
@@ -78,7 +79,7 @@ const GridAndAxes = ({
 							: "radioButton"
 					}
 					value={item.value}
-					onClick={(e) => {
+					onClick={e => {
 						updateAxisOptions(propKey, "xAxis", "position", item.value);
 						updateAxisOptions(propKey, "xAxis", "onZero", !property.xAxis.onZero);
 					}}
@@ -96,7 +97,7 @@ const GridAndAxes = ({
 	];
 
 	const renderAxisOptionsForY = () => {
-		return axisOptionsForY.map((item) => {
+		return axisOptionsForY.map(item => {
 			return (
 				<div
 					key={item.value}
@@ -104,7 +105,7 @@ const GridAndAxes = ({
 						item.value === yAxisProps.position ? "radioButtonSelected" : "radioButton"
 					}
 					value={item.value}
-					onClick={(e) => {
+					onClick={e => {
 						updateAxisOptions(propKey, "yAxis", "position", item.value);
 						updateAxisOptions(propKey, "yAxis", "onZero", !yAxisProps.onZero);
 					}}
@@ -132,11 +133,9 @@ const GridAndAxes = ({
 						>
 							REVERSE
 						</label>
-						<Switch
-							size="small"
-							id="enableDisable"
-							checked={property.inverse}
-							onClick={(e) => {
+						<SwitchWithInput
+							isChecked={property.inverse}
+							onSwitch={e => {
 								setReverse(propKey, !property.inverse);
 							}}
 						/>
@@ -147,13 +146,13 @@ const GridAndAxes = ({
 							type="checkbox"
 							id="enableDisable"
 							checked={property.axisMinMax.enableMin}
-							onChange={(e) => {
+							onChange={e => {
 								setAxisMinMax(propKey, "enableMin", !property.axisMinMax.enableMin);
 							}}
 						/>
 						<InputNumber
 							value={property.axisMinMax.minValue}
-							updateValue={(value) => setAxisMinMax(propKey, "minValue", value)}
+							updateValue={value => setAxisMinMax(propKey, "minValue", value)}
 							disabled={property.axisMinMax.enableMin ? false : true}
 						/>
 					</div>
@@ -163,13 +162,13 @@ const GridAndAxes = ({
 							type="checkbox"
 							id="enableDisable"
 							checked={property.axisMinMax.enableMax}
-							onChange={(e) => {
+							onChange={e => {
 								setAxisMinMax(propKey, "enableMax", !property.axisMinMax.enableMax);
 							}}
 						/>
 						<InputNumber
 							value={property.axisMinMax.maxValue}
-							updateValue={(value) => setAxisMinMax(propKey, "maxValue", value)}
+							updateValue={value => setAxisMinMax(propKey, "maxValue", value)}
 							disabled={property.axisMinMax.enableMax ? false : true}
 						/>
 					</div>
@@ -201,11 +200,9 @@ const GridAndAxes = ({
 						>
 							Enable Dimension-Grid
 						</label>
-						<Switch
-							size="small"
-							id="enableDisable"
-							checked={property.xSplitLine}
-							onClick={() => {
+						<SwitchWithInput
+							isChecked={property.xSplitLine}
+							onSwitch={() => {
 								enableGrids(propKey, "xSplitLine", !property.xSplitLine);
 							}}
 						/>
@@ -221,11 +218,9 @@ const GridAndAxes = ({
 				>
 					Show Label
 				</label>
-				<Switch
-					size="small"
-					id="enableDisable"
-					checked={xAxisProps.showLabel}
-					onClick={(e) => {
+				<SwitchWithInput
+					isChecked={xAxisProps.showLabel}
+					onSwitch={e => {
 						updateAxisOptions(propKey, "xAxis", "showLabel", !xAxisProps.showLabel);
 					}}
 				/>
@@ -240,7 +235,7 @@ const GridAndAxes = ({
 									type="checkbox"
 									id="enableDisable"
 									checked={property.scatterChartMinMax.x_enableMin}
-									onChange={(e) => {
+									onChange={e => {
 										updateAxisMinMaxforScatter(
 											propKey,
 											"x_enableMin",
@@ -250,7 +245,7 @@ const GridAndAxes = ({
 								/>
 								<InputNumber
 									value={property.scatterChartMinMax.x_minValue}
-									updateValue={(value) =>
+									updateValue={value =>
 										updateAxisMinMaxforScatter(propKey, "x_minValue", value)
 									}
 									disabled={
@@ -264,7 +259,7 @@ const GridAndAxes = ({
 									type="checkbox"
 									id="enableDisable"
 									checked={property.scatterChartMinMax.x_enableMax}
-									onChange={(e) => {
+									onChange={e => {
 										updateAxisMinMaxforScatter(
 											propKey,
 											"x_enableMax",
@@ -274,7 +269,7 @@ const GridAndAxes = ({
 								/>
 								<InputNumber
 									value={property.scatterChartMinMax.x_maxValue}
-									updateValue={(value) =>
+									updateValue={value =>
 										updateAxisMinMaxforScatter(propKey, "x_maxValue", value)
 									}
 									disabled={
@@ -290,7 +285,7 @@ const GridAndAxes = ({
 					<TextField
 						value={xAxisProps.name}
 						variant="outlined"
-						onChange={(e) => {
+						onChange={e => {
 							updateAxisOptions(propKey, "xAxis", "name", e.target.value);
 						}}
 						InputProps={{ ...textFieldStyleProps }}
@@ -306,7 +301,7 @@ const GridAndAxes = ({
 							label=""
 							value={xAxisProps.nameLocation}
 							variant="outlined"
-							onChange={(e) => {
+							onChange={e => {
 								updateAxisOptions(propKey, "xAxis", "nameLocation", e.target.value);
 							}}
 							sx={{
@@ -318,7 +313,7 @@ const GridAndAxes = ({
 								color: "#404040",
 							}}
 						>
-							{positions.map((position) => {
+							{positions.map(position => {
 								return (
 									<MenuItem
 										value={position.value}
@@ -339,7 +334,7 @@ const GridAndAxes = ({
 					<TextField
 						value={xAxisProps.nameGap}
 						variant="outlined"
-						onChange={(e) => {
+						onChange={e => {
 							updateAxisOptions(propKey, "xAxis", "nameGap", e.target.value);
 						}}
 						InputProps={{ ...textFieldStyleProps }}
@@ -349,7 +344,7 @@ const GridAndAxes = ({
 						percent={false}
 						sliderValue={xAxisProps.nameSize}
 						sliderMinMax={{ min: 0, max: 80, step: 1 }}
-						changeValue={(value) => {
+						changeValue={value => {
 							updateAxisOptions(propKey, "xAxis", "nameSize", value);
 						}}
 					/>
@@ -366,7 +361,7 @@ const GridAndAxes = ({
 								padding: "0 5px",
 								backgroundColor: xAxisProps.nameColor,
 							}}
-							onClick={(e) => {
+							onClick={e => {
 								setXColorPopOverOpen(!isXColorPopoverOpen);
 							}}
 						></div>
@@ -381,7 +376,7 @@ const GridAndAxes = ({
 								: xAxisProps.tickSizeBottom
 						}
 						sliderMinMax={{ min: 0, max: 20, step: 1 }}
-						changeValue={(value) => {
+						changeValue={value => {
 							if (xAxisProps.position === "top") {
 								// CHANGING TICK SIZE OF X-AXIS WHEN POSITION IS TOP
 								updateAxisOptions(propKey, "xAxis", "tickSizeTop", value);
@@ -400,7 +395,7 @@ const GridAndAxes = ({
 								: xAxisProps.tickPaddingBottom
 						}
 						sliderMinMax={{ min: 0, max: 20, step: 1 }}
-						changeValue={(value) => {
+						changeValue={value => {
 							if (xAxisProps.position === "top") {
 								//CHANGING TICK PADDING OF X-AXIS WHEN POSITION IS IN TOP
 								updateAxisOptions(propKey, "xAxis", "tickPaddingTop", value);
@@ -419,7 +414,7 @@ const GridAndAxes = ({
 								: xAxisProps.tickRotationBottom
 						}
 						sliderMinMax={{ min: -90, max: 90, step: 1 }}
-						changeValue={(value) => {
+						changeValue={value => {
 							if (xAxisProps.position === "top") {
 								// SET TICK ROTATION OF X-AXIS WHEN POSITION IS IN TOP
 								updateAxisOptions(propKey, "xAxis", "tickRotationTop", value);
@@ -454,11 +449,9 @@ const GridAndAxes = ({
 						>
 							Enable Measure-Grid
 						</label>
-						<Switch
-							size="small"
-							id="enableDisable"
-							checked={property.ySplitLine}
-							onClick={() => {
+						<SwitchWithInput
+							isChecked={property.ySplitLine}
+							onSwitch={() => {
 								enableGrids(propKey, "ySplitLine", !property.ySplitLine);
 							}}
 						/>
@@ -473,11 +466,9 @@ const GridAndAxes = ({
 				>
 					show Label
 				</label>
-				<Switch
-					size="small"
-					id="enableDisable"
-					checked={yAxisProps.showLabel}
-					onClick={(e) => {
+				<SwitchWithInput
+					isChecked={yAxisProps.showLabel}
+					onSwitch={e => {
 						updateAxisOptions(propKey, "yAxis", "showLabel", !yAxisProps.showLabel);
 					}}
 				/>
@@ -492,7 +483,7 @@ const GridAndAxes = ({
 									type="checkbox"
 									id="enableDisable"
 									checked={property.scatterChartMinMax.y_enableMin}
-									onChange={(e) => {
+									onChange={e => {
 										updateAxisMinMaxforScatter(
 											propKey,
 											"y_enableMin",
@@ -502,7 +493,7 @@ const GridAndAxes = ({
 								/>
 								<InputNumber
 									value={property.scatterChartMinMax.y_minValue}
-									updateValue={(value) =>
+									updateValue={value =>
 										updateAxisMinMaxforScatter(propKey, "y_minValue", value)
 									}
 									disabled={
@@ -516,7 +507,7 @@ const GridAndAxes = ({
 									type="checkbox"
 									id="enableDisable"
 									checked={property.scatterChartMinMax.y_enableMax}
-									onChange={(e) => {
+									onChange={e => {
 										updateAxisMinMaxforScatter(
 											propKey,
 											"y_enableMax",
@@ -526,7 +517,7 @@ const GridAndAxes = ({
 								/>
 								<InputNumber
 									value={property.scatterChartMinMax.y_maxValue}
-									updateValue={(value) =>
+									updateValue={value =>
 										updateAxisMinMaxforScatter(propKey, "y_maxValue", value)
 									}
 									disabled={
@@ -543,7 +534,7 @@ const GridAndAxes = ({
 					<TextField
 						value={yAxisProps.name}
 						variant="outlined"
-						onChange={(e) => {
+						onChange={e => {
 							updateAxisOptions(propKey, "yAxis", "name", e.target.value);
 						}}
 						InputProps={{ ...textFieldStyleProps }}
@@ -559,7 +550,7 @@ const GridAndAxes = ({
 							label=""
 							value={yAxisProps.nameLocation}
 							variant="outlined"
-							onChange={(e) => {
+							onChange={e => {
 								updateAxisOptions(propKey, "yAxis", "nameLocation", e.target.value);
 							}}
 							sx={{
@@ -571,7 +562,7 @@ const GridAndAxes = ({
 								color: "#404040",
 							}}
 						>
-							{positions.map((position) => {
+							{positions.map(position => {
 								return (
 									<MenuItem
 										value={position.value}
@@ -592,7 +583,7 @@ const GridAndAxes = ({
 					<TextField
 						value={yAxisProps.nameGap}
 						variant="outlined"
-						onChange={(e) => {
+						onChange={e => {
 							updateAxisOptions(propKey, "yAxis", "nameGap", e.target.value);
 						}}
 						InputProps={{ ...textFieldStyleProps }}
@@ -602,7 +593,7 @@ const GridAndAxes = ({
 						percent={false}
 						sliderValue={yAxisProps.nameSize}
 						sliderMinMax={{ min: 0, max: 80, step: 1 }}
-						changeValue={(value) => {
+						changeValue={value => {
 							updateAxisOptions(propKey, "yAxis", "nameSize", value);
 						}}
 					/>
@@ -619,7 +610,7 @@ const GridAndAxes = ({
 								padding: "0 5px",
 								backgroundColor: yAxisProps.nameColor,
 							}}
-							onClick={(e) => {
+							onClick={e => {
 								setYColorPopOverOpen(!isYColorPopoverOpen);
 							}}
 						></div>
@@ -634,7 +625,7 @@ const GridAndAxes = ({
 								: yAxisProps.tickSizeRight
 						}
 						sliderMinMax={{ min: 0, max: 20, step: 1 }}
-						changeValue={(value) => {
+						changeValue={value => {
 							if (yAxisProps.position === "left") {
 								// CHANGING Y-AXIS TICK SIZE WHEN POSITION IS INN LEFT
 								updateAxisOptions(propKey, "yAxis", "tickSizeLeft", value);
@@ -654,7 +645,7 @@ const GridAndAxes = ({
 								: yAxisProps.tickPaddingRight
 						}
 						sliderMinMax={{ min: 0, max: 20, step: 1 }}
-						changeValue={(value) => {
+						changeValue={value => {
 							if (yAxisProps.position === "left") {
 								//CHANGING TICK PADDING OF Y-AXIS WHEN POSITION IS IN LEFT
 								updateAxisOptions(propKey, "yAxis", "tickPaddingLeft", value);
@@ -673,7 +664,7 @@ const GridAndAxes = ({
 								: yAxisProps.tickRotationRight
 						}
 						sliderMinMax={{ min: -90, max: 90, step: 1 }}
-						changeValue={(value) => {
+						changeValue={value => {
 							if (yAxisProps.position === "left") {
 								// CHANGING ANGLE FOR Y-AXIS LABEL WHEN POSITION IS IN LEFT
 								updateAxisOptions(propKey, "yAxis", "tickRotationLeft", value);
@@ -698,10 +689,10 @@ const GridAndAxes = ({
 						className="sketchPicker"
 						width="16rem"
 						styles={{ padding: "0" }}
-						onChangeComplete={(color) => {
+						onChangeComplete={color => {
 							updateAxisOptions(propKey, "xAxis", "nameColor", color.hex);
 						}}
-						onChange={(color) =>
+						onChange={color =>
 							updateAxisOptions(propKey, "xAxis", "nameColor", color.hex)
 						}
 						disableAlpha
@@ -721,10 +712,10 @@ const GridAndAxes = ({
 						className="sketchPicker"
 						width="16rem"
 						styles={{ padding: "0" }}
-						onChangeComplete={(color) => {
+						onChangeComplete={color => {
 							updateAxisOptions(propKey, "yAxis", "nameColor", color.hex);
 						}}
-						onChange={(color) =>
+						onChange={color =>
 							updateAxisOptions(propKey, "yAxis", "nameColor", color.hex)
 						}
 						disableAlpha
@@ -735,7 +726,7 @@ const GridAndAxes = ({
 	);
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		chartControl: state.chartControls,
 		tabTileProps: state.tabTileProps,
@@ -743,7 +734,7 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
 		setAxisMinMax: (propKey, axisKey, axisValue) =>
 			dispatch(updateAxisMinMax(propKey, axisKey, axisValue)),

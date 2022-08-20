@@ -5,6 +5,7 @@ import { updateCalendarStyleOptions } from "../../../redux/ChartProperties/actio
 import { SketchPicker } from "react-color";
 import SliderWithInput from "../SliderWithInput";
 import { FormControl, MenuItem, Popover, Select, Switch } from "@mui/material";
+import SwitchWithInput from "../SwitchWithInput";
 
 const CalendarChartStyles = ({
 	// state
@@ -29,11 +30,9 @@ const CalendarChartStyles = ({
 				>
 					Show SplitLine
 				</label>
-				<Switch
-					size="small"
-					id="enableDisable"
-					checked={calStyle.showSplitLine}
-					onClick={() => {
+				<SwitchWithInput
+					isChecked={calStyle.showSplitLine}
+					onSwitch={() => {
 						updateCalendarStyleOptions(
 							propKey,
 							"showSplitLine",
@@ -56,7 +55,7 @@ const CalendarChartStyles = ({
 								border: "2px solid darkgray",
 								margin: "auto",
 							}}
-							onClick={(e) => {
+							onClick={e => {
 								setColorPopOverOpen(!isColorPopoverOpen);
 							}}
 						>
@@ -68,7 +67,7 @@ const CalendarChartStyles = ({
 						percent={false}
 						sliderValue={calStyle.splitLineWidth}
 						sliderMinMax={{ min: 0, max: 60, step: 1 }}
-						changeValue={(value) =>
+						changeValue={value =>
 							updateCalendarStyleOptions(propKey, "splitLineWidth", value)
 						}
 					/>
@@ -82,7 +81,7 @@ const CalendarChartStyles = ({
 						<Select
 							value={calStyle.splitLineType}
 							variant="outlined"
-							onChange={(e) => {
+							onChange={e => {
 								updateCalendarStyleOptions(
 									propKey,
 									"splitLineType",
@@ -124,10 +123,10 @@ const CalendarChartStyles = ({
 						className="sketchPicker"
 						width="16rem"
 						styles={{ padding: "0" }}
-						onChangeComplete={(color) => {
+						onChangeComplete={color => {
 							updateCalendarStyleOptions(propKey, "splitLineColor", color.hex);
 						}}
-						onChange={(color) =>
+						onChange={color =>
 							updateCalendarStyleOptions(propKey, "splitLineColor", color.hex)
 						}
 						disableAlpha
@@ -137,7 +136,7 @@ const CalendarChartStyles = ({
 		</div>
 	);
 };
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		chartProp: state.chartControls,
 		tabTileProps: state.tabTileProps,
@@ -145,7 +144,7 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
 		updateCalendarStyleOptions: (propKey, option, value) =>
 			dispatch(updateCalendarStyleOptions(propKey, option, value)),

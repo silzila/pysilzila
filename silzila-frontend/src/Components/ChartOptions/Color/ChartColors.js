@@ -1,6 +1,6 @@
 // This component list all color themes available for charts
 
-import { FormControl, InputLabel, MenuItem, Popover, Select } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Popover, Select, Switch } from "@mui/material";
 import React, { useState } from "react";
 import { SketchPicker } from "react-color";
 import { connect } from "react-redux";
@@ -8,8 +8,10 @@ import {
 	setAreaColorOptions,
 	setColorScheme,
 	switchAutotoManualinSteps,
+	updateBoxPlotStyleOptions,
 } from "../../../redux/ChartProperties/actionsChartControls";
 import SliderWithInput from "../SliderWithInput";
+import SwitchWithInput from "../SwitchWithInput";
 import { ColorSchemes } from "./ColorScheme";
 
 const ChartColors = ({
@@ -22,13 +24,14 @@ const ChartColors = ({
 	setColorScheme,
 	setAreaColorOptions,
 	switchAutotoManualinSteps,
+	updateBoxPlotStyleOptions,
 }) => {
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 
 	const [selectedMenu, setSelectedMenu] = useState(chartProp.properties[propKey].colorScheme);
 	const [isColorPopoverOpen, setColorPopOverOpen] = useState(false);
 
-	const resetSelection = (data_value) => {
+	const resetSelection = data_value => {
 		if (chartProperties.properties[propKey].chartType === "gauge") {
 			switchAutotoManualinSteps(propKey, true);
 		}
@@ -39,19 +42,18 @@ const ChartColors = ({
 	return (
 		<div className="optionsInfo">
 			<div className="optionDescription">COLOR SCHEME:</div>
-
 			<FormControl fullWidth size="small" style={{ fontSize: "12px", borderRadius: "4px" }}>
 				<Select
 					size="small"
 					value={selectedMenu}
 					variant="outlined"
-					onChange={(e) => {
+					onChange={e => {
 						//console.log(e.target.value);
 						resetSelection(e.target.value);
 					}}
 					sx={{ fontSize: "14px", margin: "0 1rem" }}
 				>
-					{ColorSchemes.map((item) => {
+					{ColorSchemes.map(item => {
 						return (
 							<MenuItem
 								value={item.name}
@@ -69,7 +71,7 @@ const ChartColors = ({
 								>
 									<span className="color-name">{item.name}</span>
 									<div className="color-palette">
-										{item.colors.map((color) => {
+										{item.colors.map(color => {
 											return (
 												<div
 													className="indi-color"
@@ -101,7 +103,7 @@ const ChartColors = ({
 							border: "2px solid darkgray",
 							margin: "auto",
 						}}
-						onClick={(e) => {
+						onClick={e => {
 							setColorPopOverOpen(!isColorPopoverOpen);
 						}}
 					></div>
@@ -110,17 +112,47 @@ const ChartColors = ({
 						pointNumbers={true}
 						sliderValue={chartProp.properties[propKey].areaOpacity}
 						sliderMinMax={{ min: 0, max: 1, step: 0.1 }}
-						changeValue={(value) => {
+						changeValue={value => {
 							setAreaColorOptions(propKey, "areaOpacity", value);
 						}}
 					/>
+				</React.Fragment>
+			) : null}
+			{chartProperties.properties[propKey].chartType === "boxPlot" ? (
+				<React.Fragment>
+					<div className="optionDescription" style={{ padding: "0 6% 5px 4%" }}>
+						<label
+							htmlFor="enableDisable"
+							className="enableDisableLabel"
+							style={{ marginRight: "10px" }}
+						>
+							Color By Category
+						</label>
+						<SwitchWithInput
+							isChecked={
+								chartProp.properties[propKey].boxPlotChartControls.colorBy ===
+								"series"
+									? false
+									: true
+							}
+							onSwitch={() => {
+								if (
+									chartProp.properties[propKey].boxPlotChartControls.colorBy ===
+									"series"
+								) {
+									updateBoxPlotStyleOptions(propKey, "colorBy", "data");
+								} else {
+									updateBoxPlotStyleOptions(propKey, "colorBy", "series");
+								}
+							}}
+						/>
+					</div>
 				</React.Fragment>
 			) : null}
 			<Popover
 				open={isColorPopoverOpen}
 				onClose={() => setColorPopOverOpen(false)}
 				onClick={() => setColorPopOverOpen(false)}
-				// anchorEl={anchorEl}
 				anchorReference="anchorPosition"
 				anchorPosition={{ top: 350, left: 1300 }}
 			>
@@ -130,10 +162,10 @@ const ChartColors = ({
 						className="sketchPicker"
 						width="16rem"
 						styles={{ padding: "0" }}
-						onChangeComplete={(color) => {
+						onChangeComplete={color => {
 							setAreaColorOptions(propKey, "areaBackgroundColor", color.hex);
 						}}
-						onChange={(color) =>
+						onChange={color =>
 							setAreaColorOptions(propKey, "areaBackgroundColor", color.hex)
 						}
 						disableAlpha
@@ -144,7 +176,7 @@ const ChartColors = ({
 	);
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		chartProp: state.chartControls,
 		tabTileProps: state.tabTileProps,
@@ -152,13 +184,15 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
 		setColorScheme: (propKey, color) => dispatch(setColorScheme(propKey, color)),
 		switchAutotoManualinSteps: (propKey, value) =>
 			dispatch(switchAutotoManualinSteps(propKey, value)),
 		setAreaColorOptions: (propKey, option, value) =>
 			dispatch(setAreaColorOptions(propKey, option, value)),
+		updateBoxPlotStyleOptions: (propKey, option, value) =>
+			dispatch(updateBoxPlotStyleOptions(propKey, option, value)),
 	};
 };
 

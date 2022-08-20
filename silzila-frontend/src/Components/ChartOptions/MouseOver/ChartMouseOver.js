@@ -7,6 +7,8 @@ import {
 	enableMouseOver,
 	geoMouseOverFormat,
 } from "../../../redux/ChartProperties/actionsChartControls";
+import { enableMouseOver } from "../../../redux/ChartProperties/actionsChartControls";
+import SwitchWithInput from "../SwitchWithInput";
 
 const ChartMouseOver = ({
 	// state
@@ -56,11 +58,10 @@ const ChartMouseOver = ({
 				>
 					Enable
 				</label>
-				<Switch
-					size="small"
-					id="enableDisable"
-					checked={chartControl.properties[propKey].mouseOver.enable}
-					onChange={(e) => {
+
+				<SwitchWithInput
+					isChecked={chartControl.properties[propKey].mouseOver.enable}
+					onSwitch={e => {
 						setMouseOver(propKey, !chartControl.properties[propKey].mouseOver.enable);
 					}}
 				/>
@@ -76,7 +77,7 @@ const ChartMouseOver = ({
 	);
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		chartControl: state.chartControls,
 		tabTileProps: state.tabTileProps,
@@ -84,7 +85,7 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
 		setMouseOver: (propKey, enable) => dispatch(enableMouseOver(propKey, enable)),
 		setMouseOverFormat: (propKey, value) => dispatch(geoMouseOverFormat(propKey, value)),

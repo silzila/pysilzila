@@ -137,6 +137,7 @@ const Aggregators = {
 	X: measurePrefixes,
 	Y: measurePrefixes,
 	Location: geoPrefixes,
+	Distribution: dimensionPrefixes,
 };
 
 export const AggregatorKeys = {
