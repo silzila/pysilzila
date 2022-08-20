@@ -161,7 +161,7 @@ export const AggregatorKeys = {
 
 	formal_en: "Full Name",
 	iso_a2: "ISO-2",
-	iso3: "ISO-3",
+	iso_a3: "ISO-3",
 	un_a3: "ISO-Num",
 	name_long: "Short Name",
 
