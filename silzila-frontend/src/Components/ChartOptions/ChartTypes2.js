@@ -25,6 +25,10 @@ import stackedAreaChartIcon from "../../assets/stacked_Area_Chart.svg";
 import calendarChartIcon from "../../assets/calendar_chart.svg";
 import "./ChartOptions.css";
 import { updateChartData } from "../../redux/ChartProperties/actionsChartControls";
+import boxPlotIcon from "../../assets/box_plot.svg";
+import TreeMapIcon from "../../assets/treemap.svg";
+import TextEditor from "../../assets/text_editor.svg";
+import Sankey from "../../assets/sankey.svg";
 
 export const chartTypes = [
 	{ name: "crossTab", icon: CrossTabIcon, value: " Cross Tab" },
@@ -45,6 +49,10 @@ export const chartTypes = [
 	{ name: "heatmap", icon: heatMapIcon, value: "Heat Map" },
 	{ name: "calendar", icon: calendarChartIcon, value: "Calendar Chart" },
 	{ name: "geoChart", icon: geoChartIcon, value: "Geo Chart" },
+	{ name: "treeMap", icon: TreeMapIcon, value: "Tree Map" },
+	{ name: "boxPlot", icon: boxPlotIcon, value: "Box Plot Chart" },
+	{ name: "texteditor", icon: TextEditor, value: "Text Editor" },
+	{ name: "sankey", icon: Sankey, value: "Sankey Chart" },
 ];
 
 const ChartTypes2 = ({
@@ -86,7 +94,11 @@ const ChartTypes2 = ({
 		"funnel",
 		"heatmap",
 		"calendar",
-		"geoChart",
+		"geoChart", 
+		"treemap", 
+		"boxPlot",
+		"texteditor",
+		"sankey"
 	];
 
 	const switchAxesForCharts = (oldChart, newChart) => {
