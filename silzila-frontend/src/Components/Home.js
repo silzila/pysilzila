@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
-import Treemap from "./Charts/Treemap";
+import TreeMap from "./Charts/TreeMap";
 import DataHome from "./DataConnection/DataHome";
 import EditDataSet from "./DataSet/EditDataSet";
 import NewDataSet from "./DataSet/NewDataSet";
@@ -31,7 +31,7 @@ const Home = (props) => {
 						<Route exact path="/newdataset" element={<NewDataSet />} />
 						<Route exact path="/editdataset" element={<EditDataSet />} />
 						<Route exact path="/dataviewer" element={<DataViewer />} />
-						<Route exact path="/treemap" element={<Treemap />} />
+						<Route exact path="/treemap" element={<TreeMap />} />
 					</Routes>
 				</Router>
 			) : (
