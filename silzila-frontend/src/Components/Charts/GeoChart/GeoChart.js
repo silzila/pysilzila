@@ -111,6 +111,8 @@ const GeoChart = ({
 
 	const [minMax, setMinMax] = useState({ min: 0, max: 1 });
 
+	// TODO: If there is only one location selected min and max both are set to same value
+	// Min should be less than max
 	useEffect(() => {
 		if (chartData) {
 			console.log("Setting min max");
