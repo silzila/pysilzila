@@ -263,9 +263,9 @@ const Card = ({
 									value={opt.name}
 								>
 									<div style={menuName}>{opt.name}</div>
-									<div style={menuExample}>
+									{/* <div style={menuExample}>
 										{`${opt.examples[0]}, ${opt.examples[1]}, ${opt.examples[2]}`}
-									</div>
+									</div> */}
 								</MenuItem>
 							);
 					  })
