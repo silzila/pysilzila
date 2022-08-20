@@ -10,7 +10,12 @@ import DropZone from "./DropZone";
 import FetchData from "../../ServerCall/FetchData";
 import { updateChartData } from "../../redux/ChartProperties/actionsChartControls";
 import LoadingPopover from "../CommonFunctions/PopOverComponents/LoadingPopover";
-import { canReUseData, toggleAxesEdited } from "../../redux/ChartProperties/actionsChartProperties";
+import {
+	canReUseData,
+	changeGeoLocation,
+	toggleAxesEdited,
+} from "../../redux/ChartProperties/actionsChartProperties";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 
 // format the chartAxes into the way it is needed for api call
@@ -149,6 +154,10 @@ const getChartLeftFilter = () => {
 				dim = "dims";
 				break;
 
+			case "Location":
+				dim = "dims";
+				break;
+
 			case "Measure":
 				dim = "measures";
 				break;
@@ -283,6 +292,7 @@ const ChartAxes = ({
 	updateChartData,
 	toggleAxesEdit,
 	reUseOldData,
+	changeLocation,
 }) => {
 	const [loading, setLoading] = useState(false);
 
@@ -368,8 +378,70 @@ const ChartAxes = ({
 		reUseOldData(propKey);
 	};
 
+	var menuItemStyle = {
+		fontSize: "12px",
+		padding: "2px 1rem",
+		// borderBottom: "1px solid lightgray",
+	};
+
 	return (
 		<div className="charAxesArea">
+			{chartProp.properties[propKey].chartType === "geoChart" && (
+				<div
+					style={{ backgroundColor: "#d3d3d3", display: "flex", flexDirection: "column" }}
+				>
+					<span className="axisTitle"></span>
+					<FormControl size="small" sx={{ margin: "0.5rem" }}>
+						<InputLabel sx={{ fontSize: "12px", lineHeight: "1.5rem" }}>
+							Select Map
+						</InputLabel>
+						<Select
+							sx={{ fontSize: "14px", height: "1.5rem", backgroundColor: "white" }}
+							label="Select Map"
+							value={chartProp.properties[propKey].geoLocation}
+							onChange={(e) => {
+								console.log(e.target.value);
+								changeLocation(propKey, e.target.value);
+							}}
+						>
+							<MenuItem sx={menuItemStyle} value="world">
+								World
+							</MenuItem>
+
+							<MenuItem sx={menuItemStyle} value="brazil">
+								Brazil
+							</MenuItem>
+							<MenuItem sx={menuItemStyle} value="china">
+								China
+							</MenuItem>
+							<MenuItem sx={menuItemStyle} value="france">
+								France
+							</MenuItem>
+							<MenuItem sx={menuItemStyle} value="germany">
+								Germany
+							</MenuItem>
+							<MenuItem sx={menuItemStyle} value="india">
+								India
+							</MenuItem>
+							<MenuItem sx={menuItemStyle} value="japan">
+								Japan
+							</MenuItem>
+							<MenuItem sx={menuItemStyle} value="nigeria">
+								Nigeria
+							</MenuItem>
+							<MenuItem sx={menuItemStyle} value="southAfrica">
+								South Africa
+							</MenuItem>
+							<MenuItem sx={menuItemStyle} value="uk">
+								United Kingdom
+							</MenuItem>
+							<MenuItem sx={menuItemStyle} value="usa">
+								USA
+							</MenuItem>
+						</Select>
+					</FormControl>
+				</div>
+			)}
 			{dropZones.map((zone, zoneI) => (
 				<DropZone bIndex={zoneI} name={zone} propKey={propKey} key={zoneI} />
 			))}
@@ -392,6 +464,7 @@ const mapDispatchToProps = (dispatch) => {
 		updateChartData: (propKey, chartData) => dispatch(updateChartData(propKey, chartData)),
 		toggleAxesEdit: (propKey) => dispatch(toggleAxesEdited(propKey, false)),
 		reUseOldData: (propKey) => dispatch(canReUseData(propKey, false)),
+		changeLocation: (propKey, location) => dispatch(changeGeoLocation(propKey, location)),
 	};
 };
 

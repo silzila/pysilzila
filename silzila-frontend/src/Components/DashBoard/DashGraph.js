@@ -16,7 +16,8 @@ import CrossTabChart from "../Charts/CrossTab/CrossTabChart";
 import HorizontalBar from "../Charts/HorizontalBar";
 import Horizontalstacked from "../Charts/Horizontalstacked";
 import RoseChart from "../Charts/RoseChart";
-import GeoChart from "../Charts/GeoChart";
+import GeoChart from "../Charts/GeoChart/GeoChart";
+import CalendarChart from "../Charts/CalendarChart";
 
 const DashGraph = ({
 	// props
@@ -160,6 +161,15 @@ const DashGraph = ({
 			case "geoChart":
 				return (
 					<GeoChart propKey={propKey} graphDimension={dimensions} chartArea="dashboard" />
+				);
+
+			case "calendar":
+				return (
+					<CalendarChart
+						propKey={propKey}
+						graphDimension={dimensions}
+						chartArea="dashboard"
+					/>
 				);
 		}
 	};

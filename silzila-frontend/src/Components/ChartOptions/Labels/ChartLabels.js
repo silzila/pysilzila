@@ -64,6 +64,57 @@ const ChartLabels = ({
 		});
 	};
 
+	const geoLabelRotationOptions = [
+		{ name: "Vertical", value: 90 },
+		{ name: "Horizontal", value: 0 },
+		{ name: "Vertical Flip", value: -90 },
+	];
+
+	const renderGeoLabelRotations = () => {
+		return geoLabelRotationOptions.map((item, i) => {
+			return (
+				<button
+					value={item.value}
+					onClick={() => updateLabelOption(propKey, "geoRotation", item.value)}
+					className={
+						item.value === labelOptions.geoRotation
+							? "radioButtonSelected"
+							: "radioButton"
+					}
+					key={i}
+				>
+					{item.name}
+				</button>
+			);
+		});
+	};
+
+	const geolabelFormatter = [
+		{ name: "Value", value: "value" },
+		{ name: "Location", value: "location" },
+		{ name: "Both", value: "both" },
+		{ name: "None", value: "none" },
+	];
+
+	const renderGeoLabelFormats = () => {
+		return geolabelFormatter.map((item, i) => {
+			return (
+				<button
+					value={item.value}
+					onClick={() => updateLabelOption(propKey, "geoFormatter", item.value)}
+					className={
+						item.value === labelOptions.geoFormatter
+							? "radioButtonSelected"
+							: "radioButton"
+					}
+					key={i}
+				>
+					{item.name}
+				</button>
+			);
+		});
+	};
+
 	return (
 		<div className="optionsInfo">
 			<div className="radioButtons">{renderLabels()}</div>
@@ -206,6 +257,14 @@ const ChartLabels = ({
 								</>
 							) : null}
 						</div>
+						{chartDetail[propKey].chartType === "geoChart" ? (
+							<>
+								<div className="optionDescription">LABEL ROTATION</div>
+								<div className="radioButtons">{renderGeoLabelRotations()}</div>
+								<div className="optionDescription">LABEL DETAIL</div>
+								<div className="radioButtons">{renderGeoLabelFormats()}</div>
+							</>
+						) : null}
 					</div>
 				</React.Fragment>
 			) : null}
