@@ -3,7 +3,7 @@ import { React, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import * as echarts from "echarts";
 import { updateTreeMapStyleOptions } from "../../redux/ChartProperties/actionsChartControls";
-const Treemap = ({
+const TreeMap = ({
 	// props
 	propKey,
 	graphDimension,
@@ -248,4 +248,4 @@ const mapDispatchToProps = dispatch => {
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Treemap);
+export default connect(mapStateToProps, mapDispatchToProps)(TreeMap);
