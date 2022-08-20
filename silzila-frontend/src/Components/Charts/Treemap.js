@@ -1,525 +1,251 @@
-import React, { useEffect } from "react";
+import ReactEcharts from "echarts-for-react";
+import { React, useEffect, useState } from "react";
+import { connect } from "react-redux";
+import * as echarts from "echarts";
+import { updateTreeMapStyleOptions } from "../../redux/ChartProperties/actionsChartControls";
+const Treemap = ({
+	// props
+	propKey,
+	graphDimension,
+	chartArea,
+	graphTileSize,
 
-const data = [
-	{ category: "Books", sub_category: "Biography", sales__sum: 80100.0 },
-	{ category: "Books", sub_category: "Fiction", sales__sum: 75600.0 },
-	{ category: "Books", sub_category: "For Kids", sales__sum: 75450.0 },
-	{ category: "Books", sub_category: "For Young Adults", sales__sum: 129700.0 },
-	{ category: "Books", sub_category: "Indian Fiction", sales__sum: 51250.0 },
-	{ category: "Books", sub_category: "Regional", sales__sum: 59300.0 },
-	{ category: "Books", sub_category: "Self Help", sales__sum: 56550.0 },
-	{ category: "Books", sub_category: "Thriller", sales__sum: 86500.0 },
-	{ category: "Electronics", sub_category: "Gaming Console", sales__sum: 2839500.0 },
-	{ category: "Electronics", sub_category: "Headphone", sales__sum: 190300.0 },
-	{ category: "Electronics", sub_category: "Laptop", sales__sum: 150000.0 },
-	{ category: "Electronics", sub_category: "Monitor", sales__sum: 354500.0 },
-	{ category: "Electronics", sub_category: "Mouse", sales__sum: 35500.0 },
-	{ category: "Electronics", sub_category: "Pen Drive", sales__sum: 63350.0 },
-	{ category: "Home Appliances", sub_category: "Mixer Grinder", sales__sum: 52000.0 },
-	{ category: "Home Appliances", sub_category: "Refrigerator", sales__sum: 286250.0 },
-	{ category: "Home Appliances", sub_category: "TV", sales__sum: 398950.0 },
-	{ category: "Home Appliances", sub_category: "Washing Machine", sales__sum: 126500.0 },
-	{ category: "Sports", sub_category: "Balls", sales__sum: 64660.0 },
-	{ category: "Sports", sub_category: "Bats & Racquets", sales__sum: 329700.0 },
-	{ category: "Sports", sub_category: "Cloths", sales__sum: 248900.0 },
-	{ category: "Sports", sub_category: "Cycles", sales__sum: 708500.0 },
-	{ category: "Sports", sub_category: "Outdoor", sales__sum: 671500.0 },
-	{ category: "Sports", sub_category: "Shoes", sales__sum: 637000.0 },
-	{ category: "Stationery", sub_category: "File & Folder", sales__sum: 8540.0 },
-	{ category: "Stationery", sub_category: "Label", sales__sum: 11010.0 },
-	{ category: "Stationery", sub_category: "Marker", sales__sum: 4377.5 },
-	{ category: "Stationery", sub_category: "Notebook", sales__sum: 31415.0 },
-	{ category: "Stationery", sub_category: "Pen", sales__sum: 60773.0 },
-	{ category: "Stationery", sub_category: "Pencil", sales__sum: 16505.5 },
-	{ category: "Stationery", sub_category: "Poster", sales__sum: 42525.0 },
-	{ category: "Stationery", sub_category: "Umbrella", sales__sum: 170200.0 },
-];
+	//state
+	chartControlState,
+	chartProperty,
 
-const data2 = [
-	{
-		category: "Books",
-		sub_category: "Biography",
-		product_name: "Che Guevara Biography",
-		sales__sum: 15200,
-	},
-	{
-		category: "Books",
-		sub_category: "Biography",
-		product_name: "Gandhi Biography",
-		sales__sum: 2700,
-	},
-	{
-		category: "Books",
-		sub_category: "Biography",
-		product_name: "Homi Baba Biography",
-		sales__sum: 9600,
-	},
-	{
-		category: "Books",
-		sub_category: "Biography",
-		product_name: "Indragandhi Biography",
-		sales__sum: 9000,
-	},
-	{
-		category: "Books",
-		sub_category: "Biography",
-		product_name: "Kamaraj Biography",
-		sales__sum: 6300,
-	},
-	{
-		category: "Books",
-		sub_category: "Biography",
-		product_name: "Nehru Biography",
-		sales__sum: 2500,
-	},
-	{
-		category: "Books",
-		sub_category: "Biography",
-		product_name: "Netaji Biography",
-		sales__sum: 7400,
-	},
-	{
-		category: "Books",
-		sub_category: "Biography",
-		product_name: "Ramanujam Biography",
-		sales__sum: 9000,
-	},
-	{
-		category: "Books",
-		sub_category: "Biography",
-		product_name: "Tata Biography",
-		sales__sum: 5200,
-	},
-	{
-		category: "Books",
-		sub_category: "Biography",
-		product_name: "VOC Biography",
-		sales__sum: 13200,
-	},
-	{
-		category: "Books",
-		sub_category: "Fiction",
-		product_name: "A Time to Kill",
-		sales__sum: 3600,
-	},
-	{
-		category: "Books",
-		sub_category: "Fiction",
-		product_name: "jurassic Park",
-		sales__sum: 6600,
-	},
-	{
-		category: "Books",
-		sub_category: "Fiction",
-		product_name: "Master of the Game",
-		sales__sum: 8750,
-	},
-	{
-		category: "Books",
-		sub_category: "Fiction",
-		product_name: "Memories of Midnight",
-		sales__sum: 7200,
-	},
-	{
-		category: "Books",
-		sub_category: "Fiction",
-		product_name: "Moonshine",
-		sales__sum: 7200,
-	},
-	{
-		category: "Books",
-		sub_category: "Fiction",
-		product_name: "Next",
-		sales__sum: 4750,
-	},
-	{
-		category: "Books",
-		sub_category: "Fiction",
-		product_name: "Nothing Lasts for Ever",
-		sales__sum: 5250,
-	},
-	{
-		category: "Books",
-		sub_category: "Fiction",
-		product_name: "Prey",
-		sales__sum: 6250,
-	},
-	{
-		category: "Books",
-		sub_category: "Fiction",
-		product_name: "Sycamore Row",
-		sales__sum: 10000,
-	},
-	{
-		category: "Books",
-		sub_category: "Fiction",
-		product_name: "Tell Me Your Dreams",
-		sales__sum: 3300,
-	},
-	{
-		category: "Books",
-		sub_category: "Fiction",
-		product_name: "The Firm",
-		sales__sum: 8800,
-	},
-	{
-		category: "Books",
-		sub_category: "Fiction",
-		product_name: "Wolfs Stratum",
-		sales__sum: 3900,
-	},
+	//dispatch
+	updateTreeMapStyleOptions,
+}) => {
+	var chartControl = chartControlState.properties[propKey];
 
-	{
-		category: "Books",
-		sub_category: "Thriller",
-		product_name: "Sherlock Holmes Vol 1",
-		sales__sum: 12400,
-	},
-	{
-		category: "Books",
-		sub_category: "Thriller",
-		product_name: "Sherlock Holmes Vol 2",
-		sales__sum: 6400,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Gaming Console",
-		product_name: "Play Station 4",
-		sales__sum: 405000,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Gaming Console",
-		product_name: "Play Station 5",
-		sales__sum: 540000,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Gaming Console",
-		product_name: "Xbox 360",
-		sales__sum: 819000,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Gaming Console",
-		product_name: "Xbox One",
-		sales__sum: 607500,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Gaming Console",
-		product_name: "Xbox X",
-		sales__sum: 468000,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Headphone",
-		product_name: "JBL Earphone",
-		sales__sum: 15600,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Headphone",
-		product_name: "JBL Earphone with Mic",
-		sales__sum: 6000,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Headphone",
-		product_name: "JBL Headphone",
-		sales__sum: 16000,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Headphone",
-		product_name: "JBL Headphone Extra Bass",
-		sales__sum: 28600,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Headphone",
-		product_name: "JBL Headphone Noiseless",
-		sales__sum: 12000,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Headphone",
-		product_name: "JBL Headphone with Mic",
-		sales__sum: 9100,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Headphone",
-		product_name: "LG Headphone Bluetooth",
-		sales__sum: 45000,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Headphone",
-		product_name: "LG Headphone Wired",
-		sales__sum: 42000,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Headphone",
-		product_name: "Samsung Earphone with Mic",
-		sales__sum: 6000,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Headphone",
-		product_name: "Samsung Headphone with Mic",
-		sales__sum: 10000,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Laptop",
-		product_name: "HP Gaming Laptop",
-		sales__sum: null,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Laptop",
-		product_name: "HP Pavilion Laptop 1TB 8 GB 14 Inch",
-		sales__sum: 36000,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Laptop",
-		product_name: "HP Pavilion Laptop 2TB 8 GB 15.8 Inch",
-		sales__sum: null,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Laptop",
-		product_name: "HP Pavilion Laptop 2TB 8 GB 15.8 Inch Windows",
-		sales__sum: null,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Laptop",
-		product_name: "Samsung 500 GB 8GB 14 Inch",
-		sales__sum: null,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Laptop",
-		product_name: "Samsung 500 GB 8GB 15.8 Inch",
-		sales__sum: 34000,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Laptop",
-		product_name: "Samsung Pavilion Laptop 1TB 8 GB 14 Inch",
-		sales__sum: 80000,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Monitor",
-		product_name: "HP Monitor 28 Inch",
-		sales__sum: null,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Monitor",
-		product_name: "HP Monitor 32Inch",
-		sales__sum: null,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Monitor",
-		product_name: "HP Monitor 36 Inch",
-		sales__sum: null,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Monitor",
-		product_name: "HP Monitor 40 Inch",
-		sales__sum: 32000,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Monitor",
-		product_name: "LG Monitor 28 Inch",
-		sales__sum: 6000,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Monitor",
-		product_name: "LG Monitor 32Inch Thin Frame",
-		sales__sum: null,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Monitor",
-		product_name: "LG Monitor 36 Inch Curve",
-		sales__sum: 16000,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Monitor",
-		product_name: "Philips Monitor 28 Inch",
-		sales__sum: 81000,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Monitor",
-		product_name: "Philips Monitor 32Inch",
-		sales__sum: null,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Monitor",
-		product_name: "Samsung Monitor 28 Inch",
-		sales__sum: 28500,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Monitor",
-		product_name: "Samsung Monitor 32Inch",
-		sales__sum: 24000,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Monitor",
-		product_name: "Samsung Monitor 36 Inch",
-		sales__sum: 28000,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Monitor",
-		product_name: "Samsung Monitor 42 Inch Curve",
-		sales__sum: 54000,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Monitor",
-		product_name: "Sony Monitor 28 Inch",
-		sales__sum: 20000,
-	},
-	{
-		category: "Electronics",
-		sub_category: "Monitor",
-		product_name: "Sony Monitor 32Inch",
-		sales__sum: 65000,
-	},
-];
+	let chartData = chartControl.chartData ? chartControl.chartData.result : "";
+	const [sourceData, setsourceData] = useState([]);
 
-var data3 = [
-	{
-		category: "c1",
-		sub_category: "c1s1",
-		sales__sum: 100,
-	},
-	{
-		category: "c1",
-		sub_category: "c1s2",
-		sales__sum: 100,
-	},
-	{
-		category: "c1",
-		sub_category: "c1s3",
-		sales__sum: 100,
-	},
-	{
-		category: "c2",
-		sub_category: "c2s1",
-		sales__sum: 100,
-	},
-	{
-		category: "c2",
-		sub_category: "c2s2",
-		sales__sum: 100,
-	},
-	{
-		category: "c2",
-		sub_category: "c2s3",
-		sales__sum: 100,
-	},
-	{
-		category: "c3",
-		sub_category: "c3s1",
-		sales__sum: 100,
-	},
-	{
-		category: "c3",
-		sub_category: "c3s2",
-		sales__sum: 100,
-	},
-	{
-		category: "c3",
-		sub_category: "c3s3",
-		sales__sum: 100,
-	},
-];
+	var dimensionsKeys = [];
+	var measure = "";
+	const formatUtil = echarts.format;
 
-const Treemap = () => {
-	var dimensions = ["category", "sub_category", "product_name"];
-	var measure = ["sales__sum"];
+	const getRecursiveData = ({ data, i, measure }) => {
+		if (i !== dimensionsKeys.length) {
+			if (i === dimensionsKeys.length - 1) {
+				//This will be the final level of parsing
+				var childrenArray = [];
 
-	const getUniqueValues = ({ key, data, iteration, finalArr }) => {
-		if (iteration === dimensions.length - 1) {
-			// exit condition
-			console.log("Entering Final iteration");
-			var finalArray = [];
-			var total = 0;
-			data.map((item) => {
-				var obj = { name: item[dimensions[iteration]], value: item[measure[0]] };
-				finalArray.push(obj);
-				total = total + item[measure[0]];
-			});
-			console.log(finalArray);
-			finalArr.children = finalArray;
-			finalArr.value = total;
-			return finalArr;
-		} else {
-			// get all unique values of dimension[0] eg. Category
-			console.log("Iteration : ", iteration, "\nKey : ", key);
-			var tempValues = [];
-			data.forEach((item) => tempValues.push(item[key]));
-			var uniqueValues = [...new Set(tempValues)];
-			console.log(uniqueValues);
-
-			let formattedValue = [];
-
-			uniqueValues.forEach((val) => {
-				console.log([dimensions[iteration]]);
-				console.log(key, iteration, val);
-				var dataSubset = data.filter((dt) => dt[dimensions[iteration]] === val);
-				console.log(dataSubset);
-				const itrObj = { name: dataSubset[0][dimensions[iteration]], value: "" };
-
-				var childArr = getUniqueValues({
-					key: dimensions[iteration + 1],
-					data: dataSubset,
-					iteration: iteration + 1,
-					finalArr: itrObj,
+				var finalTotal = 0;
+				data.map(item => {
+					var finalObj = { name: item[dimensionsKeys[i]], value: item[measure] };
+					finalTotal = finalTotal + item[measure];
+					childrenArray.push(finalObj);
 				});
-				console.log(childArr);
 
-				formattedValue.push(childArr);
-			});
-			console.log("=====================");
-			console.log(formattedValue);
+				return [childrenArray, finalTotal];
+			}
+
+			// On all other conditions
+			else {
+				var dimValues = data.map(dt => dt[dimensionsKeys[i]]); // All values of next dimension
+				var uniqueDimValues = [...new Set(dimValues)]; // Unique values of next dimension. These are the parent objects
+
+				var formattedData = [];
+				var total = 0;
+				uniqueDimValues.forEach(val => {
+					var parentObj = { name: val, value: 0, children: [] }; // Define parent structure (second,third,... dimension)
+					var filteredData = data.filter(dt => dt[dimensionsKeys[i]] === val); // Filter data only for this parent
+
+					var [children, finalTotal] = getRecursiveData({
+						data: filteredData,
+						i: i + 1,
+						measure,
+					});
+					parentObj.children = children;
+					parentObj.value = finalTotal;
+					total = total + finalTotal;
+					formattedData.push(parentObj);
+				});
+				return [formattedData, total];
+			}
+		} else {
+			console.log("its more than or equal to dimlenght", i, dimensionsKeys.length);
 		}
 	};
 
-	const buildRecursiveData = () => {
-		var dataFormatted = getUniqueValues({
-			key: dimensions[0],
-			data: data3,
-			iteration: 0,
-			finalArr: [],
-		});
+	useEffect(() => {
+		if (chartData) {
+			console.log("useEffect called");
+			var formattedData = []; // Final data structure to feed to the map
 
-		console.log(dataFormatted);
-	};
+			// columns in dimension
+			dimensionsKeys = chartProperty.properties[propKey].chartAxes[1].fields.map(el => {
+				if (el.dataType === "date" || el.dataType === "timeStamp") {
+					return `${el.fieldname}__${el.time_grain}`;
+				} else {
+					return el.fieldname;
+				}
+				// return el.fieldname;
+			});
+
+			// column in measure
+			chartProperty.properties[propKey].chartAxes[2].fields.map(el => {
+				measure = `${el.fieldname}__${el.agg}`;
+			});
+
+			var dimValues = chartData.map(dt => dt[dimensionsKeys[0]]); // All values of first dimension
+			var uniqueDimValues = [...new Set(dimValues)]; // Unique values of first dimension. These are the parent objects
+
+			if (dimensionsKeys.length === 1) {
+				console.log("only one Dimenstion");
+				var childrenArray = [];
+				chartData.map(item => {
+					var finalObj = { name: item[dimensionsKeys[0]], value: item[measure] };
+					childrenArray.push(finalObj);
+				});
+				setsourceData(childrenArray);
+				console.log(childrenArray);
+			} else {
+				// For each of the parent objects, find what are their children
+				uniqueDimValues.forEach(val => {
+					var parentObj = { name: val, value: 0, children: [] }; // Define parent structure
+					var filteredData = chartData.filter(dt => dt[dimensionsKeys[0]] === val); // Filter data only for this parent
+
+					var [children, total] = getRecursiveData({ data: filteredData, i: 1, measure });
+					parentObj.children = children;
+					parentObj.value = total;
+					formattedData.push(parentObj);
+				});
+				setsourceData(formattedData);
+				console.log(formattedData);
+			}
+		}
+	}, [chartData, chartControl]);
+
+	// console.log(sourceData);
 
 	useEffect(() => {
-		buildRecursiveData();
-	}, []);
+		// console.log(dimensionsKeys);
+		updateTreeMapStyleOptions(propKey, "leafDepth", dimensionsKeys.length);
+	}, [chartControlState.properties[propKey], chartData]);
 
-	return <div>Treemap</div>;
+	function getTooltipData(treePath, value, info) {
+		const dimsLength = chartProperty.properties[propKey].chartAxes[1].fields.map(el => {
+			return el.fieldname;
+		});
+
+		if (parseInt(dimsLength.length) === parseInt(treePath.length)) {
+			return [
+				'<div class="tooltip-title">' +
+					formatUtil.encodeHTML(treePath.join(">")) +
+					"</div>",
+				`${chartProperty.properties[propKey].chartAxes[2].fields[0].fieldname} ` +
+					formatUtil.addCommas(value),
+			].join("");
+		} else {
+			return `${info.data.name}`;
+		}
+	}
+
+	const getSourceData = () => {
+		console.log(sourceData);
+		return sourceData;
+	};
+
+	const RenderChart = () => {
+		return (
+			<ReactEcharts
+				opts={{ renderer: "svg" }}
+				theme={chartControl.colorScheme}
+				style={{
+					padding: "5px",
+					width: graphDimension.width,
+					height: graphDimension.height,
+					overflow: "hidden",
+					margin: "auto",
+					border: chartArea
+						? "none"
+						: graphTileSize
+						? "none"
+						: "1px solid rgb(238,238,238)",
+				}}
+				option={{
+					tooltip: {
+						show: chartControl.mouseOver.enable,
+						formatter: function (info) {
+							// console.log(info);
+							var value = info.value;
+							var treePathInfo = info.treePathInfo;
+							var treePath = [];
+							for (var i = 1; i < treePathInfo.length; i++) {
+								treePath.push(treePathInfo[i].name);
+							}
+
+							const tooltipData = getTooltipData(treePath, value, info);
+
+							return tooltipData;
+						},
+					},
+					series: [
+						{
+							type: "treemap",
+							left: chartControl.chartMargin.left + "%",
+							right: chartControl.chartMargin.right + "%",
+							top: chartControl.chartMargin.top + "%",
+							bottom: chartControl.chartMargin.bottom + "%",
+							// width: chartControl.treeMapChartControls.treeMapWidth + "%",
+							width:
+								100 -
+								(chartControl.chartMargin.left + chartControl.chartMargin.right) +
+								"%",
+							height:
+								100 -
+								(chartControl.chartMargin.top + chartControl.chartMargin.bottom) +
+								"%",
+							label: {
+								show: chartControl.labelOptions.showLabel,
+								fontSize: chartControl.labelOptions.fontSize,
+								color: chartControl.labelOptions.labelColorManual
+									? chartControl.labelOptions.labelColor
+									: null,
+								position: chartControl.treeMapChartControls.labelPosition,
+								rotate: chartControl.treeMapChartControls.labelRotate,
+								align: chartControl.treeMapChartControls.horizondalAlign,
+								verticalAlign: chartControl.treeMapChartControls.verticalAlign,
+								overflow: chartControl.treeMapChartControls.overFlow,
+							},
+							itemStyle: {
+								borderWidth: chartControl.treeMapChartControls.borderWidth,
+								gapWidth: chartControl.treeMapChartControls.gapWidth,
+								borderColorSaturation: 1,
+							},
+							breadcrumb: {
+								show: chartControl.treeMapChartControls.showBreadCrumb,
+								height: chartControl.treeMapChartControls.bcHeight,
+								emptyItemWidth: chartControl.treeMapChartControls.bcWidth,
+								itemStyle: {
+									color: chartControl.treeMapChartControls.bcColor,
+								},
+							},
+							leafDepth: chartControl.treeMapChartControls.leafDepth,
+							data: getSourceData(),
+						},
+					],
+				}}
+			/>
+		);
+	};
+
+	return <>{chartData ? <RenderChart /> : ""}</>;
+};
+const mapStateToProps = state => {
+	return {
+		chartControlState: state.chartControls,
+		chartProperty: state.chartProperties,
+	};
+};
+const mapDispatchToProps = dispatch => {
+	return {
+		updateTreeMapStyleOptions: (propKey, option, value) =>
+			dispatch(updateTreeMapStyleOptions(propKey, option, value)),
+	};
 };
 
-export default Treemap;
+export default connect(mapStateToProps, mapDispatchToProps)(Treemap);
