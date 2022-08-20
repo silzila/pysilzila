@@ -354,7 +354,7 @@ function FormDialog({
 								if (account.friendly_name.length === 0) {
 									setAccount({
 										...account,
-										friendly_nameError: "Friendly Name should not be Empty",
+										friendly_nameError: "Connection Name should not be Empty",
 									});
 									btnEnabelDisable();
 								}

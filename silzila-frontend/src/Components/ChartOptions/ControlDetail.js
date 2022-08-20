@@ -16,11 +16,19 @@ import ChartStyle from "./Style/ChartStyle";
 import ColorSteps from "./Color/ColorSteps";
 import CalendarLabels from "./Labels/CalendarLabels";
 import CalendarChartStyles from "./Style/CalendarChartStyles";
+import BoxPlotChartStyles from "./Style/BoxPlotChartStyles";
+import TreeMapStyles from "./Style/TreeMapStyles";
+import TreeMapLegend from "./Legend/TreeMapLegend";
+import TreeMapLabelOptions from "./Labels/TreeMapLabelOptions";
+import SankeyStyles from "./Style/SankeyStyles";
+import SankeyColorControls from "./Color/SankeyColorControls";
 
 const ControlDetail = ({ chartProp, tabTileProps }) => {
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 
 	var chartType = chartProp.properties[propKey].chartType;
+
+	console.log(chartType);
 
 	const RenderControlDetail = () => {
 		switch (chartProp.properties[propKey].chartOptionSelected) {
@@ -36,12 +44,18 @@ const ControlDetail = ({ chartProp, tabTileProps }) => {
 							<ColorSteps />
 						</>
 					);
+				} else if (chartType === "sankey") {
+					return <SankeyColorControls />;
 				} else {
 					return <ChartColors />;
 				}
 
 			case "Legend":
-				return <ChartLegend />;
+				if (chartType === "treeMap") {
+					return <TreeMapLegend />;
+				} else {
+					return <ChartLegend />;
+				}
 
 			case "Margin":
 				return <ChartMargin />;
@@ -65,6 +79,12 @@ const ControlDetail = ({ chartProp, tabTileProps }) => {
 			case "Style":
 				if (chartType === "calendar") {
 					return <CalendarChartStyles />;
+				} else if (chartType === "boxPlot") {
+					return <BoxPlotChartStyles />;
+				} else if (chartType === "treeMap") {
+					return <TreeMapStyles />;
+				} else if (chartType === "sankey") {
+					return <SankeyStyles />;
 				} else {
 					return <ChartStyle />;
 				}
@@ -83,7 +103,7 @@ const ControlDetail = ({ chartProp, tabTileProps }) => {
 	};
 	return <RenderControlDetail />;
 };
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		chartProp: state.chartProperties,
 		tabTileProps: state.tabTileProps,

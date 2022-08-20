@@ -62,7 +62,7 @@ const ColorSteps = ({
 
 	useEffect(() => {
 		var col = [];
-		ColorSchemes.map((el) => {
+		ColorSchemes.map(el => {
 			if (el.name === chartProp.properties[propKey].colorScheme) {
 				setColorsOfScheme(el.colors);
 				col.push(...el.colors);
@@ -91,7 +91,7 @@ const ColorSteps = ({
 		var newTempData = [];
 		var total = "";
 		if (chartData) {
-			Object.keys(chartData[0]).map((key) => {
+			Object.keys(chartData[0]).map(key => {
 				newTempData.push({
 					name: key,
 					value: chartData[0][key],
@@ -103,7 +103,7 @@ const ColorSteps = ({
 					JSON.stringify(
 						chartProp.properties[propKey].axisOptions.gaugeChartControls.stepcolor
 					)
-				).map((el) => {
+				).map(el => {
 					el.value = Math.ceil((el.stepValue * total) / 100);
 					return el;
 				});
@@ -114,7 +114,7 @@ const ColorSteps = ({
 	}, [chartData]);
 
 	// function to remove existing steps
-	const removeStep = (index) => {
+	const removeStep = index => {
 		switchAutotoManualinSteps(propKey, false);
 
 		updateGaugeAxisOptions(propKey, "isMaxAuto", false);
@@ -175,9 +175,9 @@ const ColorSteps = ({
 		updateGaugeAxisOptions(propKey, "max", maxTotalAndUpdatedArray.maxTotal);
 	};
 
-	const getTotal = (stepsArray) => {
+	const getTotal = stepsArray => {
 		let total = 0;
-		stepsArray.map((el) => {
+		stepsArray.map(el => {
 			total = parseInt(total) + parseInt(el.value);
 		});
 		return total;
@@ -215,7 +215,7 @@ const ColorSteps = ({
 
 		return { maxTotal, arrayWithUpdatedValueOfNewStep };
 	};
-	const getbgcolor = (index) => {
+	const getbgcolor = index => {
 		var idx = index;
 		// console.log(colorsOfScheme.length, idx);
 		// console.log(idx % colorsOfScheme.length);
@@ -250,7 +250,7 @@ const ColorSteps = ({
 						return (
 							<SelectListItem
 								key={index}
-								render={(xprops) => (
+								render={xprops => (
 									<div
 										onMouseOver={() => xprops.setOpen(true)}
 										onMouseLeave={() => xprops.setOpen(false)}
@@ -259,7 +259,7 @@ const ColorSteps = ({
 											<TextField
 												type="number"
 												style={{ flex: 1, marginRight: "5px" }}
-												onChange={(e) => {
+												onChange={e => {
 													changeStepValue(e.target.value, index);
 												}}
 												value={el.value}
@@ -273,7 +273,7 @@ const ColorSteps = ({
 														? getbgcolor(index)
 														: el.color,
 												}}
-												onClick={(el) => {
+												onClick={el => {
 													setSelectedStepIndex(index);
 													setColorPopoverOpen(true);
 												}}
@@ -287,7 +287,7 @@ const ColorSteps = ({
 																	cursor: "pointer",
 																	justifyContent: "center",
 																}}
-																onClick={(e) => {
+																onClick={e => {
 																	var idx = index + 1;
 																	var colorValue =
 																		getbgcolor(idx);
@@ -405,7 +405,7 @@ const ColorSteps = ({
 						className="sketchPicker"
 						width="16rem"
 						styles={{ padding: "0" }}
-						onChangeComplete={(color) => {
+						onChangeComplete={color => {
 							switchAutotoManualinSteps(propKey, false);
 
 							const stepsWithUserSelectedColor = chartProp.properties[
@@ -420,7 +420,7 @@ const ColorSteps = ({
 							});
 							changingValuesofSteps(propKey, stepsWithUserSelectedColor);
 						}}
-						onChange={(color) => {
+						onChange={color => {
 							switchAutotoManualinSteps(propKey, false);
 
 							const stepsWithUserSelectedColor = chartProp.properties[
@@ -443,14 +443,14 @@ const ColorSteps = ({
 	);
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		chartProp: state.chartControls,
 		tabTileProps: state.tabTileProps,
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
 		changingValuesofSteps: (propKey, value) => dispatch(changingValuesofSteps(propKey, value)),
 		switchAutotoManualinSteps: (propKey, value) =>

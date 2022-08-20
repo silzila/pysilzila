@@ -1,8 +1,10 @@
 // This is a slider component, with option to input values.
 // Used in many chart control options
 
+import { Slider } from "@mui/material";
 import React, { useState } from "react";
 import "./SliderWithInput.css";
+import { debounce } from "lodash";
 
 const SliderWithInput = ({
 	sliderValue,
@@ -13,12 +15,13 @@ const SliderWithInput = ({
 	pointNumbers,
 }) => {
 	// console.log( sliderMinMax);
+
 	const [showInputText, setShowInputText] = useState(false);
 	return (
 		<div className="sliderWithInput">
 			{showInputText ? (
 				<form
-					onSubmit={(evt) => {
+					onSubmit={evt => {
 						evt.currentTarget.querySelector("input").blur();
 						evt.preventDefault();
 					}}
@@ -26,10 +29,10 @@ const SliderWithInput = ({
 					<input
 						autoFocus
 						className="inputValue"
-						type="text"
+						type="number"
 						value={sliderValue}
 						onBlur={() => setShowInputText(false)}
-						onChange={(e) => {
+						onChange={e => {
 							changeValue(Number(e.target.value));
 						}}
 					/>
@@ -37,7 +40,7 @@ const SliderWithInput = ({
 			) : (
 				<span
 					className="textValue"
-					onClick={(e) => {
+					onClick={e => {
 						// console.log(e.target);
 						setShowInputText(true);
 					}}
@@ -54,8 +57,32 @@ const SliderWithInput = ({
 					)}
 				</span>
 			)}
-			<input
-				className="inputRange"
+			<Slider
+				sx={{
+					flex: 3,
+					height: "5px",
+					alignSelf: "center",
+					margin: "0px 4px 0px 2px",
+					color: "rgb(157, 156, 156)",
+					"& .MuiSlider-thumb": {
+						boxShadow: "0 1px 2px 1px rgba(0,0,0,0.1)",
+
+						height: "13px",
+						width: "13px",
+					},
+				}}
+				min={sliderMinMax.min}
+				max={sliderMinMax.max}
+				step={sliderMinMax.step}
+				value={sliderValue}
+				onChange={e => {
+					changeValue(Number(e.target.value));
+				}}
+				title={sliderValue}
+			/>
+			{/* <input
+				// className="inputRange"
+				// style={{ backgroundColor: "red", color: "red", fill: "red", background: "red" }}
 				type="range"
 				min={sliderMinMax.min}
 				max={sliderMinMax.max}
@@ -65,7 +92,7 @@ const SliderWithInput = ({
 					changeValue(Number(e.target.value));
 				}}
 				title={sliderValue}
-			/>
+			/> */}
 		</div>
 	);
 };

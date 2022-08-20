@@ -39,7 +39,7 @@ export const removeChartControls = (tabId, tileId, propKey, tileIndex) => {
 	return { type: "DELETE_CONTROLS", payload: { tabId, tileId, propKey, tileIndex } };
 };
 
-export const removeMultipleChartControls = (tabId) => {
+export const removeMultipleChartControls = tabId => {
 	return { type: "DELETE_CONTROLS_OF_TAB", payload: tabId };
 };
 
@@ -169,7 +169,7 @@ export const updateAxisMinMaxforScatter = (propKey, axisKey, axisValue) => {
 	return { type: "AXIS_MIN_MAX_FOR_SCATTER", payload: { propKey, axisKey, axisValue } };
 };
 
-export const loadChartControls = (chartControls) => {
+export const loadChartControls = chartControls => {
 	return { type: "LOAD_CHART_CONTROLS", payload: chartControls };
 };
 
@@ -200,4 +200,16 @@ export const updateGaugeAxisOptions = (propKey, option, value) => {
 
 export const updateCalendarStyleOptions = (propKey, option, value) => {
 	return { type: "UPDATE_CALENDER_STYLE_OPTIONS", payload: { propKey, option, value } };
+};
+
+export const updateBoxPlotStyleOptions = (propKey, option, value) => {
+	return { type: "UPDATE_BOXPLOT_STYLE_OPTIONS", payload: { propKey, option, value } };
+};
+
+export const updateTreeMapStyleOptions = (propKey, option, value) => {
+	return { type: "UPDATE_TREEMAP_STYLE_OPTIONS", payload: { propKey, option, value } };
+};
+
+export const updateSankeyStyleOptions = (propKey, option, value) => {
+	return { type: "UPDATE_SANKEY_STYLE_OPTIONS", payload: { propKey, option, value } };
 };

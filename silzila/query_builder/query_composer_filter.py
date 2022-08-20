@@ -1,8 +1,8 @@
 from ..data_set import schema
 from ..data_connection import engine
-from .sql_dialect.filter_postgres import get_filter_values_pg
-from .sql_dialect.filter_mysql import get_filter_values_mysql
-from .sql_dialect.filter_mssql import get_filter_values_mssql
+from .sql_dialect.filter_options_postgres import get_filter_values_pg
+from .sql_dialect.filter_options_mysql import get_filter_values_mysql
+from .sql_dialect.filter_options_mssql import get_filter_values_mssql
 
 from fastapi import HTTPException
 
@@ -16,7 +16,7 @@ async def compose_query(req: schema.ColumnFilter, dc_uid: str, ds_uid: str, vend
     data_schema = await engine.get_data_schema(dc_uid, ds_uid)
     QUERY = ""
     FROM_TBL = ""
-    if req['filter_type'] in ['binary_user_selection', 'text_user_selection', 'number_user_selection',  'number_search', 'date_user_selection', 'date_search']:
+    if req['filter_type'] in ['binary_user_selection', 'text_user_selection', 'number_user_selection',  'number_search', 'date_user_selection', 'date_search', 'column_latest_date']:
         table = list(filter(
             lambda obj: obj["id"] == req['table_id'], data_schema["tables"]))[0]
         FROM_TBL = f"{table['schema_name']}.{table['table_name']} AS {table['id']}"
