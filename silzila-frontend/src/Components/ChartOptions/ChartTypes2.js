@@ -95,7 +95,7 @@ const ChartTypes2 = ({
 		"heatmap",
 		"calendar",
 		"geoChart", 
-		"treemap", 
+		"treeMap", 
 		"boxPlot",
 		"texteditor",
 		"sankey"
