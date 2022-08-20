@@ -1,0 +1,5 @@
+svg .country:hover {
+	stroke: white;
+	fill: gray;
+	stroke-width: 3px;
+}

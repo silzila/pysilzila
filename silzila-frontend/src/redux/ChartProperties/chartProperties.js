@@ -11,6 +11,7 @@ const chartProperties = {
 			tileId: 1,
 
 			chartType: "crossTab",
+			geoLocation: "world",
 
 			// Left Column
 			axesEdited: false,
@@ -97,7 +98,9 @@ const chartPropertiesState = (state = chartProperties, action) => {
 						// General Tab Info
 						tabId: action.payload.tabId,
 						tileId: action.payload.tileId,
+
 						chartType: "crossTab",
+						geoLocation: "world",
 
 						// Left Column
 						axesEdited: false,
@@ -158,7 +161,9 @@ const chartPropertiesState = (state = chartProperties, action) => {
 						// General Tab Info
 						tabId: action.payload.tabId,
 						tileId: action.payload.tileId,
+
 						chartType: "crossTab",
+						geoLocation: "world",
 
 						// Left Column
 						axesEdited: false,
@@ -427,6 +432,13 @@ const chartPropertiesState = (state = chartProperties, action) => {
 			return update(state, {
 				properties: {
 					[action.payload.propKey]: { chartType: { $set: action.payload.chartType } },
+				},
+			});
+
+		case "CHANGE_GEO_LOCATION":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: { geoLocation: { $set: action.payload.geoLocation } },
 				},
 			});
 
