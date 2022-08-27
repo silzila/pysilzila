@@ -29,7 +29,7 @@ export const removeChartProperties = (tabId, tileId, propKey, tileIndex) => {
 	return { type: "DELETE_PROP", payload: { tabId, tileId, propKey, tileIndex } };
 };
 
-export const removeMultipleChartProperties = (tabId) => {
+export const removeMultipleChartProperties = tabId => {
 	return { type: "DELETE_PROPS_OF_TAB", payload: tabId };
 };
 
@@ -48,17 +48,22 @@ export const updateDropZoneExpandCollapsePropLeft = (propKey, bIndex, isCollapse
 };
 
 export const updateFilterAnyContidionMatchPropLeft = (propKey, bIndex, any_condition_match) => {
-	return { type: "UPDATE_FILTER_ANY_CONDITION_MATCH", payload: { propKey, bIndex, any_condition_match } };
+	return {
+		type: "UPDATE_FILTER_ANY_CONDITION_MATCH",
+		payload: { propKey, bIndex, any_condition_match },
+	};
 };
 
 export const updateIsAutoFilterEnabledPropLeft = (propKey, bIndex, is_auto_filter_enabled) => {
-	return { type: "UPDATE_IS_AUTO_FILTER_ENABLED", payload: { propKey, bIndex, is_auto_filter_enabled } };
+	return {
+		type: "UPDATE_IS_AUTO_FILTER_ENABLED",
+		payload: { propKey, bIndex, is_auto_filter_enabled },
+	};
 };
 
 export const clearDropZoneFieldsChartPropLeft = (propKey, bIndex) => {
 	return { type: "CLEAR_DROPZONE_FIELDS", payload: { propKey, bIndex } };
 };
-
 
 export const updateChartPropLeft = (propKey, bIndex, item, allowedNumbers) => {
 	return { type: "UPDATE_PROP", payload: { propKey, bIndex, item, allowedNumbers } };
@@ -95,7 +100,7 @@ export const toggleFilterRunState = (propKey, filterRunState) => {
 };
 
 export const editChartPropItem = ({ action, details }) => {
-	return (dispatch) => {
+	return dispatch => {
 		dispatch(toggleAxesEdited(details.propKey, true));
 		switch (action) {
 			case "update":
@@ -157,7 +162,7 @@ export const changeChartAxes = (propKey, newAxes) => {
 };
 
 export const changeChartTypeAndAxes = ({ propKey, chartType, newAxes }) => {
-	return (dispatch) => {
+	return dispatch => {
 		dispatch(toggleAxesEdited(propKey, true));
 		dispatch(changeChartAxes(propKey, newAxes));
 		dispatch(changeChartType(propKey, chartType));
@@ -217,7 +222,7 @@ export const changeChartOptionSelected = (propKey, chartOption) => {
 	};
 };
 
-export const loadChartProperties = (chartProperties) => {
+export const loadChartProperties = chartProperties => {
 	return { type: "LOAD_CHART_PROPERTIES", payload: chartProperties };
 };
 
@@ -229,6 +234,10 @@ export const resetChartProperties = () => {
 };
 
 export const updateLeftFilterItem = (propKey, bIndex, item) => {
-    console.log("UPDATE_LEFT_FILTER_ITEM");
-    return { type: "UPDATE_LEFT_FILTER_ITEM", payload: { propKey, bIndex, item } };
+	console.log("UPDATE_LEFT_FILTER_ITEM");
+	return { type: "UPDATE_LEFT_FILTER_ITEM", payload: { propKey, bIndex, item } };
+};
+export const updtateFilterExpandeCollapse = (propKey, bIndex, item) => {
+	console.log("UPDATE_FILTER_EXPAND_COLLAPSE");
+	return { type: "UPDATE_FILTER_EXPAND_COLLAPSE", payload: { propKey, bIndex, item } };
 };

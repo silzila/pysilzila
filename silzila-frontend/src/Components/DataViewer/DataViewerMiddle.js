@@ -32,7 +32,7 @@ const DataViewerMiddle = ({
 		{ name: "Chart controls", icon: settingsIcon },
 	];
 
-	const renderMenu = rmenu.map((rm) => {
+	const renderMenu = rmenu.map(rm => {
 		return (
 			<img
 				key={rm.name}
@@ -86,7 +86,7 @@ const DataViewerMiddle = ({
 	};
 
 	return (
-		<div className="dataViewerMiddle">
+		<div className="dataViewerMiddle" style={{ height: "300px" }}>
 			<ChartAxes tabId={tabId} tileId={tileId} />
 
 			<GraphArea />
@@ -99,16 +99,16 @@ const DataViewerMiddle = ({
 	);
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		chartProp: state.chartProperties,
 		tabTileProps: state.tabTileProps,
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
-		setMenu: (menu) => dispatch(setSelectedControlMenu(menu)),
+		setMenu: menu => dispatch(setSelectedControlMenu(menu)),
 	};
 };
 

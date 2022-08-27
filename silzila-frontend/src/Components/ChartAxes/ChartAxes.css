@@ -3,6 +3,7 @@
 	display: flex;
 	flex-direction: column;
 	overflow-y: auto;
+	
 }
 .chartAxis {
 	flex: 1;
@@ -18,10 +19,14 @@
 
 .chartAxisBody{
 	flex: 1;
-	overflow-y: auto;
+	/* overflow-y: auto; */
 	display: flex;
 	flex-direction: column;
-	max-height: 10rem;
+	height:auto;
+	min-height: 6em;
+	/* max-height: 100rem; */
+	/* min-height: 100em; */
+
 }
 
 .axisTitle {

@@ -1,5 +1,6 @@
 .axisField {
 	width: 90%;
+	/* width:95%; */
 	margin: 4px 5%;
 	align-content: center;
 	font-size: 12px;
@@ -27,7 +28,8 @@
 .columnClose {
 	color: #999999;
 	background-color: #f4f4f4;
-	border-radius: 4px 0 0 4px;
+	border-radius: 3px 0 0 3px;
+	/* border-radius: 4px 0 0 4px; */
 	cursor: pointer;
 	display: flex;
 	justify-content: center;
@@ -43,6 +45,7 @@
 	color: #999999;
 	background-color: #f4f4f4;
 	border-radius: 0 4px 4px 0;
+
 	cursor: pointer;
 	display: flex;
 	justify-content: center;
@@ -59,7 +62,9 @@
 	font-size: 13px;
 	padding: 5px 2px;
 	margin: 0;
-	margin-right: 5px;
+	
+	/* margin-right: 5px; */
+	/* margin-left: 2px; */
 	border: none;
 	font-weight: 600;
 
