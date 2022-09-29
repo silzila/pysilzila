@@ -72,6 +72,7 @@ const DataViewerBottom = ({
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 	var selectedChartProp = chartProps.properties[propKey];
 	var tables = tabTileProps?.tablesForSelectedDataSets?.[selectedChartProp?.selectedDs?.ds_uid];
+	// console.log(chartProps.properties[propKey].chartType);
 
 	const [open, setOpen] = useState(false);
 	const [selectedDataset, setSelectedDataset] = useState("");
@@ -84,7 +85,7 @@ const DataViewerBottom = ({
 	// set it in SelectedDataSet of tabTileProps
 	useEffect(async () => {
 		if (selectedDataset !== "") {
-			var isAlready = tabTileProps.selectedDataSetList.filter((ds) => ds === selectedDataset);
+			var isAlready = tabTileProps.selectedDataSetList.filter(ds => ds === selectedDataset);
 			if (isAlready.length > 0) {
 				window.alert("Dataset already in selected list");
 			} else {
@@ -109,7 +110,7 @@ const DataViewerBottom = ({
 		}
 	}, [selectedChartProp.selectedDs]);
 
-	const getTables = async (uid) => {
+	const getTables = async uid => {
 		var result = await FetchData({
 			requestType: "noData",
 			method: "GET",
@@ -167,7 +168,7 @@ const DataViewerBottom = ({
 	// List of tables for a dataset, displayed
 	const TableListForDs = () => {
 		if (tables !== undefined) {
-			return tables.map((table) => {
+			return tables.map(table => {
 				return (
 					<div
 						className={
@@ -193,13 +194,13 @@ const DataViewerBottom = ({
 	// when the dataset itself is changed,
 	// if there are no added fields in dropzone, allow the change.
 	// else, open a new tile with the selected dataset
-	const handleDataSetChange = (value) => {
+	const handleDataSetChange = value => {
 		const axes = chartProps.properties[propKey].chartAxes;
 		setAddNewOrChooseExistingDS(value);
 		if (value === "addNewDataset") {
 			//console.log(axes);
 			var count = 0;
-			axes.map((ax) => {
+			axes.map(ax => {
 				if (ax.fields.length > 0) {
 					count = count + 1;
 				}
@@ -211,7 +212,7 @@ const DataViewerBottom = ({
 			}
 		} else {
 			var count = 0;
-			axes.map((ax) => {
+			axes.map(ax => {
 				if (ax.fields.length > 0) {
 					count = count + 1;
 				}
@@ -220,7 +221,7 @@ const DataViewerBottom = ({
 			if (count > 0) {
 				setOpenChangeDatasetDlg(true);
 			} else {
-				var dsObj = tabTileProps.selectedDataSetList.filter((ds) => ds.ds_uid === value)[0];
+				var dsObj = tabTileProps.selectedDataSetList.filter(ds => ds.ds_uid === value)[0];
 				setSelectedDs(propKey, dsObj);
 				//console.log(dsObj);
 			}
@@ -229,6 +230,7 @@ const DataViewerBottom = ({
 
 	const onChangeOrAddDataset = () => {
 		let tabObj = tabState.tabs[tabTileProps.selectedTabId];
+		console.log(tabTileProps.selectedTable);
 
 		addTile(
 			tabObj.tabId,
@@ -243,107 +245,121 @@ const DataViewerBottom = ({
 			setOpen(true);
 		} else {
 			var dsObj = tabTileProps.selectedDataSetList.filter(
-				(ds) => ds.ds_uid === addNewOrChooseExistingDS
+				ds => ds.ds_uid === addNewOrChooseExistingDS
 			)[0];
 			setSelectedDs(`${tabObj.tabId}.${tabObj.nextTileId}`, dsObj);
 		}
 	};
 	return (
-		<div className="dataViewerBottom">
-			<div className="dataSetAndTableList">
-				<div className="dataSetSelect">
-					<FormControl
-						fullWidth
-						size="small"
-						style={{ background: "white", fontSize: "12px", borderRadius: "4px" }}
-					>
-						<InputLabel
-							id="selectDataSet"
-							sx={{ fontSize: "12px", lineHeight: "1.5rem" }}
-							shrink={true}
-						>
-							DataSet
-						</InputLabel>
-						<Select
-							label="DataSet"
-							labelId="selectDataSet"
-							value={selectedChartProp.selectedDs?.ds_uid}
-							variant="outlined"
-							onChange={(e) => {
-								handleDataSetChange(e.target.value);
-							}}
-							sx={{ height: "1.5rem", fontSize: "14px" }}
-							notched={true}
-						>
-							<MenuItem
-								sx={{
+		<React.Fragment>
+			{chartProps.properties[propKey].chartType === "richText" ? null : (
+				<div className="dataViewerBottom">
+					<div className="dataSetAndTableList">
+						<div className="dataSetSelect">
+							<FormControl
+								fullWidth
+								size="small"
+								style={{
+									background: "white",
 									fontSize: "12px",
-									padding: "2px 1rem",
-									borderBottom: "1px solid lightgray",
+									borderRadius: "4px",
 								}}
-								value="addNewDataset"
 							>
-								Add Dataset
-							</MenuItem>
-							{/* <Divider sx={{ margin: "1px" }} /> */}
-							{tabTileProps.selectedDataSetList.map((ds) => {
-								return (
-									<MenuItem sx={selectInput} value={ds.ds_uid} key={ds.ds_uid}>
-										{ds.friendly_name}
+								<InputLabel
+									id="selectDataSet"
+									sx={{ fontSize: "12px", lineHeight: "1.5rem" }}
+									shrink={true}
+								>
+									DataSet
+								</InputLabel>
+								<Select
+									label="DataSet"
+									labelId="selectDataSet"
+									value={selectedChartProp.selectedDs?.ds_uid}
+									variant="outlined"
+									onChange={e => {
+										handleDataSetChange(e.target.value);
+									}}
+									sx={{ height: "1.5rem", fontSize: "14px" }}
+									notched={true}
+								>
+									<MenuItem
+										sx={{
+											fontSize: "12px",
+											padding: "2px 1rem",
+											borderBottom: "1px solid lightgray",
+										}}
+										value="addNewDataset"
+									>
+										Add Dataset
 									</MenuItem>
-								);
-							})}
-						</Select>
-					</FormControl>
-				</div>
 
-				<div className="tileTableList">
-					<div style={{ flex: 1, overflow: "auto", padding: "0 0.5rem" }}>
-						<TableListForDs />
+									{tabTileProps.selectedDataSetList.map(ds => {
+										return (
+											<MenuItem
+												sx={selectInput}
+												value={ds.ds_uid}
+												key={ds.ds_uid}
+											>
+												{ds.friendly_name}
+											</MenuItem>
+										);
+									})}
+								</Select>
+							</FormControl>
+						</div>
+
+						<div className="tileTableList">
+							<div style={{ flex: 1, overflow: "auto", padding: "0 0.5rem" }}>
+								<TableListForDs />
+							</div>
+						</div>
+						<DatasetListPopover
+							showCard={open}
+							setShowCard={setOpen}
+							popOverTitle="Select Dataset"
+							setSelectedDataset={setSelectedDataset}
+						/>
 					</div>
-				</div>
-				<DatasetListPopover
-					showCard={open}
-					setShowCard={setOpen}
-					popOverTitle="Select Dataset"
-					setSelectedDataset={setSelectedDataset}
-				/>
-			</div>
-			{selectedChartProp.selectedTable?.[selectedChartProp.selectedDs.ds_uid] ? (
-				<div className="tileTableView">
-					<DisplayTable
-						dsId={selectedChartProp.selectedDs?.ds_uid}
-						table={
-							selectedChartProp.selectedTable[selectedChartProp.selectedDs?.ds_uid]
-						}
+					{selectedChartProp.selectedTable?.[selectedChartProp.selectedDs.ds_uid] ? (
+						<div className="tileTableView">
+							<DisplayTable
+								dsId={selectedChartProp.selectedDs?.ds_uid}
+								table={
+									selectedChartProp.selectedTable[
+										selectedChartProp.selectedDs?.ds_uid
+									]
+								}
+							/>
+						</div>
+					) : (
+						<div
+							className="axisInfo"
+							style={{
+								flex: "1",
+								display: "flex",
+								alignItems: "center",
+								justifyContent: "center",
+							}}
+						>
+							Select any table from the list on left to show records here
+						</div>
+					)}
+					{loading ? <LoadingPopover /> : null}
+					<ChangeConnection
+						onChangeOrAddDataset={onChangeOrAddDataset}
+						open={openChangeDatasetDlg}
+						setOpen={setOpenChangeDatasetDlg}
+						heading="CHANGE DATASET"
+						message="Want to open in new tile?"
 					/>
 				</div>
-			) : (
-				<div
-					className="axisInfo"
-					style={{
-						flex: "1",
-						display: "flex",
-						alignItems: "center",
-						justifyContent: "center",
-					}}
-				>
-					Select any table from the list on left to show records here
-				</div>
 			)}
-			{loading ? <LoadingPopover /> : null}
-			<ChangeConnection
-				onChangeOrAddDataset={onChangeOrAddDataset}
-				open={openChangeDatasetDlg}
-				setOpen={setOpenChangeDatasetDlg}
-				heading="CHANGE DATASET"
-				message="Want to open in new tile?"
-			/>
-		</div>
+		</React.Fragment>
 	);
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		token: state.isLogged.accessToken,
 		tabTileProps: state.tabTileProps,
@@ -353,10 +369,10 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
-		setSelectedDataSetList: (dataset) => dispatch(setSelectedDataSetList(dataset)),
-		setTablesForDs: (tablesObj) => dispatch(setTablesForSelectedDataSets(tablesObj)),
+		setSelectedDataSetList: dataset => dispatch(setSelectedDataSetList(dataset)),
+		setTablesForDs: tablesObj => dispatch(setTablesForSelectedDataSets(tablesObj)),
 
 		setSelectedDs: (propKey, selectedDs) => dispatch(setSelectedDsInTile(propKey, selectedDs)),
 		setSelectedTable: (propKey, selectedTable) =>

@@ -7,6 +7,9 @@ const chartControl = {
 	properties: {
 		1.1: {
 			chartData: "",
+			isRichText: false,
+			richText:
+				'<h1 class="ql-align-center ql-indent-2">Content Header</h1><p><br></p><p><span style="background-color: rgb(255, 255, 0);">Paragraph goes here...</span></p><ul><li>This</li><li>is</li><li>List</li></ul><p><br></p><p>Another Paragraph</p><ol><li>Numbered</li><li>List</li><li><a href="https://silzila.org" rel="noopener noreferrer" target="_blank">silzila</a></li></ol>',
 			colorScheme: "walden",
 			areaBackgroundColor: "#22194D",
 			areaOpacity: 0.1,
@@ -300,6 +303,9 @@ const chartControlsReducer = (state = chartControl, action) => {
 					...state.properties,
 					[tileKey]: {
 						chartData: "",
+						isRichText: false,
+						richText:
+							'<h1 class="ql-align-center ql-indent-2">Content Header</h1><p><br></p><p><span style="background-color: rgb(255, 255, 0);">Paragraph goes here...</span></p><ul><li>This</li><li>is</li><li>List</li></ul><p><br></p><p>Another Paragraph</p><ol><li>Numbered</li><li>List</li><li><a href="https://silzila.org" rel="noopener noreferrer" target="_blank">silzila</a></li></ol>',
 						colorScheme: "walden",
 						areaBackgroundColor: "#22194D",
 						areaOpacity: 0.1,
@@ -594,6 +600,9 @@ const chartControlsReducer = (state = chartControl, action) => {
 					...state.properties,
 					[tileKey2]: {
 						chartData: "",
+						isRichText: false,
+						richText:
+							'<h1 class="ql-align-center ql-indent-2">Content Header</h1><p><br></p><p><span style="background-color: rgb(255, 255, 0);">Paragraph goes here...</span></p><ul><li>This</li><li>is</li><li>List</li></ul><p><br></p><p>Another Paragraph</p><ol><li>Numbered</li><li>List</li><li><a href="https://silzila.org" rel="noopener noreferrer" target="_blank">silzila</a></li></ol>',
 						colorScheme: "walden",
 						areaBackgroundColor: "#22194D",
 						areaOpacity: 0.1,
@@ -1293,6 +1302,17 @@ const chartControlsReducer = (state = chartControl, action) => {
 							[action.payload.option]: {
 								$set: action.payload.value,
 							},
+						},
+					},
+				},
+			});
+
+		case "UPDATE_RICH_TEXT":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						richText: {
+							$set: action.payload.value,
 						},
 					},
 				},

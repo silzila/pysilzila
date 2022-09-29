@@ -53,6 +53,7 @@ const UserFilterCard = ({
 	revertAxes,
 	updtateFilterExpandeCollapse,
 }) => {
+	const [indeterminate, setindeterminate] = useState(false);
 	const { uId, fieldname, displayname, dataType, tableId } = field;
 	// console.log(field);
 	console.log(chartProp.properties[propKey].chartAxes[0]);
@@ -351,9 +352,13 @@ const UserFilterCard = ({
 				filterFieldData.userSelection.splice(AllIdx, 1);
 			}
 		}
-
 		updateLeftFilterItem(propKey, 0, constructChartAxesFieldObject());
 	};
+
+	// const getStatus = () => {
+	// 	setindeterminate(true);
+	// 	return false;
+	// };
 
 	///Render Pick list card from raw select members
 	const SelecPickListCard = () => {
@@ -364,45 +369,83 @@ const UserFilterCard = ({
 			_selectionMembers = filterFieldData.rawselectmembers.map(item => {
 				return (
 					<label className="UserFilterCheckboxes" key={item}>
-						<Checkbox
-							checked={
-								filterFieldData.userSelection
-									? filterFieldData.userSelection.includes(item)
-									: false
-							}
-							indeterminate={
-								filterFieldData.userSelection
-									? filterFieldData.includeexclude === "Exclude"
-										? filterFieldData.userSelection.includes(item)
-											? true
+						{filterFieldData.includeexclude === "Include" ? (
+							<Checkbox
+								checked={
+									filterFieldData.userSelection
+										? filterFieldData.includeexclude === "Include"
+											? filterFieldData.userSelection.includes(item)
+												? true
+												: false
 											: false
 										: false
-									: false
-							}
-							name={item}
-							style={{
-								transform: "scale(0.6)",
-								marginLeft: "10px",
-								paddingRight: "0px",
-							}}
-							sx={{
-								color: "red",
-								"&.Mui-checked": {
-									color: "#1976d2",
-									opacity: "0.7",
-								},
-								"&.MuiCheckbox-indeterminate": {
-									color: "#f7723e",
-									opacity: "0.7",
-								},
-							}}
-							onChange={e => handleCBChange(e)}
-						/>
+								}
+								// indeterminate={
+								// 	filterFieldData.userSelection
+								// 		? filterFieldData.includeexclude === "Exclude"
+								// 			? filterFieldData.userSelection.includes(item)
+								// 				? true
+								// 				: false
+								// 			: false
+								// 		: false
+								// }
+								name={item}
+								style={{
+									transform: "scale(0.6)",
+									// marginLeft: "10px",
+									paddingRight: "0px",
+								}}
+								sx={{
+									color: "red",
+									"&.Mui-checked": {
+										color: "#1976d2",
+									},
+								}}
+								onChange={e => handleCBChange(e)}
+							/>
+						) : (
+							<Checkbox
+								checked={
+									filterFieldData.userSelection
+										? filterFieldData.includeexclude === "Exclude"
+											? filterFieldData.userSelection.includes(item)
+												? true
+												: false
+											: false
+										: false
+								}
+								// indeterminate={
+								// 	// filterFieldData.userSelection
+								// 	// 	? filterFieldData.includeexclude === "Exclude"
+								// 	// 		?
+								// 	filterFieldData.userSelection.includes(item) ? true : false
+								// 	// 	: false
+								// 	// : false
+								// }
+								name={item}
+								style={{
+									transform: "scale(0.6)",
+									paddingRight: "0px",
+								}}
+								sx={{
+									// color: "red",
+									"&.Mui-checked": {
+										color: "orange",
+									},
+									// "&.MuiCheckbox-indeterminate": {
+									// 	color: "orange",
+									// },
+								}}
+								onChange={e => handleCBChange(e)}
+							/>
+						)}
 
 						<span
 							title={item}
 							style={{
 								marginLeft: 0,
+								marginTop: "3.5px",
+								justifySelf: "center",
 								textOverflow: "ellipsis",
 								whiteSpace: "nowrap",
 								overflow: "hidden",
@@ -422,11 +465,12 @@ const UserFilterCard = ({
 
 	///Menu close event handler
 	const handleClose = async (closeFrom, queryParam) => {
-		// // console.log(closeFrom);
+		console.log(closeFrom, queryParam);
 		setAnchorEl(null);
 		//setShowOptions(false);
 
 		if (closeFrom === "opt2") {
+			console.log(filterFieldData.rawselectmembers, filterFieldData.fieldtypeoption);
 			if (
 				!filterFieldData.rawselectmembers ||
 				filterFieldData.fieldtypeoption !== queryParam
@@ -447,6 +491,9 @@ const UserFilterCard = ({
 				checkForValidData();
 			}
 		} else if (closeFrom === "opt1") {
+			if (filterFieldData.userSelection.includes("(All)")) {
+				filterFieldData["userSelection"] = [];
+			}
 			filterFieldData.includeexclude = queryParam;
 		}
 
@@ -1025,7 +1072,7 @@ const UserFilterCard = ({
 					className="columnName"
 					style={
 						filterFieldData.includeexclude === "Exclude"
-							? { border: "#ffb74d 2px solid" }
+							? { border: "#ffb74d 1px solid" }
 							: null
 					}
 				>

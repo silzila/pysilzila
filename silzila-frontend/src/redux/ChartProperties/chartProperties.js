@@ -131,7 +131,7 @@ const chartPropertiesState = (state = chartProperties, action) => {
 						titleOptions: {
 							fontSize: 28,
 							titleLeftPadding: "20px",
-							titleAlign: "center",
+							titleAlign: "left",
 							chartTitle: "",
 							generateTitle: "Auto",
 						},
@@ -191,7 +191,7 @@ const chartPropertiesState = (state = chartProperties, action) => {
 						titleOptions: {
 							fontSize: 28,
 							titleLeftPadding: "20px",
-							titleAlign: "center",
+							titleAlign: "left",
 							chartTitle: "",
 							generateTitle: "Auto",
 						},

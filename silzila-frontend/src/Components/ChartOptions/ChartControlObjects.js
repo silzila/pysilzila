@@ -14,6 +14,8 @@ const ChartControlObjects = ({
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 	var selectedChart = chartProp.properties[propKey].chartType;
 
+	const richTextOptionList = ["Title"];
+
 	const barOptionsList = [
 		"Title",
 		"Labels",
@@ -214,6 +216,22 @@ const ChartControlObjects = ({
 
 			case "crossTab":
 				return crossTabOptionList.map(option => {
+					return (
+						<div
+							key={option}
+							className={
+								chartProp.properties[propKey].chartOptionSelected === option
+									? "optionImageSelected"
+									: "optionImage"
+							}
+							onClick={() => changeChartOption(propKey, option)}
+						>
+							{option}
+						</div>
+					);
+				});
+			case "richText":
+				return richTextOptionList.map(option => {
 					return (
 						<div
 							key={option}

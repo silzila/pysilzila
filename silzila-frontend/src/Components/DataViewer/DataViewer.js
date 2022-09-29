@@ -30,6 +30,7 @@ import DashBoard from "../DashBoard/DashBoard";
 import listOfTilesIcon from "../../assets/listoftilesIcon.svg";
 import dashbordSizeIcon from "../../assets/screenSize.png";
 import MenuBar from "./MenuBar";
+import { SaveRichText } from "../Charts/TextEditor";
 
 function DataViewer({
 	// state
@@ -49,7 +50,7 @@ function DataViewer({
 	};
 
 	// switching between Table with all sample records Or just list the columns of selected table
-	const handleColumnsOnlyDisplay = (col) => {
+	const handleColumnsOnlyDisplay = col => {
 		toggleColumns(col);
 	};
 
@@ -149,7 +150,9 @@ function DataViewer({
 									? "plusTile commonTile indiItemHighlightTile"
 									: "plusTile commonTile indiItemTile"
 							}
-							onClick={() => showDashBoard(tabTileProps.selectedTabId, true)}
+							onClick={() => {
+								showDashBoard(tabTileProps.selectedTabId, true);
+							}}
 						>
 							Dashboard
 						</span>
@@ -203,17 +206,17 @@ function DataViewer({
 //                                 REDUX MAPPING STATE AND DISPATCH TO PROPS
 // ===========================================================================================
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		tabTileProps: state.tabTileProps,
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
 		showDashBoard: (tabId, showDash) => dispatch(setShowDashBoard(tabId, showDash)),
-		toggleColumns: (columns) => dispatch(toggleColumnsOnlyDisplay(columns)),
-		toggleDataViewerBottom: (show) => dispatch(toggleShowDataViewerBottom(show)),
+		toggleColumns: columns => dispatch(toggleColumnsOnlyDisplay(columns)),
+		toggleDataViewerBottom: show => dispatch(toggleShowDataViewerBottom(show)),
 	};
 };
 

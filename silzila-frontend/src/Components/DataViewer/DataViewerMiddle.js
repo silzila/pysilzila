@@ -22,20 +22,23 @@ const DataViewerMiddle = ({
 
 	// state
 	tabTileProps,
+	chartProp,
 
 	// dispatch
 	setMenu,
 }) => {
+	// console.log(chartProp);
 	var propKey = `${tabId}.${tileId}`;
 	const rmenu = [
 		{ name: "Charts", icon: chartControlIcon },
 		{ name: "Chart controls", icon: settingsIcon },
 	];
 
-	const renderMenu = rmenu.map(rm => {
+	const renderMenu = rmenu.map((rm, i) => {
 		return (
 			<img
-				key={rm.name}
+				key={i}
+				// key={rm.name}
 				className={
 					rm.name === tabTileProps.selectedControlMenu
 						? "controlsIcon selectedIcon"
@@ -87,7 +90,9 @@ const DataViewerMiddle = ({
 
 	return (
 		<div className="dataViewerMiddle" style={{ height: "300px" }}>
-			<ChartAxes tabId={tabId} tileId={tileId} />
+			{chartProp.properties[propKey].chartType === "richText" ? null : (
+				<ChartAxes tabId={tabId} tileId={tileId} />
+			)}
 
 			<GraphArea />
 

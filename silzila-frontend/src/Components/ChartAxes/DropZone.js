@@ -315,7 +315,7 @@ const DropZone = ({
 				</span>
 				{name === "Filter" ? (
 					<div style={{ float: "right", borderTop: "2px solid #d3d3d3" }}>
-						{chartProp.properties[propKey].chartAxes[bIndex].isCollapsed ? (
+						{!chartProp.properties[propKey].chartAxes[bIndex].isCollapsed ? (
 							<Tooltip title="Expand">
 								<UnfoldMoreIcon
 									style={{

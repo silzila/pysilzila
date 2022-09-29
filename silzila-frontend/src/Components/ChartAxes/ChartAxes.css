@@ -19,10 +19,10 @@
 
 .chartAxisBody{
 	flex: 1;
-	/* overflow-y: auto; */
-	display: flex;
+	/* overflow-y: hidden; */
+	/* display: flex; */
 	flex-direction: column;
-	height:auto;
+	max-height: auto;
 	min-height: 6em;
 	/* max-height: 100rem; */
 	/* min-height: 100em; */

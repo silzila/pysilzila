@@ -19,7 +19,7 @@
 
 .axisFilterField {
 	width: 90%;
-	margin: 4px 5%;
+	margin: 4px 5px;
 	align-content: center;
 	font-size: 12px;
 	text-align: start;
@@ -60,7 +60,8 @@
 
 .UserFilterCheckboxes{
     display: flex;
-    width: 95%;
+    width: 90%;
+    margin-left: 4px;
     float: left;
     text-align: left;
 }

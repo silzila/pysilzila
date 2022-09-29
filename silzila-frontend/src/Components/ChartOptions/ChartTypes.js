@@ -3,7 +3,7 @@
 // 	- the differences in dropzones for each specific graphs along,
 // 	- moving table fields into appropriate dropzones for each specific chart type
 
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import {
 	canReUseData,
@@ -32,8 +32,14 @@ import "./ChartOptions.css";
 import { updateChartData } from "../../redux/ChartProperties/actionsChartControls";
 import boxPlotIcon from "../../assets/box_plot.svg";
 import TreeMapIcon from "../../assets/treemap.svg";
-import TextEditor from "../../assets/text_editor.svg";
+import TextEditorIcon from "../../assets/text_editor.svg";
 import Sankey from "../../assets/sankey.svg";
+import {
+	actionsToAddTile,
+	actionsToAddTileForRichText,
+	actionsToUpdateSelectedTile,
+} from "../../redux/TabTile/actionsTabTile";
+import { SaveRichText } from "../Charts/TextEditor";
 
 export const chartTypes = [
 	{ name: "crossTab", icon: CrossTabIcon, value: " Cross Tab" },
@@ -56,7 +62,7 @@ export const chartTypes = [
 	// { name: "geoChart", icon: geoChartIcon, value: "Geo Chart" },
 	{ name: "calendar", icon: calendarChartIcon, value: "Calendar Chart" },
 	{ name: "boxPlot", icon: boxPlotIcon, value: "Box Plot Chart" },
-	{ name: "texteditor", icon: TextEditor, value: "Text Editor" },
+	{ name: "richText", icon: TextEditorIcon, value: "Rich Text" },
 	{ name: "sankey", icon: Sankey, value: "Sankey Chart" },
 ];
 
@@ -66,11 +72,16 @@ const ChartTypes = ({
 
 	//state
 	chartProp,
+	tabState,
+	tabTileProps,
+	chartControls,
 
 	//dispatch
 	updateChartTypeAndAxes,
 	keepOldData,
 	updateChartData,
+	addTile,
+	selectTile,
 }) => {
 	var selectedChart = chartProp.properties[propKey].chartType;
 
@@ -112,7 +123,6 @@ const ChartTypes = ({
 			case "area":
 			case "stackedArea":
 			case "treeMap":
-			// case "textEditor":
 			case "sankey":
 				if (
 					[
@@ -125,13 +135,21 @@ const ChartTypes = ({
 						"geoChart",
 						"stackedArea",
 						"treeMap",
-						// "textEditor",
+						// "richText",
 						"sankey",
 					].includes(newChart)
 				) {
 					keepOldData(propKey, true);
 
 					return oldChartAxes;
+				}
+
+				if (newChart === "richText") {
+					keepOldData(propKey, false);
+					newChartAxes[0].fields = [];
+					newChartAxes[1].fields = [];
+					newChartAxes[2].fields = [];
+					return newChartAxes;
 				}
 
 				if (newChart === "calendar") {
@@ -309,6 +327,14 @@ const ChartTypes = ({
 					return oldChartAxes;
 				}
 
+				if (newChart === "richText") {
+					keepOldData(propKey, false);
+					newChartAxes[0].fields = [];
+					newChartAxes[1].fields = [];
+					newChartAxes[2].fields = [];
+					return newChartAxes;
+				}
+
 				if (newChart === "pie" || newChart === "donut" || newChart === "rose") {
 					keepOldData(propKey, false);
 
@@ -438,6 +464,14 @@ const ChartTypes = ({
 					keepOldData(propKey, true);
 
 					return oldChartAxes;
+				}
+
+				if (newChart === "richText") {
+					keepOldData(propKey, false);
+					newChartAxes[0].fields = [];
+					newChartAxes[1].fields = [];
+					newChartAxes[2].fields = [];
+					return newChartAxes;
 				}
 
 				if (newChart === "calendar") {
@@ -614,6 +648,14 @@ const ChartTypes = ({
 					return newChartAxes;
 				}
 
+				if (newChart === "richText") {
+					keepOldData(propKey, false);
+					newChartAxes[0].fields = [];
+					newChartAxes[1].fields = [];
+					newChartAxes[2].fields = [];
+					return newChartAxes;
+				}
+
 				if (newChart === "calendar") {
 					// console.log(oldChartAxes);
 
@@ -729,6 +771,14 @@ const ChartTypes = ({
 					return newChartAxes;
 				}
 
+				if (newChart === "richText") {
+					keepOldData(propKey, false);
+					newChartAxes[0].fields = [];
+					newChartAxes[1].fields = [];
+					newChartAxes[2].fields = [];
+					return newChartAxes;
+				}
+
 				if (newChart === "scatterPlot") {
 					keepOldData(propKey, false);
 					if (oldChartAxes[1].fields.length > 0) {
@@ -807,6 +857,14 @@ const ChartTypes = ({
 					if (oldChartAxes[0].fields.length > 0)
 						newChartAxes[0].fields = oldChartAxes[0].fields;
 
+					return newChartAxes;
+				}
+
+				if (newChart === "richText") {
+					keepOldData(propKey, false);
+					newChartAxes[0].fields = [];
+					newChartAxes[1].fields = [];
+					newChartAxes[2].fields = [];
 					return newChartAxes;
 				}
 
@@ -892,6 +950,14 @@ const ChartTypes = ({
 							oldChartAxes[3].fields
 						);
 
+					return newChartAxes;
+				}
+
+				if (newChart === "richText") {
+					keepOldData(propKey, false);
+					newChartAxes[0].fields = [];
+					newChartAxes[1].fields = [];
+					newChartAxes[2].fields = [];
 					return newChartAxes;
 				}
 
@@ -1020,6 +1086,22 @@ const ChartTypes = ({
 					return newChartAxes;
 				}
 
+				if (newChart === "richText") {
+					console.log("open in new tile");
+
+					// handleAddTile();
+
+					// let tabObj = tabState.tabs[tabTileProps.selectedTabId];
+					// console.log(`${tabObj.tabId}.${tabObj.nextTileId}`);
+					// console.log(chartProp.properties[`${tabObj.tabId}.${tabObj.nextTileId}`]);
+
+					newChartAxes[0].fields = [];
+					newChartAxes[1].fields = [];
+					newChartAxes[2].fields = [];
+
+					return newChartAxes;
+				}
+
 				if (newChart === "calendar") {
 					// console.log(oldChartAxes);
 
@@ -1126,9 +1208,74 @@ const ChartTypes = ({
 					return newChartAxes;
 				}
 				break;
+
+			case "richText":
+				if (
+					[
+						"multibar",
+						"stackedBar",
+						"horizontalBar",
+						"horizontalStacked",
+						"line",
+						"area",
+						"geoChart",
+						"stackedArea",
+						"treeMap",
+						"sankey",
+						"calendar",
+						"richText",
+						"pie",
+						"donut",
+						"rose",
+					].includes(newChart)
+				) {
+					keepOldData(propKey, false);
+					newChartAxes[0].fields = [];
+					newChartAxes[1].fields = [];
+					newChartAxes[2].fields = [];
+					return newChartAxes;
+				}
+
+				if (["scatterPlot", "heatmap", "crossTab", "boxPlot"].includes(newChart)) {
+					keepOldData(propKey, false);
+
+					newChartAxes[0].fields = [];
+					newChartAxes[1].fields = [];
+					newChartAxes[2].fields = [];
+					newChartAxes[3].fields = [];
+
+					return newChartAxes;
+				}
+
+				if (newChart === "funnel" || newChart === "gauge") {
+					newChartAxes[0].fields = [];
+					newChartAxes[1].fields = [];
+					return newChartAxes;
+				}
+
+				break;
+
 			default:
 				return oldChartAxes;
 		}
+	};
+
+	const handleAddTile = async chartName => {
+		let tabObj = tabState.tabs[tabTileProps.selectedTabId];
+
+		await addTile(
+			tabObj.tabId,
+			tabObj.nextTileId,
+			tabTileProps.selectedTable,
+			chartProp.properties[propKey].selectedDs,
+			chartProp.properties[propKey].selectedTable,
+			chartName
+		);
+	};
+
+	const getAndUpdateNewChartAxes = (oldChart, newChart) => {
+		const newChartAxes = switchAxesForCharts(oldChart, newChart);
+		updateChartTypeAndAxes(propKey, newChart, newChartAxes);
 	};
 
 	const renderChartTypes = chartTypes.map(chart => {
@@ -1166,15 +1313,91 @@ const ChartTypes = ({
 							"boxPlot",
 							"treeMap",
 							"sankey",
-							"textEditor",
+							"richText",
 						].includes(chart.name)
 					) {
 						console.log(chart.name, " clicked");
-						const newChartAxes = switchAxesForCharts(
-							chartProp.properties[propKey].chartType,
-							chart.name
-						);
-						updateChartTypeAndAxes(propKey, chart.name, newChartAxes);
+						var oldChartAxes = chartProp.properties[propKey].chartAxes;
+
+						//CASE 1: when switching from richtext to richtext
+						if (
+							chartProp.properties[propKey].chartType === "richText" &&
+							chart.name === "richText"
+						) {
+							getAndUpdateNewChartAxes(
+								chartProp.properties[propKey].chartType,
+								chart.name
+							);
+						}
+						//CASE 2: when switching from richtext to otherCharts
+						else if (
+							chartProp.properties[propKey].chartType === "richText" &&
+							chart.name !== "richText"
+						) {
+							//check whether richtext contains content or not to open selected chart in same tile
+							if (
+								chartControls.properties[propKey].richText === "" ||
+								chartControls.properties[propKey].richText === "<p><br></p>" ||
+								JSON.stringify(chartControls.properties[propKey].richText) ===
+									JSON.stringify(
+										'<h1 class="ql-align-center ql-indent-2">Content Header</h1><p><br></p><p><span style="background-color: rgb(255, 255, 0);">Paragraph goes here...</span></p><ul><li>This</li><li>is</li><li>List</li></ul><p><br></p><p>Another Paragraph</p><ol><li>Numbered<strong> </strong></li><li>List</li><li><a href="https://silzila.org" rel="noopener noreferrer" target="_blank">silzila</a></li></ol>'
+									)
+							) {
+								console.log(chartControls.properties[propKey].richText);
+								getAndUpdateNewChartAxes(
+									chartProp.properties[propKey].chartType,
+									chart.name
+								);
+							}
+							//if richtext contain contents,then open selected chart in new tile
+							else {
+								handleAddTile(chart.name);
+							}
+						}
+
+						//CASE 3:when switching from other charts to rich text
+						else if (
+							chartProp.properties[propKey].chartType !== "richText" &&
+							chart.name === "richText"
+						) {
+							//check whether axes of oldchart is empty or not to open richtext in the same tile
+							var noOfAxes = oldChartAxes.length;
+							oldChartAxes.map(axes => {
+								if (axes.fields.length === 0) {
+									noOfAxes = noOfAxes - 1;
+								}
+							});
+							console.log(noOfAxes);
+							if (
+								// oldChartAxes[0].fields.length === 0 &&
+								// oldChartAxes[1].fields.length === 0 &&
+								// oldChartAxes[2].fields.length === 0
+								noOfAxes === 0
+							) {
+								getAndUpdateNewChartAxes(
+									chartProp.properties[propKey].chartType,
+									chart.name
+								);
+							}
+							//if chartAxes of oldchart is not empty, then open richtext in new tile
+							else {
+								handleAddTile(chart.name);
+								// console.log(chartProp);
+							}
+						}
+
+						//CASE 4:when switching between charts other than richtext
+						else {
+							getAndUpdateNewChartAxes(
+								chartProp.properties[propKey].chartType,
+								chart.name
+							);
+							// const newChartAxes = switchAxesForCharts(
+							// 	chartProp.properties[propKey].chartType,
+							// 	chart.name
+							// );
+							// updateChartTypeAndAxes(propKey, chart.name, newChartAxes);
+						}
 					}
 				}}
 				title={chart.value}
@@ -1191,6 +1414,9 @@ const ChartTypes = ({
 const mapStateToProps = state => {
 	return {
 		chartProp: state.chartProperties,
+		tabState: state.tabState,
+		tabTileProps: state.tabTileProps,
+		chartControls: state.chartControls,
 	};
 };
 const mapDispatchToProps = dispatch => {
@@ -1199,6 +1425,29 @@ const mapDispatchToProps = dispatch => {
 			dispatch(changeChartTypeAndAxes({ propKey, chartType, newAxes })),
 		keepOldData: (propKey, reUseData) => dispatch(canReUseData(propKey, reUseData)),
 		updateChartData: (propKey, chartData) => dispatch(updateChartData(propKey, chartData)),
+		addTile: (tabId, nextTileId, table, selectedDataset, selectedTables, chartName) =>
+			dispatch(
+				actionsToAddTileForRichText({
+					tabId,
+					nextTileId,
+					table,
+					fromTab: false,
+					selectedDs: selectedDataset,
+					selectedTablesInDs: selectedTables,
+					chartName,
+				})
+			),
+		selectTile: (tabId, tileName, tileId, nextTileId, fileId, fromTab) =>
+			dispatch(
+				actionsToUpdateSelectedTile({
+					tabId,
+					tileName,
+					tileId,
+					nextTileId,
+					fileId,
+					fromTab,
+				})
+			),
 	};
 };
 

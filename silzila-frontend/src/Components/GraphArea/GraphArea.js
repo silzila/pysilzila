@@ -288,12 +288,13 @@ const GraphArea = ({
 						graphTileSize={tileState.tiles[propKey].graphSizeFull}
 					/>
 				);
-			case "textEditor":
+			case "richText":
 				return (
 					<TextEditor
 						propKey={propKey}
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
 						graphTileSize={tileState.tiles[propKey].graphSizeFull}
+						showEditor={true}
 					/>
 				);
 
@@ -368,6 +369,8 @@ const GraphArea = ({
 				chartProperties.properties[propKey].chartType === "funnel"
 			) {
 				title = measureTitle ? measureTitle : "";
+			} else if (chartProperties.properties[propKey].chartType === "richText") {
+				title = "Rich Text Editor Title";
 			} else {
 				title = measureTitle ? measureTitle : "";
 				title = dimTitle ? title + ` by ${dimTitle}` : "";
