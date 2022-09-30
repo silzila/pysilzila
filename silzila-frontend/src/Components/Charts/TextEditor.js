@@ -21,6 +21,9 @@ const modules = {
 		["link"],
 		["clean"],
 	],
+	// Clipboard: {
+	// 	matchVisual: false,
+	// },
 };
 
 const TextEditor = ({
@@ -35,29 +38,37 @@ const TextEditor = ({
 }) => {
 	const [value, setValue] = useState(chartProp.properties[propKey].richText);
 
-	console.log(JSON.stringify(value));
-	console.log(JSON.stringify(chartProp.properties[propKey].richText));
-
 	useEffect(() => {
-		if (JSON.stringify(value) !== JSON.stringify(chartProp.properties[propKey].richText)) {
-			updateRichText(propKey, value);
-		}
+		updateRichText(propKey, value);
 	}, [value]);
 
-	//debounce function to reduce no.of redux action call
-	// const debounce = func => {
-	// 	let timer;
-	// 	return function (...args) {
-	// 		const context = this;
-	// 		if (timer) clearTimeout(timer);
-	// 		timer = setTimeout(() => {
-	// 			timer = null;
-	// 			func.apply(context, args);
-	// 		}, 500);
-	// 	};
-	// };
-
 	const optimizedFn = useCallback(debounce(setValue), []);
+
+	const placeHolderContent = () => {
+		return (
+			<>
+				<h1 class="ql-align-center ql-indent-2">Content Header</h1>
+				<p>
+					<span style="background-color: rgb(255, 255, 0);">Paragraph goes here...</span>
+				</p>
+				<ul>
+					<li>This</li>
+					<li>is</li>
+					<li>List</li>
+				</ul>
+				<p>Another Paragraph</p>
+				<ol>
+					<li>Numbered</li>
+					<li>List</li>
+					<li>
+						<a href="https://silzila.org" rel="noopener noreferrer" target="_blank">
+							silzila
+						</a>
+					</li>
+				</ol>
+			</>
+		);
+	};
 
 	return (
 		<>
@@ -65,10 +76,11 @@ const TextEditor = ({
 				<ReactQuill
 					modules={modules}
 					onChange={optimizedFn}
+					// onChange={setValue}
 					value={value}
 					style={{ height: "90%" }}
 					theme="snow"
-					placeholder="Content goes here..."
+					placeholder="Content goes here...."
 				/>
 			) : (
 				<ReactQuill

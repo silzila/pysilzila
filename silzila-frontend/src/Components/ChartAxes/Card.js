@@ -35,7 +35,7 @@ const Card = ({
 	// chartPropUpdated,
 }) => {
 	const originalIndex = chartProp.properties[propKey].chartAxes[bIndex].fields.findIndex(
-		(item) => item.uId === field.uId
+		item => item.uId === field.uId
 	);
 
 	const deleteItem = () => {
@@ -48,7 +48,7 @@ const Card = ({
 	const [anchorEl, setAnchorEl] = useState(null);
 	const open = Boolean(anchorEl);
 
-	const handleClick = (event) => {
+	const handleClick = event => {
 		setAnchorEl(event.currentTarget);
 	};
 
@@ -88,10 +88,11 @@ const Card = ({
 			dataType: field.dataType,
 			prefix: field.prefix,
 			tableId: field.tableId,
-			type: "card",
+			// type: "card",
 			bIndex,
 			originalIndex,
 		},
+		type: "card",
 
 		end: (dropResult, monitor) => {
 			// console.log("***************on DRAG END**************");
@@ -111,7 +112,7 @@ const Card = ({
 	const [, drop] = useDrop({
 		accept: "card",
 		canDrop: () => false,
-		collect: (monitor) => ({
+		collect: monitor => ({
 			backgroundColor1: monitor.isOver({ shallow: true }) ? 1 : 0,
 		}),
 		hover({ uId: dragUId, bIndex: fromBIndex }) {
@@ -161,7 +162,7 @@ const Card = ({
 				}}
 			>
 				{options.length > 0
-					? options.map((opt) => {
+					? options.map(opt => {
 							return (
 								<MenuItem
 									onClick={() => handleClose("agg", opt.id)}
@@ -177,7 +178,7 @@ const Card = ({
 				{options.length > 0 && options2.length > 0 ? <Divider /> : null}
 
 				{options2.length > 0
-					? options2.map((opt2) => {
+					? options2.map(opt2 => {
 							return (
 								<MenuItem
 									onClick={() => handleClose("time_grain", opt2.id)}
@@ -203,7 +204,7 @@ const Card = ({
 
 	return field ? (
 		<div
-			ref={(node) => drag(drop(node))}
+			ref={node => drag(drop(node))}
 			className="axisField"
 			onMouseOver={() => setShowOptions(true)}
 			onMouseLeave={() => {
@@ -244,14 +245,14 @@ const Card = ({
 	) : null;
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		tabTileProps: state.tabTileProps,
 		chartProp: state.chartProperties,
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
 		deleteDropZoneItems: (propKey, binIndex, itemIndex) =>
 			dispatch(

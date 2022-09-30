@@ -62,7 +62,7 @@ export const chartTypes = [
 	// { name: "geoChart", icon: geoChartIcon, value: "Geo Chart" },
 	{ name: "calendar", icon: calendarChartIcon, value: "Calendar Chart" },
 	{ name: "boxPlot", icon: boxPlotIcon, value: "Box Plot Chart" },
-	{ name: "richText", icon: TextEditorIcon, value: "Rich Text" },
+	// { name: "richText", icon: TextEditorIcon, value: "Rich Text" },
 	{ name: "sankey", icon: Sankey, value: "Sankey Chart" },
 ];
 
@@ -1337,11 +1337,7 @@ const ChartTypes = ({
 							//check whether richtext contains content or not to open selected chart in same tile
 							if (
 								chartControls.properties[propKey].richText === "" ||
-								chartControls.properties[propKey].richText === "<p><br></p>" ||
-								JSON.stringify(chartControls.properties[propKey].richText) ===
-									JSON.stringify(
-										'<h1 class="ql-align-center ql-indent-2">Content Header</h1><p><br></p><p><span style="background-color: rgb(255, 255, 0);">Paragraph goes here...</span></p><ul><li>This</li><li>is</li><li>List</li></ul><p><br></p><p>Another Paragraph</p><ol><li>Numbered<strong> </strong></li><li>List</li><li><a href="https://silzila.org" rel="noopener noreferrer" target="_blank">silzila</a></li></ol>'
-									)
+								chartControls.properties[propKey].richText === "<p><br></p>"
 							) {
 								console.log(chartControls.properties[propKey].richText);
 								getAndUpdateNewChartAxes(

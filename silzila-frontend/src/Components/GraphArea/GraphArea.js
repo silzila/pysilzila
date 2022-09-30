@@ -294,7 +294,6 @@ const GraphArea = ({
 						propKey={propKey}
 						graphDimension={fullScreen ? graphDimension2 : graphDimension}
 						graphTileSize={tileState.tiles[propKey].graphSizeFull}
-						showEditor={true}
 					/>
 				);
 

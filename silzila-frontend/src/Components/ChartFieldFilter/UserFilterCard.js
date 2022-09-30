@@ -280,10 +280,11 @@ const UserFilterCard = ({
 			displayname: fieldname,
 			dataType: dataType,
 			tableId: tableId,
-			type: "card",
+			// type: "card",
 			bIndex,
 			originalIndex,
 		},
+		type: "card",
 
 		end: (dropResult, monitor) => {
 			// // console.log("***************on DRAG END**************");

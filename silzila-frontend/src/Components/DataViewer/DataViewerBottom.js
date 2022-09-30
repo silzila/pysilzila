@@ -83,7 +83,8 @@ const DataViewerBottom = ({
 
 	// When a new dataset is added to the tile for work,
 	// set it in SelectedDataSet of tabTileProps
-	useEffect(async () => {
+	// useEffect(async () => {
+	useEffect(() => {
 		if (selectedDataset !== "") {
 			var isAlready = tabTileProps.selectedDataSetList.filter(ds => ds === selectedDataset);
 			if (isAlready.length > 0) {
@@ -98,13 +99,15 @@ const DataViewerBottom = ({
 
 	// When a Dataset is selected, make sure the tables for that dataset is present in store.
 	// If not, get it from server and save in store
-	useEffect(async () => {
+	// useEffect(async() => {
+	useEffect(() => {
 		if (
 			tabTileProps?.tablesForSelectedDataSets?.[selectedChartProp?.selectedDs?.ds_uid] ===
 			undefined
 		) {
 			setLoading(true);
-			var tablesFromServer = await getTables(selectedChartProp.selectedDs?.ds_uid);
+			// var tablesFromServer = await getTables(selectedChartProp.selectedDs?.ds_uid);
+			var tablesFromServer = getTables(selectedChartProp.selectedDs?.ds_uid);
 			setTablesForDs({ [selectedDataset.ds_uid]: tablesFromServer });
 			setLoading(false);
 		}
