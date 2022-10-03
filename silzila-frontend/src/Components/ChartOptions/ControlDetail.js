@@ -42,17 +42,49 @@ const ControlDetail = ({ chartProp, tabTileProps }) => {
 				} else if (chartType == "geoChart") {
 					return <ColorScaleGeo />;
 				} else if (chartType === "gauge") {
-					return <ColorSteps />;
+					return (
+						<>
+							<ColorSteps />
+						</>
+					);
 				} else if (chartType === "sankey") {
 					return <SankeyColorControls />;
-				} else {
+				} else if (
+					[
+						"multibar",
+						"stackedBar",
+						"horizontalBar",
+						"horizontalStacked",
+						"line",
+						"area",
+						"pie",
+						"donut",
+						"rose",
+						"geoChart",
+						"stackedArea",
+					].includes(chartType)
+				) {
 					return <ChartColors />;
 				}
 
 			case "Legend":
 				if (chartType === "treeMap") {
 					return <TreeMapLegend />;
-				} else {
+				} else if (
+					[
+						"multibar",
+						"stackedBar",
+						"horizontalBar",
+						"horizontalStacked",
+						"line",
+						"area",
+						"pie",
+						"donut",
+						"rose",
+						"geoChart",
+						"stackedArea",
+					].includes(chartType)
+				) {
 					return <ChartLegend />;
 				}
 
@@ -84,7 +116,21 @@ const ControlDetail = ({ chartProp, tabTileProps }) => {
 					return <TreeMapStyles />;
 				} else if (chartType === "sankey") {
 					return <SankeyStyles />;
-				} else {
+				} else if (
+					[
+						"multibar",
+						"stackedBar",
+						"horizontalBar",
+						"horizontalStacked",
+						"line",
+						"area",
+						"pie",
+						"donut",
+						"rose",
+						"geoChart",
+						"stackedArea",
+					].includes(chartType)
+				) {
 					return <ChartStyle />;
 				}
 

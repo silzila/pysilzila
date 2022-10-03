@@ -19,6 +19,8 @@ import {
 	removeChartProperties,
 	loadChartProperties,
 	resetChartProperties,
+	changeChartType,
+	setChartTitle,
 } from "../ChartProperties/actionsChartProperties";
 import { resetPlayBookData } from "../Playbook/playbookActions";
 import {
@@ -30,7 +32,7 @@ import {
 //  to tab state reducer
 //  *************************************************************
 
-export const addTab = (tabId) => {
+export const addTab = tabId => {
 	return {
 		type: "ADD_TAB",
 		payload: tabId,
@@ -214,55 +216,55 @@ export const updateSelectedTile = (tileName, tileId, nextTileId) => {
 	};
 };
 
-export const toggleEditingTab = (isTrue) => {
+export const toggleEditingTab = isTrue => {
 	return { type: "EDITING_TAB", payload: isTrue };
 };
 
-export const toggleEditingTile = (isTrue) => {
+export const toggleEditingTile = isTrue => {
 	return { type: "EDITING_TILE", payload: isTrue };
 };
 
-export const setSelectedDataSetList = (payload) => {
+export const setSelectedDataSetList = payload => {
 	return { type: "SET_SELECTED_DATASET_LIST", payload };
 };
 
-export const setTablesForSelectedDataSets = (payload) => {
+export const setTablesForSelectedDataSets = payload => {
 	return { type: "TABLES_FOR_SELECTED_DATASETS", payload };
 };
 
-export const setDragging = (dragging) => {
+export const setDragging = dragging => {
 	return { type: "SET_DRAGGING", payload: dragging };
 };
 
-export const selectedTable = (id) => {
+export const selectedTable = id => {
 	return { type: "SET_TABLE", payload: id };
 };
 
-export const chartPropsLeftUpdated = (updated) => {
+export const chartPropsLeftUpdated = updated => {
 	return { type: "CHART_PROP_UPDATED", payload: updated };
 };
 
-export const showDashBoard = (showDash) => {
+export const showDashBoard = showDash => {
 	return { type: "SHOW_DASHBOARD", payload: showDash };
 };
 
-export const toggleDashMode = (dashMode) => {
+export const toggleDashMode = dashMode => {
 	return { type: "TOGGLE_DASH_MODE", payload: dashMode };
 };
 
-export const setDashGridSize = (gridSize) => {
+export const setDashGridSize = gridSize => {
 	return { type: "SET_DASH_GRID_SIZE", payload: gridSize };
 };
 
-export const toggleColumnsOnlyDisplay = (columns) => {
+export const toggleColumnsOnlyDisplay = columns => {
 	return { type: "TOGGLE_COLUMNS_ONLY_DISPLAY", payload: columns };
 };
 
-export const toggleShowDataViewerBottom = (show) => {
+export const toggleShowDataViewerBottom = show => {
 	return { type: "TOGGLE_SHOW_DATA_VIEWER_BOTTOM", payload: show };
 };
 
-export const setSelectedControlMenu = (menu) => {
+export const setSelectedControlMenu = menu => {
 	return { type: "SET_SELECTED_CONTROL_MENU", payload: menu };
 };
 
@@ -278,7 +280,7 @@ export const updateGraphHighlight = (tabId, propKey, highlight) => {
 	return { type: "SET_GRAPH_BORDER_HIGHLIGHT", payload: { tabId, propKey, highlight } };
 };
 
-export const resetGraphHighlight = (tabId) => {
+export const resetGraphHighlight = tabId => {
 	return { type: "RESET_GRAPH_BORDER_HIGHLIGHT", payload: { tabId } };
 };
 
@@ -296,7 +298,7 @@ export const resetGraphHighlight = (tabId) => {
 
 export const actionsToAddTab = ({ tabId, table, selectedDs, selectedTablesInDs }) => {
 	let tabname = `Tab - ${tabId}`;
-	return (dispatch) => {
+	return dispatch => {
 		dispatch(addTab(tabId));
 		dispatch(updateNextTabId());
 		dispatch(updateSelectedTab(tabname, tabId, false, "Edit"));
@@ -314,13 +316,13 @@ export const actionsToAddTab = ({ tabId, table, selectedDs, selectedTablesInDs }
 };
 
 export const actionsToSelectTab = ({ tabName, tabId, showDash, dashMode }) => {
-	return (dispatch) => {
+	return dispatch => {
 		dispatch(updateSelectedTab(tabName, tabId, showDash, dashMode));
 	};
 };
 
 export const actionsToRemoveTab = ({ tabName, tabId, tabToRemoveIndex, newObj }) => {
-	return (dispatch) => {
+	return dispatch => {
 		dispatch(removeTab(tabName, tabId, tabToRemoveIndex));
 		dispatch(removeTilesOfTab(tabName, tabId));
 		dispatch(removeMultipleChartProperties(tabId));
@@ -339,13 +341,13 @@ export const actionsToRemoveTab = ({ tabName, tabId, tabToRemoveIndex, newObj })
 };
 
 export const actionsToEnableRenameTab = ({ tabId, isTrue }) => {
-	return (dispatch) => {
+	return dispatch => {
 		dispatch(toggleEditingTab(isTrue));
 	};
 };
 
 export const actionsToRenameTab = ({ renameValue, tabId }) => {
-	return (dispatch) => {
+	return dispatch => {
 		dispatch(updateSelectedTab(renameValue, tabId));
 		dispatch(updateTabNameOfTile(renameValue, tabId));
 		dispatch(renameTab(renameValue, tabId));
@@ -367,8 +369,9 @@ export const actionsToAddTile = ({
 }) => {
 	//let tileName = tileName ? tileName : `Tile - ${nextTileId}`;
 	// let tileName = `Tile - ${nextTileId}`;
+	// console.log(table);
 	let tileName;
-	return (dispatch) => {
+	return dispatch => {
 		dispatch(addProp(tabId, nextTileId, table, newTab, selectedDs, selectedTablesInDs));
 		dispatch(addControl(tabId, nextTileId, newTab));
 		dispatch(addTile(tabId, nextTileId, newTab));
@@ -387,10 +390,10 @@ export const actionsToUpdateSelectedTile = ({
 	fileId,
 	fromTab,
 }) => {
-	return (dispatch) => {
+	return dispatch => {
 		dispatch(updateSelectedTileToTab(tabId, tileName, tileId));
 		dispatch(updateSelectedTile(tileName, tileId, nextTileId));
-		dispatch(selectedTable(fileId));
+		// dispatch(selectedTable(fileId));
 		if (!fromTab) {
 			dispatch(showDashboardInTab(tabId, false));
 			dispatch(showDashBoard(false));
@@ -399,13 +402,13 @@ export const actionsToUpdateSelectedTile = ({
 };
 
 export const actionsToEnableRenameTile = ({ tabId, tileId, isTrue }) => {
-	return (dispatch) => {
+	return dispatch => {
 		dispatch(toggleEditingTile(isTrue));
 	};
 };
 
 export const actionsToCompleteRenameTile = ({ tabId, tileId, renameValue, nextTileId, isTrue }) => {
-	return (dispatch) => {
+	return dispatch => {
 		// dispatch(setTileRenameEnable(tabId, 100));
 		dispatch(renameTile(tabId, tileId, renameValue));
 		dispatch(toggleEditingTile(isTrue));
@@ -414,7 +417,7 @@ export const actionsToCompleteRenameTile = ({ tabId, tileId, renameValue, nextTi
 
 export const actionsToRemoveTile = ({ tabId, tileId, tileIndex }) => {
 	var propKey = `${tabId}.${tileId}`;
-	return (dispatch) => {
+	return dispatch => {
 		dispatch(removeTilesInDashDuringDeleteTile(tabId, propKey));
 		dispatch(removeTile(tabId, tileId, tileIndex));
 		dispatch(removeChartProperties(tabId, tileId, propKey, tileIndex));
@@ -423,7 +426,7 @@ export const actionsToRemoveTile = ({ tabId, tileId, tileIndex }) => {
 };
 
 export const setShowDashBoard = (tabId, showDash) => {
-	return (dispatch) => {
+	return dispatch => {
 		dispatch(showDashBoard(showDash));
 		dispatch(showDashboardInTab(tabId, showDash));
 	};
@@ -433,20 +436,20 @@ export const setShowDashBoard = (tabId, showDash) => {
 //  Load Playbook data to many different reducers
 //  *************************************************************
 
-export const loadTabState = (tabState) => {
+export const loadTabState = tabState => {
 	return { type: "LOAD_TAB_STATE_FROM_PLAYBOOK", payload: tabState };
 };
 
-export const loadTileState = (tileState) => {
+export const loadTileState = tileState => {
 	return { type: "LOAD_TILE_STATE_FROM_PLAYBOOK", payload: tileState };
 };
 
-export const loadTabTileProps = (tabTileProps) => {
+export const loadTabTileProps = tabTileProps => {
 	return { type: "LOAD_TAB_TILE_PROPS_FROM_PLAYBOOK", payload: tabTileProps };
 };
 
-export const loadPlaybook = (playbook) => {
-	return (dispatch) => {
+export const loadPlaybook = playbook => {
+	return dispatch => {
 		dispatch(loadTabState(playbook.tabState));
 		dispatch(loadTileState(playbook.tileState));
 		dispatch(loadTabTileProps(playbook.tabTileProps));
@@ -473,7 +476,7 @@ export const resetTabTileState = () => {
 };
 
 export const resetAllStates = () => {
-	return (dispatch) => {
+	return dispatch => {
 		dispatch(resetChartControls());
 		dispatch(resetChartProperties());
 		dispatch(resetSampleRecords());
@@ -481,5 +484,34 @@ export const resetAllStates = () => {
 		dispatch(resetTabState());
 		dispatch(resetTileState());
 		dispatch(resetTabTileState());
+	};
+};
+
+export const actionsToAddTileForRichText = ({
+	tabId,
+	nextTileId,
+	table,
+	fromTab: newTab,
+	selectedDs,
+	selectedTablesInDs,
+	chartName,
+}) => {
+	//let tileName = tileName ? tileName : `Tile - ${nextTileId}`;
+	// let tileName = `Tile - ${nextTileId}`;
+	// console.log(table);
+	let tileName;
+	return dispatch => {
+		dispatch(addProp(tabId, nextTileId, table, newTab, selectedDs, selectedTablesInDs));
+		dispatch(addControl(tabId, nextTileId, newTab));
+		dispatch(addTile(tabId, nextTileId, newTab));
+		dispatch(updateNextTileId(nextTileId, tabId));
+		dispatch(updateSelectedTile(tileName, nextTileId, nextTileId + 1));
+		dispatch(updateSelectedTileToTab(tabId, tileName, nextTileId));
+		dispatch(showDashBoard(false));
+		// dispatch(setChartTitle(`${tabId}.${nextTileId}`, chartName));
+		dispatch(changeChartType(`${tabId}.${nextTileId}`, chartName));
+		// if (chartName === "richText") {
+		// 	console.log(chartName);
+		// }
 	};
 };

@@ -224,3 +224,7 @@ export const updateTreeMapStyleOptions = (propKey, option, value) => {
 export const updateSankeyStyleOptions = (propKey, option, value) => {
 	return { type: "UPDATE_SANKEY_STYLE_OPTIONS", payload: { propKey, option, value } };
 };
+
+export const updateRichText = (propKey, value) => {
+	return { type: "UPDATE_RICH_TEXT", payload: { propKey, value } };
+};

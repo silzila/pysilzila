@@ -14,6 +14,8 @@ const ChartControlObjects = ({
 	var propKey = `${tabTileProps.selectedTabId}.${tabTileProps.selectedTileId}`;
 	var selectedChart = chartProp.properties[propKey].chartType;
 
+	const richTextOptionList = ["Title"];
+
 	const barOptionsList = [
 		"Title",
 		"Labels",
@@ -230,9 +232,8 @@ const ChartControlObjects = ({
 						</div>
 					);
 				});
-
-			case "geoChart":
-				return geoChartOptionList.map((option) => {
+			case "richText":
+				return richTextOptionList.map(option => {
 					return (
 						<div
 							key={option}

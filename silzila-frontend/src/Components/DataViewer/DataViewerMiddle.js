@@ -23,20 +23,23 @@ const DataViewerMiddle = ({
 
 	// state
 	tabTileProps,
+	chartProp,
 
 	// dispatch
 	setMenu,
 }) => {
+	// console.log(chartProp);
 	var propKey = `${tabId}.${tileId}`;
 	const rmenu = [
 		{ name: "Charts", icon: chartControlIcon },
 		{ name: "Chart controls", icon: settingsIcon },
 	];
 
-	const renderMenu = rmenu.map((rm) => {
+	const renderMenu = rmenu.map((rm, i) => {
 		return (
 			<img
-				key={rm.name}
+				key={i}
+				// key={rm.name}
 				className={
 					rm.name === tabTileProps.selectedControlMenu
 						? "controlsIcon selectedIcon"
@@ -88,8 +91,10 @@ const DataViewerMiddle = ({
 	};
 
 	return (
-		<div className="dataViewerMiddle">
-			<ChartAxes tabId={tabId} tileId={tileId} />
+		<div className="dataViewerMiddle" style={{ height: "300px" }}>
+			{chartProp.properties[propKey].chartType === "richText" ? null : (
+				<ChartAxes tabId={tabId} tileId={tileId} />
+			)}
 
 			<GraphArea />
 
@@ -101,16 +106,16 @@ const DataViewerMiddle = ({
 	);
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		chartProp: state.chartProperties,
 		tabTileProps: state.tabTileProps,
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
-		setMenu: (menu) => dispatch(setSelectedControlMenu(menu)),
+		setMenu: menu => dispatch(setSelectedControlMenu(menu)),
 	};
 };
 

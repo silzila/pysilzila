@@ -16,8 +16,13 @@ import CrossTabChart from "../Charts/CrossTab/CrossTabChart";
 import HorizontalBar from "../Charts/HorizontalBar";
 import Horizontalstacked from "../Charts/Horizontalstacked";
 import RoseChart from "../Charts/RoseChart";
-import GeoChart from "../Charts/GeoChart/GeoChart";
+import GeoChart from "../Charts/GeoChart";
+import TextEditor from "../Charts/TextEditor";
 import CalendarChart from "../Charts/CalendarChart";
+import BoxPlotChart from "../Charts/BoxPlotChart";
+import TreeMap from "../Charts/TreeMap";
+import Sankey from "../Charts/Sankey";
+import StackedAreaChart from "../Charts/StackedAreaChart";
 
 const DashGraph = ({
 	// props
@@ -157,15 +162,47 @@ const DashGraph = ({
 						chartArea="dashboard"
 					/>
 				);
+			case "stackedArea":
+				return (
+					<StackedAreaChart
+						propKey={propKey}
+						graphDimension={dimensions}
+						chartArea="dashboard"
+					/>
+				);
 
 			case "geoChart":
 				return (
 					<GeoChart propKey={propKey} graphDimension={dimensions} chartArea="dashboard" />
 				);
 
-			case "calendar":
+case "calendar":
 				return (
 					<CalendarChart
+						propKey={propKey}
+						graphDimension={dimensions}
+						chartArea="dashboard"
+					/>
+				);
+			case "boxPlot":
+				return (
+					<BoxPlotChart
+						propKey={propKey}
+						graphDimension={dimensions}
+						chartArea="dashboard"
+					/>
+				);
+			case "treeMap":
+				return (
+					<TreeMap propKey={propKey} graphDimension={dimensions} chartArea="dashboard" />
+				);
+			case "sankey":
+				return (
+					<Sankey propKey={propKey} graphDimension={dimensions} chartArea="dashboard" />
+				);
+			case "richText":
+				return (
+					<TextEditor
 						propKey={propKey}
 						graphDimension={dimensions}
 						chartArea="dashboard"
@@ -176,7 +213,7 @@ const DashGraph = ({
 	return <React.Fragment>{renderGraph()}</React.Fragment>;
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		tabState: state.tabState,
 		chartProp: state.chartProperties,

@@ -286,7 +286,8 @@ const ChartsInfo = {
 		],
 		showSwap: false,
 	},
-	textEditor: {
+	richText: {
+
 		dropZones: [
 			{ name: "Filter", allowedNumbers: 64, min: 0 },
 			{

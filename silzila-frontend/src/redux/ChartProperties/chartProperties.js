@@ -15,15 +15,14 @@ const chartProperties = {
 
 			// Left Column
 			axesEdited: false,
-			filterRunState:false,
+			filterRunState: false,
 			chartAxes: [
 				{
 					name: "Filter",
 					fields: [],
 					isCollapsed: false,
 					any_condition_match: false,
-					is_auto_filter_enabled: true
-					
+					is_auto_filter_enabled: true,
 				},
 				{
 					name: "Row",
@@ -41,9 +40,7 @@ const chartProperties = {
 					isCollapsed: false,
 				},
 			],
-			chartFilters: [
-
-			],
+			chartFilters: [],
 
 			// DataViewerBottom Dataset selected and tables to list
 			selectedDs: {},
@@ -66,14 +63,14 @@ const chartProperties = {
 const chartPropertiesState = (state = chartProperties, action) => {
 	const findCardIndex = (propKey, fromBIndex, fromUid) => {
 		var removeIndex = state.properties[propKey].chartAxes[fromBIndex].fields.findIndex(
-			(obj) => obj.uId === fromUid
+			obj => obj.uId === fromUid
 		);
 		return removeIndex;
 	};
 
 	const findCardObject = (propKey, bIndex, uId) => {
 		var cardIndex = state.properties[propKey].chartAxes[bIndex].fields.findIndex(
-			(obj) => obj.uId === uId
+			obj => obj.uId === uId
 		);
 		var card = state.properties[propKey].chartAxes[bIndex].fields[cardIndex];
 
@@ -104,32 +101,32 @@ const chartPropertiesState = (state = chartProperties, action) => {
 
 						// Left Column
 						axesEdited: false,
-						filterRunState:false,
+						filterRunState: false,
 						chartAxes: [
 							{
 								name: "Filter",
 								fields: [],
 								isCollapsed: false,
 								any_condition_match: false,
-								is_auto_filter_enabled: true
+								is_auto_filter_enabled: true,
 							},
 							{
 								name: "Row",
 								fields: [],
-								isCollapsed: false
+								isCollapsed: false,
 							},
 							{
 								name: "Column",
 								fields: [],
-								isCollapsed: false
+								isCollapsed: false,
 							},
 							{
 								name: "Measure",
 								fields: [],
-								isCollapsed: false
+								isCollapsed: false,
 							},
 						],
-						chartFilters:[],
+						chartFilters: [],
 
 						selectedDs: action.payload.selectedDs,
 						selectedTable: action.payload.selectedTablesInDs,
@@ -137,7 +134,7 @@ const chartPropertiesState = (state = chartProperties, action) => {
 						titleOptions: {
 							fontSize: 28,
 							titleLeftPadding: "20px",
-							titleAlign: "center",
+							titleAlign: "left",
 							chartTitle: "",
 							generateTitle: "Auto",
 						},
@@ -167,39 +164,39 @@ const chartPropertiesState = (state = chartProperties, action) => {
 
 						// Left Column
 						axesEdited: false,
-						filterRunState:false,
+						filterRunState: false,
 						chartAxes: [
 							{
 								name: "Filter",
 								fields: [],
 								isCollapsed: false,
 								any_condition_match: false,
-								is_auto_filter_enabled: true
+								is_auto_filter_enabled: true,
 							},
 							{
 								name: "Row",
 								fields: [],
-								isCollapsed: false
+								isCollapsed: false,
 							},
 							{
 								name: "Column",
 								fields: [],
-								isCollapsed: false
+								isCollapsed: false,
 							},
 							{
 								name: "Measure",
 								fields: [],
-								isCollapsed: false
+								isCollapsed: false,
 							},
 						],
-						chartFilters:[],
+						chartFilters: [],
 						selectedDs: action.payload.selectedDs,
 						selectedTable: action.payload.selectedTablesInDs,
 
 						titleOptions: {
 							fontSize: 28,
 							titleLeftPadding: "20px",
-							titleAlign: "center",
+							titleAlign: "left",
 							chartTitle: "",
 							generateTitle: "Auto",
 						},
@@ -209,7 +206,6 @@ const chartPropertiesState = (state = chartProperties, action) => {
 				},
 				propList: { ...state.propList, [action.payload.tabId]: [tileKey2] },
 			};
-
 
 		case "DUPLICATE_CHART_PROP":
 			console.log(action.payload);
@@ -257,7 +253,7 @@ const chartPropertiesState = (state = chartProperties, action) => {
 						chartAxes: {
 							[action.payload.bIndex]: {
 								fields: {
-									$set:  [] 
+									$set: [],
 								},
 							},
 						},
@@ -272,7 +268,7 @@ const chartPropertiesState = (state = chartProperties, action) => {
 						chartAxes: {
 							[action.payload.bIndex]: {
 								isCollapsed: {
-									$set:  action.payload.isCollapsed
+									$set: action.payload.isCollapsed,
 								},
 							},
 						},
@@ -287,7 +283,7 @@ const chartPropertiesState = (state = chartProperties, action) => {
 						chartAxes: {
 							[action.payload.bIndex]: {
 								any_condition_match: {
-									$set:  action.payload.any_condition_match
+									$set: action.payload.any_condition_match,
 								},
 							},
 						},
@@ -303,10 +299,10 @@ const chartPropertiesState = (state = chartProperties, action) => {
 						chartAxes: {
 							[action.payload.bIndex]: {
 								is_auto_filter_enabled: {
-									$set:  action.payload.is_auto_filter_enabled
+									$set: action.payload.is_auto_filter_enabled,
 								},
 							},
-						},								
+						},
 					},
 				},
 			});
@@ -402,13 +398,13 @@ const chartPropertiesState = (state = chartProperties, action) => {
 					[action.payload.propKey]: { axesEdited: { $set: action.payload.axesEdited } },
 				},
 			});
-		
+
 		case "TOGGLE_FILTER_RUN_STATE":
 			return update(state, {
 				properties: {
-					[action.payload.propKey]: { 
+					[action.payload.propKey]: {
 						filterRunState: { $set: action.payload.filterRunState },
-						axesEdited: { $set: true } 
+						axesEdited: { $set: true },
 					},
 				},
 			});
@@ -566,7 +562,11 @@ const chartPropertiesState = (state = chartProperties, action) => {
 			return chartProperties;
 
 		case "UPDATE_LEFT_FILTER_ITEM":
-			var cardIndex = findCardIndex(action.payload.propKey, action.payload.bIndex, action.payload.item.uId);
+			var cardIndex = findCardIndex(
+				action.payload.propKey,
+				action.payload.bIndex,
+				action.payload.item.uId
+			);
 			return update(state, {
 				properties: {
 					[action.payload.propKey]: {
@@ -574,6 +574,21 @@ const chartPropertiesState = (state = chartProperties, action) => {
 							[action.payload.bIndex]: {
 								fields: {
 									$splice: [[cardIndex, 1, action.payload.item]],
+								},
+							},
+						},
+						axesEdited: { $set: true },
+					},
+				},
+			});
+		case "UPDATE_FILTER_EXPAND_COLLAPSE":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						chartAxes: {
+							[action.payload.bIndex]: {
+								fields: {
+									$set: action.payload.item,
 								},
 							},
 						},

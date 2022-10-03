@@ -4,6 +4,7 @@
 	flex-direction: column;
 	background-color: #eee;
 	overflow-y: auto;
+	
 }
 .chartAxis {
 	flex: 1;
@@ -19,10 +20,14 @@
 
 .chartAxisBody{
 	flex: 1;
-	overflow-y: auto;
-	display: flex;
+	/* overflow-y: hidden; */
+	/* display: flex; */
 	flex-direction: column;
-	max-height: 10rem;
+	max-height: auto;
+	min-height: 6em;
+	/* max-height: 100rem; */
+	/* min-height: 100em; */
+
 }
 
 .axisTitle {

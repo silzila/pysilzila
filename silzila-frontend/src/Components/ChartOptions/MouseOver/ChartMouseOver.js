@@ -3,10 +3,7 @@
 import { Switch } from "@mui/material";
 import React from "react";
 import { connect } from "react-redux";
-import {
-	enableMouseOver,
-	geoMouseOverFormat,
-} from "../../../redux/ChartProperties/actionsChartControls";
+import { enableMouseOver } from "../../../redux/ChartProperties/actionsChartControls";
 import SwitchWithInput from "../SwitchWithInput";
 
 const ChartMouseOver = ({
