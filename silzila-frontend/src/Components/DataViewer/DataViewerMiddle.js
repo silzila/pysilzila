@@ -12,8 +12,9 @@ import chartControlIcon from "../../assets/chart-control-icon.svg";
 import settingsIcon from "../../assets/charts_theme_settings_icon.svg";
 import ChartControlObjects from "../ChartOptions/ChartControlObjects";
 import ControlDetail from "../ChartOptions/ControlDetail";
-import ChartTypes from "../ChartOptions/ChartTypes";
+// import ChartTypes from "../ChartOptions/ChartTypes";
 import { setSelectedControlMenu } from "../../redux/TabTile/actionsTabTile";
+import ChartTypes2 from "../ChartOptions/ChartTypes2";
 
 const DataViewerMiddle = ({
 	// props
@@ -64,7 +65,8 @@ const DataViewerMiddle = ({
 				return (
 					<div className="rightColumnControlsAndFilters">
 						<div className="axisTitle">Charts</div>
-						<ChartTypes propKey={propKey} />
+						{/* <ChartTypes propKey={propKey} /> */}
+						<ChartTypes2 propKey={propKey} />
 					</div>
 				);
 

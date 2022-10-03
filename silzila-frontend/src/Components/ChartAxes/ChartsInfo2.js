@@ -1,55 +1,17 @@
 const ChartsInfo = {
-	multibar: {
+	crossTab: {
 		dropZones: [
 			{ name: "Filter", allowedNumbers: 64, min: 0 },
+			{ name: "Row", allowedNumbers: 64, min: 0, dataType: ["text", "string", "timestamp"] },
 			{
-				name: "Dimension",
-				allowedNumbers: 1,
-				min: 1,
+				name: "Column",
+				allowedNumbers: 64,
+				min: 0,
 				dataType: ["text", "string", "timestamp"],
 			},
-			{ name: "Measure", allowedNumbers: 10, min: 1, dataType: ["int", "float", "double"] },
+			{ name: "Measure", allowedNumbers: 64, min: 0, dataType: ["int", "float", "double"] },
 		],
-		showSwap: true,
-	},
-	stackedBar: {
-		dropZones: [
-			{ name: "Filter", allowedNumbers: 64, min: 0 },
-			{
-				name: "Dimension",
-				allowedNumbers: 1,
-				min: 1,
-				dataType: ["text", "string", "timestamp"],
-			},
-			{ name: "Measure", allowedNumbers: 4, min: 1, dataType: ["int", "float", "double"] },
-		],
-		showSwap: true,
-	},
-	horizontalBar: {
-		dropZones: [
-			{ name: "Filter", allowedNumbers: 64, min: 0 },
-			{
-				name: "Dimension",
-				allowedNumbers: 1,
-				min: 1,
-				dataType: ["text", "string", "timestamp"],
-			},
-			{ name: "Measure", allowedNumbers: 10, min: 1, dataType: ["int", "float", "double"] },
-		],
-		showSwap: true,
-	},
-	horizontalStacked: {
-		dropZones: [
-			{ name: "Filter", allowedNumbers: 64, min: 0 },
-			{
-				name: "Dimension",
-				allowedNumbers: 1,
-				min: 1,
-				dataType: ["text", "string", "timestamp"],
-			},
-			{ name: "Measure", allowedNumbers: 4, min: 1, dataType: ["int", "float", "double"] },
-		],
-		showSwap: true,
+		showSwap: false,
 	},
 	pie: {
 		dropZones: [
@@ -77,7 +39,7 @@ const ChartsInfo = {
 		],
 		showSwap: false,
 	},
-	geoChart: {
+	rose: {
 		dropZones: [
 			{ name: "Filter", allowedNumbers: 64, min: 0 },
 			{
@@ -89,6 +51,58 @@ const ChartsInfo = {
 			{ name: "Measure", allowedNumbers: 1, min: 1, dataType: ["int", "float", "double"] },
 		],
 		showSwap: false,
+	},
+	multibar: {
+		dropZones: [
+			{ name: "Filter", allowedNumbers: 64, min: 0 },
+			{
+				name: "Dimension",
+				allowedNumbers: 1,
+				min: 1,
+				dataType: ["text", "string", "timestamp"],
+			},
+			{ name: "Measure", allowedNumbers: 10, min: 1, dataType: ["int", "float", "double"] },
+		],
+		showSwap: true,
+	},
+	horizontalBar: {
+		dropZones: [
+			{ name: "Filter", allowedNumbers: 64, min: 0 },
+			{
+				name: "Dimension",
+				allowedNumbers: 1,
+				min: 1,
+				dataType: ["text", "string", "timestamp"],
+			},
+			{ name: "Measure", allowedNumbers: 10, min: 1, dataType: ["int", "float", "double"] },
+		],
+		showSwap: true,
+	},
+	stackedBar: {
+		dropZones: [
+			{ name: "Filter", allowedNumbers: 64, min: 0 },
+			{
+				name: "Dimension",
+				allowedNumbers: 1,
+				min: 1,
+				dataType: ["text", "string", "timestamp"],
+			},
+			{ name: "Measure", allowedNumbers: 4, min: 1, dataType: ["int", "float", "double"] },
+		],
+		showSwap: true,
+	},
+	horizontalStacked: {
+		dropZones: [
+			{ name: "Filter", allowedNumbers: 64, min: 0 },
+			{
+				name: "Dimension",
+				allowedNumbers: 1,
+				min: 1,
+				dataType: ["text", "string", "timestamp"],
+			},
+			{ name: "Measure", allowedNumbers: 4, min: 1, dataType: ["int", "float", "double"] },
+		],
+		showSwap: true,
 	},
 	line: {
 		dropZones: [
@@ -150,6 +164,13 @@ const ChartsInfo = {
 		],
 		showSwap: true,
 	},
+	funnel: {
+		dropZones: [
+			{ name: "Filter", allowedNumbers: 64, min: 0 },
+			{ name: "Measure", allowedNumbers: 12, min: 2, dataType: ["int", "float", "double"] },
+		],
+		showSwap: false,
+	},
 	heatmap: {
 		dropZones: [
 			{ name: "Filter", allowedNumbers: 64, min: 0 },
@@ -164,10 +185,24 @@ const ChartsInfo = {
 		],
 		showSwap: true,
 	},
-	funnel: {
+	calendar: {
 		dropZones: [
 			{ name: "Filter", allowedNumbers: 64, min: 0 },
-			{ name: "Measure", allowedNumbers: 12, min: 2, dataType: ["int", "float", "double"] },
+			{ name: "Dimension", allowedNumbers: 1, min: 1, dataType: ["timestamp"] },
+			{ name: "Measure", allowedNumbers: 1, min: 1, dataType: ["int", "float", "double"] },
+		],
+		showSwap: false,
+	},
+	geoChart: {
+		dropZones: [
+			{ name: "Filter", allowedNumbers: 64, min: 0 },
+			{
+				name: "Location",
+				allowedNumbers: 1,
+				min: 1,
+				dataType: ["text", "string", "timestamp"],
+			},
+			{ name: "Measure", allowedNumbers: 1, min: 1, dataType: ["int", "float", "double"] },
 		],
 		showSwap: false,
 	},
@@ -189,47 +224,10 @@ const ChartsInfo = {
 		showSwap: true,
 	},
 
-	rose: {
-		dropZones: [
-			{ name: "Filter", allowedNumbers: 64, min: 0 },
-			{
-				name: "Dimension",
-				allowedNumbers: 1,
-				min: 1,
-				dataType: ["text", "string", "timestamp"],
-			},
-			{ name: "Measure", allowedNumbers: 1, min: 1, dataType: ["int", "float", "double"] },
-		],
-		showSwap: false,
-	},
-
-	crossTab: {
-		dropZones: [
-			{ name: "Filter", allowedNumbers: 64, min: 0 },
-			{ name: "Row", allowedNumbers: 64, min: 0, dataType: ["text", "string", "timestamp"] },
-			{
-				name: "Column",
-				allowedNumbers: 64,
-				min: 0,
-				dataType: ["text", "string", "timestamp"],
-			},
-			{ name: "Measure", allowedNumbers: 64, min: 0, dataType: ["int", "float", "double"] },
-		],
-		showSwap: false,
-	},
 	table: {
 		dropZones: [
 			{ name: "Filter", allowedNumbers: 64, min: 0 },
 			{ name: "Column", allowedNumbers: 64, min: 1 },
-		],
-		showSwap: false,
-	},
-
-	calendar: {
-		dropZones: [
-			{ name: "Filter", allowedNumbers: 64, min: 0 },
-			{ name: "Dimension", allowedNumbers: 1, min: 1, dataType: ["timestamp"] },
-			{ name: "Measure", allowedNumbers: 1, min: 1, dataType: ["int", "float", "double"] },
 		],
 		showSwap: false,
 	},
@@ -289,6 +287,7 @@ const ChartsInfo = {
 		showSwap: false,
 	},
 	richText: {
+
 		dropZones: [
 			{ name: "Filter", allowedNumbers: 64, min: 0 },
 			{

@@ -12,3 +12,4 @@ silzila-frontend/node_modules/
 .env
 node_modules/
 silzila-frontend/build/
+.prettierrc

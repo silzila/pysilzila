@@ -2,6 +2,7 @@
 	width: 14.5rem;
 	display: flex;
 	flex-direction: column;
+	background-color: #eee;
 	overflow-y: auto;
 	
 }

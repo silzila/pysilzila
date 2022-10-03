@@ -175,7 +175,8 @@ const DashGraph = ({
 				return (
 					<GeoChart propKey={propKey} graphDimension={dimensions} chartArea="dashboard" />
 				);
-			case "calendar":
+
+case "calendar":
 				return (
 					<CalendarChart
 						propKey={propKey}

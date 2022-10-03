@@ -93,6 +93,42 @@ const measurePrefixes = {
 	},
 };
 
+const geoPrefixes = {
+	world: [
+		{
+			name: "Full Name",
+			id: "formal_en",
+			examples: ["Commonwealth of the Bahamas", "Republic of Costa Rica", "Republic of Cuba"],
+		},
+		{
+			name: "Short Name",
+			id: "name_long",
+			examples: ["Bahamas", "Costa Rica", "Cuba"],
+		},
+		{
+			name: "ISO-2",
+			id: "iso_a2",
+			examples: ["BS", "CR", "CU"],
+		},
+		{
+			name: "ISO-3",
+			id: "iso_a3",
+			examples: ["BHS", "CRI", "CUB"],
+		},
+		{
+			name: "ISO-Numeric",
+			id: "un_a3",
+			examples: ["044", "188", "192"],
+		},
+	],
+
+	singleCountry: [
+		{ name: "States", id: "NAME_1" },
+		{ name: "ISO Code", id: "ISO_1" },
+		{ name: "Two Letter Code", id: "2char" },
+	],
+};
+
 const Aggregators = {
 	Dimension: dimensionPrefixes,
 	Row: dimensionPrefixes,
@@ -100,6 +136,7 @@ const Aggregators = {
 	Measure: measurePrefixes,
 	X: measurePrefixes,
 	Y: measurePrefixes,
+	Location: geoPrefixes,
 	Distribution: dimensionPrefixes,
 };
 
@@ -121,6 +158,16 @@ export const AggregatorKeys = {
 	dayofmonth: "Day Mn",
 	dayofweek: "Day Wk",
 	date: "Date",
+
+	formal_en: "Full Name",
+	iso_a2: "ISO-2",
+	iso_a3: "ISO-3",
+	un_a3: "ISO-Num",
+	name_long: "Short Name",
+
+	NAME_1: "State Name",
+	ISO_1: "ISO Code",
+	"2char": "2 Char",
 };
 
 export default Aggregators;

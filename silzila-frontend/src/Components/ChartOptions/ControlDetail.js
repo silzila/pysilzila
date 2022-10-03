@@ -16,6 +16,7 @@ import ChartStyle from "./Style/ChartStyle";
 import ColorSteps from "./Color/ColorSteps";
 import CalendarLabels from "./Labels/CalendarLabels";
 import CalendarChartStyles from "./Style/CalendarChartStyles";
+import ColorScaleGeo from "./Color/ColorScaleGeo";
 import BoxPlotChartStyles from "./Style/BoxPlotChartStyles";
 import TreeMapStyles from "./Style/TreeMapStyles";
 import TreeMapLegend from "./Legend/TreeMapLegend";
@@ -38,6 +39,8 @@ const ControlDetail = ({ chartProp, tabTileProps }) => {
 			case "Colors":
 				if (chartType === "heatmap") {
 					return <ColorScale />;
+				} else if (chartType == "geoChart") {
+					return <ColorScaleGeo />;
 				} else if (chartType === "gauge") {
 					return (
 						<>

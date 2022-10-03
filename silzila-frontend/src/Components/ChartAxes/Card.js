@@ -72,11 +72,57 @@ const Card = ({
 		}
 	};
 
+	var chartType = chartProp.properties[propKey].chartType;
+	// var geoLocation = chartProp.properties[propKey].geoLocation;
+
+	// const [selectedGeoPrefix, setSelectedGeoPrefix] = useState("");
+	// const [geoAnchorEl, setGeoAnchorEl] = useState(null);
+	// const openGeo = Boolean(geoAnchorEl);
+	// const geoOptions = [
+	// 	{ name: "Full Name", id: "name" },
+	// 	{ name: "ISO-2", id: "iso2" },
+	// 	{ name: "ISO-3", id: "iso3" },
+	// 	{ name: "ISO-Numeric", id: "isoNum" },
+	// ];
+
+	// const handleGeoMouseOver = (e) => {
+	// 	console.log(e.target.value);
+	// 	// setSelectedGeoPrefix(name);
+	// 	console.log(e.target);
+	// 	setGeoAnchorEl(e.target);
+	// };
+	// console.log(geoAnchorEl);
+
+	// const handleGeoClose = () => {
+	// 	setGeoAnchorEl(null);
+	// };
+
 	var menuStyle = { fontSize: "12px", padding: "2px 1rem" };
 	var menuSelectedStyle = {
 		fontSize: "12px",
 		padding: "2px 1rem",
 		backgroundColor: "rgba(25, 118, 210, 0.08)",
+	};
+
+	var menuWithExamplesStyle = {
+		display: "flex",
+		flexDirection: "column",
+		padding: "2px 1rem",
+		alignItems: "start",
+	};
+
+	var menuWithExamplesSelectedStyle = {
+		display: "flex",
+		flexDirection: "column",
+		padding: "2px 1rem",
+		alignItems: "start",
+		backgroundColor: "rgba(25, 118, 210, 0.08)",
+	};
+	var menuName = { fontSize: "12px", textAlign: "left" };
+	var menuExample = {
+		fontSize: "10px",
+		textAlign: "left",
+		color: "#999",
 	};
 
 	// Properties and behaviour when a card is dragged
@@ -123,6 +169,37 @@ const Card = ({
 		},
 	});
 
+	// const RenderGeoMenu = useCallback(() => {
+	// 	return (
+	// 		<Menu
+	// 			id="basic-menu"
+	// 			anchorEl={geoAnchorEl}
+	// 			open={openGeo}
+	// 			onClose={() => handleGeoClose()}
+	// 			// onClose={() => handleClose("clickOutside")}
+	// 			MenuListProps={{
+	// 				"aria-labelledby": "basic-button",
+	// 			}}
+	// 		>
+	// 			{geoOptions.map((opt) => {
+	// 				return (
+	// 					<MenuItem
+	// 						// onClose={() => handleGeoClose()}
+	// 						// onMouseOver={(e) => handleGeoMouseOver(e)}
+	// 						// onClick={() => handleClose("agg", opt.id)}
+	// 						sx={menuStyle}
+	// 						key={opt.id}
+	// 					>
+	// 						{opt.name}
+	// 					</MenuItem>
+	// 				);
+	// 			})}
+	// 		</Menu>
+	// 	);
+	// });
+
+	var geoLocation = chartProp.properties[propKey].geoLocation;
+
 	// List of options to show at the end of each card
 	// (like, year, month, day, or Count, sum, avg etc)
 	const RenderMenu = useCallback(() => {
@@ -151,6 +228,16 @@ const Card = ({
 			}
 		}
 
+		if (axisTitle === "Location") {
+			if (geoLocation === "world") {
+				console.log(axisTitle, field.dataType);
+				options = options.concat(Aggregators[axisTitle][geoLocation]);
+			} else {
+				options = options.concat(Aggregators[axisTitle].singleCountry);
+				// TODO: provide option examples for countries
+			}
+		}
+
 		return (
 			<Menu
 				id="basic-menu"
@@ -174,7 +261,6 @@ const Card = ({
 							);
 					  })
 					: null}
-
 				{options.length > 0 && options2.length > 0 ? <Divider /> : null}
 
 				{options2.length > 0
@@ -241,6 +327,7 @@ const Card = ({
 				<KeyboardArrowDownRoundedIcon style={{ fontSize: "14px", margin: "auto" }} />
 			</button>
 			<RenderMenu />
+			{/* <RenderGeoMenu /> */}
 		</div>
 	) : null;
 };
@@ -263,7 +350,7 @@ const mapDispatchToProps = dispatch => {
 			dispatch(
 				editChartPropItem({
 					action: "updateQuery",
-					details: { propKey, binIndex, itemIndex, item },
+					details: { propKey, binIndex, itemIndex, item, toggle: true },
 				})
 			),
 

@@ -22,6 +22,14 @@ const chartControl = {
 				maxColor: "#b32d00",
 			},
 
+			colorScaleGeo: {
+				colorScaleType: "Automatic",
+				min: 0,
+				max: 0,
+				minColor: "#22c1c3",
+				maxColor: "#155799",
+			},
+
 			legendOptions: {
 				showLegend: true,
 				moveSlider: "Width",
@@ -143,10 +151,9 @@ const chartControl = {
 				showLabel: true,
 				labelColorManual: false,
 				labelColor: "#666666",
-				pieLabel: {
-					labelPosition: "outside",
-					labelPadding: 0,
-				},
+				pieLabel: { labelPosition: "outside", labelPadding: 0 },
+				geoRotation: 0,
+				geoFormatter: "value",
 				fontSize: 12,
 				fontStyle: "normal",
 				fontWeigth: "normal",
@@ -177,6 +184,7 @@ const chartControl = {
 
 			mouseOver: {
 				enable: true,
+				formatter: "location",
 			},
 
 			axisOptions: {
@@ -318,6 +326,14 @@ const chartControlsReducer = (state = chartControl, action) => {
 							maxColor: "#b32d00",
 						},
 
+						colorScaleGeo: {
+							colorScaleType: "Automatic",
+							min: 0,
+							max: 0,
+							minColor: "#22c1c3",
+							maxColor: "#155799",
+						},
+
 						legendOptions: {
 							showLegend: true,
 							moveSlider: "Width",
@@ -439,10 +455,9 @@ const chartControlsReducer = (state = chartControl, action) => {
 							showLabel: true,
 							labelColorManual: false,
 							labelColor: "#666666",
-							pieLabel: {
-								labelPosition: "outside",
-								labelPadding: 0,
-							},
+							pieLabel: { labelPosition: "outside", labelPadding: 0 },
+							geoRotation: "hori",
+							geoFormatter: "value",
 							fontSize: 12,
 							fontStyle: "normal",
 							fontWeigth: "normal",
@@ -473,6 +488,7 @@ const chartControlsReducer = (state = chartControl, action) => {
 
 						mouseOver: {
 							enable: true,
+							formatter: "location",
 						},
 
 						axisOptions: {
@@ -615,6 +631,14 @@ const chartControlsReducer = (state = chartControl, action) => {
 							maxColor: "#b32d00",
 						},
 
+						colorScaleGeo: {
+							colorScaleType: "Automatic",
+							min: 0,
+							max: 0,
+							minColor: "#22c1c3",
+							maxColor: "#155799",
+						},
+
 						legendOptions: {
 							showLegend: true,
 							moveSlider: "Width",
@@ -736,10 +760,9 @@ const chartControlsReducer = (state = chartControl, action) => {
 							showLabel: true,
 							labelColorManual: false,
 							labelColor: "#666666",
-							pieLabel: {
-								labelPosition: "outside",
-								labelPadding: 0,
-							},
+							pieLabel: { labelPosition: "outside", labelPadding: 0 },
+							geoRotation: "hori",
+							geoFormatter: "value",
 							fontSize: 12,
 							fontStyle: "normal",
 							fontWeigth: "normal",
@@ -770,6 +793,7 @@ const chartControlsReducer = (state = chartControl, action) => {
 
 						mouseOver: {
 							enable: true,
+							formatter: "location",
 						},
 
 						axisOptions: {
@@ -987,6 +1011,15 @@ const chartControlsReducer = (state = chartControl, action) => {
 				},
 			});
 
+		case "GEO_MOUSE_OVER_FORMAT":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						mouseOver: { formatter: { $set: action.payload.value } },
+					},
+				},
+			});
+
 		// ########################################
 		// Grid & Axis
 
@@ -1049,6 +1082,17 @@ const chartControlsReducer = (state = chartControl, action) => {
 				properties: {
 					[action.payload.propKey]: {
 						colorScale: {
+							[action.payload.option]: { $set: action.payload.value },
+						},
+					},
+				},
+			});
+
+		case "SET_COLOR_SCALE_GEO_OPTION":
+			return update(state, {
+				properties: {
+					[action.payload.propKey]: {
+						colorScaleGeo: {
 							[action.payload.option]: { $set: action.payload.value },
 						},
 					},
@@ -1317,6 +1361,7 @@ const chartControlsReducer = (state = chartControl, action) => {
 					},
 				},
 			});
+
 		default:
 			return state;
 	}

@@ -52,6 +52,13 @@ export const setColorScaleOption = (option, value, propKey) => {
 	};
 };
 
+export const setColorScaleGeoOption = (option, value, propKey) => {
+	return {
+		type: "SET_COLOR_SCALE_GEO_OPTION",
+		payload: { option: option, value: value, propKey: propKey },
+	};
+};
+
 export const addingNewStep = (propkey, index, value) => {
 	return {
 		type: "ADDING_NEW_STEP",
@@ -153,6 +160,10 @@ export const setSelectedMargin = (propKey, margin) => {
 
 export const enableMouseOver = (propKey, enable) => {
 	return { type: "ENABLE_MOUSE_OVER", payload: { propKey, enable } };
+};
+
+export const geoMouseOverFormat = (propKey, value) => {
+	return { type: "GEO_MOUSE_OVER_FORMAT", payload: { propKey, value } };
 };
 
 // ==============================
