@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-![](silzila-frontend/src/assets/silzila_crop.png)
+![](silzila-frontend/src/assets/Silzila_logo.png)
 
 Data exploration and dashboarding app
 
@@ -38,11 +38,8 @@ to create meaningful visual charts in four easy steps
 9. Once the environment is active, you can then start the silzila app by typing the following
    command in prompt `silzila`. A new browser window will open up with an instance of silzila app
 
-
-Note: When connecting to Database please check if Database service is up and running. For MS SQL Server, please check if you have installed ODBC Driver and TCP/IP is enabled for the database.
-
-
-
+Note: When connecting to Database please check if Database service is up and running. For MS SQL
+Server, please check if you have installed ODBC Driver and TCP/IP is enabled for the database.
 
 # Demo
 
